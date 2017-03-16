@@ -14,6 +14,7 @@ public class Constants {
 
     //  Callback Keys
     public static final int RESPONSE_LOGIN = 0;
+    public static final int RESPONSE_CUSTOMERS = 1;
 
     // Urls
     public static final String URL_LOGIN = "/Mobile/Login";

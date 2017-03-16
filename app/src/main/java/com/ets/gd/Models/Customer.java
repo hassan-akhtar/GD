@@ -1,6 +1,18 @@
 package com.ets.gd.Models;
 
 public class Customer {
+
+
+    private String ID;
+    private String Code;
+    private String Description;
+    private String ApplicationID;
+    private String IsServiceCompany;
+
+    public Customer(String code) {
+        Code = code;
+    }
+
     private String getApplicationID() {
         return ApplicationID;
     }
@@ -41,11 +53,6 @@ public class Customer {
         IsServiceCompany = isServiceCompany;
     }
 
-    private String ID;
-    private String Code;
-    private String Description;
-    private String ApplicationID;
-    private String IsServiceCompany;
 
     public Customer() {
     }
