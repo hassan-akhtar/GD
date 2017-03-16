@@ -1,0 +1,69 @@
+<resources>
+    <string name="app_name">GD</string>
+    <string name="title_activity_dashboard">DashboardActivity</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_settings">Settings</string>
+    <string name="DBNAME">FILETRACK.realm</string>
+    <string name="login_user">username</string>
+    <string name="login_password">password</string>
+    <string name="grant_type">grant_type</string>
+    <string name="login">Login</string>
+    <string name="name">Name</string>
+    <string name="password">Password</string>
+    <string name="applicaion_logo_description">Applicaion Logo</string>
+    <string name="customer_name">Customer Name</string>
+    <string name="companies_found_count">5 Companies found</string>
+    <string name="error_404_msg">Service is not Available please try again Later!</string>
+    <string name="error_poor_con">Poor or no Internet Connection!</string>
+    <string name="error_con_timeout">Connection Timeout!</string>
+    <string name="txt_login">Login</string>
+    <string name="msg_login_failed">User is Blocked/Unauthorized</string>
+    <string name="txt_close">CLOSE</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/dashboard</item>
+        <item>@string/firebug</item>
+        <item>@string/toolhawk</item>
+        <item>@string/inventory</item>
+    </string-array>
+
+    <string-array name="icons">
+        <item>@drawable/username_icon</item>
+        <item>@drawable/username_icon</item>
+        <item>@drawable/username_icon</item>
+        <item>@drawable/username_icon</item>
+    </string-array>
+
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_forgot_password">ForgotPasswordActivity</string>
+    <string name="login_response_mock">{   \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1laWQiOiJhNGNhMjUwYi05MGFlLTRlZWUtYWVlNC03ZjQ5Y2VmMjY2MzgiLCJ1bmlxdWVfbmFtZSI6IkVUU0FkbWluIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS9hY2Nlc3Njb250cm9sc2VydmljZS8yMDEwLzA3L2NsYWltcy9pZGVudGl0eXByb3ZpZGVyIjoiQVNQLk5FVCBJZGVudGl0eSIsIkFzcE5ldC5JZGVudGl0eS5TZWN1cml0eVN0YW1wIjoiODYxZmVjNmYtMWRmYi00NjgxLWFkZjEtNzI3N2NlM2I3YzU1Iiwicm9sZSI6IkFkbWluaXN0cmF0b3IiLCJBZGRFZGl0IjoidHJ1ZSIsIkRlbGV0ZSI6InRydWUiLCJDaGVja2luIjoidHJ1ZSIsIkNoZWNrb3V0IjoidHJ1ZSIsIk1vdmUiOiJ0cnVlIiwiVHJhbnNmZXIiOiJ0cnVlIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MDkwOCIsImF1ZCI6IjQxNGUxOTI3YTM4ODRmNjhhYmM3OWY3MjgzODM3ZmQxIiwiZXhwIjoxNDg2MTI2ODA2LCJuYmYiOjE0ODYwNDA0MDZ9.eD1-2yT5thpxZUl_ONQ5jGN_YDmEFmbdh8WME4JGUqw\",   \"token_type\": \"bearer\",   \"expires_in\": 86399 }</string>
+    <string name="customer_list_reponse_mock">[   {     \"ID\": 1,     \"Code\": \"c12131455rq\",     \"Description\": \"cNamee55\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 2,     \"Code\": \"c2636\",     \"Description\": \"c2Name636\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 3,     \"Code\": \"Jander4\",     \"Description\": \"James Anderson\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 4,     \"Code\": \"Harryy\",     \"Description\": \"Marrisonn\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 5,     \"Code\": \"hopkins\",     \"Description\": \"lagger\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 6,     \"Code\": \"ERic\",     \"Description\": \"Barnard\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 7,     \"Code\": \"ERic\",     \"Description\": \"Barnard\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 8,     \"Code\": \"xyz44\",     \"Description\": \"tester44\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 9,     \"Code\": \"Zinc255665\",     \"Description\": \"Horns565656\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 10,     \"Code\": \"Zamzaar inc\",     \"Description\": \"Zamzaar inc\",     \"ApplicationID\": 2,     \"IsServiceCompany\": true   },   {     \"ID\": 11,     \"Code\": \"maxwell inc\",     \"Description\": \"maxwell inc\",     \"ApplicationID\": 2,     \"IsServiceCompany\": false   },   {     \"ID\": 12,     \"Code\": \"Mornication co\",     \"Description\": \"Mornication co\",     \"ApplicationID\": 2,     \"IsServiceCompany\": false   },   {     \"ID\": 13,     \"Code\": \"Hassan\",     \"Description\": \"Ali\",     \"ApplicationID\": 3,     \"IsServiceCompany\": true   },   {     \"ID\": 14,     \"Code\": \"Mooney Technitian Mooney Technitian\",     \"Description\": \"Jhon\",     \"ApplicationID\": 4,     \"IsServiceCompany\": true   },   {     \"ID\": 15,     \"Code\": \"DISC\",     \"Description\": \"DISC\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 16,     \"Code\": \"test\",     \"Description\": \"test12\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 17,     \"Code\": \"DSI\",     \"Description\": \"DSI\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 18,     \"Code\": \"CUST001\",     \"Description\": \"CUSTOMER 001\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 19,     \"Code\": \"012562\",     \"Description\": \"Brain\",     \"ApplicationID\": 2,     \"IsServiceCompany\": true   },   {     \"ID\": 20,     \"Code\": \"deo1444\",     \"Description\": \"DEo Lwo\",     \"ApplicationID\": 3,     \"IsServiceCompany\": true   },   {     \"ID\": 21,     \"Code\": \"wr4dssfds\",     \"Description\": \"ewewq\",     \"ApplicationID\": 3,     \"IsServiceCompany\": false   },   {     \"ID\": 22,     \"Code\": \"5145\",     \"Description\": \"Amazon Co.\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 23,     \"Code\": \"test 51215\",     \"Description\": \"test GD5\",     \"ApplicationID\": 4,     \"IsServiceCompany\": true   },   {     \"ID\": 24,     \"Code\": \"MS-789\",     \"Description\": \"Micro Ware\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 25,     \"Code\": \"test 1112017\",     \"Description\": \"test 1112017\",     \"ApplicationID\": 1,     \"IsServiceCompany\": true   },   {     \"ID\": 26,     \"Code\": \"DSI\",     \"Description\": \"DSI\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 27,     \"Code\": \"Amazon2\",     \"Description\": \"Amazon2\",     \"ApplicationID\": 1,     \"IsServiceCompany\": false   },   {     \"ID\": 28,     \"Code\": \"t sdfgdcfvbdzfg\",     \"Description\": \"sdfsdgerfgrgw\",     \"ApplicationID\": 3,     \"IsServiceCompany\": false   } ]</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="device_info">Device Info</string>
+    <string name="firebug">FireBug</string>
+    <string name="logout">Logout</string>
+    <string name="other">Other</string>
+    <string name="toolhawk">ToolHawk</string>
+    <string name="inventory">Inventory</string>
+    <string name="account_login">Account Login</string>
+    <string name="enter_your_details_below">Enter your details below</string>
+    <string name="login_str">Login</string>
+    <string name="password_str">Password</string>
+    <string name="sync_after_login">Sync after login</string>
+    <string name="togglebutton">ToggleButton</string>
+    <string name="trouble_signing_in">Trouble signing in ?</string>
+    <string name="username">Username</string>
+    <string name="login_cover">Login cover</string>
+    <string name="ets_logo">ETS Logo</string>
+    <string name="done">Done</string>
+    <string name="_0_0">0/0</string>
+    <string name="note">Note</string>
+    <string name="title">Title</string>
+    <string name="title_activity_asset_infomation_tab">AssetInfomationTabActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>

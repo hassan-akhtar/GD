@@ -1,0 +1,86 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="Fragments.DashboardFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rlFireBugHeader"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="Firebug"
+            android:textColor="@android:color/white"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/forward_arrow" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlFireBugBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlFireBugHeader"
+        android:layout_marginTop="1dp">
+
+        <include layout="@layout/firebug_body_layout" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlToolHawkHeader"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_below="@+id/rlFireBugBody"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:text="Toolhawk"
+            android:textColor="@android:color/white"
+            android:textSize="22dp" />
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/forward_arrow" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/rlToolHawkBody"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlToolHawkHeader"
+        android:layout_marginTop="1dp">
+
+        <include layout="@layout/toolhawk_body_layout" />
+    </RelativeLayout>
+    </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>

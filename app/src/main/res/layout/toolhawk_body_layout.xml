@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rlFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl1Overdue"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/tvInspectionOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="TOOLHAWK"
+                android:textColor="@color/greyLight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvInspectionOverdue"
+                android:layout_marginLeft="6dp"
+                android:text=" STATS"
+                android:textColor="@color/greyLight" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="60dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_toEndOf="@+id/tvInspectionOverdue"
+                android:layout_toRightOf="@+id/tvInspectionOverdue"
+                android:background="@color/veryLightGrey" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_toEndOf="@+id/rl1Overdue"
+            android:layout_toRightOf="@+id/rl1Overdue">
+
+
+            <LinearLayout
+                android:id="@+id/llFirstOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llWeeklyOverdue"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text=" Overdue"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/thOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSemiAnnualOverdue"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toEndOf="@+id/llWeekly"
+                    android:layout_toRightOf="@+id/llWeekly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Checked Out"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/thCheckoutValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llSecondOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llFirstOverdue"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llMonthlyOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=" Maint Due"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/thMaintdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAnnualOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_toEndOf="@+id/llMonthly"
+                    android:layout_toRightOf="@+id/llMonthly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Maint Overdue"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/thMaintOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    </RelativeLayout>

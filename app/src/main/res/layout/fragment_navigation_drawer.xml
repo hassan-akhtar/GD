@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+
+    <RelativeLayout
+        android:id="@+id/nav_header_container"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/drawer_bg"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+        <TextView
+
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:text="John Doe"/>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/drawerList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nav_header_container"
+        android:layout_marginTop="15dp" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="140dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true">
+
+        <LinearLayout
+            android:id="@+id/llSync"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_marginLeft="2dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_sync_blue"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:text="Sync"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llDeviceInfo"
+            android:layout_below="@+id/llSync"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_device_info_new"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:text="Device Info"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:id="@+id/llLogout"
+            android:layout_below="@+id/llDeviceInfo"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_logout_new"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                android:textSize="14sp"
+                android:layout_height="wrap_content"
+                android:text="Logout"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

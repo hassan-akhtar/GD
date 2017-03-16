@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:id="@+id/rlFirst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl1Overdue"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/tvInspectionOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="25dp"
+                android:text="INSPECTION"
+                android:textColor="@color/greyLight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvInspectionOverdue"
+                android:layout_marginLeft="6dp"
+                android:text=" OVERDUE"
+                android:textColor="@color/greyLight" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="100dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_toEndOf="@+id/tvInspectionOverdue"
+                android:layout_toRightOf="@+id/tvInspectionOverdue"
+                android:background="@color/veryLightGrey" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_toEndOf="@+id/rl1Overdue"
+            android:layout_toRightOf="@+id/rl1Overdue">
+
+
+            <LinearLayout
+                android:id="@+id/llFirstOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llWeeklyOverdue"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text=" Weekly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/WeeklyOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSemiAnnualOverdue"
+                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toEndOf="@+id/llWeekly"
+                    android:layout_toRightOf="@+id/llWeekly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Semi Annual"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/SemiAnnualOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llSecondOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llFirstOverdue"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llMonthlyOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=" Monthly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/MonthlyOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAnnualOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_toEndOf="@+id/llMonthly"
+                    android:layout_toRightOf="@+id/llMonthly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Annual"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/AnnualOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llThirdOverdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llSecondOverdue"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llQuarterlyOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=" Quaterly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/QuarterlyOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llYearsOverdue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_toEndOf="@+id/llMonthly"
+                    android:layout_toRightOf="@+id/llMonthly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="5, 6, 12 Years"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/YearsOverdueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rlFirst"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/veryLightGrey" />
+
+
+    <RelativeLayout
+        android:id="@+id/rlSecond"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlFirst">
+
+        <RelativeLayout
+            android:id="@+id/rl1"
+            android:layout_width="wrap_content"
+            android:layout_height="150dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true">
+
+            <TextView
+                android:id="@+id/tvInspectionDue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="25dp"
+                android:text="INSPECTION"
+                android:textColor="@color/greyLight" />
+
+            <TextView
+                android:id="@+id/tvInspectionDue2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvInspectionDue"
+                android:layout_marginLeft="12dp"
+                android:text=" DUE END OF"
+                android:textColor="@color/greyLight" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvInspectionDue2"
+                android:layout_marginLeft="12dp"
+                android:text=" MONTH"
+                android:textColor="@color/greyLight" />
+
+            <View
+                android:layout_width="1px"
+                android:layout_height="100dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="25dp"
+                android:layout_toEndOf="@+id/tvInspectionDue"
+                android:layout_toRightOf="@+id/tvInspectionDue"
+                android:background="@color/veryLightGrey" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_toEndOf="@+id/rl1"
+            android:layout_toRightOf="@+id/rl1">
+
+
+            <LinearLayout
+                android:id="@+id/llFirst"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llWeeklyDue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="3dp"
+                        android:text=" Weekly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/tvWeeklyDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llSemiAnnual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toEndOf="@+id/llWeekly"
+                    android:layout_toRightOf="@+id/llWeekly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Semi Annual"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/SemiAnnualDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llFirst"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llMonthly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=" Monthly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/MonthlyDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llAnnual"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_toEndOf="@+id/llMonthly"
+                    android:layout_toRightOf="@+id/llMonthly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="Annual"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/AnnualDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="55dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llThird"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/llSecond"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/llQuarterly"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:text=" Quaterly"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/QuarterlyDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="17dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llYears"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="19dp"
+                    android:layout_toEndOf="@+id/llMonthly"
+                    android:layout_toRightOf="@+id/llMonthly"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="5, 6, 12 Years"
+                        android:textColor="@color/greyLight" />
+
+                    <TextView
+                        android:id="@+id/YearsDueValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="13dp"
+                        android:text=" 02"
+                        android:textColor="@color/greyLight"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>
