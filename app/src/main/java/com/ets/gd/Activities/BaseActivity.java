@@ -18,10 +18,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.DashboardFragment;
+import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Fragments.InventoryDashboardFragment;
+import com.ets.gd.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
 
 
@@ -36,18 +42,8 @@ public class BaseActivity extends AppCompatActivity
     private TextView tbTitleTop;
     private TextView tbTitleBottom;
     private DrawerLayout drawer;
+    View llDeviceInfo, llSync, llLogout;
     String title;
-
-    public static void refreshMainViewByNew(Fragment fragment) {
-        if (fragment instanceof DashboardFragment) {
-            //searchMenuItem.setVisible(false);
-            fragmentManager
-                    .beginTransaction()
-                    .replace(R.id.container_body,
-                            dashboardFragment).commit();
-        }
-        fragmentManager.executePendingTransactions();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +71,9 @@ public class BaseActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
+        llSync = drawer.findViewById(R.id.llSync);
+        llDeviceInfo = drawer.findViewById(R.id.llDeviceInfo);
+        llLogout = drawer.findViewById(R.id.llLogout);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         drawerFragment.setDrawerListener(this);
         displayView(0);
@@ -85,6 +84,79 @@ public class BaseActivity extends AppCompatActivity
     }
 
     private void initListeners() {
+        llSync.setOnClickListener(mGlobal_OnClickListener);
+        llDeviceInfo.setOnClickListener(mGlobal_OnClickListener);
+        llLogout.setOnClickListener(mGlobal_OnClickListener);
+    }
+
+
+    final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
+        public void onClick(final View v) {
+            switch (v.getId()) {
+                case R.id.llSync: {
+                    showToast("Sync Clicked!");
+                    break;
+                }
+
+                case R.id.llDeviceInfo: {
+                    showToast("Device Info Clicked!");
+                    break;
+                }
+
+                case R.id.llLogout: {
+                    Intent in = new Intent(BaseActivity.this,
+                            LoginActivity.class);
+                    startActivity(in);
+                    finish();
+                    break;
+                }
+            }
+        }
+
+    };
+
+
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    public static void refreshMainViewByNew(Fragment fragment) {
+        if (fragment instanceof DashboardFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            dashboardFragment).commit();
+        } else if (fragment instanceof CustomerFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new CustomerFragment()).commit();
+        } else if (fragment instanceof FirebugDashboardFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new FirebugDashboardFragment()).commit();
+        } else if (fragment instanceof ToolhawkDashboardFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new ToolhawkDashboardFragment()).commit();
+        } else if (fragment instanceof InventoryDashboardFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new InventoryDashboardFragment()).commit();
+        }
+
+
+
+
+        fragmentManager.executePendingTransactions();
     }
 
 /*    @Override
@@ -190,19 +262,21 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 tbTitleTop.setText("Firebug");
                 tbTitleBottom.setText("Select Company");
+                refreshMainViewByNew(new CustomerFragment());
                 break;
 
 
             case 2:
                 tbTitleTop.setText("Toolhawk");
-                tbTitleBottom.setText("Select Company");
+                tbTitleBottom.setText("Dashboard");
+                refreshMainViewByNew(new ToolhawkDashboardFragment());
                 break;
-
 
 
             case 3:
                 tbTitleTop.setText("ETS");
                 tbTitleBottom.setText("Inventory");
+                refreshMainViewByNew(new InventoryDashboardFragment());
                 break;
 
             default:

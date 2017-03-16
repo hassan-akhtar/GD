@@ -75,6 +75,7 @@
     <RelativeLayout
         android:id="@+id/rlToolHawkBody"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlToolHawkHeader"
         android:layout_marginTop="1dp">
