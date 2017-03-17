@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:layout_height="56dp">
+
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_back_green"/>
+
+        <LinearLayout
+            android:layout_toRightOf="@+id/ivBack"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Firebug"
+                android:id="@+id/tbTitleTop"
+                android:textSize="12sp"
+                android:textColor="@color/blueDark"
+                android:textStyle="normal|bold" />
+
+            <TextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:text="View Information"
+                android:textColor="@color/blueDark"
+                android:id="@+id/tbTitleBottom"
+                android:layout_marginTop="-5dp"
+                android:textStyle="normal|bold"
+                android:textSize="18sp"
+                android:textAllCaps="false"
+                android:layout_weight="1.23" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>
