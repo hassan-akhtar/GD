@@ -2,7 +2,6 @@ package com.ets.gd.Fragments;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -16,15 +15,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.BaseActivity;
-import com.ets.gd.Activities.LoginActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.Models.Customer;
-import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,13 +61,26 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     private void initObj() {
         ca = new CommonActions(getActivity());
         customerList = new ArrayList<>();
+        BaseActivity.currentFragment = new CustomerFragment();
     }
 
     private void initListeners() {
+
+        rvCustomers.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvCustomers, new FragmentDrawer.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                EventBus.getDefault().post(customerList.get(position).getCode());
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     void getCustomersCall() {
-
         Customer customer = new Customer();
         customer.setCode("Bow wow Animal Hospital");
         customerList.add(customer);

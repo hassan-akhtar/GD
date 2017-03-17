@@ -6,18 +6,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.ets.gd.Activities.BaseActivity;
 import com.ets.gd.R;
+import com.ets.gd.Utils.CommonActions;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class ToolhawkDashboardFragment extends Fragment {
+public class ScanFragment extends Fragment {
 
     View rootView;
 
-    public ToolhawkDashboardFragment() {
+    public ScanFragment() {
         // Required empty public constructor
     }
 
@@ -26,35 +26,30 @@ public class ToolhawkDashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView = inflater.inflate(R.layout.fragment_toolhawk_dashboard, container, false);
+        rootView = inflater.inflate(R.layout.fragment_scan, container, false);
         initViews();
         initObj();
         initListeners();
-
         return rootView;
 
+
+    }
+
+
+    private void doSync() {
     }
 
     private void initViews() {
+
     }
 
     private void initObj() {
-        BaseActivity.currentFragment = new ToolhawkDashboardFragment();
+
     }
 
     private void initListeners() {
+
     }
-
-    final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
-        public void onClick(final View v) {
-            switch (v.getId()) {
-                case R.id.btnLogin: {
-                    break;
-                }
-            }
-        }
-
-    };
 
 
 }

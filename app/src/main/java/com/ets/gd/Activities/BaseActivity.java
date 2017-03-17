@@ -43,6 +43,7 @@ public class BaseActivity extends AppCompatActivity
     private TextView tbTitleBottom;
     private DrawerLayout drawer;
     View llDeviceInfo, llSync, llLogout;
+    public static Fragment currentFragment;
     String title;
 
     @Override
@@ -154,8 +155,6 @@ public class BaseActivity extends AppCompatActivity
         }
 
 
-
-
         fragmentManager.executePendingTransactions();
     }
 
@@ -186,6 +185,10 @@ public class BaseActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (currentFragment instanceof FirebugDashboardFragment) {
+            refreshMainViewByNew(new CustomerFragment());
+        } else if (currentFragment instanceof CustomerFragment || currentFragment instanceof ToolhawkDashboardFragment) {
+            refreshMainViewByNew(new DashboardFragment());
         } else {
 
             new AlertDialog.Builder(BaseActivity.this)

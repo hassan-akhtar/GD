@@ -20,6 +20,7 @@ public class DashboardFragment extends Fragment {
     SharedPreferencesManager sharedPreferencesManager;
     RelativeLayout rlFireBugBody, rlFireBugHeader, rlToolHawkHeader, rlToolHawkBody;
 
+
     public DashboardFragment() {
         // Required empty public constructor
     }
