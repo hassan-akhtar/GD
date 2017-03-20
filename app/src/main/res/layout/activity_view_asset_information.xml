@@ -1,16 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_view_asset_information"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ets.gd.Activities.ViewAssetInformationActivity">
+    tools:context="com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity">
 
-
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="View Information Asset" />
-</RelativeLayout>
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/activity_header_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlCompanies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rlHeader">
+
+            <include layout="@layout/company_header_layout" />
+        </RelativeLayout>
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/abLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlCompanies">
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:background="@android:color/white"
+                android:layout_height="wrap_content"
+                app:tabGravity="fill"
+                app:tabMode="fixed" />
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_below="@+id/abLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </RelativeLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

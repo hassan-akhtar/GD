@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.BaseActivity;
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.Models.Customer;

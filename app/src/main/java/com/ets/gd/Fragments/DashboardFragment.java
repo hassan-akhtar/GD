@@ -6,10 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
-import com.ets.gd.Activities.BaseActivity;
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;

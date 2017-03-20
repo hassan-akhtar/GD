@@ -1,18 +1,17 @@
-package com.ets.gd.Activities;
+package com.ets.gd.Activities.Login;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;

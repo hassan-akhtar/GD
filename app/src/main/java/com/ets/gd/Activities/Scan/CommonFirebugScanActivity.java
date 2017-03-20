@@ -1,4 +1,4 @@
-package com.ets.gd.Activities;
+package com.ets.gd.Activities.Scan;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,9 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.R;
-
-import java.util.Date;
 
 public class CommonFirebugScanActivity extends AppCompatActivity {
 
@@ -146,7 +145,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 btnCross.setVisibility(View.VISIBLE);
                 llunderText.setVisibility(View.GONE);
                 llbtns.setVisibility(View.VISIBLE);
-            }else{
+            } else {
                 showToast(message);
             }
 

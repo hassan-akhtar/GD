@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.LoginActivity">
+        <activity android:name=".Activities.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,17 +19,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.BaseActivity"
+            android:name=".Activities.Other.BaseActivity"
             android:label="@string/title_activity_dashboard">
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/customer_searchable" />
         </activity>
-        <activity android:name=".Activities.CommonFirebugScanActivity" />
-        <activity android:name=".Activities.RouteInspectionActivity" />
-        <activity android:name=".Activities.BarcodeScanActivity" />
-        <activity android:name=".Activities.ViewAssetInformationActivity" />
-        <activity android:name=".Activities.ViewLocationInformationActivity"></activity>
+        <activity android:name=".Activities.Scan.CommonFirebugScanActivity" />
+        <activity android:name=".Activities.FireBugRouteInspection.RouteInspectionActivity" />
+        <activity android:name=".Activities.Scan.BarcodeScanActivity" />
+        <activity android:name=".Activities.FireBugViewInformation.ViewAssetInformationActivity" />
+        <activity android:name=".Activities.FireBugViewInformation.ViewLocationInformationActivity"></activity>
     </application>
 
 </manifest>

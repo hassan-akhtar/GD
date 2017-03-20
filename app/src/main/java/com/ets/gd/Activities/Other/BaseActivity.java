@@ -1,4 +1,4 @@
-package com.ets.gd.Activities;
+package com.ets.gd.Activities.Other;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.FirebugDashboardFragment;

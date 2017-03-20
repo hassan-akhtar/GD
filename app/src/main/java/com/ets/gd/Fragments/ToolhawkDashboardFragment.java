@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ets.gd.Activities.BaseActivity;
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.R;
 
 /**

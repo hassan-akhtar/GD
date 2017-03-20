@@ -1,4 +1,4 @@
-package com.ets.gd.Activities;
+package com.ets.gd.Activities.Scan;
 
 import android.content.Intent;
 import android.os.Bundle;
