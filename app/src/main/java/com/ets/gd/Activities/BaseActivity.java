@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +39,7 @@ public class BaseActivity extends AppCompatActivity
     private Toolbar toolbar;
     private FragmentDrawer drawerFragment;
     private TextView tbTitleTop;
-    private TextView tbTitleBottom;
+    private static TextView tbTitleBottom;
     private DrawerLayout drawer;
     View llDeviceInfo, llSync, llLogout;
     public static Fragment currentFragment;
@@ -124,18 +123,21 @@ public class BaseActivity extends AppCompatActivity
     public static void refreshMainViewByNew(Fragment fragment) {
         if (fragment instanceof DashboardFragment) {
             //searchMenuItem.setVisible(false);
+
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.container_body,
                             dashboardFragment).commit();
         } else if (fragment instanceof CustomerFragment) {
             //searchMenuItem.setVisible(false);
+            tbTitleBottom.setText("Select Company");
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new CustomerFragment()).commit();
         } else if (fragment instanceof FirebugDashboardFragment) {
             //searchMenuItem.setVisible(false);
+            tbTitleBottom.setText("Dashboard");
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.container_body,
@@ -153,8 +155,6 @@ public class BaseActivity extends AppCompatActivity
                     .replace(R.id.container_body,
                             new InventoryDashboardFragment()).commit();
         }
-
-
         fragmentManager.executePendingTransactions();
     }
 

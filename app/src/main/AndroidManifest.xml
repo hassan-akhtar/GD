@@ -3,6 +3,7 @@
     package="com.ets.gd">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -24,7 +25,11 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/customer_searchable" />
         </activity>
-        <activity android:name=".Activities.CommonFirebugScanActivity"></activity>
+        <activity android:name=".Activities.CommonFirebugScanActivity" />
+        <activity android:name=".Activities.RouteInspectionActivity" />
+        <activity android:name=".Activities.BarcodeScanActivity" />
+        <activity android:name=".Activities.ViewAssetInformationActivity" />
+        <activity android:name=".Activities.ViewLocationInformationActivity"></activity>
     </application>
 
 </manifest>

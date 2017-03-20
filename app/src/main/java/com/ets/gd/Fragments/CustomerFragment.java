@@ -61,6 +61,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     private void initObj() {
         ca = new CommonActions(getActivity());
         customerList = new ArrayList<>();
+
         BaseActivity.currentFragment = new CustomerFragment();
     }
 
@@ -79,6 +80,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
             }
         }));
     }
+
 
     void getCustomersCall() {
         Customer customer = new Customer();

@@ -5,14 +5,36 @@
     android:background="@android:color/white">
 
 
-    <EditText
-        android:id="@+id/etBarcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:layout_marginLeft="8dp"
-        android:hint="Enter Barcode ID"
-        android:inputType="number" />
+    <TextView
+            android:id="@+id/tvBarcodeTitle"
+            android:textColor="@color/veryLightGrey"
+            android:textStyle="bold"
+            android:text="Bar Code ID:"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="10dp"
+            android:textSize="10sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvBarcodeValue"
+            android:text="00382"
+            android:layout_marginLeft="12dp"
+            android:textStyle="bold"
+            android:layout_below="@+id/tvBarcodeTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnCross"
+            android:layout_toLeftOf="@+id/btnScan"
+            android:layout_width="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/ic_cross"
+            android:layout_height="20dp" />
+
+
 
     <LinearLayout
         android:id="@+id/llunderText"
@@ -32,7 +54,8 @@
             android:id="@+id/tvUnderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_gravity="center_vertical"
+            android:textSize="12sp"
             android:text=" Enter Id of Asset/Location or tap Scan"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
 
@@ -42,6 +65,7 @@
 
     <LinearLayout
         android:id="@+id/llbtns"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/llunderText"
@@ -49,7 +73,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btnAddLoc"
+            android:id="@+id/btnLoc"
             android:drawableLeft="@drawable/ic_location"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -66,7 +90,7 @@
             android:background="@color/colorPrimary" />
 
         <Button
-            android:id="@+id/btnAddAsset"
+            android:id="@+id/btnAsset"
             android:drawableLeft="@drawable/ic_asset"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
@@ -85,4 +109,16 @@
         android:background="@color/colorPrimary"
         android:drawableTop="@drawable/rsz_ic_scan"
         android:paddingTop="30dp" />
+
+    <EditText
+        android:id="@+id/etBarcode"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter Barcode ID"
+        android:inputType="number"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/llunderText"
+        android:layout_alignStart="@+id/llunderText" />
 </RelativeLayout>

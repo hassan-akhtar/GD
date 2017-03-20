@@ -2,6 +2,7 @@ package com.ets.gd.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.BaseActivity;
+import com.ets.gd.Activities.CommonFirebugScanActivity;
+import com.ets.gd.Activities.RouteInspectionActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.R;
 import com.github.clans.fab.FloatingActionButton;
@@ -81,7 +84,16 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                showToast(fbTasks[position]);
+                if (fbTasks[position].startsWith("Rou")) {
+                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
+                    startActivity(in);
+
+                } else {
+                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                    in.putExtra("taskType",fbTasks[position]);
+                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
+                }
             }
 
             @Override
@@ -111,7 +123,6 @@ public class FirebugDashboardFragment extends Fragment {
     public void onMessageEventonMainThread(String companyName) {
         tvCompanyValue.setText(companyName);
     }
-
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {

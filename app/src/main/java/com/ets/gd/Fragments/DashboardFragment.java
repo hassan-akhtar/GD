@@ -6,8 +6,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.ets.gd.Activities.BaseActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -18,7 +20,7 @@ public class DashboardFragment extends Fragment {
     private View rootView;
     CommonActions ca;
     SharedPreferencesManager sharedPreferencesManager;
-    RelativeLayout rlFireBugBody, rlFireBugHeader, rlToolHawkHeader, rlToolHawkBody;
+    RelativeLayout rlFireBugBody, rlFireBugHeader, rlToolHawkHeader, rlToolHawkBody, ivForwardArrowFb, ivForwardArrowTh;
 
 
     public DashboardFragment() {
@@ -50,6 +52,8 @@ public class DashboardFragment extends Fragment {
     private void initViews() {
         rlFireBugBody = (RelativeLayout) rootView.findViewById(R.id.rlFireBugBody);
         rlFireBugHeader = (RelativeLayout) rootView.findViewById(R.id.rlFireBugHeader);
+        ivForwardArrowFb = (RelativeLayout) rootView.findViewById(R.id.ivForwardArrowFb);
+        ivForwardArrowTh = (RelativeLayout) rootView.findViewById(R.id.ivForwardArrowTh);
         rlToolHawkHeader = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkHeader);
         rlToolHawkBody = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkBody);
     }
@@ -62,6 +66,8 @@ public class DashboardFragment extends Fragment {
     private void initListeners() {
         rlFireBugHeader.setOnClickListener(mGlobal_OnClickListener);
         rlToolHawkHeader.setOnClickListener(mGlobal_OnClickListener);
+        ivForwardArrowTh.setOnClickListener(mGlobal_OnClickListener);
+        ivForwardArrowFb.setOnClickListener(mGlobal_OnClickListener);
     }
 
 
@@ -92,6 +98,16 @@ public class DashboardFragment extends Fragment {
                         rlToolHawkBody.setVisibility(View.VISIBLE);
                     }
 
+                    break;
+                }
+
+                case R.id.ivForwardArrowTh: {
+                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
+                    break;
+                }
+
+                case R.id.ivForwardArrowFb: {
+                    BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
                     break;
                 }
             }
