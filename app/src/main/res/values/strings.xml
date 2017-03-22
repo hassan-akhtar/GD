@@ -66,4 +66,53 @@
     <string name="title">Title</string>
     <string name="title_activity_asset_infomation_tab">AssetInfomationTabActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="txt_tagID">Tag ID</string>
+    <string name="txt_deviceType">Device Type</string>
+    <string name="txt_manufacturer">Manufacturer</string>
+    <string name="txt_model">Model</string>
+    <string name="txt_serialNo">Serial No.</string>
+    <string name="txt_mfg_date">Mfg Date</string>
+    <string name="txt_vendor">Vendor</string>
+    <string name="txt_agent">Agent</string>
+
+
+    <string-array name="deviceTypes">
+        <item>Select a Device Type</item>
+        <item>EXT</item>
+        <item>EXT</item>
+        <item>EXT</item>
+        <item>EXT</item>
+        <item>EXT</item>
+    </string-array>
+
+
+    <string-array name="manufacturers">
+        <item>Select a Manufacturers</item>
+        <item>Ans</item>
+        <item>Ans</item>
+        <item>Ans</item>
+        <item>Ans</item>
+        <item>Ans</item>
+    </string-array>
+
+
+    <string-array name="vendors">
+        <item>Select a Vendor</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+    </string-array>
+
+    <string-array name="agents">
+        <item>Select a Agent</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+    </string-array>
+
 </resources>
