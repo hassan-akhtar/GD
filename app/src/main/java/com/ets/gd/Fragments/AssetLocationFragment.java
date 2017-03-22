@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.ets.gd.R;
 
 
-public class AssetLocationFragment extends Fragment  implements Spinner.OnItemSelectedListener {
+public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
     Spinner spSite, spBuilding;
@@ -55,7 +55,6 @@ public class AssetLocationFragment extends Fragment  implements Spinner.OnItemSe
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
 
 
-
         tvLocationID.setText("L00382");
         tvDescprition.setText("Prod");
 
@@ -82,25 +81,13 @@ public class AssetLocationFragment extends Fragment  implements Spinner.OnItemSe
 
     }
 
-    final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
-        public void onClick(final View v) {
-            switch (v.getId()) {
-                case R.id.btnLogin: {
-
-                    break;
-                }
-            }
-        }
-
-    };
-
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         int viewID = parent.getId();
         switch (viewID) {
-            case R.id.spDeviceType: {
+            case R.id.spSite: {
 
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
@@ -110,37 +97,7 @@ public class AssetLocationFragment extends Fragment  implements Spinner.OnItemSe
             }
             break;
 
-            case R.id.spManufacturer: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
-            case R.id.spMfgDate: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
-            case R.id.spVendor: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
-            case R.id.spAgent: {
+            case R.id.spBuilding: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
@@ -154,9 +111,5 @@ public class AssetLocationFragment extends Fragment  implements Spinner.OnItemSe
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    void showToast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }

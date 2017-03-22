@@ -105,16 +105,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             break;
 
 
-            case R.id.spMfgDate: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
             case R.id.spVendor: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {

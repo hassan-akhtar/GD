@@ -10,15 +10,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 import com.ets.gd.Fragments.InspectionDatesFragment;
-import com.ets.gd.R;
 
 import java.util.Calendar;
 import java.util.Date;
 
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragmentEditText extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
 
     public static Double diff;
@@ -34,7 +32,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         diff = 0.0;
-        TextView tvDate = (TextView) getActivity().findViewById(InspectionDatesFragment.viewID);
+        EditText tvDate = (EditText) getActivity().findViewById(InspectionDatesFragment.viewID);
         month = month+1;
         tvDate.setText(day + "/" + month + "/" + year);
         month = month-1;

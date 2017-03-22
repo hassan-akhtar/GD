@@ -1,6 +1,7 @@
 package com.ets.gd.Fragments;
 
 
+import android.app.DialogFragment;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -13,18 +14,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.R;
+import com.ets.gd.Utils.DatePickerFragmentEditText;
+import com.ets.gd.Utils.DatePickerFragmentTextView;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
-    Spinner spDeviceType, spManufacturer, spMfgDate, spVendor, spAgent;
+    Spinner spDeviceType, spManufacturer, spVendor, spAgent;
     View rootView;
-    private EditText tvTagID, tvModel, tvSrNo;
-    private TextInputLayout ltvTagID, lModel, lSrNo;
+    private EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
+    private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
 
     public AssetInformationFragment() {
         // Required empty public constructor
@@ -47,14 +49,15 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     private void initViews() {
         spDeviceType = (Spinner) rootView.findViewById(R.id.spDeviceType);
         spManufacturer = (Spinner) rootView.findViewById(R.id.spManufacturer);
-        spMfgDate = (Spinner) rootView.findViewById(R.id.spMfgDate);
         spVendor = (Spinner) rootView.findViewById(R.id.spVendor);
         spAgent = (Spinner) rootView.findViewById(R.id.spAgent);
 
         ltvTagID = (TextInputLayout) rootView.findViewById(R.id.ltvTagID);
         lModel = (TextInputLayout) rootView.findViewById(R.id.lModel);
         lSrNo = (TextInputLayout) rootView.findViewById(R.id.lSrNo);
+        lMfgDate = (TextInputLayout) rootView.findViewById(R.id.lMfgDate);
         tvTagID = (EditText) rootView.findViewById(R.id.tvTagID);
+        tvMfgDate = (EditText) rootView.findViewById(R.id.tvMfgDate);
         tvModel = (EditText) rootView.findViewById(R.id.tvModel);
         tvSrNo = (EditText) rootView.findViewById(R.id.tvSrNo);
 
@@ -76,10 +79,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         dataAdapterManufacturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spManufacturer.setAdapter(dataAdapterManufacturer);
 
-        ArrayAdapter<String> dataAdapterMfgDate = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.manufacturers));
-        dataAdapterMfgDate.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spMfgDate.setAdapter(dataAdapterMfgDate);
-
         ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
         dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spVendor.setAdapter(dataAdapterVendor);
@@ -90,7 +89,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         spDeviceType.setSelection(1);
         spManufacturer.setSelection(1);
-        spMfgDate.setSelection(1);
         spVendor.setSelection(1);
         spAgent.setSelection(1);
     }
@@ -98,17 +96,41 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     private void initListeners() {
         spDeviceType.setOnItemSelectedListener(this);
         spManufacturer.setOnItemSelectedListener(this);
-        spMfgDate.setOnItemSelectedListener(this);
         spVendor.setOnItemSelectedListener(this);
         spAgent.setOnItemSelectedListener(this);
+        tvMfgDate.setOnClickListener(mGlobal_OnClickListener);
 
+        tvMfgDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+                    hideKeyboard();
+                    InspectionDatesFragment.viewID = v.getId();
+                    DialogFragment newFragment = new DatePickerFragmentEditText();
+                    newFragment.show(getActivity().getFragmentManager(), "Date Picker");
+                } else {
+
+                }
+
+
+            }
+        });
+
+    }
+    public void hideKeyboard() {
+
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
-                case R.id.btnLogin: {
-
+                case R.id.tvMfgDate: {
+                    hideKeyboard();
+                    InspectionDatesFragment.viewID = v.getId();
+                    DialogFragment newFragment = new DatePickerFragmentEditText();
+                    newFragment.show(getActivity().getFragmentManager(), "Date Picker");
                     break;
                 }
             }
@@ -140,17 +162,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
             }
             break;
-
-
-            case R.id.spMfgDate: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
 
             case R.id.spVendor: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();

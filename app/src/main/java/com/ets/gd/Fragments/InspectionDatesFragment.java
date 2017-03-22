@@ -11,7 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ets.gd.R;
-import com.ets.gd.Utils.DatePickerFragment;
+import com.ets.gd.Utils.DatePickerFragmentTextView;
 
 
 public class InspectionDatesFragment extends Fragment {
@@ -153,7 +153,7 @@ public class InspectionDatesFragment extends Fragment {
     };
 
     void openDateDialoge() {
-        DialogFragment newFragment = new DatePickerFragment();
+        DialogFragment newFragment = new DatePickerFragmentTextView();
         newFragment.show(getActivity().getFragmentManager(), "Date Picker");
     }
 }
