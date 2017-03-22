@@ -42,7 +42,7 @@
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
                 android:background="@android:color/white"
-                android:layout_height="wrap_content"
+                android:layout_height="55dp"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />
         </android.support.design.widget.AppBarLayout>
