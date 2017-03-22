@@ -6,11 +6,32 @@
     android:layout_height="match_parent"
     tools:context="com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity">
 
-
-    <TextView
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="View Information Location" />
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/activity_header_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlHeader">
+
+            <include
+
+                layout="@layout/add_location_screen" />
+
+        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>
