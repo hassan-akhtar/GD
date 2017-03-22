@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -66,7 +67,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     }
 
     private void initObj() {
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.deviceTypes));
         dataAdapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDeviceType.setAdapter(dataAdapterDeviceType);

@@ -77,6 +77,9 @@
     <string name="txt_agent">Agent</string>
 
 
+    <string name="txt_locationID">Location ID</string>
+    <string name="txt_description">Description</string>
+
     <string-array name="deviceTypes">
         <item>Select a Device Type</item>
         <item>EXT</item>
