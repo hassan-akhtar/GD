@@ -80,7 +80,7 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
         }else{
             Location loc = locList.get(position);
 
-            holder.tvTag.setText(loc.getDesc());
+            holder.tvTag.setText(loc.getDesc()+",");
             holder.tvLocation.setText(loc.getPlace());
 
                 holder.tvName.setText(loc.getLocID());
