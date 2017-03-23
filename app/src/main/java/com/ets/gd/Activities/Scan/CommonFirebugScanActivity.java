@@ -7,28 +7,44 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.Adapters.ScannedAssetsAdapter;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
-    ImageView ivBack, ivChangeCompany,ivTick;
+    ImageView ivBack, ivChangeCompany, ivTick;
     EditText etBarcode;
+    ScannedAssetsAdapter mAdapter;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
+    TextView tvCount, tvCountSupportText, tvTaskName;
+    RelativeLayout rlForwardArrow, rlBottomSheet;
     Button btnLoc, btnAsset, btnScan, btnCross;
     View vLine;
+    RecyclerView rlAssets;
+    Asset asset;
     String taskType, compName;
     LinearLayout llbtns, llunderText;
+    private List<Asset> assetList = new ArrayList<Asset>();
     Context mContext;
 
     @Override
@@ -51,6 +67,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
+        tvTaskName = (TextView) findViewById(R.id.tvTaskName);
+        rlForwardArrow = (RelativeLayout) findViewById(R.id.rlForwardArrow);
+        rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheet);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         vLine = (View) findViewById(R.id.vLine);
         btnLoc = (Button) findViewById(R.id.btnLoc);
@@ -58,6 +79,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
         llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        rlAssets = (RecyclerView) findViewById(R.id.lvAssets);
         llunderText = (LinearLayout) findViewById(R.id.llunderText);
         ivChangeCompany.setVisibility(View.GONE);
         ivTick.setVisibility(View.GONE);
@@ -65,6 +87,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     private void initObj() {
         mContext = this;
+        hideKeyboard();
         taskType = getIntent().getStringExtra("taskType");
         compName = getIntent().getStringExtra("compName");
         tbTitleBottom.setText(taskType);
@@ -79,6 +102,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnCross.setVisibility(View.GONE);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
+        mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        rlAssets.setLayoutManager(mLayoutManager);
+        rlAssets.setItemAnimator(new DefaultItemAnimator());
+        rlAssets.setAdapter(mAdapter);
+        asset = new Asset();
     }
 
     private void initListeners() {
@@ -87,6 +116,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         btnCross.setOnClickListener(mGlobal_OnClickListener);
+        rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
     }
 
@@ -100,7 +130,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnAsset: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
-                    in.putExtra("action","viewAsset");
+                    in.putExtra("action", "viewAsset");
                     startActivity(in);
                     hideScannedData();
 
@@ -109,7 +139,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnLoc: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
-                    in.putExtra("action","viewLoc");
+                    in.putExtra("action", "viewLoc");
                     startActivity(in);
                     hideScannedData();
                     break;
@@ -126,9 +156,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 }
 
                 case R.id.btnCross: {
-                    if (taskType.toLowerCase().startsWith("v")) {
-                        hideScannedData();
-                    }
+                    hideScannedData();
+
+                    break;
+                }
+
+                case R.id.rlForwardArrow: {
+                    showToast("Forward Arrow Clicked!");
                     break;
                 }
             }
@@ -136,6 +170,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     };
 
+
+    public void hideKeyboard() {
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+    }
 
     private final BroadcastReceiver mBarcodeBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -149,9 +187,21 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 btnCross.setVisibility(View.VISIBLE);
                 llunderText.setVisibility(View.GONE);
                 llbtns.setVisibility(View.VISIBLE);
+            } else if (taskType.toLowerCase().startsWith("m")) {
+                asset.setName("Ansul");
+                asset.setCode("An350");
+                asset.setTag("00382");
+                asset.setLocation("L00416");
+                etBarcode.setText("");
+                rlBottomSheet.setVisibility(View.VISIBLE);
+                assetList.add(asset);
+                tvCount.setText(""+assetList.size());
+                mAdapter.notifyDataSetChanged();
+
             } else {
-                showToast(message);
+                showToast(taskType + ": " + message);
             }
+
 
         }
     };

@@ -21,15 +21,17 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:layout_below="@id/rlHeader"
         android:id="@+id/rlCompanies"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlHeader">
+
         <include layout="@layout/company_header_layout" />
     </RelativeLayout>
 
 
     <RelativeLayout
+        android:id="@+id/rlScanArea"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/rlCompanies">
@@ -39,6 +41,25 @@
             layout="@layout/scanning_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/lvAssets"
+        android:layout_below="@+id/rlScanArea"
+        android:layout_above="@+id/rlBottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+        android:id="@+id/rlBottomSheet"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include layout="@layout/bottom_action_layout" />
     </RelativeLayout>
 
 
