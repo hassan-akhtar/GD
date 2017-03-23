@@ -13,9 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ListView;
 
-import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
 import com.ets.gd.Models.Note;
 import com.ets.gd.R;

@@ -15,11 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
-import com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
-import com.ets.gd.Activities.FireBugRouteInspection.RouteInspectionActivity;
+import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.R;
 import com.github.clans.fab.FloatingActionButton;

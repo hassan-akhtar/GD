@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBugViewInformation;
+package com.ets.gd.Activities.FireBug.ViewInformation;
 
 import android.graphics.Color;
 import android.support.design.widget.TextInputLayout;

@@ -1,11 +1,13 @@
 package com.ets.gd.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by hakhtar on 3/23/2017.
  * General Data
  */
 
-public class Asset {
+public class Asset implements Serializable{
 
     private String name;
     private String code;

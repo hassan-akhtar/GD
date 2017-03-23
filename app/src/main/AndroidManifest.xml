@@ -26,10 +26,11 @@
                 android:resource="@xml/customer_searchable" />
         </activity>
         <activity android:name=".Activities.Scan.CommonFirebugScanActivity" />
-        <activity android:name=".Activities.FireBugRouteInspection.RouteInspectionActivity" />
+        <activity android:name=".Activities.FireBug.RouteInspection.RouteInspectionActivity" />
         <activity android:name=".Activities.Scan.BarcodeScanActivity" />
-        <activity android:name=".Activities.FireBugViewInformation.ViewAssetInformationActivity" />
-        <activity android:name=".Activities.FireBugViewInformation.ViewLocationInformationActivity"></activity>
+        <activity android:name=".Activities.FireBug.ViewInformation.ViewAssetInformationActivity" />
+        <activity android:name=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity" />
+        <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity"></activity>
     </application>
 
 </manifest>

@@ -4,17 +4,13 @@ package com.ets.gd.Fragments;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
-import com.ets.gd.Adapters.NoteAdapter;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentTextView;
 

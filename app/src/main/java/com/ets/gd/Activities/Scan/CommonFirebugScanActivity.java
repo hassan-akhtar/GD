@@ -20,10 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
-import com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.AssetList;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -162,7 +164,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlForwardArrow: {
-                    showToast("Forward Arrow Clicked!");
+                    AssetList listAssets = new AssetList();
+                    listAssets.setAssetList(assetList);
+                    Intent in = new Intent(CommonFirebugScanActivity.this, LocationSelectionActivity.class);
+                    in.putExtra("taskType",taskType);
+                    in.putExtra("compName",compName);
+                    in.putExtra("assetList",listAssets);
+                    in.putExtra("loc",assetList.get(0).getLocation());
+                    startActivity(in);
                     break;
                 }
             }

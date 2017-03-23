@@ -17,10 +17,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
-import com.ets.gd.Utils.DatePickerFragmentTextView;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
