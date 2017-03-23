@@ -1,31 +1,37 @@
 package com.ets.gd.Activities.FireBug.Move;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ets.gd.Models.AssetList;
-import com.ets.gd.Models.Note;
 import com.ets.gd.R;
 
 public class LocationSelectionActivity extends AppCompatActivity {
 
 
     ImageView ivBack, ivChangeCompany, ivTick;
-    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc;
+    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc,tvStatement;
     Button btnSelectLoc, btnViewAllAssets;
     String taskName, companyName, loc;
     AssetList assetList;
-    String[] assetNames ;
+    String[] assetNames;
+    RelativeLayout rlYes, rlNo, rlBottomSheet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
+        tvStatement= (TextView) findViewById(R.id.tvStatement);
         tvFromLoc = (TextView) findViewById(R.id.tvFromLoc);
         tvMovingAsset = (TextView) findViewById(R.id.tvMovingAsset);
         tvAssetsNames = (TextView) findViewById(R.id.tvAssetsNames);
@@ -52,12 +59,18 @@ public class LocationSelectionActivity extends AppCompatActivity {
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         ivTick = (ImageView) findViewById(R.id.ivTick);
+        rlYes = (RelativeLayout) findViewById(R.id.rlYes);
+        rlNo = (RelativeLayout) findViewById(R.id.rlNo);
+        rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheet);
         ivTick.setVisibility(View.GONE);
         ivChangeCompany.setVisibility(View.GONE);
     }
 
     private void initObj() {
         assetList = new AssetList();
+
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
+                new IntentFilter("moveToLoc"));
     }
 
     private void initListeners() {
@@ -65,6 +78,8 @@ public class LocationSelectionActivity extends AppCompatActivity {
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
         btnSelectLoc.setOnClickListener(mGlobal_OnClickListener);
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
+        rlYes.setOnClickListener(mGlobal_OnClickListener);
+        rlNo.setOnClickListener(mGlobal_OnClickListener);
     }
 
 
@@ -91,9 +106,8 @@ public class LocationSelectionActivity extends AppCompatActivity {
         assetNames = new String[assetList.getAssetList().size()];
 
         for (int i = 0; i < assetList.getAssetList().size(); i++) {
-            assetNames[i] = assetList.getAssetList().get(i).getName()+", "+assetList.getAssetList().get(i).getCode();
+            assetNames[i] = assetList.getAssetList().get(i).getName() + ", " + assetList.getAssetList().get(i).getCode();
         }
-
 
 
     }
@@ -111,8 +125,19 @@ public class LocationSelectionActivity extends AppCompatActivity {
                     break;
                 }
 
-                case R.id.btnSelectLoc: {
+                case R.id.rlYes: {
+                    sendMessage("finish");
+                    finish();
+                    break;
+                }
 
+                case R.id.rlNo: {
+                    finish();
+                    break;
+                }
+
+                case R.id.btnSelectLoc: {
+                    startActivity(new Intent(LocationSelectionActivity.this, SelectLocationActivity.class));
                     break;
                 }
 
@@ -128,6 +153,13 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
     };
 
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
     void showAssetList() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, assetNames);
@@ -137,7 +169,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         View dialogView = li.inflate(R.layout.assets_view_all, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 LocationSelectionActivity.this);
-        alertDialogBuilder.setTitle("Assets From "+loc);
+        alertDialogBuilder.setTitle("Assets From " + loc);
         alertDialogBuilder.setView(dialogView);
         final ListView listAssets = (ListView) dialogView
                 .findViewById(R.id.lvAssets);
@@ -154,5 +186,18 @@ public class LocationSelectionActivity extends AppCompatActivity {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
+    private final BroadcastReceiver mToLocBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            tvToLoc.setText(message);
+            btnSelectLoc.setText("Change Location");
+            tvStatement.setText("Are you sure you want to move "+assetList.getAssetList().size()+" Asset(s) To "+message);
+            rlBottomSheet.setVisibility(View.VISIBLE);
+
+        }
+    };
+
 
 }

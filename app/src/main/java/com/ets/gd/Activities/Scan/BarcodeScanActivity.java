@@ -17,6 +17,7 @@ import me.dm7.barcodescanner.zbar.ZBarScannerView;
 public class BarcodeScanActivity extends AppCompatActivity implements ZBarScannerView.ResultHandler {
     private ZBarScannerView mScannerView;
     private String barCode;
+    private String taskType;
 
     @Override
     public void onCreate(Bundle state) {
@@ -24,6 +25,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
         setContentView(R.layout.activity_barcode_scan);
         //setupToolbar();
 
+        taskType = getIntent().getStringExtra("taskType");
         if (getSupportActionBar()!=null) {
             getSupportActionBar().hide();
         }
@@ -62,6 +64,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("barcode-scanned");
         intent.putExtra("message", msg);
+        intent.putExtra("taskType", taskType);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

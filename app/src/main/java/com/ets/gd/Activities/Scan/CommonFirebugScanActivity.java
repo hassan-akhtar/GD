@@ -104,6 +104,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnCross.setVisibility(View.GONE);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
+                new IntentFilter("move-complete"));
         mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rlAssets.setLayoutManager(mLayoutManager);
@@ -126,7 +128,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
-                    startActivity(new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class));
+                    Intent in  =new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
+                    in.putExtra("taskType",taskType);
+                    startActivity(in);
                     break;
                 }
 
@@ -188,29 +192,46 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
-            if (taskType.toLowerCase().startsWith("v")) {
-                tvBarcodeValue.setText(message);
-                etBarcode.setVisibility(View.INVISIBLE);
-                tvBarcodeTitle.setVisibility(View.VISIBLE);
-                tvBarcodeValue.setVisibility(View.VISIBLE);
-                btnCross.setVisibility(View.VISIBLE);
-                llunderText.setVisibility(View.GONE);
-                llbtns.setVisibility(View.VISIBLE);
-            } else if (taskType.toLowerCase().startsWith("m")) {
-                asset.setName("Ansul");
-                asset.setCode("An350");
-                asset.setTag("00382");
-                asset.setLocation("L00416");
-                etBarcode.setText("");
-                rlBottomSheet.setVisibility(View.VISIBLE);
-                assetList.add(asset);
-                tvCount.setText(""+assetList.size());
-                mAdapter.notifyDataSetChanged();
+            String task = intent.getStringExtra("taskType");
+            if (!task.startsWith("loc")) {
+                if (taskType.toLowerCase().startsWith("v")) {
+                    tvBarcodeValue.setText(message);
+                    etBarcode.setVisibility(View.INVISIBLE);
+                    tvBarcodeTitle.setVisibility(View.VISIBLE);
+                    tvBarcodeValue.setVisibility(View.VISIBLE);
+                    btnCross.setVisibility(View.VISIBLE);
+                    llunderText.setVisibility(View.GONE);
+                    llbtns.setVisibility(View.VISIBLE);
+                } else if (taskType.toLowerCase().startsWith("m")) {
+                    asset.setName("Ansul");
+                    asset.setCode("An350");
+                    asset.setTag("00382");
+                    asset.setLocation("L00416");
+                    etBarcode.setText("");
+                    rlBottomSheet.setVisibility(View.VISIBLE);
+                    assetList.add(asset);
+                    tvCount.setText(""+assetList.size());
+                    mAdapter.notifyDataSetChanged();
 
-            } else {
-                showToast(taskType + ": " + message);
+                } else {
+                    showToast(taskType + ": " + message);
+                }
             }
 
+
+        }
+    };
+
+
+
+    private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+
+            if(message.startsWith("fin")){
+                finish();
+            }
 
         }
     };

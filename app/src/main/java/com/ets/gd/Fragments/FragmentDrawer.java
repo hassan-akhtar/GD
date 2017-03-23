@@ -131,7 +131,7 @@ public class FragmentDrawer extends Fragment {
         public void onLongClick(View view, int position);
     }
 
-    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+   public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
         private ClickListener clickListener;

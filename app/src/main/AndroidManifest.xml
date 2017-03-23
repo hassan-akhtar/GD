@@ -30,7 +30,8 @@
         <activity android:name=".Activities.Scan.BarcodeScanActivity" />
         <activity android:name=".Activities.FireBug.ViewInformation.ViewAssetInformationActivity" />
         <activity android:name=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity" />
-        <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity"></activity>
+        <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity" />
+        <activity android:name=".Activities.FireBug.Move.SelectLocationActivity"></activity>
     </application>
 
 </manifest>
