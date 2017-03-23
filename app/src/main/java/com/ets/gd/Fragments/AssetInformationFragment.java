@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.DatePickerFragmentTextView;
@@ -27,6 +28,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     View rootView;
     private EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
+
 
     public AssetInformationFragment() {
         // Required empty public constructor
@@ -62,14 +64,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvSrNo = (EditText) rootView.findViewById(R.id.tvSrNo);
 
 
-        tvTagID.setText("00382");
-        tvModel.setText("Ans");
-        tvSrNo.setText("An-2501");
-
-
     }
 
     private void initObj() {
+
+        ViewAssetInformationActivity.currentFragment = new AssetInformationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.deviceTypes));
         dataAdapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -87,11 +86,42 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spAgent.setAdapter(dataAdapterAgent);
 
+        if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
+            setViewForViewAsset();
+        } else {
+            setViewForVAddAsset();
+        }
+
+    }
+
+
+    void setViewForViewAsset() {
+
+        tvTagID.setText("00382");
+        tvModel.setText("Ans");
+        tvSrNo.setText("An-2501");
+
         spDeviceType.setSelection(1);
         spManufacturer.setSelection(1);
         spVendor.setSelection(1);
         spAgent.setSelection(1);
+
     }
+
+
+    void setViewForVAddAsset() {
+
+        tvTagID.setText("");
+        tvModel.setText("");
+        tvSrNo.setText("");
+
+        spDeviceType.setSelection(0);
+        spManufacturer.setSelection(0);
+        spVendor.setSelection(0);
+        spAgent.setSelection(0);
+
+    }
+
 
     private void initListeners() {
         spDeviceType.setOnItemSelectedListener(this);
@@ -118,6 +148,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         });
 
     }
+
     public void hideKeyboard() {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -148,7 +179,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    try {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -157,7 +192,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             case R.id.spManufacturer: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    try {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -166,7 +205,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             case R.id.spVendor: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    try {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
             }
@@ -175,8 +218,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
             case R.id.spAgent: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                try {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.Fragments.AddNoteFragment;
 import com.ets.gd.Fragments.AssetInformationFragment;
@@ -23,10 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAssetInformationActivity extends AppCompatActivity {
-    ImageView ivBack, ivChangeCompany;
+    ImageView ivBack, ivChangeCompany, ivTick;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    public static Fragment currentFragment;
+    public static String actionType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,12 +40,15 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         initObj();
         initListeners();
 
+
+
     }
 
     private void initViews() {
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         ivBack = (ImageView) findViewById(R.id.ivBack);
+        ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -52,13 +58,22 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     }
 
     private void initObj() {
+        actionType = getIntent().getStringExtra("action");
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
+
+
+        if("viewAsset".equals(actionType)){
+            ivTick.setVisibility(View.GONE);
+        }else {
+            ivTick.setVisibility(View.VISIBLE);
+        }
     }
 
     private void initListeners() {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        ivTick.setOnClickListener(mGlobal_OnClickListener);
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -68,10 +83,31 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     finish();
                     break;
                 }
+
+                case R.id.ivTick: {
+
+
+                    if ( 0==tabLayout.getSelectedTabPosition()){
+                        showToast("Add asset");
+                    }else if (1==tabLayout.getSelectedTabPosition() ){
+                        showToast("Add asset Location");
+
+                    }else if (2==tabLayout.getSelectedTabPosition() ){
+                        showToast("Add asset Note");
+                    }else if (3==tabLayout.getSelectedTabPosition()){
+                        showToast("Add asset Inspection Dates");
+                    }
+                    break;
+                }
+
             }
         }
 
     };
+
+    void showToast(String msg){
+        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+    }
 
     private void setupTabIcons() {
 

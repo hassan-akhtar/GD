@@ -4,12 +4,17 @@ package com.ets.gd.Fragments;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Adapters.NoteAdapter;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentTextView;
 
@@ -66,6 +71,7 @@ public class InspectionDatesFragment extends Fragment {
     }
 
     private void initObj() {
+        ViewAssetInformationActivity.currentFragment = new InspectionDatesFragment();
     }
 
     private void initListeners() {
@@ -80,6 +86,43 @@ public class InspectionDatesFragment extends Fragment {
         rlSixYears.setOnClickListener(mGlobal_OnClickListener);
         rlTenYears.setOnClickListener(mGlobal_OnClickListener);
         rlTwelveYears.setOnClickListener(mGlobal_OnClickListener);
+        if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
+            setViewForViewAsset();
+        } else {
+            setViewForVAddAsset();
+        }
+
+    }
+
+
+    void setViewForViewAsset() {
+
+        tvDaily.setText("2/4/2017");
+        tvWeekly.setText("2/4/2017");
+        tvMonthly.setText("2/4/2017");
+        tvQuarterly.setText("2/4/2017");
+        tvSemiAnnual.setText("2/4/2017");
+        tvAnnual.setText("2/4/2017");
+        tvFiveYears.setText("2/4/2017");
+        tvSixYears.setText("2/4/2017");
+        tvTenYears.setText("2/4/2017");
+        tvTwelveYears.setText("2/4/2017");
+
+    }
+
+
+    void setViewForVAddAsset() {
+
+        tvDaily.setText("DD/MM/YY");
+        tvWeekly.setText("DD/MM/YY");
+        tvMonthly.setText("DD/MM/YY");
+        tvQuarterly.setText("DD/MM/YY");
+        tvSemiAnnual.setText("DD/MM/YY");
+        tvAnnual.setText("DD/MM/YY");
+        tvFiveYears.setText("DD/MM/YY");
+        tvSixYears.setText("DD/MM/YY");
+        tvTenYears.setText("DD/MM/YY");
+        tvTwelveYears.setText("DD/MM/YY");
 
     }
 

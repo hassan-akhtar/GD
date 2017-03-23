@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.R;
 
 
@@ -55,13 +56,13 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
 
 
-        tvLocationID.setText("L00382");
-        tvDescprition.setText("Prod");
+
 
 
     }
 
     private void initObj() {
+        ViewAssetInformationActivity.currentFragment = new AssetLocationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
         dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,8 +72,36 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBuilding.setAdapter(dataAdapterAgent);
 
+
+        if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
+            setViewForViewAsset();
+        } else {
+            setViewForVAddAsset();
+        }
+
+    }
+
+
+    void setViewForViewAsset() {
+
+        tvLocationID.setText("L00382");
+        tvDescprition.setText("Prod");
+
         spSite.setSelection(1);
         spBuilding.setSelection(1);
+
+    }
+
+
+    void setViewForVAddAsset() {
+
+        tvLocationID.setText("");
+        tvDescprition.setText("");
+
+        spSite.setSelection(0);
+        spBuilding.setSelection(0);
+
+
     }
 
     private void initListeners() {

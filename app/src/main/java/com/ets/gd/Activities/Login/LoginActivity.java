@@ -13,6 +13,7 @@ import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
@@ -67,10 +68,11 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnLogin: {
-                    saveSyncState();
+/*                    saveSyncState();
                     if (checkValidation()) {
                         loginCall();
-                    }
+                    }*/
+                    startActivity(new Intent(LoginActivity.this,BaseActivity.class));
                     break;
                 }
             }

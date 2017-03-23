@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBugViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Activities.FireBugRouteInspection.RouteInspectionActivity;
@@ -31,7 +33,7 @@ import org.greenrobot.eventbus.ThreadMode;
 public class FirebugDashboardFragment extends Fragment {
 
     private static FloatingActionMenu fab;
-    private static FloatingActionButton fabItemAddAsset;
+    private static FloatingActionButton fabItemAddAsset, itemAddLocation;
     String[] fbTasks = {"View Information", "Move Assets", "Transfer Assets", "Unit Inspection", "Route Inspection"};
     int[] fbTasksImages = {R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer};
     View rootView;
@@ -63,6 +65,7 @@ public class FirebugDashboardFragment extends Fragment {
         ivChangeCompany = (ImageView) rootView.findViewById(R.id.ivChangeCompany);
         fab = (FloatingActionMenu) rootView.findViewById(R.id.fab);
         fabItemAddAsset = (FloatingActionButton) rootView.findViewById(R.id.itemAddAsset);
+        itemAddLocation = (FloatingActionButton) rootView.findViewById(R.id.itemAddLocation);
     }
 
     private void initObj() {
@@ -79,6 +82,7 @@ public class FirebugDashboardFragment extends Fragment {
 
     private void initListeners() {
         fabItemAddAsset.setOnClickListener(mGlobal_OnClickListener);
+        itemAddLocation.setOnClickListener(mGlobal_OnClickListener);
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
@@ -130,6 +134,23 @@ public class FirebugDashboardFragment extends Fragment {
                     BaseActivity.refreshMainViewByNew(new CustomerFragment());
                     break;
                 }
+
+                case R.id.itemAddAsset: {
+                    Intent in = new Intent(getActivity(), ViewAssetInformationActivity.class);
+                    in.putExtra("action","addAsset");
+                    startActivity(in);
+                    break;
+                }
+
+                case R.id.itemAddLocation: {
+                    Intent in = new Intent(getActivity(), ViewLocationInformationActivity.class);
+                    in.putExtra("action","addLoc");
+                    startActivity(in);
+                    break;
+                }
+
+
+
             }
         }
 

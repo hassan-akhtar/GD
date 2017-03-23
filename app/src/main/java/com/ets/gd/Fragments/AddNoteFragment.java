@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.ets.gd.Activities.FireBugViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
 import com.ets.gd.Models.Note;
 import com.ets.gd.R;
@@ -54,7 +55,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void initObj() {
-
+        ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
         Note note = new Note();
         note.setNoteTitle("Already Entered Note 1");
         note.setNoteDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
@@ -63,6 +64,32 @@ public class AddNoteFragment extends Fragment {
         note.setNoteDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
         lstNotes.add(note);
 
+
+
+
+        if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
+            setViewForViewAsset();
+        } else {
+            setViewForVAddAsset();
+        }
+
+    }
+
+
+    void setViewForViewAsset() {
+
+        mAdapter = new NoteAdapter(lstNotes);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        rvNotes.setLayoutManager(mLayoutManager);
+        rvNotes.setItemAnimator(new DefaultItemAnimator());
+        rvNotes.setAdapter(mAdapter);
+
+    }
+
+
+    void setViewForVAddAsset() {
+
+        lstNotes.clear();
         mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvNotes.setLayoutManager(mLayoutManager);

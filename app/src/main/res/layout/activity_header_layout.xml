@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@android:color/white"
-        android:layout_height="56dp">
+        android:layout_height="56dp"
+        android:background="@android:color/white">
 
 
         <ImageView
@@ -16,38 +17,48 @@
             android:layout_height="24dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/ic_back_green"/>
+            android:src="@drawable/ic_back_green" />
 
         <LinearLayout
-            android:layout_toRightOf="@+id/ivBack"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="25dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="25dp"
+            android:layout_toRightOf="@+id/ivBack"
             android:orientation="vertical"
             android:weightSum="1">
 
             <TextView
+                android:id="@+id/tbTitleTop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Firebug"
-                android:id="@+id/tbTitleTop"
-                android:textSize="12sp"
                 android:textColor="@color/blueDark"
+                android:textSize="12sp"
                 android:textStyle="normal|bold" />
 
             <TextView
+                android:id="@+id/tbTitleBottom"
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
-                android:text="View Information"
-                android:textColor="@color/blueDark"
-                android:id="@+id/tbTitleBottom"
                 android:layout_marginTop="-5dp"
-                android:textStyle="normal|bold"
-                android:textSize="18sp"
+                android:layout_weight="1.23"
+                android:text="View Information"
                 android:textAllCaps="false"
-                android:layout_weight="1.23" />
+                android:textColor="@color/blueDark"
+                android:textSize="18sp"
+                android:textStyle="normal|bold" />
+
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivTick"
+            android:layout_width="wrap_content"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_tick" />
     </RelativeLayout>
 
 </RelativeLayout>

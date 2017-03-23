@@ -22,7 +22,7 @@ import com.ets.gd.R;
 public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
-    ImageView ivBack, ivChangeCompany;
+    ImageView ivBack, ivChangeCompany,ivTick;
     EditText etBarcode;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnLoc, btnAsset, btnScan, btnCross;
@@ -46,6 +46,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
+        ivTick = (ImageView) findViewById(R.id.ivTick);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
@@ -59,6 +60,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         llbtns = (LinearLayout) findViewById(R.id.llbtns);
         llunderText = (LinearLayout) findViewById(R.id.llunderText);
         ivChangeCompany.setVisibility(View.GONE);
+        ivTick.setVisibility(View.GONE);
     }
 
     private void initObj() {
@@ -98,6 +100,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnAsset: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
+                    in.putExtra("action","viewAsset");
                     startActivity(in);
                     hideScannedData();
 
@@ -106,6 +109,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnLoc: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
+                    in.putExtra("action","viewLoc");
                     startActivity(in);
                     hideScannedData();
                     break;

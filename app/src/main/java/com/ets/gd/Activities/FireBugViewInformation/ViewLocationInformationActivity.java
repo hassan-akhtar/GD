@@ -12,15 +12,17 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.R;
 
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
-    ImageView ivBack;
+    ImageView ivBack,ivTick;
     Spinner spSite, spBuilding;
     private EditText tvLocationID, tvDescprition;
     private TextInputLayout lLocationID, lDescprition;
+    public static String actionType;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +39,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spSite = (Spinner) findViewById(R.id.spSite);
         spBuilding = (Spinner) findViewById(R.id.spBuilding);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
+        ivTick = (ImageView) findViewById(R.id.ivTick);
         lDescprition = (TextInputLayout) findViewById(R.id.lDescprition);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
 
 
-        tvLocationID.setText("L00382");
-        tvDescprition.setText("Prod");
     }
 
     private void initObj() {
@@ -57,14 +58,45 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBuilding.setAdapter(dataAdapterAgent);
 
+        actionType = getIntent().getStringExtra("action");
+        if("viewLoc".equals(actionType)){
+            ivTick.setVisibility(View.GONE);
+            setViewForViewLoc();
+        }else {
+            ivTick.setVisibility(View.VISIBLE);
+            setViewForAddLoc();
+        }
+
+    }
+
+
+    void setViewForViewLoc() {
+
+        tvLocationID.setText("L00382");
+        tvDescprition.setText("Prod");
+
         spSite.setSelection(1);
         spBuilding.setSelection(1);
+
+    }
+
+
+    void setViewForAddLoc() {
+
+        tvLocationID.setText("");
+        tvDescprition.setText("");
+
+        spSite.setSelection(0);
+        spBuilding.setSelection(0);
+
+
     }
 
     private void initListeners() {
         spSite.setOnItemSelectedListener(this);
         spBuilding.setOnItemSelectedListener(this);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        ivTick.setOnClickListener(mGlobal_OnClickListener);
 
     }
 
@@ -73,6 +105,11 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             switch (v.getId()) {
                 case R.id.ivBack: {
                     finish();
+                    break;
+                }
+
+                case R.id.ivTick: {
+                    Toast.makeText(getApplicationContext(),"Add Location",Toast.LENGTH_LONG).show();
                     break;
                 }
             }
