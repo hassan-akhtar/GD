@@ -47,20 +47,19 @@ android:background="@android:color/white"
     <android.support.v7.widget.RecyclerView
         android:id="@+id/lvAssets"
         android:layout_below="@+id/rlScanArea"
-        android:layout_above="@+id/rlBottomSheet"
+        android:layout_above="@+id/rlBottomSheetMove"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
     <RelativeLayout
-        android:id="@+id/rlBottomSheet"
+        android:id="@+id/rlBottomSheetMove"
         android:layout_width="wrap_content"
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
 
-        <include layout="@layout/bottom_action_layout" />
+        <include layout="@layout/move_bottom_action_layout" />
     </RelativeLayout>
-
 
 </RelativeLayout>

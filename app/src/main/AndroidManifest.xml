@@ -31,7 +31,8 @@
         <activity android:name=".Activities.FireBug.ViewInformation.ViewAssetInformationActivity" />
         <activity android:name=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity" />
         <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity" />
-        <activity android:name=".Activities.FireBug.Move.SelectLocationActivity"></activity>
+        <activity android:name=".Activities.FireBug.Move.SelectLocationActivity" />
+        <activity android:name=".Activities.Customer.CustomerActivity"></activity>
     </application>
 
 </manifest>

@@ -1,17 +1,22 @@
 package com.ets.gd.Adapters;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
+import com.ets.gd.Models.Note;
 import com.ets.gd.R;
 
 
@@ -27,13 +32,14 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
     String type = "";
     TextDrawable drawable;
     Context mContext;
+    MyViewHolder myViewHolder;
 
     public ScannedAssetsAdapter(Context context, List<Asset> assetList) {
         this.assetList = assetList;
         this.mContext = context;
     }
 
-    public ScannedAssetsAdapter(List<Location> locList,Context context, String type) {
+    public ScannedAssetsAdapter(List<Location> locList, Context context, String type) {
         this.locList = locList;
         this.mContext = context;
         this.type = type;
@@ -49,11 +55,12 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+        myViewHolder = holder;
         if ("".equals(type)) {
             Asset asset = assetList.get(position);
 
-            holder.tvTag.setText("Tag: "+asset.getTag());
-            holder.tvLocation.setText("Location: "+asset.getLocation());
+            holder.tvTag.setText("Tag: " + asset.getTag());
+            holder.tvLocation.setText("Location: " + asset.getLocation());
 
             if ("".equals(asset.getCode())) {
                 holder.tvName.setText(asset.getName());
@@ -71,43 +78,36 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
                 holder.ivSelectableImage.setImageDrawable(drawable);
             }
 
-            holder.ivSelectableImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-        }else{
+        } else {
             Location loc = locList.get(position);
-
-            holder.tvTag.setText(loc.getDesc()+",");
+            holder.tvTag.setText(loc.getDesc() + ",");
             holder.tvLocation.setText(loc.getPlace());
 
-                holder.tvName.setText(loc.getLocID());
-                drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .endConfig()
-                        .buildRound(loc.getLocID().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
-                holder.ivSelectableImage.setImageDrawable(drawable);
-
-            holder.ivSelectableImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
+            holder.tvName.setText(loc.getLocID());
+            drawable = TextDrawable.builder()
+                    .beginConfig()
+                    .endConfig()
+                    .buildRound(loc.getLocID().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+            holder.ivSelectableImage.setImageDrawable(drawable);
         }
     }
+
 
     @Override
     public int getItemCount() {
         if ("".equals(type)) {
             return assetList.size();
-        }else {
+        } else {
             return locList.size();
         }
     }
 
+
+    public void removeAt(int position) {
+        assetList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, assetList.size());
+    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvTag, tvLocation;

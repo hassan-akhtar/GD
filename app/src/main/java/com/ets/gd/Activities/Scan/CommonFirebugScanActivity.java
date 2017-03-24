@@ -2,10 +2,12 @@ package com.ets.gd.Activities.Scan;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +26,7 @@ import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
+import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
 import com.ets.gd.R;
@@ -73,7 +76,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
         tvTaskName = (TextView) findViewById(R.id.tvTaskName);
         rlForwardArrow = (RelativeLayout) findViewById(R.id.rlForwardArrow);
-        rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheet);
+        rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheetMove);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         vLine = (View) findViewById(R.id.vLine);
         btnLoc = (Button) findViewById(R.id.btnLoc);
@@ -122,14 +125,52 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnCross.setOnClickListener(mGlobal_OnClickListener);
         rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
+
+        rlAssets.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getApplicationContext(), rlAssets, new FragmentDrawer.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        mContext);
+                alertDialogBuilder.setTitle("Remove Asset");
+                alertDialogBuilder.setMessage("Are you sure you want to remove " + assetList.get(position).getName());
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("REMOVE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+
+                                        mAdapter.removeAt(position);
+                                        if (0 != assetList.size()) {
+                                            tvCount.setText("" + assetList.size());
+                                        } else {
+                                            rlBottomSheet.setVisibility(View.GONE);
+                                        }
+                                    }
+                                })
+                        .setNegativeButton("CANCEL",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                alertDialogBuilder.show();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
-                    Intent in  =new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
-                    in.putExtra("taskType",taskType);
+                    Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
+                    in.putExtra("taskType", taskType);
                     startActivity(in);
                     break;
                 }
@@ -171,10 +212,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     AssetList listAssets = new AssetList();
                     listAssets.setAssetList(assetList);
                     Intent in = new Intent(CommonFirebugScanActivity.this, LocationSelectionActivity.class);
-                    in.putExtra("taskType",taskType);
-                    in.putExtra("compName",compName);
-                    in.putExtra("assetList",listAssets);
-                    in.putExtra("loc",assetList.get(0).getLocation());
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("compName", compName);
+                    in.putExtra("assetList", listAssets);
+                    in.putExtra("loc", assetList.get(0).getLocation());
                     startActivity(in);
                     break;
                 }
@@ -210,7 +251,22 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     etBarcode.setText("");
                     rlBottomSheet.setVisibility(View.VISIBLE);
                     assetList.add(asset);
-                    tvCount.setText(""+assetList.size());
+                    tvTaskName.setText("MOVE ASSET");
+                    tvCount.setText("" + assetList.size());
+                    tvCountSupportText.setText("Asset Selected to Move");
+                    mAdapter.notifyDataSetChanged();
+
+                } else if (taskType.toLowerCase().startsWith("t")) {
+                    asset.setName("Ansul");
+                    asset.setCode("An350");
+                    asset.setTag("00382");
+                    asset.setLocation("L00416");
+                    etBarcode.setText("");
+                    rlBottomSheet.setVisibility(View.VISIBLE);
+                    assetList.add(asset);
+                    tvTaskName.setText("TRANSFER ASSET");
+                    tvCount.setText("" + assetList.size());
+                    tvCountSupportText.setText("Asset Selected to TRANSFER");
                     mAdapter.notifyDataSetChanged();
 
                 } else {
@@ -223,13 +279,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     };
 
 
-
     private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
 
-            if(message.startsWith("fin")){
+            if (message.startsWith("fin")) {
                 finish();
             }
 

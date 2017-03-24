@@ -43,6 +43,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     RecyclerView rlLocs;
     List<Location> locList = new ArrayList<Location>();
     Context mContext;
+    String location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,8 @@ public class SelectLocationActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
         mContext = this;
+        location = getIntent().getStringExtra("location");
+        tvCompanyValue.setText(location);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
