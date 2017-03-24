@@ -10,6 +10,7 @@
     <color name="blueDark">#024f6e</color>
     <color name="greyBg">#f5f6f6</color>
     <color name="greyLight">#676767</color>
+    <color name="greyDark">#535252</color>
     <color name="veryLightGrey">#9c9c9c</color>
     <color name="cardview_light_background">#FFFFFFFF</color>
 

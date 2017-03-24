@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,13 +28,16 @@ import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Fragments.InventoryDashboardFragment;
+import com.ets.gd.Fragments.SyncFragment;
 import com.ets.gd.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 
 public class BaseActivity extends AppCompatActivity
         implements FragmentDrawer.FragmentDrawerListener {
 
+    SharedPreferencesManager sharedPreferencesManager;
     private static FragmentManager fragmentManager;
     static private MenuItem searchMenuItem;
     private static DashboardFragment dashboardFragment;
@@ -69,6 +73,7 @@ public class BaseActivity extends AppCompatActivity
 
     private void initObj() {
         fragmentManager = getSupportFragmentManager();
+        sharedPreferencesManager = new SharedPreferencesManager(BaseActivity.this);
         setSupportActionBar(toolbar);
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
@@ -77,11 +82,18 @@ public class BaseActivity extends AppCompatActivity
         llLogout = drawer.findViewById(R.id.llLogout);
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         drawerFragment.setDrawerListener(this);
-        displayView(0);
-        fragmentManager
-                .beginTransaction()
-                .replace(R.id.container_body,
-                        new DashboardFragment()).commit();
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {
+            tbTitleTop.setText("ETS");
+            tbTitleBottom.setText("Sync");
+            refreshMainViewByNew(new SyncFragment());
+        } else {
+            displayView(0);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new DashboardFragment()).commit();
+        }
+
     }
 
     private void initListeners() {
@@ -95,7 +107,10 @@ public class BaseActivity extends AppCompatActivity
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.llSync: {
-                    showToast("Sync Clicked!");
+                    drawer.closeDrawer(Gravity.LEFT);
+                    tbTitleTop.setText("ETS");
+                    tbTitleBottom.setText("Sync");
+                    refreshMainViewByNew(new SyncFragment());
                     break;
                 }
 
@@ -155,6 +170,12 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new InventoryDashboardFragment()).commit();
+        }else if (fragment instanceof SyncFragment) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new SyncFragment()).commit();
         }
         fragmentManager.executePendingTransactions();
     }

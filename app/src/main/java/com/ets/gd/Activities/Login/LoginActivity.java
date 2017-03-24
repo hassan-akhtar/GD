@@ -68,10 +68,10 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnLogin: {
-/*                    saveSyncState();
-                    if (checkValidation()) {
-                        loginCall();
-                    }*/
+                    saveSyncState();
+//                    if (checkValidation()) {
+//                        loginCall();
+//                    }
                     startActivity(new Intent(LoginActivity.this,BaseActivity.class));
                     break;
                 }
