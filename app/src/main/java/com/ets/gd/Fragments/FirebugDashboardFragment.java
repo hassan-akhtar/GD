@@ -87,9 +87,10 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (fbTasks[position].startsWith("Rou")) {
-                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
-                    startActivity(in);
+                if (fbTasks[position].toLowerCase().startsWith("ro") || fbTasks[position].toLowerCase().startsWith("uni")) {
+//                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
+//                    startActivity(in);
+                    showToast(""+fbTasks[position]);
 
                 } else {
                     Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
@@ -136,6 +137,7 @@ public class FirebugDashboardFragment extends Fragment {
                 }
 
                 case R.id.itemAddAsset: {
+                    fab.close(true);
                     Intent in = new Intent(getActivity(), ViewAssetInformationActivity.class);
                     in.putExtra("action","addAsset");
                     startActivity(in);
@@ -143,6 +145,7 @@ public class FirebugDashboardFragment extends Fragment {
                 }
 
                 case R.id.itemAddLocation: {
+                    fab.close(true);
                     Intent in = new Intent(getActivity(), ViewLocationInformationActivity.class);
                     in.putExtra("action","addLoc");
                     startActivity(in);
