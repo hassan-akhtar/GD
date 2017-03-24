@@ -9,6 +9,9 @@ public class SharedPreferencesManager {
     SharedPreferences.Editor editor ;
     public static final String MY_PREFERENCES = "MyPrefs" ;
     public static final String  SYNC_STATE = "syncState";
+    public static final String  IS_CAMERA_PERMISSION = "permissionCamera";
+    public static final String IS_NEVER_ASK_AGAIN = "neveraskagain";
+
 
 
 

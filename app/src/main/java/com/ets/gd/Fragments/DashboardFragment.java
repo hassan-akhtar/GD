@@ -106,7 +106,7 @@ public class DashboardFragment extends Fragment {
                 }
 
                 case R.id.ivForwardArrowFb: {
-                    BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
                     break;
                 }
             }

@@ -43,7 +43,7 @@ public class BaseActivity extends AppCompatActivity
     private static DashboardFragment dashboardFragment;
     private Toolbar toolbar;
     private FragmentDrawer drawerFragment;
-    private TextView tbTitleTop;
+    static private TextView tbTitleTop;
     private static TextView tbTitleBottom;
     private DrawerLayout drawer;
     View llDeviceInfo, llSync, llLogout;
@@ -144,6 +144,7 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             dashboardFragment).commit();
+            tbTitleBottom.setText("Dashboard");
         } else if (fragment instanceof CustomerFragment) {
             //searchMenuItem.setVisible(false);
             tbTitleBottom.setText("Select Company");
@@ -153,7 +154,8 @@ public class BaseActivity extends AppCompatActivity
                             new CustomerFragment()).commit();
         } else if (fragment instanceof FirebugDashboardFragment) {
             //searchMenuItem.setVisible(false);
-            tbTitleBottom.setText("Dashboard");
+            tbTitleTop.setText("Firebug");
+            tbTitleBottom.setText("Menu");
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.container_body,
@@ -164,6 +166,8 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new ToolhawkDashboardFragment()).commit();
+            tbTitleTop.setText("Toolhawk");
+            tbTitleBottom.setText("Menu");
         } else if (fragment instanceof InventoryDashboardFragment) {
             //searchMenuItem.setVisible(false);
             fragmentManager

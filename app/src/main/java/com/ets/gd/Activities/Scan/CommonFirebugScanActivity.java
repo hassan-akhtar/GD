@@ -1,11 +1,17 @@
 package com.ets.gd.Activities.Scan;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +36,7 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +44,7 @@ import java.util.List;
 public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
+    SharedPreferencesManager sharedPreferencesManager;
     ImageView ivBack, ivChangeCompany, ivTick;
     EditText etBarcode;
     ScannedAssetsAdapter mAdapter;
@@ -50,6 +58,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     String taskType, compName;
     LinearLayout llbtns, llunderText;
     private List<Asset> assetList = new ArrayList<Asset>();
+    private static final int CAMERA_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
     Context mContext;
 
     @Override
@@ -93,6 +103,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     private void initObj() {
         mContext = this;
         hideKeyboard();
+        sharedPreferencesManager = new SharedPreferencesManager(CommonFirebugScanActivity.this);
         taskType = getIntent().getStringExtra("taskType");
         compName = getIntent().getStringExtra("compName");
         tbTitleBottom.setText(taskType);
@@ -169,9 +180,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
-                    Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
-                    in.putExtra("taskType", taskType);
-                    startActivity(in);
+                    checkCameraPermission();
                     break;
                 }
 
@@ -224,6 +233,107 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     };
 
+    private void checkCameraPermission() {
+
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
+            in.putExtra("taskType", taskType);
+            startActivity(in);
+        } else {
+            if (ActivityCompat.checkSelfPermission(CommonFirebugScanActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(CommonFirebugScanActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonFirebugScanActivity.this);
+                    builder.setTitle("Need Storage Permission");
+                    builder.setMessage("This app needs storage permission.");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(CommonFirebugScanActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
+                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                    // Redirect to Settings after showing Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonFirebugScanActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            Toast.makeText(getBaseContext(), "Go to Permissions to Grant Camera permission", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    //just request the permission
+                    ActivityCompat.requestPermissions(CommonFirebugScanActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                }
+
+            } else {
+                Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", taskType);
+                startActivity(in);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION,true);
+                Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", taskType);
+                startActivity(in);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(CommonFirebugScanActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonFirebugScanActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(CommonFirebugScanActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN,true);
+                    Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
 
     public void hideKeyboard() {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
