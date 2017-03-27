@@ -108,7 +108,22 @@ public class DataManager {
     // For getting asset all assets from DB
     public   List<Asset> getAllAssets(){
         return realm.where(Asset.class).findAllSorted("manufacturers");
+
     }
+
+    // For getting asset all assets from DB
+    public   List<Asset> getAllAssets(int count){
+        return realm.where(Asset.class).findAllSorted("manufacturers").subList(0,count);
+
+    }
+
+    // For getting asset all assets from DB
+    public   List<Location> getAllLocations(){
+        return realm.where(Location.class).findAllSorted("locationID");
+
+    }
+
+
 
     public  void setupDataForApp(){
 
@@ -119,7 +134,8 @@ public class DataManager {
                 Asset asset = realm.createObject(Asset.class);
                 asset.setTagID("8961006040044");
                 asset.setDeviceType("EXT");
-                asset.setManufacturers("Ans");
+                asset.setManufacturers("Ansul");
+                asset.setModel("002199");
                 asset.setSerialNo("002323");
                 asset.setMfgDate("2/6/2017");
                 asset.setVendor("Lipsum");
@@ -162,8 +178,9 @@ public class DataManager {
                 Asset asset = realm.createObject(Asset.class);
                 asset.setTagID("6951582500720");
                 asset.setDeviceType("EXT");
-                asset.setManufacturers("Ans");
+                asset.setManufacturers("Ansul");
                 asset.setSerialNo("005555");
+                asset.setModel("002216");
                 asset.setMfgDate("2/2/2017");
                 asset.setVendor("Lipsum");
                 asset.setAgent("Lipsum");

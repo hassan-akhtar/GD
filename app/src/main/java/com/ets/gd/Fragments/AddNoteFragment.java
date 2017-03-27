@@ -58,8 +58,10 @@ public class AddNoteFragment extends Fragment {
     private void initObj() {
         asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
-        lstNotes.clear();
-        lstNotes.addAll(asset.getNoteList());
+        if (null!=asset) {
+            lstNotes.clear();
+            lstNotes.addAll(asset.getNoteList());
+        }
 
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {

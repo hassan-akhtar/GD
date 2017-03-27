@@ -43,7 +43,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         initObj();
         initListeners();
 
-
     }
 
     private void initViews() {

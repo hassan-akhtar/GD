@@ -24,6 +24,7 @@ import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
@@ -99,23 +100,9 @@ public class SelectLocationActivity extends AppCompatActivity {
 
 
     private void setupLocList() {
-        Location loc = new Location();
-        loc.setLocationID("L000419");
-        loc.setPlace("Shelf");
-        loc.setDescription("Const");
-        locList.add(loc);
-        loc.setLocationID("L000416");
-        loc.setPlace("Shelf");
-        loc.setDescription("Const");
-        locList.add(loc);
-        loc.setLocationID("L000412");
-        loc.setPlace("Shelf");
-        loc.setDescription("Const");
-        locList.add(loc);
-        loc.setLocationID("L000411");
-        loc.setPlace("Shelf");
-        loc.setDescription("Const");
-        locList.add(loc);
+
+        locList.clear();
+        locList = DataManager.getInstance().getAllLocations();
     }
 
 

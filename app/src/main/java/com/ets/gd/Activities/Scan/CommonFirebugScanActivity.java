@@ -109,6 +109,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     private void initObj() {
         mContext = this;
         hideKeyboard();
+        assetList.clear();
         sharedPreferencesManager = new SharedPreferencesManager(CommonFirebugScanActivity.this);
         taskType = getIntent().getStringExtra("taskType");
         compName = getIntent().getStringExtra("compName");
@@ -199,7 +200,50 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             llbtns.setVisibility(View.VISIBLE);
                         }
                     } else if (taskType.toLowerCase().startsWith("m")) {
-
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
+                            if (null != asset) {
+                                if (!assetList.contains(asset)) {
+                                    hideKeyboard();
+                                    etBarcode.setText("");
+                                    rlBottomSheet.setVisibility(View.VISIBLE);
+                                    assetList.add(asset);
+                                    tvTaskName.setText("MOVE ASSET");
+                                    tvCount.setText("" + assetList.size());
+                                    tvCountSupportText.setText("Asset Selected to Move");
+                                    mAdapter.notifyDataSetChanged();
+                                }else{
+                                    hideKeyboard();
+                                    Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
+                                hideKeyboard();
+                                Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }else if (taskType.toLowerCase().startsWith("t")) {
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            asset =  DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
+                            if(null!=asset){
+                                if (!assetList.contains(asset)) {
+                                    etBarcode.setText("");
+                                    rlBottomSheet.setVisibility(View.VISIBLE);
+                                    assetList.add(asset);
+                                    tvTaskName.setText("TRANSFER ASSET");
+                                    tvCount.setText("" + assetList.size());
+                                    tvCountSupportText.setText("Asset Selected to TRANSFER");
+                                    mAdapter.notifyDataSetChanged();
+                                }else{
+                                    Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                                }
+                            }else {
+                                Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                            }
+                        }
                     }
                     break;
                 }
@@ -245,7 +289,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnCross: {
                     hideScannedData();
-
                     break;
                 }
 
@@ -255,7 +298,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     Intent in = new Intent(CommonFirebugScanActivity.this, LocationSelectionActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("compName", compName);
-                    in.putExtra("assetList", listAssets);
+                    in.putExtra("count", assetList.size());
                     in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
                     startActivity(in);
                     break;
@@ -386,30 +429,46 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (taskType.toLowerCase().startsWith("m")) {
-                    asset.setManufacturers("Ansul");
-                    asset.setModel("An350");
-                    asset.setTagID("00382");
-                    asset.setLocation(new Location("00416", "I am a loc", "Lipsum", "Lipsum", "shelf"));
-                    etBarcode.setText("");
-                    rlBottomSheet.setVisibility(View.VISIBLE);
-                    assetList.add(asset);
-                    tvTaskName.setText("MOVE ASSET");
-                    tvCount.setText("" + assetList.size());
-                    tvCountSupportText.setText("Asset Selected to Move");
-                    mAdapter.notifyDataSetChanged();
+
+                    asset =  DataManager.getInstance().getAsset(message);
+
+                    if(null!=asset){
+                        if (!assetList.contains(asset)) {
+                            etBarcode.setText("");
+                            rlBottomSheet.setVisibility(View.VISIBLE);
+                            assetList.add(asset);
+                            tvTaskName.setText("MOVE ASSET");
+                            tvCount.setText("" + assetList.size());
+                            tvCountSupportText.setText("Asset Selected to Move");
+                            mAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
+
 
                 } else if (taskType.toLowerCase().startsWith("t")) {
-                    asset.setManufacturers("Ansul");
-                    asset.setModel("An350");
-                    asset.setTagID("00382");
-                    asset.setLocation(new Location("00416", "I am a loc", "Lipsum", "Lipsum", "shelf"));
-                    etBarcode.setText("");
-                    rlBottomSheet.setVisibility(View.VISIBLE);
-                    assetList.add(asset);
-                    tvTaskName.setText("TRANSFER ASSET");
-                    tvCount.setText("" + assetList.size());
-                    tvCountSupportText.setText("Asset Selected to TRANSFER");
-                    mAdapter.notifyDataSetChanged();
+
+
+                    asset =  DataManager.getInstance().getAsset(message);
+
+                    if(null!=asset){
+                        if (!assetList.contains(asset)) {
+                            etBarcode.setText("");
+                            rlBottomSheet.setVisibility(View.VISIBLE);
+                            assetList.add(asset);
+                            tvTaskName.setText("TRANSFER ASSET");
+                            tvCount.setText("" + assetList.size());
+                            tvCountSupportText.setText("Asset Selected to TRANSFER");
+                            mAdapter.notifyDataSetChanged();
+                        }else{
+                            Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                        }
+                    }else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
 
                 } else {
                     showToast(taskType + ": " + message);

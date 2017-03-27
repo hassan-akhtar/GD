@@ -56,21 +56,13 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
             holder.tvTag.setText("Tag: " + asset.getTagID());
             holder.tvLocation.setText("Location: " + asset.getLocation().getLocationID());
 
-            if ("".equals(asset.getModel())) {
-                holder.tvName.setText(asset.getManufacturers());
+                holder.tvName.setText(asset.getManufacturers() + ", " + asset.getModel());
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
                         .buildRound(asset.getManufacturers().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
-            } else {
-                holder.tvName.setText(asset.getModel() + ", " + asset.getManufacturers());
-                drawable = TextDrawable.builder()
-                        .beginConfig()
-                        .endConfig()
-                        .buildRound(asset.getModel().substring(0, 1).toUpperCase() + asset.getManufacturers().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
-                holder.ivSelectableImage.setImageDrawable(drawable);
-            }
+
 
         } else {
             Location loc = locList.get(position);

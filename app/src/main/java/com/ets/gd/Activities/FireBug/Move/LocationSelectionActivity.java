@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.Customer.CustomerActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.AssetList;
 import com.ets.gd.R;
 
@@ -34,6 +35,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     String[] assetNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
+    int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +75,6 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
                 new IntentFilter("moveToLoc"));
-        taskType = getIntent().getStringExtra("taskType");
     }
 
     private void initListeners() {
@@ -89,8 +90,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
     private void setupData() {
 
         taskName = getIntent().getStringExtra("taskType");
+        count = getIntent().getIntExtra("count",0);
         companyName = getIntent().getStringExtra("compName");
-        assetList = (AssetList) getIntent().getSerializableExtra("assetList");
+
+
+        assetList.setAssetList(DataManager.getInstance().getAllAssets(count));
+
         loc = getIntent().getStringExtra("loc");
         tbTitleBottom.setText(taskName);
         tvCompanyValue.setText(companyName);
