@@ -3,11 +3,12 @@ package com.ets.gd.Models;
 import java.io.Serializable;
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+/**
+ * Created by hakhtar on 3/27/2017.
+ * General Data
+ */
 
-
-public class Asset extends RealmObject implements Serializable {
+public class NewAsset implements Serializable {
 
     private String tagID;
     private String deviceType;
@@ -18,10 +19,11 @@ public class Asset extends RealmObject implements Serializable {
     private String vendor;
     private String Agent;
     private Location location;
-    private RealmList<Note> noteList;
+    private List<Note> noteList;
     private InspectionDates inspectionDates;
 
-    public Asset(String tagID, String deviceType, String manufacturers, String model, String serialNo, String mfgDate, String vendor, String agent) {
+
+    public NewAsset(String tagID, String deviceType, String manufacturers, String model, String serialNo, String mfgDate, String vendor, String agent, Location location, List<Note> noteList, InspectionDates inspectionDates) {
         this.tagID = tagID;
         this.deviceType = deviceType;
         this.manufacturers = manufacturers;
@@ -30,27 +32,9 @@ public class Asset extends RealmObject implements Serializable {
         this.mfgDate = mfgDate;
         this.vendor = vendor;
         Agent = agent;
-
-    }
-
-    public Asset(Location location) {
         this.location = location;
-    }
-
-
-    public Asset(InspectionDates inspectionDates) {
+        this.noteList = noteList;
         this.inspectionDates = inspectionDates;
-    }
-
-    public Asset() {
-    }
-
-    public String getMfgDate() {
-        return mfgDate;
-    }
-
-    public void setMfgDate(String mfgDate) {
-        this.mfgDate = mfgDate;
     }
 
     public String getTagID() {
@@ -93,6 +77,14 @@ public class Asset extends RealmObject implements Serializable {
         this.serialNo = serialNo;
     }
 
+    public String getMfgDate() {
+        return mfgDate;
+    }
+
+    public void setMfgDate(String mfgDate) {
+        this.mfgDate = mfgDate;
+    }
+
     public String getVendor() {
         return vendor;
     }
@@ -117,11 +109,11 @@ public class Asset extends RealmObject implements Serializable {
         this.location = location;
     }
 
-    public RealmList<Note> getNoteList() {
+    public List<Note> getNoteList() {
         return noteList;
     }
 
-    public void setNoteList(RealmList<Note> noteList) {
+    public void setNoteList(List<Note> noteList) {
         this.noteList = noteList;
     }
 

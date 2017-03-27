@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 
@@ -25,6 +26,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     Spinner spDeviceType, spManufacturer, spVendor, spAgent;
     View rootView;
+    Asset asset;
     private EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
 
@@ -67,6 +69,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     private void initObj() {
 
+        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
+
         ViewAssetInformationActivity.currentFragment = new AssetInformationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.deviceTypes));
@@ -96,11 +100,34 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     void setViewForViewAsset() {
 
-        tvTagID.setText("00382");
-        tvModel.setText("Ans");
-        tvSrNo.setText("An-2501");
+        tvTagID.setText(asset.getTagID());
+        tvModel.setText(asset.getModel());
+        tvSrNo.setText(asset.getSerialNo());
+        tvMfgDate.setText(asset.getMfgDate());
+        for (int i = 0; i < getResources().getStringArray(R.array.deviceTypes).length; i++) {
+            if (asset.getDeviceType().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+                spDeviceType.setSelection(i);
+            }
+        }
 
-        spDeviceType.setSelection(1);
+        for (int i = 0; i < getResources().getStringArray(R.array.manufacturers).length; i++) {
+            if (asset.getDeviceType().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
+                spManufacturer.setSelection(i);
+            }
+        }
+        for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
+            if (asset.getDeviceType().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
+                spVendor.setSelection(i);
+            }
+        }
+
+        for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
+            if (asset.getDeviceType().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+                spDeviceType.setSelection(i);
+            }
+        }
+
+
         spManufacturer.setSelection(1);
         spVendor.setSelection(1);
         spAgent.setSelection(1);
@@ -113,7 +140,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvTagID.setText("");
         tvModel.setText("");
         tvSrNo.setText("");
-
+        tvMfgDate.setText("");
         spDeviceType.setSelection(0);
         spManufacturer.setSelection(0);
         spVendor.setSelection(0);

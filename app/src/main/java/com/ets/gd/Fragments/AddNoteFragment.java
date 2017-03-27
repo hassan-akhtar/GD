@@ -16,6 +16,7 @@ import android.widget.EditText;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Note;
 import com.ets.gd.R;
 
@@ -29,6 +30,7 @@ public class AddNoteFragment extends Fragment {
     List<Note> lstNotes = new ArrayList<Note>();
     FloatingActionButton fbAddNote;
     NoteAdapter mAdapter;
+    Asset asset;
     RecyclerView rvNotes;
     public AddNoteFragment() {
     }
@@ -54,16 +56,10 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void initObj() {
+        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
-        Note note = new Note();
-        note.setNoteTitle("Already Entered Note 1");
-        note.setNoteDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-        lstNotes.add(note);
-        note.setNoteTitle("Already Entered Note 2");
-        note.setNoteDescription("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-        lstNotes.add(note);
-
-
+        lstNotes.clear();
+        lstNotes.addAll(asset.getNoteList());
 
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {

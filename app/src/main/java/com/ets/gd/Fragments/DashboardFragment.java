@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import com.ets.gd.Activities.Other.BaseActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -60,6 +61,7 @@ public class DashboardFragment extends Fragment {
     private void initObj() {
         ca = new CommonActions(getActivity());
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        //DataManager.getInstance().setupDataForApp();
     }
 
     private void initListeners() {

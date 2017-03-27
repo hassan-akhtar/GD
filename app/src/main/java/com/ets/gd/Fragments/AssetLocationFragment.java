@@ -16,6 +16,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.R;
 
 
@@ -26,6 +27,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     View rootView;
     private EditText tvLocationID, tvDescprition;
     private TextInputLayout lLocationID, lDescprition;
+    Asset asset;
 
     public AssetLocationFragment() {
 
@@ -55,12 +57,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
 
 
-
-
-
     }
 
     private void initObj() {
+
+        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new AssetLocationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
@@ -83,11 +84,21 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     void setViewForViewAsset() {
 
-        tvLocationID.setText("L00382");
-        tvDescprition.setText("Prod");
+        tvLocationID.setText(asset.getLocation().getLocationID());
+        tvDescprition.setText(asset.getLocation().getDescription());
 
-        spSite.setSelection(1);
-        spBuilding.setSelection(1);
+
+        for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
+            if (asset.getLocation().getVendor().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
+                spSite.setSelection(i);
+            }
+        }
+
+        for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
+            if (asset.getLocation().getAgent().toString().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
+                spBuilding.setSelection(i);
+            }
+        }
 
     }
 
@@ -118,8 +129,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             case R.id.spSite: {
 
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                try {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
@@ -127,8 +142,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
             case R.id.spBuilding: {
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                try {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }

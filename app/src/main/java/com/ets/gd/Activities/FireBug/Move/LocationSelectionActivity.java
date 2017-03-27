@@ -109,7 +109,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         assetNames = new String[assetList.getAssetList().size()];
 
         for (int i = 0; i < assetList.getAssetList().size(); i++) {
-            assetNames[i] = assetList.getAssetList().get(i).getName() + ", " + assetList.getAssetList().get(i).getCode();
+            assetNames[i] = assetList.getAssetList().get(i).getManufacturers() + ", " + assetList.getAssetList().get(i).getModel();
         }
 
 

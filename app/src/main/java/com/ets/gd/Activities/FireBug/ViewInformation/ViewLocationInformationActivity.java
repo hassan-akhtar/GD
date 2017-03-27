@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.Location;
 import com.ets.gd.R;
 
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
@@ -21,8 +23,9 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     ImageView ivBack,ivTick;
     Spinner spSite, spBuilding;
     private EditText tvLocationID, tvDescprition;
+    Location location;
     private TextInputLayout lLocationID, lDescprition;
-    public static String actionType;
+    public static String actionType, barCodeID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +47,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
-
+        location = DataManager.getInstance().getLocation(barCodeID);
 
     }
 
@@ -72,11 +75,20 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     void setViewForViewLoc() {
 
-        tvLocationID.setText("L00382");
-        tvDescprition.setText("Prod");
+        tvLocationID.setText(location.getLocationID());
+        tvDescprition.setText(location.getDescription());
 
-        spSite.setSelection(1);
-        spBuilding.setSelection(1);
+        for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
+            if (location.getVendor().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
+                spSite.setSelection(i);
+            }
+        }
+
+        for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
+            if (location.getAgent().toString().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
+                spBuilding.setSelection(i);
+            }
+        }
 
     }
 

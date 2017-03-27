@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentTextView;
 
@@ -21,6 +22,7 @@ public class InspectionDatesFragment extends Fragment {
     RelativeLayout rlDaily, rlWeekly, rlMonthly, rlQuarterly, rlSemiAnnual, rlAnnual, rlFiveYears, rlSixYears, rlTenYears, rlTwelveYears;
     TextView tvDaily, tvWeekly, tvMonthly, tvQuarterly, tvSemiAnnual, tvAnnual, tvFiveYears, tvSixYears, tvTenYears, tvTwelveYears;
     public static int viewID = 0;
+    Asset asset;
 
     public InspectionDatesFragment() {
     }
@@ -67,6 +69,7 @@ public class InspectionDatesFragment extends Fragment {
     }
 
     private void initObj() {
+        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new InspectionDatesFragment();
     }
 
@@ -93,16 +96,16 @@ public class InspectionDatesFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-        tvDaily.setText("2/4/2017");
-        tvWeekly.setText("2/4/2017");
-        tvMonthly.setText("2/4/2017");
-        tvQuarterly.setText("2/4/2017");
-        tvSemiAnnual.setText("2/4/2017");
-        tvAnnual.setText("2/4/2017");
-        tvFiveYears.setText("2/4/2017");
-        tvSixYears.setText("2/4/2017");
-        tvTenYears.setText("2/4/2017");
-        tvTwelveYears.setText("2/4/2017");
+        tvDaily.setText(asset.getInspectionDates().getDaily());
+        tvWeekly.setText(asset.getInspectionDates().getWeekly());
+        tvMonthly.setText(asset.getInspectionDates().getMonthly());
+        tvQuarterly.setText(asset.getInspectionDates().getQuaterly());
+        tvSemiAnnual.setText(asset.getInspectionDates().getSemiAnnual());
+        tvAnnual.setText(asset.getInspectionDates().getAnnual());
+        tvFiveYears.setText(asset.getInspectionDates().getFiveYear());
+        tvSixYears.setText(asset.getInspectionDates().getSixYear());
+        tvTenYears.setText(asset.getInspectionDates().getTenYear());
+        tvTwelveYears.setText(asset.getInspectionDates().getTwelveYear());
 
     }
 

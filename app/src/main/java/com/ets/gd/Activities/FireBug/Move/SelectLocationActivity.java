@@ -100,21 +100,21 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     private void setupLocList() {
         Location loc = new Location();
-        loc.setLocID("L000419");
+        loc.setLocationID("L000419");
         loc.setPlace("Shelf");
-        loc.setDesc("Const");
+        loc.setDescription("Const");
         locList.add(loc);
-        loc.setLocID("L000416");
+        loc.setLocationID("L000416");
         loc.setPlace("Shelf");
-        loc.setDesc("Const");
+        loc.setDescription("Const");
         locList.add(loc);
-        loc.setLocID("L000412");
+        loc.setLocationID("L000412");
         loc.setPlace("Shelf");
-        loc.setDesc("Const");
+        loc.setDescription("Const");
         locList.add(loc);
-        loc.setLocID("L000411");
+        loc.setLocationID("L000411");
         loc.setPlace("Shelf");
-        loc.setDesc("Const");
+        loc.setDescription("Const");
         locList.add(loc);
     }
 
@@ -130,7 +130,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(locList.get(position).getLocID());
+                sendMessage(locList.get(position).getLocationID());
                 finish();
             }
 
@@ -176,9 +176,9 @@ public class SelectLocationActivity extends AppCompatActivity {
             if (task.startsWith("loc")) {
 
                 Location loc = new Location();
-                loc.setLocID("L000400");
+                loc.setLocationID("L000400");
                 loc.setPlace("Shelf");
-                loc.setDesc("Const");
+                loc.setDescription("Const");
                 etBarcode.setText("");
                 locList.add(loc);
                 mAdapter.notifyDataSetChanged();

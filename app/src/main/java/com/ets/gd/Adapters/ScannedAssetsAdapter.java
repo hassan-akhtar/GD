@@ -1,22 +1,16 @@
 package com.ets.gd.Adapters;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.text.style.TtsSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
-import com.ets.gd.Models.Note;
 import com.ets.gd.R;
 
 
@@ -59,35 +53,35 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
         if ("".equals(type)) {
             Asset asset = assetList.get(position);
 
-            holder.tvTag.setText("Tag: " + asset.getTag());
-            holder.tvLocation.setText("Location: " + asset.getLocation());
+            holder.tvTag.setText("Tag: " + asset.getTagID());
+            holder.tvLocation.setText("Location: " + asset.getLocation().getLocationID());
 
-            if ("".equals(asset.getCode())) {
-                holder.tvName.setText(asset.getName());
+            if ("".equals(asset.getModel())) {
+                holder.tvName.setText(asset.getManufacturers());
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
-                        .buildRound(asset.getName().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                        .buildRound(asset.getManufacturers().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
             } else {
-                holder.tvName.setText(asset.getCode() + ", " + asset.getName());
+                holder.tvName.setText(asset.getModel() + ", " + asset.getManufacturers());
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
-                        .buildRound(asset.getCode().substring(0, 1).toUpperCase() + asset.getName().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                        .buildRound(asset.getModel().substring(0, 1).toUpperCase() + asset.getManufacturers().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
             }
 
         } else {
             Location loc = locList.get(position);
-            holder.tvTag.setText(loc.getDesc() + ",");
+            holder.tvTag.setText(loc.getDescription() + ",");
             holder.tvLocation.setText(loc.getPlace());
 
-            holder.tvName.setText(loc.getLocID());
+            holder.tvName.setText(loc.getLocationID());
             drawable = TextDrawable.builder()
                     .beginConfig()
                     .endConfig()
-                    .buildRound(loc.getLocID().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                    .buildRound(loc.getLocationID().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
             holder.ivSelectableImage.setImageDrawable(drawable);
         }
     }

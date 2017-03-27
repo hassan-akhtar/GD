@@ -32,9 +32,14 @@ import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
+import com.ets.gd.Models.InspectionDates;
+import com.ets.gd.Models.Location;
+import com.ets.gd.Models.NewAsset;
+import com.ets.gd.Models.Note;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -55,6 +60,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     View vLine;
     RecyclerView rlAssets;
     Asset asset;
+    NewAsset newAsset;
     String taskType, compName;
     LinearLayout llbtns, llunderText;
     private List<Asset> assetList = new ArrayList<Asset>();
@@ -125,7 +131,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         rlAssets.setLayoutManager(mLayoutManager);
         rlAssets.setItemAnimator(new DefaultItemAnimator());
         rlAssets.setAdapter(mAdapter);
-        asset = new Asset();
     }
 
     private void initListeners() {
@@ -143,7 +148,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         mContext);
                 alertDialogBuilder.setTitle("Remove Asset");
-                alertDialogBuilder.setMessage("Are you sure you want to remove " + assetList.get(position).getName());
+                alertDialogBuilder.setMessage("Are you sure you want to remove " + assetList.get(position).getManufacturers() + ", " + assetList.get(position).getModel());
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("REMOVE",
@@ -180,24 +185,51 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
-                    checkCameraPermission();
+                    if (taskType.toLowerCase().startsWith("v")) {
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            tvBarcodeValue.setText(etBarcode.getText().toString().trim());
+                            etBarcode.setText("");
+                            etBarcode.setVisibility(View.INVISIBLE);
+                            tvBarcodeTitle.setVisibility(View.VISIBLE);
+                            tvBarcodeValue.setVisibility(View.VISIBLE);
+                            btnCross.setVisibility(View.VISIBLE);
+                            llunderText.setVisibility(View.GONE);
+                            llbtns.setVisibility(View.VISIBLE);
+                        }
+                    } else if (taskType.toLowerCase().startsWith("m")) {
+
+                    }
                     break;
                 }
 
                 case R.id.btnAsset: {
-                    Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
-                    in.putExtra("action", "viewAsset");
-                    startActivity(in);
-                    hideScannedData();
+
+                    asset = DataManager.getInstance().getAsset(tvBarcodeValue.getText().toString().trim());
+                    ViewAssetInformationActivity.barCodeID = tvBarcodeValue.getText().toString().trim();
+                    if (null != asset) {
+                        Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
+                        in.putExtra("action", "viewAsset");
+                        startActivity(in);
+                        hideScannedData();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
 
                     break;
                 }
 
                 case R.id.btnLoc: {
-                    Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
-                    in.putExtra("action", "viewLoc");
-                    startActivity(in);
-                    hideScannedData();
+                    ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString().trim();
+                    if (null != DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString().trim())) {
+                        Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
+                        in.putExtra("action", "viewLoc");
+                        startActivity(in);
+                        hideScannedData();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Location Not found!", Toast.LENGTH_LONG).show();
+                    }
                     break;
                 }
 
@@ -224,7 +256,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskType);
                     in.putExtra("compName", compName);
                     in.putExtra("assetList", listAssets);
-                    in.putExtra("loc", assetList.get(0).getLocation());
+                    in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
                     startActivity(in);
                     break;
                 }
@@ -303,7 +335,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
         if (requestCode == CAMERA_PERMISSION_CONSTANT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION,true);
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
                 Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", taskType);
                 startActivity(in);
@@ -328,8 +360,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     });
                     builder.show();
                 } else {
-                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN,true);
-                    Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN, true);
+                    Toast.makeText(getBaseContext(), "Unable to get Permission", Toast.LENGTH_LONG).show();
                 }
             }
         }
@@ -354,10 +386,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (taskType.toLowerCase().startsWith("m")) {
-                    asset.setName("Ansul");
-                    asset.setCode("An350");
-                    asset.setTag("00382");
-                    asset.setLocation("L00416");
+                    asset.setManufacturers("Ansul");
+                    asset.setModel("An350");
+                    asset.setTagID("00382");
+                    asset.setLocation(new Location("00416", "I am a loc", "Lipsum", "Lipsum", "shelf"));
                     etBarcode.setText("");
                     rlBottomSheet.setVisibility(View.VISIBLE);
                     assetList.add(asset);
@@ -367,10 +399,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     mAdapter.notifyDataSetChanged();
 
                 } else if (taskType.toLowerCase().startsWith("t")) {
-                    asset.setName("Ansul");
-                    asset.setCode("An350");
-                    asset.setTag("00382");
-                    asset.setLocation("L00416");
+                    asset.setManufacturers("Ansul");
+                    asset.setModel("An350");
+                    asset.setTagID("00382");
+                    asset.setLocation(new Location("00416", "I am a loc", "Lipsum", "Lipsum", "shelf"));
                     etBarcode.setText("");
                     rlBottomSheet.setVisibility(View.VISIBLE);
                     assetList.add(asset);

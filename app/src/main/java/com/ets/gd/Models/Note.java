@@ -1,11 +1,12 @@
 package com.ets.gd.Models;
 
-/**
- * Created by hakhtar on 3/22/2017.
- * General Data
- */
 
-public class Note {
+import java.io.Serializable;
+
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Note extends RealmObject implements Serializable {
     private String noteTitle;
     private String noteDescription;
 
