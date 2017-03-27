@@ -96,16 +96,18 @@ public class InspectionDatesFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-        tvDaily.setText(asset.getInspectionDates().getDaily());
-        tvWeekly.setText(asset.getInspectionDates().getWeekly());
-        tvMonthly.setText(asset.getInspectionDates().getMonthly());
-        tvQuarterly.setText(asset.getInspectionDates().getQuaterly());
-        tvSemiAnnual.setText(asset.getInspectionDates().getSemiAnnual());
-        tvAnnual.setText(asset.getInspectionDates().getAnnual());
-        tvFiveYears.setText(asset.getInspectionDates().getFiveYear());
-        tvSixYears.setText(asset.getInspectionDates().getSixYear());
-        tvTenYears.setText(asset.getInspectionDates().getTenYear());
-        tvTwelveYears.setText(asset.getInspectionDates().getTwelveYear());
+        if (null!=asset.getInspectionDates()) {
+            tvDaily.setText(asset.getInspectionDates().getDaily());
+            tvWeekly.setText(asset.getInspectionDates().getWeekly());
+            tvMonthly.setText(asset.getInspectionDates().getMonthly());
+            tvQuarterly.setText(asset.getInspectionDates().getQuaterly());
+            tvSemiAnnual.setText(asset.getInspectionDates().getSemiAnnual());
+            tvAnnual.setText(asset.getInspectionDates().getAnnual());
+            tvFiveYears.setText(asset.getInspectionDates().getFiveYear());
+            tvSixYears.setText(asset.getInspectionDates().getSixYear());
+            tvTenYears.setText(asset.getInspectionDates().getTenYear());
+            tvTwelveYears.setText(asset.getInspectionDates().getTwelveYear());
+        }
 
     }
 

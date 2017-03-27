@@ -19,7 +19,6 @@ import com.ets.gd.Fragments.AssetInformationFragment;
 import com.ets.gd.Fragments.AssetLocationFragment;
 import com.ets.gd.Fragments.InspectionDatesFragment;
 import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.NewAsset;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -32,6 +31,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     private ViewPager viewPager;
     public static Fragment currentFragment;
     public static String actionType, barCodeID;
+    boolean isAssetAdded = false;
     Asset asset;
 
     @Override
@@ -98,14 +98,41 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
 
                     if (0 == tabLayout.getSelectedTabPosition()) {
-                        showToast("Add asset");
+                        if (checkValidationAddAsset()) {
+                            DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
+                                    AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
+                                    AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
+                                    AssetInformationFragment.tvModel.getText().toString().trim(),
+                                    AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                    AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                    AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
+                                    AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
+                            ));
+                            showToast("Asset Added");
+                            isAssetAdded = true;
+                            finish();
+                        }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
-                        showToast("Add asset Location");
+                        if (isAssetAdded) {
+                            showToast("Add asset Location not Implemented yet");
+                        } else {
+                            showToast("Please add asset first");
+                        }
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
-                        showToast("Add asset Note");
+                        if (isAssetAdded) {
+                            showToast("Add asset Note not Implemented yet");
+                        } else {
+                            showToast("Please add asset first");
+                        }
                     } else if (3 == tabLayout.getSelectedTabPosition()) {
-                        showToast("Add asset Inspection Dates");
+                        if (isAssetAdded) {
+                            showToast("Add asset Inspection Dates not Implemented yet");
+                        } else {
+                            showToast("Please add asset first");
+                        }
+
+
                     }
                     break;
                 }
@@ -114,6 +141,31 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         }
 
     };
+
+
+    private boolean checkValidationAddAsset() {
+        if ("".equals(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+            showToast("Please enter Tag ID");
+        } else if (0 == AssetInformationFragment.posDeviceType) {
+            showToast("Please select a Device type");
+        } else if (0 == AssetInformationFragment.posManufacturer) {
+            showToast("Please select a Manufacturer");
+        } else if ("".equals(AssetInformationFragment.tvModel.getText().toString().trim())) {
+            showToast("Please enter Model");
+        } else if ("".equals(AssetInformationFragment.tvSrNo.getText().toString().trim())) {
+            showToast("Please enter Serial Number");
+        } else if ("".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {
+            showToast("Please select Manufacturer date");
+        } else if (0 == AssetInformationFragment.posVendor) {
+            showToast("Please select a Vendor");
+        } else if (0 == AssetInformationFragment.posAgent) {
+            showToast("Please select a Agent");
+        } else {
+            return true;
+        }
+
+        return false;
+    }
 
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

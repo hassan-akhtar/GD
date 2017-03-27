@@ -24,11 +24,12 @@ import com.ets.gd.Utils.DatePickerFragmentEditText;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
-    Spinner spDeviceType, spManufacturer, spVendor, spAgent;
+    public static Spinner spDeviceType, spManufacturer, spVendor, spAgent;
     View rootView;
     Asset asset;
-    private EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
+    public static EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
+    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0;
 
 
     public AssetInformationFragment() {
@@ -202,7 +203,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         int viewID = parent.getId();
         switch (viewID) {
             case R.id.spDeviceType: {
-
+                posDeviceType = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     try {
@@ -216,6 +217,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             break;
 
             case R.id.spManufacturer: {
+                posManufacturer = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     try {
@@ -229,6 +231,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             break;
 
             case R.id.spVendor: {
+                posVendor = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     try {
@@ -243,6 +246,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
 
             case R.id.spAgent: {
+                posAgent = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {

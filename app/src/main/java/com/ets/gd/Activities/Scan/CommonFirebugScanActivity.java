@@ -299,7 +299,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskType);
                     in.putExtra("compName", compName);
                     in.putExtra("count", assetList.size());
-                    in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
+                    if (null!=assetList.get(0).getLocation()) {
+                        in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
+                    }else{
+                        in.putExtra("loc", "L007133");
+                    }
                     startActivity(in);
                     break;
                 }
@@ -429,9 +433,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (taskType.toLowerCase().startsWith("m")) {
-
                     asset =  DataManager.getInstance().getAsset(message);
-
                     if(null!=asset){
                         if (!assetList.contains(asset)) {
                             etBarcode.setText("");

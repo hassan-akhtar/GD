@@ -71,7 +71,6 @@ public class LocationSelectionActivity extends AppCompatActivity {
     }
 
     private void initObj() {
-        assetList = new AssetList();
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
                 new IntentFilter("moveToLoc"));
@@ -84,15 +83,15 @@ public class LocationSelectionActivity extends AppCompatActivity {
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
         rlYes.setOnClickListener(mGlobal_OnClickListener);
         rlNo.setOnClickListener(mGlobal_OnClickListener);
+        assetList = new AssetList();
     }
 
 
     private void setupData() {
 
         taskName = getIntent().getStringExtra("taskType");
-        count = getIntent().getIntExtra("count",0);
+        count = getIntent().getIntExtra("count", 0);
         companyName = getIntent().getStringExtra("compName");
-
 
         assetList.setAssetList(DataManager.getInstance().getAllAssets(count));
 
@@ -208,7 +207,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
             if (taskName.toLowerCase().startsWith("m")) {
                 tvStatement.setText("Are you sure you want to move " + assetList.getAssetList().size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);
-            } else  if (taskName.toLowerCase().startsWith("t")) {
+            } else if (taskName.toLowerCase().startsWith("t")) {
                 tvStatement.setText("Are you sure you want to transfer " + assetList.getAssetList().size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);
             }

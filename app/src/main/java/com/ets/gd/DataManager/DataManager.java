@@ -36,6 +36,8 @@ public class DataManager {
             public void execute(Realm realm) {
                 Asset asset = realm.createObject(Asset.class);
                 asset.setTagID(obj.getTagID());
+                asset.setModel(obj.getModel());
+                asset.setMfgDate(obj.getMfgDate());
                 asset.setDeviceType(obj.getDeviceType());
                 asset.setManufacturers(obj.getManufacturers());
                 asset.setSerialNo(obj.getSerialNo());
@@ -69,7 +71,19 @@ public class DataManager {
         return realm.where(Location.class).equalTo("locationID", barcodeID).findFirst();
     }
 
-
+    public void addLocation(final Location obj){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Location location = realm.createObject(Location.class);
+                location.setLocationID(obj.getLocationID());
+                location.setDescription(obj.getDescription());
+                location.setAgent(obj.getAgent());
+                location.setVendor(obj.getVendor());
+                location.setPlace(obj.getPlace());
+            }
+        });
+    }
     // For adding an asset notes in DB
     public void AddAssetNotes(final Asset obj){
 

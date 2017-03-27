@@ -20,12 +20,14 @@ import com.ets.gd.R;
 
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
-    ImageView ivBack,ivTick;
+    ImageView ivBack, ivTick;
     Spinner spSite, spBuilding;
     private EditText tvLocationID, tvDescprition;
     Location location;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
+    int posSite = 0 , posBuilding = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,10 +64,10 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spBuilding.setAdapter(dataAdapterAgent);
 
         actionType = getIntent().getStringExtra("action");
-        if("viewLoc".equals(actionType)){
+        if ("viewLoc".equals(actionType)) {
             ivTick.setVisibility(View.GONE);
             setViewForViewLoc();
-        }else {
+        } else {
             ivTick.setVisibility(View.VISIBLE);
             setViewForAddLoc();
         }
@@ -121,7 +123,17 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 }
 
                 case R.id.ivTick: {
-                    Toast.makeText(getApplicationContext(),"Add Location",Toast.LENGTH_LONG).show();
+                    if (checkValidation()) {
+                        DataManager.getInstance().addLocation(
+
+                                new Location(tvLocationID.getText().toString().trim(),
+                                tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
+                                spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
+                        );
+                        Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+
                     break;
                 }
             }
@@ -129,13 +141,33 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     };
 
+    private boolean checkValidation() {
+        if ("".equals(tvLocationID.getText().toString().trim())) {
+            showToast("Please enter location ID");
+        } else if ("".equals(tvDescprition.getText().toString().trim())) {
+            showToast("Please enter Description");
+        } else if (0==posSite) {
+            showToast("Please select a site");
+        } else if (0==posBuilding) {
+            showToast("Please select a building");
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
         int viewID = parent.getId();
         switch (viewID) {
-            case R.id.spDeviceType: {
-
+            case R.id.spSite: {
+                posSite = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
@@ -144,27 +176,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             }
             break;
 
-            case R.id.spManufacturer: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
-            case R.id.spVendor: {
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                }
-
-            }
-            break;
-
-
-            case R.id.spAgent: {
+            case R.id.spBuilding: {
+                posBuilding = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);

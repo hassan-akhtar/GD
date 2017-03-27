@@ -84,19 +84,25 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     void setViewForViewAsset() {
 
-        tvLocationID.setText(asset.getLocation().getLocationID());
-        tvDescprition.setText(asset.getLocation().getDescription());
-
-
-        for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
-            if (asset.getLocation().getVendor().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
-                spSite.setSelection(i);
+        if (null!=asset.getLocation()) {
+            if (null!=asset.getLocation().getLocationID()) {
+                tvLocationID.setText(asset.getLocation().getLocationID());
             }
-        }
+            if (null!=asset.getLocation().getDescription()) {
+                tvDescprition.setText(asset.getLocation().getDescription());
+            }
 
-        for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
-            if (asset.getLocation().getAgent().toString().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
-                spBuilding.setSelection(i);
+
+            for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
+                if (asset.getLocation().getVendor().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
+                    spSite.setSelection(i);
+                }
+            }
+
+            for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
+                if (asset.getLocation().getAgent().toString().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
+                    spBuilding.setSelection(i);
+                }
             }
         }
 

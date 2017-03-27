@@ -61,7 +61,7 @@ public class DashboardFragment extends Fragment {
     private void initObj() {
         ca = new CommonActions(getActivity());
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
-        //DataManager.getInstance().setupDataForApp();
+        DataManager.getInstance().setupDataForApp();
     }
 
     private void initListeners() {
