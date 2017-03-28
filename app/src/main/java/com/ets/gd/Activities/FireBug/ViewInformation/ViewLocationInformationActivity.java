@@ -124,14 +124,18 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
                 case R.id.ivTick: {
                     if (checkValidation()) {
-                        DataManager.getInstance().addLocation(
+                        if (!DataManager.getInstance().doesLocationExist(tvLocationID.getText().toString().trim())) {
+                            DataManager.getInstance().addLocation(
 
-                                new Location(tvLocationID.getText().toString().trim(),
-                                tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
-                                spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
-                        );
-                        Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
-                        finish();
+                                    new Location(tvLocationID.getText().toString().trim(),
+                                            tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
+                                            spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
+                            );
+                            Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
+                            finish();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Location Already Added!", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     break;

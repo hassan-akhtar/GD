@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Enter Barcode ID"
-        android:inputType="number"
+        android:inputType="textPhonetic"
         android:layout_alignParentTop="true"
         android:layout_alignLeft="@+id/llunderText"
         android:layout_alignStart="@+id/llunderText" />

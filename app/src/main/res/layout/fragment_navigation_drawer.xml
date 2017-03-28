@@ -112,7 +112,7 @@
                 android:layout_marginLeft="10dp"
                 android:textSize="14sp"
                 android:layout_height="wrap_content"
-                android:text="Logout"/>
+                android:text="Exit"/>
 
         </LinearLayout>
 

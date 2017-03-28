@@ -11,6 +11,8 @@ public class SharedPreferencesManager {
     public static final String  SYNC_STATE = "syncState";
     public static final String  IS_CAMERA_PERMISSION = "permissionCamera";
     public static final String IS_NEVER_ASK_AGAIN = "neveraskagain";
+    public static final String  LAST_SYNC_DATE = "syncDate";
+    public static final String LAST_SYNC_TIME = "syncTime";
 
 
 

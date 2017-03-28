@@ -29,6 +29,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     Asset asset;
     public static EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
+
     public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0;
 
 
@@ -102,6 +103,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     void setViewForViewAsset() {
 
         tvTagID.setText(asset.getTagID());
+        tvTagID.setEnabled(false);
         tvModel.setText(asset.getModel());
         tvSrNo.setText(asset.getSerialNo());
         tvMfgDate.setText(asset.getMfgDate());
@@ -139,6 +141,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     void setViewForVAddAsset() {
 
         tvTagID.setText("");
+        tvTagID.setEnabled(true);
         tvModel.setText("");
         tvSrNo.setText("");
         tvMfgDate.setText("");

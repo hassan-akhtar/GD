@@ -86,7 +86,14 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
         if (null!=asset.getLocation()) {
             if (null!=asset.getLocation().getLocationID()) {
-                tvLocationID.setText(asset.getLocation().getLocationID());
+
+                if (!"".equals(asset.getLocation().getLocationID())|| null!= asset.getLocation().getLocationID()) {
+                    tvLocationID.setText(asset.getLocation().getLocationID());
+                    tvLocationID.setEnabled(false);
+                } else {
+                    tvLocationID.setText("");
+                    tvLocationID.setEnabled(true);
+                }
             }
             if (null!=asset.getLocation().getDescription()) {
                 tvDescprition.setText(asset.getLocation().getDescription());
@@ -112,6 +119,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     void setViewForVAddAsset() {
 
         tvLocationID.setText("");
+        tvLocationID.setEnabled(true);
         tvDescprition.setText("");
 
         spSite.setSelection(0);

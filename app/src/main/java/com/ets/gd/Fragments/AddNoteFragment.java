@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
@@ -120,11 +121,15 @@ public class AddNoteFragment extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,
                                                             int id) {
-                                            Note note = new Note();
-                                            note.setNoteTitle(title.getText().toString().trim());
-                                            note.setNoteDescription(desc.getText().toString().trim());
-                                            lstNotes.add(note);
-                                            mAdapter.notifyDataSetChanged();
+                                            if (!"".equals(title.getText().toString().trim()) && !"".equals(desc.getText().toString().trim())) {
+                                                Note note = new Note();
+                                                note.setNoteTitle(title.getText().toString().trim());
+                                                note.setNoteDescription(desc.getText().toString().trim());
+                                                lstNotes.add(note);
+                                                mAdapter.notifyDataSetChanged();
+                                            } else {
+                                                Toast.makeText(getActivity(),"Title or Note was missing. Please try again",Toast.LENGTH_LONG).show();
+                                            }
                                         }
                                     })
                             .setNegativeButton("Cancel",

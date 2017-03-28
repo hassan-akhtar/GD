@@ -32,6 +32,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     public static Fragment currentFragment;
     public static String actionType, barCodeID;
     boolean isAssetAdded = false;
+    static String tagID = "";
     Asset asset;
 
     @Override
@@ -99,18 +100,21 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
                     if (0 == tabLayout.getSelectedTabPosition()) {
                         if (checkValidationAddAsset()) {
-                            DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
-                                    AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
-                                    AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
-                                    AssetInformationFragment.tvModel.getText().toString().trim(),
-                                    AssetInformationFragment.tvSrNo.getText().toString().trim(),
-                                    AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-                                    AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
-                                    AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
-                            ));
-                            showToast("Asset Added");
-                            isAssetAdded = true;
-                            finish();
+                            if (!DataManager.getInstance().doesAssetExist(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+                                DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
+                                        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
+                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
+                                        AssetInformationFragment.tvModel.getText().toString().trim(),
+                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
+                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
+                                ));
+                                showToast("Asset Added");
+                                isAssetAdded = true;
+                            }else{
+                                showToast("Asset Already Added!");
+                            }
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {

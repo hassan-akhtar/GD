@@ -17,10 +17,8 @@ public class DataManager {
     static Realm realm;
 
 
-
     public static DataManager getInstance() {
-        if (dataManager == null)
-        {
+        if (dataManager == null) {
             dataManager = new DataManager();
             realm = Realm.getDefaultInstance();
         }
@@ -29,7 +27,7 @@ public class DataManager {
 
 
     // For adding an asset info in DB
-    public void AddAssetInfo(final Asset obj){
+    public void AddAssetInfo(final Asset obj) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -48,8 +46,6 @@ public class DataManager {
     }
 
 
-
-
 //    // For adding an asset location in DB
 //    void AddAssetLocation( final String tagID, final Location obj){
 //
@@ -62,16 +58,33 @@ public class DataManager {
 //        });
 //    }
 
-    public Asset getAsset(String barcodeID){
+    public Asset getAsset(String barcodeID) {
         return realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
     }
 
+    public boolean doesAssetExist(String barcodeID) {
+        Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
 
-    public Location getLocation(String barcodeID){
+        if (null != asset)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean doesLocationExist(String barcodeID) {
+        Location location = realm.where(Location.class).equalTo("locationID", barcodeID).findFirst();
+
+        if (null != location)
+            return true;
+        else
+            return false;
+    }
+
+    public Location getLocation(String barcodeID) {
         return realm.where(Location.class).equalTo("locationID", barcodeID).findFirst();
     }
 
-    public void addLocation(final Location obj){
+    public void addLocation(final Location obj) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -84,8 +97,9 @@ public class DataManager {
             }
         });
     }
+
     // For adding an asset notes in DB
-    public void AddAssetNotes(final Asset obj){
+    public void AddAssetNotes(final Asset obj) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -100,11 +114,10 @@ public class DataManager {
             }
         });
     }
-
 
 
     // For adding Asset Inspection Dates in DB
-    public  void AddAssetInspectionDates(final Asset obj){
+    public void AddAssetInspectionDates(final Asset obj) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -119,28 +132,27 @@ public class DataManager {
             }
         });
     }
+
     // For getting asset all assets from DB
-    public   List<Asset> getAllAssets(){
+    public List<Asset> getAllAssets() {
         return realm.where(Asset.class).findAllSorted("manufacturers");
 
     }
 
     // For getting asset all assets from DB
-    public   List<Asset> getAllAssets(int count){
-        return realm.where(Asset.class).findAllSorted("manufacturers").subList(0,count);
+    public List<Asset> getAllAssets(int count) {
+        return realm.where(Asset.class).findAllSorted("manufacturers").subList(0, count);
 
     }
 
     // For getting asset all assets from DB
-    public   List<Location> getAllLocations(){
+    public List<Location> getAllLocations() {
         return realm.where(Location.class).findAllSorted("locationID");
 
     }
 
 
-
-    public  void setupDataForApp(){
-
+    public void setupDataForApp() {
         // Adding dummy asset 1
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -251,6 +263,128 @@ public class DataManager {
             public void execute(Realm realm) {
                 Location location = realm.createObject(Location.class);
                 location.setLocationID("87126228");
+                location.setDescription("This is a Desc");
+                location.setAgent("Lipsum");
+                location.setVendor("Lipsum");
+                location.setPlace("Shelf");
+            }
+        });
+
+
+    }
+
+
+    public void setupSyncData() {
+        // Adding dummy asset 1
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Asset asset = realm.createObject(Asset.class);
+                asset.setTagID("00A111");
+                asset.setDeviceType("EXT");
+                asset.setManufacturers("Ansul");
+                asset.setModel("002199");
+                asset.setSerialNo("002323");
+                asset.setMfgDate("2/6/2017");
+                asset.setVendor("Lipsum");
+                asset.setAgent("Lipsum");
+                Location location = realm.createObject(Location.class);
+                location.setLocationID("00416");
+                location.setDescription("This is a Desc");
+                location.setAgent("Lipsum");
+                location.setVendor("Lipsum");
+                location.setPlace("Shelf");
+                asset.setLocation(location);
+                RealmList<Note> list = new RealmList<Note>();
+                Note note = realm.createObject(Note.class);
+                note.setNoteTitle("Note 1");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                list.add(note);
+                note.setNoteTitle("Note 2");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                list.add(note);
+                asset.setNoteList(list);
+                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
+                inspectionDates.setDaily("2/2/2017");
+                inspectionDates.setWeekly("2/2/2017");
+                inspectionDates.setMonthly("2/2/2017");
+                inspectionDates.setQuaterly("2/2/2017");
+                inspectionDates.setSemiAnnual("2/2/2017");
+                inspectionDates.setAnnual("2/2/2017");
+                inspectionDates.setFiveYear("2/2/2017");
+                inspectionDates.setSixYear("2/2/2017");
+                inspectionDates.setTenYear("2/2/2017");
+                inspectionDates.setTwelveYear("2/2/2017");
+                asset.setInspectionDates(inspectionDates);
+            }
+        });
+
+        // Adding dummy asset 2
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Asset asset = realm.createObject(Asset.class);
+                asset.setTagID("00A222");
+                asset.setDeviceType("EXT");
+                asset.setManufacturers("Ansul");
+                asset.setSerialNo("005555");
+                asset.setModel("002216");
+                asset.setMfgDate("2/2/2017");
+                asset.setVendor("Lipsum");
+                asset.setAgent("Lipsum");
+                Location location = realm.createObject(Location.class);
+                location.setLocationID("00416");
+                location.setDescription("This is a Desc");
+                location.setAgent("Lipsum");
+                location.setVendor("Lipsum");
+                location.setPlace("Shelf");
+                asset.setLocation(location);
+                RealmList<Note> list = new RealmList<Note>();
+                Note note = realm.createObject(Note.class);
+                note.setNoteTitle("Note 1");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                list.add(note);
+                note.setNoteTitle("Note 2");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                note.setNoteTitle("Note 3");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                note.setNoteTitle("Note 4");
+                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
+                list.add(note);
+                asset.setNoteList(list);
+                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
+                inspectionDates.setDaily("2/2/2017");
+                inspectionDates.setWeekly("2/2/2017");
+                inspectionDates.setMonthly("2/2/2017");
+                inspectionDates.setQuaterly("2/2/2017");
+                inspectionDates.setSemiAnnual("2/2/2017");
+                inspectionDates.setAnnual("2/2/2017");
+                inspectionDates.setFiveYear("2/2/2017");
+                inspectionDates.setSixYear("2/2/2017");
+                inspectionDates.setTenYear("2/2/2017");
+                inspectionDates.setTwelveYear("2/2/2017");
+                asset.setInspectionDates(inspectionDates);
+            }
+        });
+
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Location location = realm.createObject(Location.class);
+                location.setLocationID("00L111");
+                location.setDescription("This is a Desc");
+                location.setAgent("Lipsum");
+                location.setVendor("Lipsum");
+                location.setPlace("Shelf");
+            }
+        });
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Location location = realm.createObject(Location.class);
+                location.setLocationID("00L222");
                 location.setDescription("This is a Desc");
                 location.setAgent("Lipsum");
                 location.setVendor("Lipsum");
