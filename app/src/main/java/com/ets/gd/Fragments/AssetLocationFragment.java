@@ -23,11 +23,12 @@ import com.ets.gd.R;
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    Spinner spSite, spBuilding;
+    public static Spinner spSite, spBuilding;
     View rootView;
-    private EditText tvLocationID, tvDescprition;
+    public static EditText tvLocationID, tvDescprition;
     private TextInputLayout lLocationID, lDescprition;
     Asset asset;
+    public static int posSite = 0, posBuilding = 0;
 
     public AssetLocationFragment() {
 
@@ -84,10 +85,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     void setViewForViewAsset() {
 
-        if (null!=asset.getLocation()) {
-            if (null!=asset.getLocation().getLocationID()) {
+        if (null != asset.getLocation()) {
+            if (null != asset.getLocation().getLocationID()) {
 
-                if (!"".equals(asset.getLocation().getLocationID())|| null!= asset.getLocation().getLocationID()) {
+                if (!"".equals(asset.getLocation().getLocationID()) || null != asset.getLocation().getLocationID()) {
                     tvLocationID.setText(asset.getLocation().getLocationID());
                     tvLocationID.setEnabled(false);
                 } else {
@@ -95,7 +96,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                     tvLocationID.setEnabled(true);
                 }
             }
-            if (null!=asset.getLocation().getDescription()) {
+            if (null != asset.getLocation().getDescription()) {
                 tvDescprition.setText(asset.getLocation().getDescription());
             }
 
@@ -141,7 +142,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         int viewID = parent.getId();
         switch (viewID) {
             case R.id.spSite: {
-
+                posSite = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {
@@ -155,6 +156,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             break;
 
             case R.id.spBuilding: {
+                posBuilding = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {

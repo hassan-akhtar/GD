@@ -85,7 +85,7 @@
         android:background="@color/colorPrimaryDark" />
 
     <RelativeLayout
-        android:id="@+id/rlMonthly"
+        android:id="@+id/rlQuarterly"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/v2"
@@ -95,47 +95,6 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monthly" />
-
-        <TextView
-            android:id="@+id/tvMonthly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="MM/DD/YY" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_info" />
-
-    </RelativeLayout>
-
-
-    <View
-        android:id="@+id/v3"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_below="@+id/rlMonthly"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="5dp"
-        android:background="@color/colorPrimaryDark" />
-
-    <RelativeLayout
-        android:id="@+id/rlQuarterly"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/v3"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:text="Quarterly" />
 
@@ -156,10 +115,51 @@
 
 
     <View
-        android:id="@+id/v4"
+        android:id="@+id/v3"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@+id/rlQuarterly"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorPrimaryDark" />
+
+    <RelativeLayout
+        android:id="@+id/rlMonthly"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/v3"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="Monthly" />
+
+        <TextView
+            android:id="@+id/tvMonthly"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="MM/DD/YY" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_info" />
+
+    </RelativeLayout>
+
+
+    <View
+        android:id="@+id/v4"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rlMonthly"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="5dp"

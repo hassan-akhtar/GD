@@ -19,6 +19,8 @@ import com.ets.gd.Fragments.AssetInformationFragment;
 import com.ets.gd.Fragments.AssetLocationFragment;
 import com.ets.gd.Fragments.InspectionDatesFragment;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.InspectionDates;
+import com.ets.gd.Models.Location;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -111,27 +113,51 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
                                 ));
                                 showToast("Asset Added");
+                                tagID = AssetInformationFragment.tvTagID.getText().toString().trim();
                                 isAssetAdded = true;
-                            }else{
+                            } else {
                                 showToast("Asset Already Added!");
                             }
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
-                            showToast("Add asset Location not Implemented yet");
+                            if (checkValidationAddAssetLocation()) {
+                                DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
+                                        AssetLocationFragment.tvDescprition.getText().toString().trim(), AssetLocationFragment.spSite.getItemAtPosition(AssetLocationFragment.posSite).toString(),
+                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));
+                                showToast("Asset's Location Updated");
+                            }
                         } else {
                             showToast("Please add asset first");
                         }
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
-                            showToast("Add asset Note not Implemented yet");
+                            if (checkValidationAddAssetNote()) {
+                                DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
+                                showToast("Asset's Note(s) Updated");
+                            }
                         } else {
                             showToast("Please add asset first");
                         }
                     } else if (3 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
-                            showToast("Add asset Inspection Dates not Implemented yet");
+                            if (checkValidationAddAssetInspectionDates()) {
+                                DataManager.getInstance().addUpdateAssetInspecDates(tagID, new InspectionDates(
+                                        InspectionDatesFragment.tvDaily.getText().toString().trim(),
+                                        InspectionDatesFragment.tvWeekly.getText().toString().trim(),
+                                        InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
+                                        InspectionDatesFragment.tvMonthly.getText().toString().trim(),
+                                        InspectionDatesFragment.tvSemiAnnual.getText().toString().trim(),
+                                        InspectionDatesFragment.tvAnnual.getText().toString().trim(),
+                                        InspectionDatesFragment.tvFiveYears.getText().toString().trim(),
+                                        InspectionDatesFragment.tvSixYears.getText().toString().trim(),
+                                        InspectionDatesFragment.tvTenYears.getText().toString().trim(),
+                                        InspectionDatesFragment.tvTwelveYears.getText().toString().trim()
+
+                                ));
+                                showToast("Asset's Inspection Dates Updated");
+                            }
                         } else {
                             showToast("Please add asset first");
                         }
@@ -170,6 +196,61 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
         return false;
     }
+
+
+    private boolean checkValidationAddAssetLocation() {
+        if ("".equals(AssetLocationFragment.tvLocationID.getText().toString().trim())) {
+            showToast("Please enter Location ID");
+        } else if (0 == AssetLocationFragment.posSite) {
+            showToast("Please select a site");
+        } else if (0 == AssetLocationFragment.posBuilding) {
+            showToast("Please select a building");
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private boolean checkValidationAddAssetNote() {
+        if (0 == AddNoteFragment.lstNotes.size()) {
+            showToast("Please add a note first");
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean checkValidationAddAssetInspectionDates() {
+        if ("DD/MM/YY".equals(InspectionDatesFragment.tvDaily.getText().toString().trim())) {
+            showToast("Please Select Daily Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvWeekly.getText().toString().trim())) {
+            showToast("Please Select Weekly Inspection date");
+        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvQuarterly.getText().toString().trim())) {
+            showToast("Please Select Quarterly Inspection date");
+        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvMonthly.getText().toString().trim())) {
+            showToast("Please Select Monthly Inspection date");
+        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvSemiAnnual.getText().toString().trim())) {
+            showToast("Please Select Semi Annual Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvAnnual.getText().toString().trim())) {
+            showToast("Please Select Annual Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvFiveYears.getText().toString().trim())) {
+            showToast("Please Select 5 years Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvSixYears.getText().toString().trim())) {
+            showToast("Please Select 6 years Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvTenYears.getText().toString().trim())) {
+            showToast("Please Select 20 years Inspection date");
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvTwelveYears.getText().toString().trim())) {
+            showToast("Please Select 12 years Inspection date");
+        } else {
+            return true;
+        }
+
+        return false;
+    }
+
 
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

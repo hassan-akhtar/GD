@@ -28,7 +28,7 @@ import java.util.List;
 public class AddNoteFragment extends Fragment {
 
     View rootView;
-    List<Note> lstNotes = new ArrayList<Note>();
+    public static List<Note> lstNotes = new ArrayList<Note>();
     FloatingActionButton fbAddNote;
     NoteAdapter mAdapter;
     Asset asset;

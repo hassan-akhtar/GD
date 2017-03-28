@@ -2,6 +2,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <android.support.design.widget.TextInputLayout
         android:id="@+id/lLocationID"
         android:layout_width="match_parent"
@@ -77,5 +83,6 @@
             android:background="@drawable/sp_bg_new"
             android:paddingBottom="10dp" />
     </RelativeLayout>
-
+    </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

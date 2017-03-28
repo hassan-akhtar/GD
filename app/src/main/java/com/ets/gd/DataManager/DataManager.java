@@ -71,6 +71,68 @@ public class DataManager {
             return false;
     }
 
+    public void addUpdateAssetLocation(final String barcodeID, final Location loc) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
+                Location location = realm.createObject(Location.class);
+                location.setLocationID(loc.getLocationID());
+                location.setDescription(loc.getDescription());
+                location.setAgent(loc.getAgent());
+                location.setVendor(loc.getVendor());
+                location.setPlace(loc.getPlace());
+                asset.setLocation(location);
+            }
+        });
+
+    }
+
+    public void addUpdateAssetNote(final String barcodeID, final List<Note> noteList) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
+                RealmList<Note> noteListNew = new RealmList<Note>();
+                Note note = realm.createObject(Note.class);
+                for (int i=0;i<noteList.size();i++){
+                    note.setNoteTitle(noteList.get(i).getNoteTitle());
+                    note.setNoteDescription(noteList.get(i).getNoteDescription());
+                    noteListNew.add(note);
+                }
+                asset.setNoteList(noteListNew);
+                
+            }
+        });
+
+    }
+
+    public void addUpdateAssetInspecDates(final String barcodeID, final InspectionDates inspectionDates) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
+                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
+                inspectionDates.setDaily(inspectionDates.getDaily());
+                inspectionDates.setWeekly(inspectionDates.getWeekly());
+                inspectionDates.setMonthly(inspectionDates.getMonthly());
+                inspectionDates.setQuaterly(inspectionDates.getQuaterly());
+                inspectionDates.setSemiAnnual(inspectionDates.getSemiAnnual());
+                inspectionDates.setAnnual(inspectionDates.getAnnual());
+                inspectionDates.setFiveYear(inspectionDates.getFiveYear());
+                inspectionDates.setSixYear(inspectionDates.getSixYear());
+                inspectionDates.setTenYear(inspectionDates.getTenYear());
+                inspectionDates.setTwelveYear(inspectionDates.getTwelveYear());
+                asset.setInspectionDates(inspectionDates);
+            }
+        });
+
+    }
+
+
     public boolean doesLocationExist(String barcodeID) {
         Location location = realm.where(Location.class).equalTo("locationID", barcodeID).findFirst();
 
