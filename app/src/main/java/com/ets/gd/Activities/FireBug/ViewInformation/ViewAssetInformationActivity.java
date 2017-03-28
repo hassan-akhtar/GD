@@ -106,7 +106,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                 DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
                                         AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
                                         AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
-                                        AssetInformationFragment.tvModel.getText().toString().trim(),
+                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
                                         AssetInformationFragment.tvSrNo.getText().toString().trim(),
                                         AssetInformationFragment.tvMfgDate.getText().toString().trim(),
                                         AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
@@ -180,8 +180,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             showToast("Please select a Device type");
         } else if (0 == AssetInformationFragment.posManufacturer) {
             showToast("Please select a Manufacturer");
-        } else if ("".equals(AssetInformationFragment.tvModel.getText().toString().trim())) {
-            showToast("Please enter Model");
+        } else if (0 == AssetInformationFragment.posModel) {
+            showToast("Please select a Model");
         } else if ("".equals(AssetInformationFragment.tvSrNo.getText().toString().trim())) {
             showToast("Please enter Serial Number");
         } else if ("".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {

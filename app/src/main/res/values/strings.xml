@@ -109,8 +109,36 @@
         <item>Lipsum</item>
     </string-array>
 
+    <string-array name="models">
+        <item>Select a model</item>
+        <item>Lipsum</item>
+        <item>002199</item>
+        <item>Lipsum</item>
+        <item>002216</item>
+        <item>Lipsum</item>
+    </string-array>
+
     <string-array name="agents">
         <item>Select a Agent</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+    </string-array>
+
+    <string-array name="sites">
+        <item>Select a site</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+        <item>Lipsum</item>
+    </string-array>
+
+
+    <string-array name="building">
+        <item>Select a building</item>
         <item>Lipsum</item>
         <item>Lipsum</item>
         <item>Lipsum</item>

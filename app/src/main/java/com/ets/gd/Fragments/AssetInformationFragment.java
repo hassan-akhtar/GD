@@ -24,13 +24,13 @@ import com.ets.gd.Utils.DatePickerFragmentEditText;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
-    public static Spinner spDeviceType, spManufacturer, spVendor, spAgent;
+    public static Spinner spDeviceType, spManufacturer, spVendor, spAgent, spModel;
     View rootView;
     Asset asset;
-    public static EditText tvTagID, tvModel, tvSrNo, tvMfgDate;
+    public static EditText tvTagID, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
 
-    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0;
+    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0 , posModel =0;
 
 
     public AssetInformationFragment() {
@@ -56,14 +56,13 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         spManufacturer = (Spinner) rootView.findViewById(R.id.spManufacturer);
         spVendor = (Spinner) rootView.findViewById(R.id.spVendor);
         spAgent = (Spinner) rootView.findViewById(R.id.spAgent);
+        spModel = (Spinner) rootView.findViewById(R.id.spModel);
 
         ltvTagID = (TextInputLayout) rootView.findViewById(R.id.ltvTagID);
-        lModel = (TextInputLayout) rootView.findViewById(R.id.lModel);
         lSrNo = (TextInputLayout) rootView.findViewById(R.id.lSrNo);
         lMfgDate = (TextInputLayout) rootView.findViewById(R.id.lMfgDate);
         tvTagID = (EditText) rootView.findViewById(R.id.tvTagID);
         tvMfgDate = (EditText) rootView.findViewById(R.id.tvMfgDate);
-        tvModel = (EditText) rootView.findViewById(R.id.tvModel);
         tvSrNo = (EditText) rootView.findViewById(R.id.tvSrNo);
 
 
@@ -82,6 +81,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         ArrayAdapter<String> dataAdapterManufacturer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.manufacturers));
         dataAdapterManufacturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spManufacturer.setAdapter(dataAdapterManufacturer);
+
+
+        ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.models));
+        dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spModel.setAdapter(dataAdapterModel);
+
 
         ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
         dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -104,9 +109,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         tvTagID.setText(asset.getTagID());
         tvTagID.setEnabled(false);
-        tvModel.setText(asset.getModel());
         tvSrNo.setText(asset.getSerialNo());
         tvMfgDate.setText(asset.getMfgDate());
+
         for (int i = 0; i < getResources().getStringArray(R.array.deviceTypes).length; i++) {
             if (asset.getDeviceType().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spDeviceType.setSelection(i);
@@ -114,19 +119,26 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
         for (int i = 0; i < getResources().getStringArray(R.array.manufacturers).length; i++) {
-            if (asset.getDeviceType().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
+            if (asset.getManufacturers().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
             }
         }
+
+        for (int i = 0; i < getResources().getStringArray(R.array.models).length; i++) {
+            if (asset.getModel().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
+                spModel.setSelection(i);
+            }
+        }
+
         for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
-            if (asset.getDeviceType().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
+            if (asset.getVendor().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
                 spVendor.setSelection(i);
             }
         }
 
         for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
-            if (asset.getDeviceType().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
-                spDeviceType.setSelection(i);
+            if (asset.getAgent().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+                spAgent.setSelection(i);
             }
         }
 
@@ -142,13 +154,13 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         tvTagID.setText("");
         tvTagID.setEnabled(true);
-        tvModel.setText("");
         tvSrNo.setText("");
         tvMfgDate.setText("");
         spDeviceType.setSelection(0);
         spManufacturer.setSelection(0);
         spVendor.setSelection(0);
         spAgent.setSelection(0);
+        spModel.setSelection(0);
 
     }
 
@@ -158,6 +170,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         spManufacturer.setOnItemSelectedListener(this);
         spVendor.setOnItemSelectedListener(this);
         spAgent.setOnItemSelectedListener(this);
+        spModel.setOnItemSelectedListener(this);
         tvMfgDate.setOnClickListener(mGlobal_OnClickListener);
 
         tvMfgDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -232,6 +245,21 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
             }
             break;
+
+            case R.id.spModel: {
+                posModel = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                if (0 == position) {
+                    try {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+            break;
+
 
             case R.id.spVendor: {
                 posVendor = position;

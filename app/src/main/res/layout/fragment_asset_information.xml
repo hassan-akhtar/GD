@@ -8,9 +8,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,39 +26,41 @@
 
                 <EditText
                     android:id="@+id/tvTagID"
-                    android:paddingLeft="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="@string/txt_tagID"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
                 android:id="@+id/rlDeviceID"
-                android:layout_below="@+id/ltvTagID"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_height="wrap_content">
-            <Spinner
-                android:id="@+id/spDeviceType"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="23dp"
-                android:layout_marginRight="23dp"
-                android:background="@drawable/sp_bg_new"
-                android:paddingBottom="10dp" />
+                android:layout_below="@+id/ltvTagID"
+                android:layout_marginTop="15dp">
+
+                <Spinner
+                    android:id="@+id/spDeviceType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
             </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/rlManufacturer"
-                android:layout_below="@+id/rlDeviceID"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlDeviceID"
+                android:layout_marginTop="28dp">
+
                 <Spinner
                     android:id="@+id/spManufacturer"
                     android:layout_width="match_parent"
@@ -70,25 +72,25 @@
                     android:paddingBottom="10dp" />
             </RelativeLayout>
 
-            <android.support.design.widget.TextInputLayout
+
+            <RelativeLayout
                 android:id="@+id/lModel"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlManufacturer"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
-                android:theme="@style/TextLabel">
+                android:layout_marginTop="28dp">
 
-                <EditText
-                    android:id="@+id/tvModel"
-                    android:paddingLeft="12dp"
+
+                <Spinner
+                    android:id="@+id/spModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:hint="@string/txt_model"
-                    android:maxLines="1" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/lSrNo"
@@ -96,18 +98,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lModel"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="10dp"
                 android:theme="@style/TextLabel">
 
                 <EditText
                     android:id="@+id/tvSrNo"
-                    android:paddingLeft="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="@string/txt_serialNo"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
 
 
@@ -122,21 +124,22 @@
 
                 <EditText
                     android:id="@+id/tvMfgDate"
-                    android:paddingLeft="12dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="@string/txt_mfg_date"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
                 android:id="@+id/rlVendor"
-                android:layout_below="@+id/lMfgDate"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="28dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lMfgDate"
+                android:layout_marginTop="15dp">
+
                 <Spinner
                     android:id="@+id/spVendor"
                     android:layout_width="match_parent"
@@ -150,11 +153,12 @@
 
             <RelativeLayout
                 android:id="@+id/rlAgent"
-                android:layout_below="@+id/rlVendor"
                 android:layout_width="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlVendor"
                 android:layout_marginBottom="20dp"
-                android:layout_height="wrap_content">
+                android:layout_marginTop="28dp">
+
                 <Spinner
                     android:id="@+id/spAgent"
                     android:layout_width="match_parent"
