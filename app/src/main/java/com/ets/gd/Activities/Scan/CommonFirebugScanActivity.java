@@ -20,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -230,6 +231,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             asset =  DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
                             if(null!=asset){
                                 if (!assetList.contains(asset)) {
+                                    hideKeyboard();
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
                                     assetList.add(asset);
@@ -238,9 +240,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     tvCountSupportText.setText("Asset Selected to TRANSFER");
                                     mAdapter.notifyDataSetChanged();
                                 }else{
+                                    hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
                             }else {
+                                hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
                         }
@@ -293,6 +297,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlForwardArrow: {
+
                     AssetList listAssets = new AssetList();
                     listAssets.setAssetList(assetList);
                     Intent in = new Intent(CommonFirebugScanActivity.this, LocationSelectionActivity.class);
@@ -304,6 +309,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     }else{
                         in.putExtra("loc", "L007133");
                     }
+                    LocationSelectionActivity.asset = assetList;
                     startActivity(in);
                     break;
                 }
@@ -415,7 +421,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     }
 
     public void hideKeyboard() {
-        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+        InputMethodManager imm = (InputMethodManager)
+        getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                etBarcode.getWindowToken(), 0);
     }
 
     private final BroadcastReceiver mBarcodeBroadcastReceiver = new BroadcastReceiver() {

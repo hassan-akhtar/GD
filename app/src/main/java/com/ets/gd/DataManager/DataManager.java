@@ -46,6 +46,27 @@ public class DataManager {
     }
 
 
+    // For adding an asset info in DB
+    public void updateAssetLocationID(final List<Asset> assetList, final String newLocId) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+               // for (int i=0;i>assetList.size();i++) {
+                for(Asset asset : assetList) {
+                    Asset assett = realm.where(Asset.class).equalTo("tagID", asset.getTagID()).findFirst();
+                    Location location = realm.createObject(Location.class);
+                    location.setLocationID(newLocId);
+                    location.setDescription(assett.getLocation().getDescription());
+                    location.setAgent(assett.getLocation().getAgent());
+                    location.setVendor(assett.getLocation().getVendor());
+                    location.setPlace(assett.getLocation().getPlace());
+                    asset.setLocation(location);
+                }
+            }
+            //}
+        });
+    }
+
 //    // For adding an asset location in DB
 //    void AddAssetLocation( final String tagID, final Location obj){
 //

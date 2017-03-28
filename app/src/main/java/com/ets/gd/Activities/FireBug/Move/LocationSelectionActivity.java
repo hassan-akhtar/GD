@@ -18,11 +18,16 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.Activities.Customer.CustomerActivity;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
 import com.ets.gd.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LocationSelectionActivity extends AppCompatActivity {
 
@@ -32,6 +37,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     Button btnSelectLoc, btnViewAllAssets;
     String taskName, companyName, loc;
     AssetList assetList;
+    public static List<Asset> asset = new ArrayList<Asset>();
     String[] assetNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
@@ -133,6 +139,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
+                    DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString().trim());
+                    if (taskName.toLowerCase().startsWith("m")) {
+                        Toast.makeText(getApplicationContext(),"Asset(s) Successfully Moved!",Toast.LENGTH_LONG).show();
+                    } else if (taskName.toLowerCase().startsWith("t")) {
+                        Toast.makeText(getApplicationContext(),"Asset(s) Successfully Transferred!",Toast.LENGTH_LONG).show();
+                    }
                     sendMessage("finish");
                     finish();
                     break;
