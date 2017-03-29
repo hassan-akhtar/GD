@@ -25,6 +25,7 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.DashboardFragment;
+import com.ets.gd.Fragments.DeviceInfoFragment;
 import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Fragments.InventoryDashboardFragment;
@@ -115,7 +116,8 @@ public class BaseActivity extends AppCompatActivity
                 }
 
                 case R.id.llDeviceInfo: {
-                    showToast("Device Info Clicked!");
+                    drawer.closeDrawer(Gravity.LEFT);
+                    refreshMainViewByNew(new DeviceInfoFragment());
                     break;
                 }
 
@@ -180,6 +182,14 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new SyncFragment()).commit();
+        }else if (fragment instanceof DeviceInfoFragment) {
+            //searchMenuItem.setVisible(false);
+            tbTitleTop.setText("ETS");
+            tbTitleBottom.setText("Device Info");
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new DeviceInfoFragment()).commit();
         }
         fragmentManager.executePendingTransactions();
     }
