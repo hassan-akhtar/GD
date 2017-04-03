@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:id="@+id/rlUnitInspMain"
+        android:orientation="horizontal"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp">
+
+        <TextView
+            android:id="@+id/tvInspectAsset"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:text="INSPECT ASSET"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:layout_width="1px"
+            android:background="@android:color/white"
+            android:layout_marginLeft="15dp"
+            android:layout_height="match_parent"/>
+        <TextView
+            android:id="@+id/tvChangeLocation"
+            android:padding="5dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:textColor="@android:color/white"
+            android:text="CHANGE LOCATION"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+</RelativeLayout>

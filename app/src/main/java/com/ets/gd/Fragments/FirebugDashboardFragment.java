@@ -42,6 +42,7 @@ public class FirebugDashboardFragment extends Fragment {
     Context mContext;
     TextView tvCompanyValue;
     ImageView ivChangeCompany;
+
     public FirebugDashboardFragment() {
         // Required empty public constructor
     }
@@ -69,7 +70,7 @@ public class FirebugDashboardFragment extends Fragment {
     }
 
     private void initObj() {
-        adapter = new AssetsAdapter(fbTasks,fbTasksImages);
+        adapter = new AssetsAdapter(fbTasks, fbTasksImages);
         BaseActivity.currentFragment = new FirebugDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvTasks.setLayoutManager(mLayoutManager);
@@ -87,15 +88,21 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (fbTasks[position].toLowerCase().startsWith("ro") || fbTasks[position].toLowerCase().startsWith("uni")) {
+                if (fbTasks[position].toLowerCase().startsWith("ro")) {
 //                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
 //                    startActivity(in);
-                    showToast(""+fbTasks[position]);
+                    showToast("" + fbTasks[position]);
+
+                } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
+                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                    in.putExtra("taskType", "Inspect Assets");
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
 
                 } else {
                     Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType",fbTasks[position]);
-                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                    in.putExtra("taskType", fbTasks[position]);
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                     startActivity(in);
                 }
             }
@@ -108,9 +115,10 @@ public class FirebugDashboardFragment extends Fragment {
     }
 
 
-    void showToast(String msg){
-        Toast.makeText(mContext,msg,Toast.LENGTH_LONG).show();
+    void showToast(String msg) {
+        Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -139,7 +147,7 @@ public class FirebugDashboardFragment extends Fragment {
                 case R.id.itemAddAsset: {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ViewAssetInformationActivity.class);
-                    in.putExtra("action","addAsset");
+                    in.putExtra("action", "addAsset");
                     startActivity(in);
                     break;
                 }
@@ -147,11 +155,10 @@ public class FirebugDashboardFragment extends Fragment {
                 case R.id.itemAddLocation: {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ViewLocationInformationActivity.class);
-                    in.putExtra("action","addLoc");
+                    in.putExtra("action", "addLoc");
                     startActivity(in);
                     break;
                 }
-
 
 
             }

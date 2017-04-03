@@ -54,14 +54,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     ImageView ivBack, ivChangeCompany, ivTick;
     EditText etBarcode;
     ScannedAssetsAdapter mAdapter;
-    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
+    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue, tvInspectAsset, tvChangeLocation;
     TextView tvCount, tvCountSupportText, tvTaskName;
-    RelativeLayout rlForwardArrow, rlBottomSheet;
+    RelativeLayout rlForwardArrow, rlBottomSheet, rlBottomSheetUnitInsp;
     Button btnLoc, btnAsset, btnScan, btnCross;
     View vLine;
     RecyclerView rlAssets;
     Asset asset;
-    NewAsset newAsset;
     String taskType, compName;
     LinearLayout llbtns, llunderText;
     private List<Asset> assetList = new ArrayList<Asset>();
@@ -84,6 +83,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
+        tvInspectAsset = (TextView) findViewById(R.id.tvInspectAsset);
+        tvChangeLocation = (TextView) findViewById(R.id.tvChangeLocation);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
@@ -94,6 +95,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         tvTaskName = (TextView) findViewById(R.id.tvTaskName);
         rlForwardArrow = (RelativeLayout) findViewById(R.id.rlForwardArrow);
         rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheetMove);
+        rlBottomSheetUnitInsp = (RelativeLayout) findViewById(R.id.rlBottomSheetUnitInsp);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         vLine = (View) findViewById(R.id.vLine);
         btnLoc = (Button) findViewById(R.id.btnLoc);
@@ -143,6 +145,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         btnCross.setOnClickListener(mGlobal_OnClickListener);
         rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
+        tvChangeLocation.setOnClickListener(mGlobal_OnClickListener);
+        tvInspectAsset.setOnClickListener(mGlobal_OnClickListener);
 
         rlAssets.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getApplicationContext(), rlAssets, new FragmentDrawer.ClickListener() {
             @Override
@@ -159,10 +163,16 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                                         int id) {
 
                                         mAdapter.removeAt(position);
-                                        if (0 != assetList.size()) {
-                                            tvCount.setText("" + assetList.size());
-                                        } else {
-                                            rlBottomSheet.setVisibility(View.GONE);
+                                        if (taskType.toLowerCase().startsWith("m") || taskType.toLowerCase().startsWith("v")) {
+                                            if (0 != assetList.size()) {
+                                                tvCount.setText("" + assetList.size());
+                                            } else {
+                                                rlBottomSheet.setVisibility(View.GONE);
+                                            }
+                                        } else if (taskType.toLowerCase().startsWith("in")) {
+                                            if (0 == assetList.size()) {
+                                                rlBottomSheetUnitInsp.setVisibility(View.GONE);
+                                            }
                                         }
                                     }
                                 })
@@ -215,7 +225,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to Move");
                                     mAdapter.notifyDataSetChanged();
-                                }else{
+                                } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
@@ -224,12 +234,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
                         }
-                    }else if (taskType.toLowerCase().startsWith("t")) {
+                    } else if (taskType.toLowerCase().startsWith("t")) {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            asset =  DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
-                            if(null!=asset){
+                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
+                            if (null != asset) {
                                 if (!assetList.contains(asset)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
@@ -239,11 +249,32 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to TRANSFER");
                                     mAdapter.notifyDataSetChanged();
-                                }else{
+                                } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            }else {
+                            } else {
+                                hideKeyboard();
+                                Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }else if (taskType.toLowerCase().startsWith("ins")) {
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
+                            if (null != asset) {
+                                if (!assetList.contains(asset)) {
+                                    etBarcode.setText("");
+                                    hideKeyboard();
+                                    rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
+                                    assetList.add(asset);
+                                    mAdapter.notifyDataSetChanged();
+                                } else {
+                                    hideKeyboard();
+                                    Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                                }
+                            } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
@@ -286,6 +317,18 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     break;
                 }
 
+
+                case R.id.tvInspectAsset: {
+                    showToast("Inspect Asset");
+                    break;
+                }
+
+
+                case R.id.tvChangeLocation: {
+                    showToast("change location");
+                    break;
+                }
+
                 case R.id.ivChangeCompany: {
                     finish();
                     break;
@@ -304,9 +347,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskType);
                     in.putExtra("compName", compName);
                     in.putExtra("count", assetList.size());
-                    if (null!=assetList.get(0).getLocation()) {
+                    if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
-                    }else{
+                    } else {
                         in.putExtra("loc", "L007133");
                     }
                     LocationSelectionActivity.asset = assetList;
@@ -422,7 +465,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)
-        getSystemService(Context.INPUT_METHOD_SERVICE);
+                getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(
                 etBarcode.getWindowToken(), 0);
     }
@@ -442,8 +485,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (taskType.toLowerCase().startsWith("m")) {
-                    asset =  DataManager.getInstance().getAsset(message);
-                    if(null!=asset){
+                    asset = DataManager.getInstance().getAsset(message);
+                    if (null != asset) {
                         if (!assetList.contains(asset)) {
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
@@ -452,10 +495,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to Move");
                             mAdapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
-                    }else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                     }
 
@@ -463,9 +506,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 } else if (taskType.toLowerCase().startsWith("t")) {
 
 
-                    asset =  DataManager.getInstance().getAsset(message);
+                    asset = DataManager.getInstance().getAsset(message);
 
-                    if(null!=asset){
+                    if (null != asset) {
                         if (!assetList.contains(asset)) {
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
@@ -474,10 +517,27 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to TRANSFER");
                             mAdapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
-                    }else {
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
+
+                } else if (taskType.toLowerCase().startsWith("ins")) {
+
+                    asset = DataManager.getInstance().getAsset(message);
+
+                    if (null != asset) {
+                        if (!assetList.contains(asset)) {
+                            etBarcode.setText("");
+                            rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
+                            assetList.add(asset);
+                            mAdapter.notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                        }
+                    } else {
                         Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                     }
 
