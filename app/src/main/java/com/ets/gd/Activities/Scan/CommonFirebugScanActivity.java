@@ -30,10 +30,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
+import com.ets.gd.Activities.FireBug.UnitInspection.UnitInspectionActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
@@ -265,6 +268,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
                             if (null != asset) {
                                 if (!assetList.contains(asset)) {
+                                    assetList.clear();
                                     etBarcode.setText("");
                                     hideKeyboard();
                                     rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
@@ -319,13 +323,19 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
                 case R.id.tvInspectAsset: {
-                    showToast("Inspect Asset");
+                    Intent in = new Intent(CommonFirebugScanActivity.this, UnitInspectionActivity.class);
+                    in.putExtra("tag",""+assetList.get(0).getTagID());
+                    in.putExtra("loc",""+assetList.get(0).getLocation().getLocationID());
+                    in.putExtra("compName",compName);
+                    in.putExtra("deviceType",""+assetList.get(0).getDeviceType());
+                    in.putExtra("desp",""+assetList.get(0).getLocation().getDescription());
+                    startActivity(in);
                     break;
                 }
 
 
                 case R.id.tvChangeLocation: {
-                    showToast("change location");
+                    showToast("Change Loc");
                     break;
                 }
 
@@ -530,6 +540,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                     if (null != asset) {
                         if (!assetList.contains(asset)) {
+                            assetList.clear();
                             etBarcode.setText("");
                             rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
                             assetList.add(asset);

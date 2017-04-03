@@ -36,7 +36,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <RelativeLayout
-                android:id="@+id/rlDeviceID"
+                android:id="@+id/rlInspType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ltvTagID"
@@ -55,10 +55,10 @@
 
 
             <RelativeLayout
-                android:id="@+id/rlManufacturer"
+                android:id="@+id/rlStatusCode"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rlDeviceID"
+                android:layout_below="@+id/rlInspType"
                 android:layout_marginTop="28dp">
 
                 <Spinner
@@ -74,10 +74,10 @@
 
 
             <RelativeLayout
-                android:id="@+id/lModel"
+                android:id="@+id/rlInspectionResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rlManufacturer"
+                android:layout_below="@+id/rlStatusCode"
                 android:layout_marginTop="28dp">
 
 
@@ -96,7 +96,7 @@
                 android:id="@+id/lSrNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/lModel"
+                android:layout_below="@+id/rlInspectionResult"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="10dp"
                 android:theme="@style/TextLabel">

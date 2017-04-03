@@ -6,8 +6,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
 
     <application
-        android:allowBackup="true"
         android:name=".Application.MyApplication"
+        android:allowBackup="true"
         android:icon="@drawable/ets_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
@@ -33,7 +33,8 @@
         <activity android:name=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity" />
         <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity" />
         <activity android:name=".Activities.FireBug.Move.SelectLocationActivity" />
-        <activity android:name=".Activities.Customer.CustomerActivity"></activity>
+        <activity android:name=".Activities.Customer.CustomerActivity" />
+        <activity android:name=".Activities.FireBug.UnitInspection.UnitInspectionActivity"></activity>
     </application>
 
 </manifest>

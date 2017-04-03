@@ -105,7 +105,6 @@ public class CustomerFragment extends Fragment implements MyCallBack {
         rvCustomers.setLayoutManager(mLayoutManager);
         rvCustomers.setItemAnimator(new DefaultItemAnimator());
         customerAdapter.notifyDataSetChanged();
-
     }
 
     @Override

@@ -146,4 +146,29 @@
         <item>Lipsum</item>
     </string-array>
 
+
+    <string-array name="inspTypes">
+        <item>Inspection Type</item>
+        <item>Daily</item>
+        <item>Weelky</item>
+        <item>Monthly</item>
+        <item>Quarterly</item>
+        <item>Semi Annual</item>
+        <item>Annual</item>
+        <item>5 years</item>
+        <item>6 years</item>
+        <item>10 years</item>
+        <item>12 years</item>
+    </string-array>
+
+
+
+    <string-array name="inspResults">
+        <item>Inspection Results</item>
+        <item>Pass</item>
+        <item>Fail</item>
+
+    </string-array>
+
+
 </resources>
