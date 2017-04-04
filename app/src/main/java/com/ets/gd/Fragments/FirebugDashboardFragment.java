@@ -95,7 +95,7 @@ public class FirebugDashboardFragment extends Fragment {
 
                 } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
                     Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType", fbTasks[position]);
+                    in.putExtra("taskType", "Inspect Assets");
                     in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                     startActivity(in);
 

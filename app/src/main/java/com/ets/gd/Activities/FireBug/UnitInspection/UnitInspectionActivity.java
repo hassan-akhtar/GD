@@ -1,13 +1,16 @@
 package com.ets.gd.Activities.FireBug.UnitInspection;
 
+import android.content.Context;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -15,7 +18,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Adapters.SpinnerAdapter;
 import com.ets.gd.Models.StateVO;
 import com.ets.gd.R;
 
@@ -26,11 +28,12 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
-    Spinner spInspType, spStatusCode, spInspectionResult;
+    Spinner spInspType, spInspectionResult;
     String compName, tag, loc, desp, deviceType;
     LinearLayout rlBottomsheet;
-    ArrayList<StateVO> listVOs = new ArrayList<>();
-    int posInspType, posStatusCode, posInspectionResult;
+    EditText etStatusCode;
+    RelativeLayout rlCodes;
+    int posInspType, posInspectionResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvAssetName = (TextView) findViewById(R.id.tvAssetName);
+        etStatusCode = (EditText) findViewById(R.id.etStatusCode);
         tvAssetOtherInfo = (TextView) findViewById(R.id.tvAssetOtherInfo);
         tvSave = (TextView) findViewById(R.id.tvSave);
         tvReplace = (TextView) findViewById(R.id.tvReplace);
@@ -58,7 +62,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         spInspType = (Spinner) findViewById(R.id.spInspType);
         rlBottomsheet = (LinearLayout) findViewById(R.id.rlBottomsheet);
-        spStatusCode = (Spinner) findViewById(R.id.spStatusCode);
+        rlCodes = (RelativeLayout) findViewById(R.id.rlCodes);
         spInspectionResult = (Spinner) findViewById(R.id.spInspectionResult);
         tbTitleBottom.setText("Inspect Assets");
         ivTick.setVisibility(View.GONE);
@@ -83,24 +87,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         dataAdapterInspType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspType.setAdapter(dataAdapterInspType);
 
-
-        final String[] select_qualification = {
-                "Status Code", "Bracket", "Nozzle", "Damaged", "Operational",
-                "Hose", "Recharge", "Not Accessible", "Tag"};
-
-
-        for (int i = 0; i < select_qualification.length; i++) {
-            StateVO stateVO = new StateVO();
-            stateVO.setTitle(select_qualification[i]);
-            stateVO.setSelected(false);
-            listVOs.add(stateVO);
-        }
-        SpinnerAdapter myAdapter = new SpinnerAdapter(getApplicationContext(), 0,
-                listVOs);
-        spStatusCode.setAdapter(myAdapter);
-
-
-        ArrayAdapter<String> dataAdapterInspectionResult = new ArrayAdapter<String>(UnitInspectionActivity.this,android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspResults));
+        ArrayAdapter<String> dataAdapterInspectionResult = new ArrayAdapter<String>(UnitInspectionActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspResults));
         dataAdapterInspectionResult.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspectionResult.setAdapter(dataAdapterInspectionResult);
 
@@ -111,8 +98,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         tvSave.setOnClickListener(mGlobal_OnClickListener);
         tvReplace.setOnClickListener(mGlobal_OnClickListener);
         tvCancel.setOnClickListener(mGlobal_OnClickListener);
+        etStatusCode.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
-        spStatusCode.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
 
 
@@ -130,6 +117,15 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     break;
                 }
 
+                case R.id.etStatusCode: {
+                    hideKeyboard();
+                    if (rlCodes.getVisibility()==View.GONE) {
+                        rlCodes.setVisibility(View.VISIBLE);
+                    } else {
+                        rlCodes.setVisibility(View.GONE);
+                    }
+                    break;
+                }
 
                 case R.id.tvReplace: {
                     break;
@@ -146,6 +142,12 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     };
 
 
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                etStatusCode.getWindowToken(), 0);
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
@@ -171,26 +173,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             }
             break;
 
-            case R.id.spStatusCode: {
-                posStatusCode = position;
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                if (0 == position) {
-                    try {
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.DKGRAY);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-            }
-            break;
-
             case R.id.spInspectionResult: {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.gravity = Gravity.CENTER_VERTICAL;
@@ -198,14 +180,14 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 posInspectionResult = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
 
-                if("fail".equals(strSelectedState.toLowerCase())){
+                if ("fail".equals(strSelectedState.toLowerCase())) {
                     tvReplace.setVisibility(View.VISIBLE);
                     lp.weight = 1;
                     tvReplace.setLayoutParams(lp);
                     tvSave.setLayoutParams(lp);
                     tvCancel.setLayoutParams(lp);
 
-                }else{
+                } else {
                     tvReplace.setVisibility(View.GONE);
                     lp.weight = 0;
                     tvReplace.setLayoutParams(lp);
