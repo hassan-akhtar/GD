@@ -139,7 +139,7 @@ public class BaseActivity extends AppCompatActivity
     }
 
     public static void refreshMainViewByNew(Fragment fragment) {
-        fragmentManager.executePendingTransactions();
+
         if (fragment instanceof DashboardFragment) {
             //searchMenuItem.setVisible(false);
 
@@ -192,7 +192,7 @@ public class BaseActivity extends AppCompatActivity
                     .replace(R.id.container_body,
                             new DeviceInfoFragment()).commit();
         }
-
+        fragmentManager.executePendingTransactions();
     }
 
 

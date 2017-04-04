@@ -34,7 +34,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_toRightOf="@+id/tvCompanyText"
-            android:text="DSI"
+            android:text=""
             android:textStyle="normal|bold"
             app:layout_constraintLeft_toRightOf="@+id/tvCompanyText"
             app:layout_constraintTop_toTopOf="parent" />

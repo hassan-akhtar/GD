@@ -3,7 +3,9 @@ package com.ets.gd.Activities.FireBug.UnitInspection;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -61,6 +63,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         tbTitleBottom.setText("Inspect Assets");
         ivTick.setVisibility(View.GONE);
         ivChangeCompany.setVisibility(View.GONE);
+        tvReplace.setVisibility(View.GONE);
 
     }
 
@@ -111,6 +114,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         spInspType.setOnItemSelectedListener(this);
         spStatusCode.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
+
+
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -187,8 +192,27 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             break;
 
             case R.id.spInspectionResult: {
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                lp.gravity = Gravity.CENTER_VERTICAL;
+
                 posInspectionResult = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
+
+                if("fail".equals(strSelectedState.toLowerCase())){
+                    tvReplace.setVisibility(View.VISIBLE);
+                    lp.weight = 1;
+                    tvReplace.setLayoutParams(lp);
+                    tvSave.setLayoutParams(lp);
+                    tvCancel.setLayoutParams(lp);
+
+                }else{
+                    tvReplace.setVisibility(View.GONE);
+                    lp.weight = 0;
+                    tvReplace.setLayoutParams(lp);
+                    lp.weight = 1.5f;
+                    tvSave.setLayoutParams(lp);
+                    tvCancel.setLayoutParams(lp);
+                }
                 if (0 == position) {
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);

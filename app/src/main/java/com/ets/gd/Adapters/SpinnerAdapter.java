@@ -53,8 +53,6 @@ public class SpinnerAdapter extends ArrayAdapter<StateVO> {
                     .findViewById(R.id.text);
             holder.mCheckBox = (CheckBox) convertView
                     .findViewById(R.id.checkbox);
-            holder.rlMain = (RelativeLayout) convertView
-                    .findViewById(R.id.rlMain);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -79,8 +77,6 @@ public class SpinnerAdapter extends ArrayAdapter<StateVO> {
 //            @Override
 //            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 //                int getPosition = (Integer) buttonView.getTag();
-//
-//
 //            }
 //        });
         return convertView;
@@ -89,6 +85,5 @@ public class SpinnerAdapter extends ArrayAdapter<StateVO> {
     private class ViewHolder {
         private TextView mTextView;
         private CheckBox mCheckBox;
-        private RelativeLayout rlMain;
     }
 }

@@ -325,10 +325,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 case R.id.tvInspectAsset: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, UnitInspectionActivity.class);
                     in.putExtra("tag",""+assetList.get(0).getTagID());
-                    in.putExtra("loc",""+assetList.get(0).getLocation().getLocationID());
+                    if (null!=assetList.get(0).getLocation()) {
+                        in.putExtra("loc",""+assetList.get(0).getLocation().getLocationID());
+                        in.putExtra("desp",""+assetList.get(0).getLocation().getDescription());
+                    }
                     in.putExtra("compName",compName);
                     in.putExtra("deviceType",""+assetList.get(0).getDeviceType());
-                    in.putExtra("desp",""+assetList.get(0).getLocation().getDescription());
+
                     startActivity(in);
                     break;
                 }
