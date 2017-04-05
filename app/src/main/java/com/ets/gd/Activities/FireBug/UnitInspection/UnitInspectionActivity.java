@@ -1,21 +1,18 @@
 package com.ets.gd.Activities.FireBug.UnitInspection;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
+import android.util.Log;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -23,10 +20,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Models.StateVO;
 import com.ets.gd.R;
-
-import java.util.ArrayList;
 
 public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener {
 
@@ -134,6 +128,11 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 }
 
                 case R.id.tvSave: {
+                    if (checkValidation()) {
+                        showToast("Inspection completed Successfully");
+                        sendMessage("finish");
+                        finish();
+                    }
                     break;
                 }
 
@@ -147,6 +146,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 }
 
                 case R.id.tvReplace: {
+                    showToast("Replace Clicked!");
                     break;
                 }
 
@@ -160,6 +160,25 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
     };
 
+    private boolean checkValidation() {
+        if (0 == posInspType) {
+            showToast("Please select Inspection Type");
+        } else if ("".equals(etStatusCode.getText().toString().trim())) {
+            showToast("Please select status Code(s)");
+        } else if (0 == posInspectionResult) {
+            showToast("Please select Inspection Result");
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
