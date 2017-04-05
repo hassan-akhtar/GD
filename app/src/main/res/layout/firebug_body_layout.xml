@@ -267,7 +267,7 @@
                 android:id="@+id/tvInspectionDue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
                 android:text="INSPECTION"
                 android:textColor="@color/greyLight" />
@@ -277,7 +277,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvInspectionDue"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="6dp"
                 android:text=" DUE END OF"
                 android:textColor="@color/greyLight" />
 
@@ -285,7 +285,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tvInspectionDue2"
-                android:layout_marginLeft="12dp"
+                android:layout_marginLeft="6dp"
                 android:text=" MONTH"
                 android:textColor="@color/greyLight" />
 

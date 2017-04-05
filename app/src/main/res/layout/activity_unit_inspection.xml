@@ -184,24 +184,36 @@
                 android:layout_below="@+id/rlInspType"
                 android:layout_marginTop="28dp">
 
-                <EditText
+                <TextView
                     android:id="@+id/etStatusCode"
                     android:inputType="none"
+                    android:drawableRight="@drawable/ic_dropdown"
                     android:textColor="@color/greyNew"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="24dp"
                     android:hint="Status Code"
                     android:maxLines="1"
                     android:textSize="16sp"
                     android:paddingLeft="12dp" />
 
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="22dp"
+                    android:layout_below="@+id/etStatusCode"
+                    android:background="@color/colorPrimary" />
+
+
+
                 <RelativeLayout
                     android:id="@+id/rlCodes"
                     android:layout_width="wrap_content"
-                    android:visibility="visible"
-                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="15dp"
                     android:layout_marginLeft="25dp"
                     android:layout_marginRight="25dp"
                     android:layout_height="wrap_content"
