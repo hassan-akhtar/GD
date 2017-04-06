@@ -5,11 +5,11 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.Note;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmList;
+import io.realm.RealmResults;
 
 public class DataManager {
 
@@ -51,8 +51,8 @@ public class DataManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-               // for (int i=0;i>assetList.size();i++) {
-                for(Asset asset : assetList) {
+                // for (int i=0;i>assetList.size();i++) {
+                for (Asset asset : assetList) {
                     Asset assett = realm.where(Asset.class).equalTo("tagID", asset.getTagID()).findFirst();
                     Location location = realm.createObject(Location.class);
                     location.setLocationID(newLocId);
@@ -118,13 +118,13 @@ public class DataManager {
                 Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
                 RealmList<Note> noteListNew = new RealmList<Note>();
                 Note note = realm.createObject(Note.class);
-                for (int i=0;i<noteList.size();i++){
+                for (int i = 0; i < noteList.size(); i++) {
                     note.setNoteTitle(noteList.get(i).getNoteTitle());
                     note.setNoteDescription(noteList.get(i).getNoteDescription());
                     noteListNew.add(note);
                 }
                 asset.setNoteList(noteListNew);
-                
+
             }
         });
 
@@ -230,8 +230,11 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Location> getAllLocations() {
-        return realm.where(Location.class).findAllSorted("locationID");
+        RealmResults<Location> results = realm.where(Location.class).findAllSorted("locationID");
 
+        List<Location> copied = realm.copyFromRealm(results);
+
+        return copied;
     }
 
 

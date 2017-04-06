@@ -1,6 +1,9 @@
 package com.ets.gd.Activities.FireBug.UnitInspection;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
@@ -24,7 +27,6 @@ import com.ets.gd.R;
 
 public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener {
 
-
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
@@ -39,11 +41,9 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_unit_inspection);
-
         initViews();
         initObj();
         initListeners();
-
     }
 
 
@@ -80,6 +80,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     }
 
     private void initObj() {
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
+                new IntentFilter("move-complete"));
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
         loc = getIntent().getStringExtra("loc");
@@ -146,7 +148,13 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 }
 
                 case R.id.tvReplace: {
-                    showToast("Replace Clicked!");
+                    if (checkValidation()) {
+                        Intent in = new Intent(UnitInspectionActivity.this, ReplaceAssetActivity.class);
+                        in.putExtra("taskType", "Inspect Assets");
+                        in.putExtra("compName", compName);
+                        in.putExtra("code", tag);
+                        startActivity(in);
+                    }
                     break;
                 }
 
@@ -173,12 +181,26 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         return false;
     }
 
+    private final BroadcastReceiver mReplaceCompleteBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+
+            if (message.startsWith("fin")) {
+                finish();
+            }
+
+        }
+    };
+
+
     private void sendMessage(String msg) {
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("move-complete");
         intent.putExtra("message", msg);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 

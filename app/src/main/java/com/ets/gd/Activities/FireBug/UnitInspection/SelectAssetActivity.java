@@ -1,12 +1,12 @@
-package com.ets.gd.Activities.FireBug.Move;
+package com.ets.gd.Activities.FireBug.UnitInspection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,14 +16,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
-import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
@@ -34,7 +30,7 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectLocationActivity extends AppCompatActivity {
+public class SelectAssetActivity extends AppCompatActivity {
 
 
     ImageView ivBack, ivChangeCompany, ivTick;
@@ -43,14 +39,14 @@ public class SelectLocationActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnScan, btnCross;
     RecyclerView rlLocs;
-    List<Location> locList = new ArrayList<Location>();
+    List<Asset> assetList = new ArrayList<Asset>();
     Context mContext;
-    String location;
+    String compName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_select_location);
+        setContentView(R.layout.activity_select_asset);
 
         initViews();
         initObj();
@@ -77,22 +73,22 @@ public class SelectLocationActivity extends AppCompatActivity {
         ivChangeCompany.setVisibility(View.GONE);
         ivTick.setVisibility(View.GONE);
         tbTitleTop.setText("Firebug");
-        tbTitleBottom.setText("Select Location");
-        tvUnderText.setText("Enter Location ID");
+        tbTitleBottom.setText("Select Asset");
+        tvUnderText.setText("Enter Asset ID");
     }
 
     private void initObj() {
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
         mContext = this;
-        location = getIntent().getStringExtra("location");
-        tvCompanyValue.setText(location);
+        compName = getIntent().getStringExtra("compName");
+        tvCompanyValue.setText(compName);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
         setupLocList();
-        mAdapter = new ScannedAssetsAdapter(locList, getApplicationContext(), "loc");
+        mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rlLocs.setLayoutManager(mLayoutManager);
         rlLocs.setItemAnimator(new DefaultItemAnimator());
@@ -102,8 +98,8 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     private void setupLocList() {
 
-        locList.clear();
-        locList = DataManager.getInstance().getAllLocations();
+        assetList.clear();
+        assetList = DataManager.getInstance().getAllAssets();
     }
 
 
@@ -115,10 +111,10 @@ public class SelectLocationActivity extends AppCompatActivity {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         btnScan.setOnClickListener(mGlobal_OnClickListener);
 
-        rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
+        rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectAssetActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(locList.get(position).getLocationID());
+                sendMessage(assetList.get(position).getTagID());
                 finish();
             }
 
@@ -139,19 +135,17 @@ public class SelectLocationActivity extends AppCompatActivity {
 
                 case R.id.btnScan: {
                     if ("".equals(etBarcode.getText().toString().trim())) {
-                        Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
+                        Intent in = new Intent(SelectAssetActivity.this, BarcodeScanActivity.class);
                         in.putExtra("taskType", "loc");
                         startActivity(in);
                     } else {
-                        Location loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
-                        if (null != loc) {
-                            sendMessage(loc.getLocationID());
+                        Asset obj = DataManager.getInstance().getAsset(etBarcode.getText().toString().toString().trim());
+                        if (null != obj) {
+                            sendMessage(obj.getTagID());
                             finish();
-
                         } else {
-                            Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
                         }
-
                     }
                     break;
                 }
@@ -175,13 +169,12 @@ public class SelectLocationActivity extends AppCompatActivity {
             String task = intent.getStringExtra("taskType");
             if (task.startsWith("loc")) {
 
-               Location loc = DataManager.getInstance().getLocation(message);
-                if (null != loc) {
-                    sendMessage(loc.getLocationID());
+                Asset obj = DataManager.getInstance().getAsset(message);
+                if (null != obj) {
+                    sendMessage(obj.getTagID());
                     finish();
-
-               } else {
-                    Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
                 }
             }
 
