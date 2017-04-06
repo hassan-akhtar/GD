@@ -34,9 +34,10 @@
         <activity android:name=".Activities.FireBug.Move.LocationSelectionActivity" />
         <activity android:name=".Activities.FireBug.Move.SelectLocationActivity" />
         <activity android:name=".Activities.Customer.CustomerActivity" />
-        <activity android:name=".Activities.FireBug.UnitInspection.UnitInspectionActivity"></activity>
-        <activity android:name=".Activities.FireBug.UnitInspection.SelectAssetActivity"></activity>
-        <activity android:name=".Activities.FireBug.UnitInspection.ReplaceAssetActivity"></activity>
+        <activity android:name=".Activities.FireBug.UnitInspection.UnitInspectionActivity" />
+        <activity android:name=".Activities.FireBug.UnitInspection.SelectAssetActivity" />
+        <activity android:name=".Activities.FireBug.UnitInspection.ReplaceAssetActivity" />
+        <activity android:name=".Activities.FireBug.UnitInspection.RepairAssetActivity"></activity>
     </application>
 
 </manifest>

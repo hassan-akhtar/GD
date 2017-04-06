@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_select_location"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ets.gd.Activities.FireBug.UnitInspection.SelectAssetActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_header_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlCompanies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rlHeader">
+
+        <include layout="@layout/company_header_layout" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlTextTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlCompanies"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="15dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select where do you want to MOVE failed Asset" />
+
+        <TextView
+            android:id="@+id/tvTagID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/greyDark"
+            android:text="XXXX"
+            android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlRepairs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlTextTop"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:textSize="17sp"
+                android:textColor="@color/blueDark"
+                android:layout_toRightOf="@+id/tvText"
+                android:text="Repairs:"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/greyLight"/>
+
+            <TextView
+                android:id="@+id/tvDsiRepair"
+                android:layout_width="match_parent"
+                android:padding="7dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tvText"
+                android:text="DSI Repairs" />
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/greyLight"/>
+
+            <TextView
+                android:id="@+id/tvGDRepair"
+                android:padding="7dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tvText"
+                android:text="GD Repairs" />
+
+
+            <View
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/greyLight"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

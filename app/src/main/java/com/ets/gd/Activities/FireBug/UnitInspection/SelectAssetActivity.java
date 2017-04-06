@@ -114,7 +114,10 @@ public class SelectAssetActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectAssetActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(assetList.get(position).getTagID());
+                Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+                in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                in.putExtra("tagID",assetList.get(position).getTagID());
+                startActivity(in);
                 finish();
             }
 
@@ -141,7 +144,10 @@ public class SelectAssetActivity extends AppCompatActivity {
                     } else {
                         Asset obj = DataManager.getInstance().getAsset(etBarcode.getText().toString().toString().trim());
                         if (null != obj) {
-                            sendMessage(obj.getTagID());
+                            Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+                            in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                            in.putExtra("tagID",obj.getTagID());
+                            startActivity(in);
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
@@ -154,13 +160,6 @@ public class SelectAssetActivity extends AppCompatActivity {
 
     };
 
-    private void sendMessage(String msg) {
-        Log.d("sender", "Broadcasting message");
-        Intent intent = new Intent("moveToLoc");
-        intent.putExtra("message", msg);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
-
 
     private final BroadcastReceiver mBarcodeBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -171,8 +170,12 @@ public class SelectAssetActivity extends AppCompatActivity {
 
                 Asset obj = DataManager.getInstance().getAsset(message);
                 if (null != obj) {
-                    sendMessage(obj.getTagID());
                     finish();
+                    Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                    in.putExtra("tagID",obj.getTagID());
+                    startActivity(in);
+
                 } else {
                     Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
                 }

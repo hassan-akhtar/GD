@@ -116,17 +116,14 @@
                         android:id="@+id/tvAssetOtherInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tvInspectTitle"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_toRightOf="@+id/tvAssetName"
+                        android:layout_below="@+id/tvAssetName"
                         android:text="Dry Cream, EXT, L00419" />
 
                     <TextView
                         android:id="@+id/tvAssetName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@+id/tvAssetOtherInfo"
+                        android:layout_below="@+id/tvInspectTitle"
                         android:layout_alignParentLeft="true"
                         android:layout_alignParentStart="true"
                         android:text="0038"
