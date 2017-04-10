@@ -19,4 +19,55 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlSecond"
+        android:background="@color/greyBg"
+        android:layout_below="@+id/rlHeader"
+        android:layout_width="match_parent"
+        android:layout_height="35dp">
+
+        <LinearLayout
+            android:id="@+id/llSecond"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:orientation="horizontal"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tvRouteCount"
+                android:layout_gravity="center_vertical"
+                android:text="XX"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_vertical"
+                android:text="Active routes found at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:id="@+id/tvCompanyName"
+                android:layout_marginLeft="4dp"
+                android:layout_gravity="center_vertical"
+                android:text="DSI"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvRouteInspection"
+        android:layout_below="@+id/rlSecond"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+
 </RelativeLayout>

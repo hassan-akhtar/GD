@@ -489,7 +489,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
             String message = intent.getStringExtra("message");
             String task = intent.getStringExtra("taskType");
             if (!task.startsWith("loc")) {
-                if (taskType.toLowerCase().startsWith("v")) {
+                if (task.toLowerCase().startsWith("v")) {
                     tvBarcodeValue.setText(message);
                     etBarcode.setVisibility(View.INVISIBLE);
                     tvBarcodeTitle.setVisibility(View.VISIBLE);
@@ -497,7 +497,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     btnCross.setVisibility(View.VISIBLE);
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
-                } else if (taskType.toLowerCase().startsWith("m")) {
+                } else if (task.toLowerCase().startsWith("m")) {
                     asset = DataManager.getInstance().getAsset(message);
                     if (null != asset) {
                         if (!assetList.contains(asset)) {
@@ -516,7 +516,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     }
 
 
-                } else if (taskType.toLowerCase().startsWith("t")) {
+                } else if (task.toLowerCase().startsWith("t")) {
 
 
                     asset = DataManager.getInstance().getAsset(message);
@@ -537,7 +537,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                     }
 
-                } else if (taskType.toLowerCase().startsWith("ins")) {
+                } else if (task.toLowerCase().startsWith("ins")) {
 
                     asset = DataManager.getInstance().getAsset(message);
 

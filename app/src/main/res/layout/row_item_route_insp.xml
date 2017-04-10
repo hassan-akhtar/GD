@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlParent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AnnExit SGNWK"
+                android:textColor="@color/blueDark"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDesp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Anne Exit"
+                android:textColor="@color/greyNew" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/vCenter"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rlTop"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/LightGrey" />
+
+
+    <RelativeLayout
+        android:id="@+id/rlBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/vCenter"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="12dp">
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <TextView
+                android:id="@+id/tvRouteType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Route Type:"
+                android:textColor="@color/greyNew" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_toRightOf="@+id/tvRouteType"
+                android:text="Roaming"
+                android:textColor="@color/greyNew"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true">
+
+
+            <RelativeLayout
+                android:id="@+id/rlLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/ivLoc"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_location"/>
+
+                <TextView
+                    android:id="@+id/tvLocCount"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivLoc"
+                    android:text="05"
+                    android:textColor="@color/greyNew"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlAsset"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/rlLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+                <ImageView
+                    android:id="@+id/ivAsset"
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_asset"/>
+
+                <TextView
+                    android:id="@+id/tvAssetCount"
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/ivAsset"
+                    android:text="05"
+                    android:textColor="@color/greyNew"
+                    android:textStyle="bold" />
+
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

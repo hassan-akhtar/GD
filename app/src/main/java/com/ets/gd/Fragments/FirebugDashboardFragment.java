@@ -89,9 +89,10 @@ public class FirebugDashboardFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
                 if (fbTasks[position].toLowerCase().startsWith("ro")) {
-//                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
-//                    startActivity(in);
-                    showToast("" + fbTasks[position]);
+                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
+                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
+                    //showToast("" + fbTasks[position]);
 
                 } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
                     Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);

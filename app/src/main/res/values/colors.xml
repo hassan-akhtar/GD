@@ -13,6 +13,7 @@
     <color name="greyNew">#888888</color>
     <color name="greyDark">#535252</color>
     <color name="veryLightGrey">#9c9c9c</color>
+    <color name="LightGrey">#cecece</color>
     <color name="cardview_light_background">#FFFFFFFF</color>
 
 </resources>
