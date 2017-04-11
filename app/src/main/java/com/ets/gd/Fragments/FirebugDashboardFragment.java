@@ -21,6 +21,10 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.RouteLocation;
+import com.ets.gd.Models.Routes;
 import com.ets.gd.R;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -28,6 +32,11 @@ import com.github.clans.fab.FloatingActionMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.realm.RealmList;
 
 
 public class FirebugDashboardFragment extends Fragment {
@@ -57,7 +66,82 @@ public class FirebugDashboardFragment extends Fragment {
         initObj();
         initListeners();
 
+        //addRoutesToRealm();
+
         return rootView;
+    }
+
+    private void addRoutesToRealm() {
+        List<Routes> inspectionRoutes = new ArrayList<Routes>();
+        for (int i = 0; i < 5; i++) {
+
+            Routes route = new Routes();
+            route.setId(1);
+            route.setCode("AnnExit SGNWK");
+            route.setDesc("AnnExit");
+            route.setRouteType("Roaming");
+            RealmList<RouteLocation> routeLocations = new RealmList<RouteLocation>();
+            RealmList<Asset> routeAssets = new RealmList<Asset>();
+            RouteLocation routeLocation = new RouteLocation();
+            Asset asset = new Asset();
+            asset.setTagID("00A222");
+            asset.setDeviceType("EXT");
+            asset.setManufacturers("Ansul");
+            asset.setSerialNo("005555");
+            asset.setModel("002216");
+            asset.setMfgDate("2/2/2017");
+            asset.setVendor("Lipsum");
+            asset.setAgent("Lipsum");
+            routeAssets.add(asset);
+            asset = new Asset();
+            asset.setTagID("00A222");
+            asset.setDeviceType("EXT");
+            asset.setManufacturers("Ansul");
+            asset.setSerialNo("005555");
+            asset.setModel("002216");
+            asset.setMfgDate("2/2/2017");
+            asset.setVendor("Lipsum");
+            asset.setAgent("Lipsum");
+            routeAssets.add(asset);
+            asset = new Asset();
+            asset.setTagID("00A222");
+            asset.setDeviceType("EXT");
+            asset.setManufacturers("Ansul");
+            asset.setSerialNo("005555");
+            asset.setModel("002216");
+            asset.setMfgDate("2/2/2017");
+            asset.setVendor("Lipsum");
+            asset.setAgent("Lipsum");
+            routeAssets.add(asset);
+
+
+            routeLocation.setLocationID("00416");
+            routeLocation.setDescription("This is a Desc");
+            routeLocation.setSite("Lipsum");
+            routeLocation.setBuilding("Lipsum");
+            routeLocation.setPlace("Shelf");
+            routeLocation.setRouteAssets(routeAssets);
+            routeLocations.add(routeLocation);
+
+            routeLocation = new RouteLocation();
+            routeLocation.setLocationID("00416");
+            routeLocation.setDescription("This is a Desc");
+            routeLocation.setSite("Lipsum");
+            routeLocation.setBuilding("Lipsum");
+            routeLocation.setPlace("Shelf");
+            routeLocation.setRouteAssets(routeAssets);
+            routeLocations.add(routeLocation);
+
+            route.setRouteLocations(routeLocations);
+
+
+            inspectionRoutes.add(route);
+        }
+
+
+        DataManager.getInstance().addInspectionRoutes(inspectionRoutes);
+
+        showToast("Routes added");
     }
 
     private void initViews() {
@@ -90,7 +174,7 @@ public class FirebugDashboardFragment extends Fragment {
             public void onClick(View view, int position) {
                 if (fbTasks[position].toLowerCase().startsWith("ro")) {
                     Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
-                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                     startActivity(in);
                     //showToast("" + fbTasks[position]);
 

@@ -23,14 +23,15 @@
                 android:layout_height="wrap_content"
                 android:text="AnnExit SGNWK"
                 android:textColor="@color/blueDark"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvDesp"
+                android:id="@+id/tvDesc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Anne Exit"
+                android:textSize="13sp"
                 android:textColor="@color/greyNew" />
 
         </LinearLayout>
@@ -45,7 +46,7 @@
         android:layout_below="@+id/rlTop"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="2dp"
         android:background="@color/LightGrey" />
 
 
@@ -57,7 +58,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="12dp">
+        android:layout_marginTop="8dp">
 
 
         <RelativeLayout
@@ -70,14 +71,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Route Type:"
+                android:textSize="13sp"
                 android:textColor="@color/greyNew" />
 
             <TextView
+                android:id="@+id/tvRouteTypeValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/tvRouteType"
                 android:text="Roaming"
+                android:textSize="13sp"
                 android:textColor="@color/greyNew"
                 android:textStyle="bold" />
 
@@ -109,6 +113,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/ivLoc"
                     android:text="05"
+                    android:textSize="13sp"
                     android:textColor="@color/greyNew"
                     android:textStyle="bold" />
 
@@ -135,6 +140,7 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/ivAsset"
                     android:text="05"
+                    android:textSize="13sp"
                     android:textColor="@color/greyNew"
                     android:textStyle="bold" />
 
@@ -145,5 +151,10 @@
 
     </RelativeLayout>
 
-
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/rlBottom"
+        android:background="@color/greyLight" />
 </RelativeLayout>

@@ -2,17 +2,29 @@ package com.ets.gd.Activities.FireBug.RouteInspection;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ets.gd.Adapters.RouteInspectionAdapter;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.Routes;
 import com.ets.gd.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RouteInspectionActivity extends AppCompatActivity {
 
     TextView tbTitleTop, tbTitleBottom, tvRouteCount, tvCompanyName;
     ImageView ivBack, ivTick;
     String compName;
+    List<Routes> routesList = new ArrayList<Routes>();
+    RouteInspectionAdapter routeInspectionAdapter;
+    RecyclerView rvRouteInspection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,9 +34,7 @@ public class RouteInspectionActivity extends AppCompatActivity {
         initViews();
         initObj();
         initListeners();
-
     }
-
 
     private void initViews() {
         ivBack = (ImageView) findViewById(R.id.ivBack);
@@ -33,19 +43,23 @@ public class RouteInspectionActivity extends AppCompatActivity {
         tvRouteCount = (TextView) findViewById(R.id.tvRouteCount);
         tvCompanyName = (TextView) findViewById(R.id.tvCompanyName);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
+        rvRouteInspection = (RecyclerView) findViewById(R.id.rvRouteInspection);
         tbTitleBottom.setText("Route Inspection");
-
         compName = getIntent().getStringExtra("compName");
         tvCompanyName.setText(compName);
-/*        tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
-        vLine = (View) findViewById(R.id.vLine);
-        btnLoc = (Button) findViewById(R.id.btnLoc);
-        btnAsset = (Button) findViewById(R.id.btnAsset);*/
-
         ivTick.setVisibility(View.GONE);
     }
 
     private void initObj() {
+
+        routesList= DataManager.getInstance().getAllInspectionRoutes();
+        tvRouteCount.setText(""+routesList.size());
+        routeInspectionAdapter = new RouteInspectionAdapter(routesList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteInspectionActivity.this);
+        rvRouteInspection.setLayoutManager(mLayoutManager);
+        rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
+        rvRouteInspection.setAdapter(routeInspectionAdapter);
+        routeInspectionAdapter.notifyDataSetChanged();
     }
 
     private void initListeners() {

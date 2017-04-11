@@ -4,6 +4,8 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.Note;
+import com.ets.gd.Models.RouteLocation;
+import com.ets.gd.Models.Routes;
 
 import java.util.List;
 
@@ -480,5 +482,65 @@ public class DataManager {
 
 
     }
+
+    // For adding Asset Inspection Dates in DB
+    public void addInspectionRoutes(final List<Routes> inspectionRoutes) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                for (int i = 0; i < inspectionRoutes.size(); i++) {
+                    RealmList<RouteLocation> routeLocations = new RealmList<RouteLocation>();
+                    Routes route = realm.createObject(Routes.class);
+                    route.setId(inspectionRoutes.get(i).getId());
+                    route.setCode(inspectionRoutes.get(i).getCode());
+                    route.setRouteType(inspectionRoutes.get(i).getRouteType());
+                    route.setCustomerID(inspectionRoutes.get(i).getCustomerID());
+                    route.setDesc(inspectionRoutes.get(i).getDesc());
+
+                    for (int j = 0; j < inspectionRoutes.get(i).getRouteLocations().size(); j++) {
+                        RealmList<Asset> routeAssets = new RealmList<Asset>();
+                        RouteLocation routeLocation = realm.createObject(RouteLocation.class);
+                        routeLocation.setLocationID(inspectionRoutes.get(i).getRouteLocations().get(j).getLocationID());
+                        routeLocation.setDescription(inspectionRoutes.get(i).getRouteLocations().get(j).getDescription());
+                        routeLocation.setSite(inspectionRoutes.get(i).getRouteLocations().get(j).getSite());
+                        routeLocation.setBuilding(inspectionRoutes.get(i).getRouteLocations().get(j).getBuilding());
+                        routeLocation.setPlace(inspectionRoutes.get(i).getRouteLocations().get(j).getPlace());
+
+                        for (int k = 0; k < inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().size(); k++) {
+                            Asset asset = realm.createObject(Asset.class);
+                            asset.setTagID(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getTagID());
+                            asset.setDeviceType(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getDeviceType());
+                            asset.setManufacturers(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getManufacturers());
+                            asset.setSerialNo(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getSerialNo());
+                            asset.setModel(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getModel());
+                            asset.setMfgDate(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getMfgDate());
+                            asset.setVendor(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getVendor());
+                            asset.setAgent(inspectionRoutes.get(i).getRouteLocations().get(j).getRouteAssets().get(k).getAgent());
+                            routeAssets.add(asset);
+                        }
+                        routeLocation.setRouteAssets(routeAssets);
+                        routeLocations.add(routeLocation);
+
+                    }
+                    route.setRouteLocations(routeLocations);
+
+                }
+            }
+        });
+    }
+
+
+
+    // For getting asset all assets from DB
+    public List<Routes> getAllInspectionRoutes() {
+        RealmResults<Routes> results = realm.where(Routes.class).findAllSorted("id");
+
+        List<Routes> copied = realm.copyFromRealm(results);
+
+        return copied;
+    }
+
+
 
 }
