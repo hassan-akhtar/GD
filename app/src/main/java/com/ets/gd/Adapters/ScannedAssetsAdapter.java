@@ -104,8 +104,8 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
         public MyViewHolder(View view) {
             super(view);
             tvName = (TextView) view.findViewById(R.id.tvName);
-            tvTag = (TextView) view.findViewById(R.id.tvTag);
-            tvLocation = (TextView) view.findViewById(R.id.tvLocation);
+            tvTag = (TextView) view.findViewById(R.id.tvDesc);
+            tvLocation = (TextView) view.findViewById(R.id.tvPlace);
             ivSelectableImage = (ImageView) view.findViewById(R.id.ivSelectableImage);
         }
     }

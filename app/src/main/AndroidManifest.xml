@@ -37,7 +37,8 @@
         <activity android:name=".Activities.FireBug.UnitInspection.UnitInspectionActivity" />
         <activity android:name=".Activities.FireBug.UnitInspection.SelectAssetActivity" />
         <activity android:name=".Activities.FireBug.UnitInspection.ReplaceAssetActivity" />
-        <activity android:name=".Activities.FireBug.UnitInspection.RepairAssetActivity"></activity>
+        <activity android:name=".Activities.FireBug.UnitInspection.RepairAssetActivity" />
+        <activity android:name=".Activities.FireBug.RouteInspection.RouteInspLocationActivity"></activity>
     </application>
 
 </manifest>

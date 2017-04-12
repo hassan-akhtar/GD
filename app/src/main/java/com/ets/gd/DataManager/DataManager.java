@@ -230,12 +230,10 @@ public class DataManager {
 
     }
 
-    // For getting asset all assets from DB
+    // For getting asset all locations from DB
     public List<Location> getAllLocations() {
         RealmResults<Location> results = realm.where(Location.class).findAllSorted("locationID");
-
         List<Location> copied = realm.copyFromRealm(results);
-
         return copied;
     }
 
