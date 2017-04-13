@@ -5,8 +5,10 @@ import android.content.SharedPreferences;
 
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
@@ -63,6 +65,26 @@ public class GSDServiceImpl implements GSDService {
             }
         });
 
+    }
+
+    @Override
+    public void getSyncData(final SyncGetDTO syncGetDTO, final MyCallBack callback) {
+        adapter.getSyncData(syncGetDTO.getCustomerId(), syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
+            @Override
+            public void success(SyncGetResponseDTO syncGetResponseDTO, Response response) {
+                syncGetResponseDTO.setCallBackId(syncGetDTO.getCallBackId());
+                callback.onSuccess(syncGetResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                }
+            }
+        });
     }
 
 

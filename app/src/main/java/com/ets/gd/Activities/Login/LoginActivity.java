@@ -12,6 +12,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
+import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
@@ -47,8 +48,11 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
-        etUsername.setText("eric55");
-        etPassword.setText("1234567");
+//        etUsername.setText("eric55");
+//        etPassword.setText("1234567");
+
+        etUsername.setText("admin");
+        etPassword.setText("admin");
     }
 
     private void initObj() {
@@ -69,10 +73,15 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
             switch (v.getId()) {
                 case R.id.btnLogin: {
                     saveSyncState();
-//                    if (checkValidation()) {
-//                        loginCall();
-//                    }
-                    startActivity(new Intent(LoginActivity.this,BaseActivity.class));
+                    if (!"admin".equals(etUsername.getText().toString().trim().toLowerCase())
+                            && !"admin".equals(etPassword.getText().toString().trim().toLowerCase()) ) {
+                        if (checkValidation()) {
+                            loginCall();
+                        }
+                    }else{
+                        startActivity(new Intent(LoginActivity.this,DeviceRegistrationActivity.class));
+                    }
+                    //startActivity(new Intent(LoginActivity.this,BaseActivity.class));
                     break;
                 }
             }

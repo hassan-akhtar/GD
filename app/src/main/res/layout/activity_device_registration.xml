@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_first_time_sync"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.ets.gd.Activities.Sync.DeviceRegistrationActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rlTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_header_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@id/rlHeader"
+        android:layout_below="@+id/rlTop"
+        android:layout_width="280dp"
+        android:layout_margin="16dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvDevice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Device ID:"
+            android:textColor="@color/blueDark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:id="@+id/tvDeviceID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDevice"
+            android:text="0b11ABOH-13A-Djasdasdjjasddd-jh asg356546fdgdss"
+            android:textColor="@color/greyLight"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlSecond"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/rlHeader">
+
+        <EditText
+            android:id="@+id/etCustomerID"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginEnd="64dp"
+            android:layout_marginStart="64dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/et_bottom_line"
+            android:ems="10"
+            android:hint="Customer Id"
+            android:inputType="textEmailAddress"
+            android:maxLength="16"
+            android:textColorHint="@color/veryLightGrey" />
+
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etCustomerID"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/btn_selector"
+            android:text="Next"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

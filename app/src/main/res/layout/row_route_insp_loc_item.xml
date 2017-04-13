@@ -8,6 +8,7 @@
     <RelativeLayout
         android:id="@+id/rlImg"
         android:layout_width="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_height="wrap_content">
 
         <ImageView
@@ -15,15 +16,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"/>
+            android:layout_marginLeft="20dp" />
 
         <TextView
             android:id="@+id/tvNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="33dp"
-            android:layout_marginTop="11dp"
+            android:layout_marginTop="2dp"
             android:text="1" />
 
 
@@ -116,8 +116,8 @@
 
             <View
                 android:layout_width="match_parent"
+                android:layout_marginTop="-9dp"
                 android:layout_height="1px"
-                android:layout_marginBottom="10dp"
                 android:layout_marginRight="16dp"
                 android:background="@color/LightGrey" />
         </LinearLayout>

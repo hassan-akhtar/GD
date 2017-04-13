@@ -3,6 +3,7 @@ package com.ets.gd.NetworkLayer.Service;
 
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 
 import java.util.List;
 
@@ -21,9 +22,17 @@ public interface GSDRESTService {
     @FormUrlEncoded
     @POST(Constants.URL_LOGIN)
     public void loginRequest(@Field("username") String username,
-                         @Field("password") String password,
-                         @Field("grant_type") String grantType,
-                         Callback<LoginResponseDTO> loginResponseDTOCallback);
+                             @Field("password") String password,
+                             @Field("grant_type") String grantType,
+                             Callback<LoginResponseDTO> loginResponseDTOCallback);
+
+
+    // Sync get data request
+    @FormUrlEncoded
+    @POST(Constants.URL_SYNC_GET)
+    public void getSyncData(@Field("CustomerId") int customerId,
+                            @Field("DeviceId") String deviceId,
+                            Callback<SyncGetResponseDTO> syncGetResponseDTOCallback);
 
 
 }

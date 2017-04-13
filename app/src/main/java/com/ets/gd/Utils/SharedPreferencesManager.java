@@ -19,6 +19,7 @@ public class SharedPreferencesManager {
     public static final String IS_NEVER_ASK_AGAIN = "neveraskagain";
     public static final String  LAST_SYNC_DATE = "syncDate";
     public static final String LAST_SYNC_TIME = "syncTime";
+    public static final String  MY_DEVICE_ID = "deviceID";
 
 
 

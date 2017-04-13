@@ -33,7 +33,7 @@
         android:drawableStart="@drawable/password_icon"
         android:ems="10"
         android:hint="@string/password_str"
-        android:inputType="numberPassword"
+        android:inputType="textPassword"
         android:maxLength="7"
         android:textColorHint="@color/veryLightGrey"
         app:layout_constraintLeft_toLeftOf="@+id/etEmail"
