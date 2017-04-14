@@ -71,7 +71,9 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         }
         if (!"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID))) {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID)));
-            lstMusers = realmSyncGetResponseDTO.getLstMusers();
+            if (null!=realmSyncGetResponseDTO) {
+                lstMusers = realmSyncGetResponseDTO.getLstMusers();
+            }
         }
     }
 

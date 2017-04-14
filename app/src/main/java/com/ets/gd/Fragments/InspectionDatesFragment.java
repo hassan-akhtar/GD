@@ -96,7 +96,7 @@ public class InspectionDatesFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-        if (null!=asset.getInspectionDates()) {
+/*        if (null!=asset.getInspectionDates()) {
             tvDaily.setText(asset.getInspectionDates().getDaily());
             tvWeekly.setText(asset.getInspectionDates().getWeekly());
             tvMonthly.setText(asset.getInspectionDates().getMonthly());
@@ -107,7 +107,7 @@ public class InspectionDatesFragment extends Fragment {
             tvSixYears.setText(asset.getInspectionDates().getSixYear());
             tvTenYears.setText(asset.getInspectionDates().getTenYear());
             tvTwelveYears.setText(asset.getInspectionDates().getTwelveYear());
-        }
+        }*/
 
     }
 

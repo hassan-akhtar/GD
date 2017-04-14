@@ -76,11 +76,11 @@ public class AddNoteFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-        mAdapter = new NoteAdapter(lstNotes);
+/*        mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvNotes.setLayoutManager(mLayoutManager);
         rvNotes.setItemAnimator(new DefaultItemAnimator());
-        rvNotes.setAdapter(mAdapter);
+        rvNotes.setAdapter(mAdapter);*/
 
     }
 

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.Login.LoginActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.DeviceInfoFragment;
@@ -303,6 +304,9 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 tbTitleTop.setText("Firebug");
                 tbTitleBottom.setText("Select Company");
+//                if(DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID))).getC){
+//
+//                }
                 refreshMainViewByNew(new CustomerFragment());
                 break;
 

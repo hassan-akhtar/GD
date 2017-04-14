@@ -75,8 +75,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     private void initObj() {
         // asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
-        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+
 
         String[] deviceTypes = new String[realmSyncGetResponseDTO.getLstDeviceType().size()];
         String[] manufacturers  = new String[realmSyncGetResponseDTO.getLstManufacturers().size()];
@@ -153,30 +154,35 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
             if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spDeviceType.setSelection(i);
+                break;
             }
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
             if (fireBugEquipment.getManufacturers().getCode().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
+                break;
             }
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
             if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                 spModel.setSelection(i);
+                break;
             }
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
             if (fireBugEquipment.getVendorCode().getCode().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
                 spVendor.setSelection(i);
+                break;
             }
         }
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
-            if (fireBugEquipment.getAgentType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+        for (int i = 1; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
+            if (fireBugEquipment.getAgentType().getCode().toLowerCase().equals(spAgent.getItemAtPosition(i).toString().toLowerCase())) {
                 spAgent.setSelection(i);
+                break;
             }
         }
 

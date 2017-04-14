@@ -16,19 +16,24 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 
 
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    public static Spinner spSite, spBuilding;
+    public static Spinner spLocation;
     View rootView;
-    public static EditText tvLocationID, tvDescprition;
+    public static EditText tvSite, tvDescprition, tvBuilding;
     private TextInputLayout lLocationID, lDescprition;
-    Asset asset;
-    public static int posSite = 0, posBuilding = 0;
+    // Asset asset;
+    public static int posLoc = 0;
+    FireBugEquipment fireBugEquipment;
+    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
 
     public AssetLocationFragment() {
 
@@ -50,11 +55,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initViews() {
 
-        spSite = (Spinner) rootView.findViewById(R.id.spSite);
-        spBuilding = (Spinner) rootView.findViewById(R.id.spBuilding);
+        spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
+        tvSite = (EditText) rootView.findViewById(R.id.tvSite);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
         lDescprition = (TextInputLayout) rootView.findViewById(R.id.lDescprition);
-        tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
+        tvBuilding = (EditText) rootView.findViewById(R.id.tvBuilding);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
 
 
@@ -62,16 +67,18 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initObj() {
 
-        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
-        ViewAssetInformationActivity.currentFragment = new AssetLocationFragment();
-        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
-        dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSite.setAdapter(dataAdapterVendor);
+        //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
+        fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
 
-        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.agents));
+        String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            locations[i] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
+        }
+        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spBuilding.setAdapter(dataAdapterAgent);
+        spLocation.setAdapter(dataAdapterAgent);
 
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
@@ -85,53 +92,32 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     void setViewForViewAsset() {
 
-        if (null != asset.getLocation()) {
-            if (null != asset.getLocation().getLocationID()) {
 
-                if (!"".equals(asset.getLocation().getLocationID()) || null != asset.getLocation().getLocationID()) {
-                    tvLocationID.setText(asset.getLocation().getLocationID());
-                    tvLocationID.setEnabled(false);
-                } else {
-                    tvLocationID.setText("");
-                    tvLocationID.setEnabled(true);
-                }
-            }
-            if (null != asset.getLocation().getDescription()) {
-                tvDescprition.setText(asset.getLocation().getDescription());
-            }
-
-
-            for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
-                if (asset.getLocation().getVendor().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
-                    spSite.setSelection(i);
-                }
-            }
-
-            for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
-                if (asset.getLocation().getAgent().toString().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
-                    spBuilding.setSelection(i);
-                }
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                spLocation.setSelection(i);
+                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
+                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
+                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+                break;
             }
         }
+
 
     }
 
 
     void setViewForVAddAsset() {
-
-        tvLocationID.setText("");
-        tvLocationID.setEnabled(true);
+        spLocation.setSelection(0);
         tvDescprition.setText("");
-
-        spSite.setSelection(0);
-        spBuilding.setSelection(0);
+        tvSite.setText("");
+        tvBuilding.setText("");
 
 
     }
 
     private void initListeners() {
-        spSite.setOnItemSelectedListener(this);
-        spBuilding.setOnItemSelectedListener(this);
+        spLocation.setOnItemSelectedListener(this);
 
     }
 
@@ -141,9 +127,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
         int viewID = parent.getId();
         switch (viewID) {
-            case R.id.spSite: {
-                posSite = position;
+            case R.id.spLocation: {
+                posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
+                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getDescription());
+                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getSite().getCode());
+                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getBuilding().getCode());
                 try {
                     if (0 == position) {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
@@ -155,19 +144,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             }
             break;
 
-            case R.id.spBuilding: {
-                posBuilding = position;
-                String strSelectedState = parent.getItemAtPosition(position).toString();
-                try {
-                    if (0 == position) {
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-            break;
         }
     }
 

@@ -138,9 +138,9 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetLocation()) {
-                                DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
+                              /*  DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
                                         AssetLocationFragment.tvDescprition.getText().toString().trim(), AssetLocationFragment.spSite.getItemAtPosition(AssetLocationFragment.posSite).toString(),
-                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));
+                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));*/
                                 showToast("Asset's Location Updated");
                             }
                         } else {
@@ -215,13 +215,9 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
 
     private boolean checkValidationAddAssetLocation() {
-        if ("".equals(AssetLocationFragment.tvLocationID.getText().toString().trim())) {
-            showToast("Please enter Location ID");
-        } else if (0 == AssetLocationFragment.posSite) {
-            showToast("Please select a site");
-        } else if (0 == AssetLocationFragment.posBuilding) {
-            showToast("Please select a building");
-        } else {
+        if (0 == AssetLocationFragment.posLoc) {
+            showToast("Please select Location ID");
+        }  else {
             return true;
         }
 

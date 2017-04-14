@@ -18,7 +18,7 @@ public class FireBugEquipment  extends RealmObject {
     private Customer Customer;
     private DeviceType DeviceType;
     private MyLocation Location;
-    private Manufacturer Manufacturers;
+    private Manufacturer Manufacturer;
     private Rating Rating;
     private Size Size;
     private VendorCode VendorCode;
@@ -111,11 +111,11 @@ public class FireBugEquipment  extends RealmObject {
     }
 
     public Manufacturer getManufacturers() {
-        return Manufacturers;
+        return Manufacturer;
     }
 
     public void setManufacturers(Manufacturer manufacturers) {
-        Manufacturers = manufacturers;
+        Manufacturer = manufacturers;
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Rating getRating() {
