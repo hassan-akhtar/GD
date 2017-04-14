@@ -21,6 +21,7 @@ import com.ets.gd.Fragments.InspectionDatesFragment;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     boolean isAssetAdded = false;
     static String tagID = "";
     Asset asset;
+    FireBugEquipment fireBugEquipment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,9 +71,21 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         this.asset = asset;
     }
 
+
+    public FireBugEquipment getEquipment() {
+        return fireBugEquipment;
+    }
+
+    public void setEquipment(FireBugEquipment fireBugEquipment) {
+        this.fireBugEquipment = fireBugEquipment;
+    }
+
+
     private void initObj() {
         actionType = getIntent().getStringExtra("action");
         barCodeID = getIntent().getStringExtra("barCode");
+
+        setEquipment(DataManager.getInstance().getEquipment(Integer.parseInt(barCodeID)));
         setAsset(DataManager.getInstance().getAsset(barCodeID));
 
         setupViewPager(viewPager);
@@ -230,11 +244,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             showToast("Please Select Daily Inspection date");
         } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvWeekly.getText().toString().trim())) {
             showToast("Please Select Weekly Inspection date");
-        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvQuarterly.getText().toString().trim())) {
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvQuarterly.getText().toString().trim())) {
             showToast("Please Select Quarterly Inspection date");
-        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvMonthly.getText().toString().trim())) {
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvMonthly.getText().toString().trim())) {
             showToast("Please Select Monthly Inspection date");
-        }else if ("DD/MM/YY".equals(InspectionDatesFragment.tvSemiAnnual.getText().toString().trim())) {
+        } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvSemiAnnual.getText().toString().trim())) {
             showToast("Please Select Semi Annual Inspection date");
         } else if ("DD/MM/YY".equals(InspectionDatesFragment.tvAnnual.getText().toString().trim())) {
             showToast("Please Select Annual Inspection date");

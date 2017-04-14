@@ -34,7 +34,7 @@
         android:ems="10"
         android:hint="@string/password_str"
         android:inputType="textPassword"
-        android:maxLength="7"
+        android:maxLength="10"
         android:textColorHint="@color/veryLightGrey"
         app:layout_constraintLeft_toLeftOf="@+id/etEmail"
         app:layout_constraintRight_toRightOf="@+id/etEmail"

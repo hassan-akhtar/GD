@@ -71,6 +71,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     Context mContext;
+    FireBugEquipment fireBugEquipment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -262,7 +263,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
                         }
-                    }else if (taskType.toLowerCase().startsWith("ins")) {
+                    } else if (taskType.toLowerCase().startsWith("ins")) {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
@@ -292,9 +293,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                     asset = DataManager.getInstance().getAsset(tvBarcodeValue.getText().toString().trim());
 
-                    FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(Integer.parseInt(tvBarcodeValue.getText().toString().trim()));
-                    showToast(""+fireBugEquipment.getDeviceType().getID());
-                    if (null != asset) {
+                    fireBugEquipment = DataManager.getInstance().getEquipment(Integer.parseInt(tvBarcodeValue.getText().toString().trim()));
+                    if (null != fireBugEquipment) {
 
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
                         in.putExtra("action", "viewAsset");
@@ -329,13 +329,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.tvInspectAsset: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, UnitInspectionActivity.class);
-                    in.putExtra("tag",""+assetList.get(0).getTagID());
-                    if (null!=assetList.get(0).getLocation()) {
-                        in.putExtra("loc",""+assetList.get(0).getLocation().getLocationID());
-                        in.putExtra("desp",""+assetList.get(0).getLocation().getDescription());
+                    in.putExtra("tag", "" + assetList.get(0).getTagID());
+                    if (null != assetList.get(0).getLocation()) {
+                        in.putExtra("loc", "" + assetList.get(0).getLocation().getLocationID());
+                        in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
                     }
-                    in.putExtra("compName",compName);
-                    in.putExtra("deviceType",""+assetList.get(0).getDeviceType());
+                    in.putExtra("compName", compName);
+                    in.putExtra("deviceType", "" + assetList.get(0).getDeviceType());
 
                     startActivity(in);
                     break;

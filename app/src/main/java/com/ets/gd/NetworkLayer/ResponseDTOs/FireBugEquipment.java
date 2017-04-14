@@ -4,10 +4,6 @@ import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by hakhtar on 4/13/2017.
- * General Data
- */
 
 public class FireBugEquipment  extends RealmObject {
 

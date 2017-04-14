@@ -14,15 +14,20 @@ import android.widget.ToggleButton;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FirebugDashboardFragment;
+import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.GSDServiceFactory;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import io.realm.RealmList;
 
 
 public class LoginActivity extends AppCompatActivity implements MyCallBack {
@@ -32,6 +37,8 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
     private CommonActions ca;
     ToggleButton tbSync;
     SharedPreferencesManager sharedPreferencesManager;
+    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    RealmList<MobileUser> lstMusers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,15 +58,20 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 
-        etUsername.setText("admin");
-        etPassword.setText("admin");
+        etUsername.setText("a345");
+        etPassword.setText("13244567");
     }
 
     private void initObj() {
         ca = new CommonActions(LoginActivity.this);
+
         sharedPreferencesManager = new SharedPreferencesManager(LoginActivity.this);
-        if(sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)){
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {
             tbSync.setChecked(true);
+        }
+        if (!"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID))) {
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID)));
+            lstMusers = realmSyncGetResponseDTO.getLstMusers();
         }
     }
 
@@ -72,16 +84,32 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnLogin: {
+
                     saveSyncState();
-                    if (!"admin".equals(etUsername.getText().toString().trim().toLowerCase())
-                            && !"admin".equals(etPassword.getText().toString().trim().toLowerCase()) ) {
+                    if ("admin".equals(etUsername.getText().toString().trim().toLowerCase())
+                            && "admin".equals(etPassword.getText().toString().trim().toLowerCase())) {
+                        startActivity(new Intent(LoginActivity.this, DeviceRegistrationActivity.class));
+                    } else {
                         if (checkValidation()) {
-                            loginCall();
+                            CommonActions.showProgressDialog(LoginActivity.this);
+                            if (null!=lstMusers) {
+                                if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
+                                    CommonActions.DismissesDialog();
+                                    showToast("Login Successful");
+                                    startActivity(new Intent(LoginActivity.this, BaseActivity.class));
+                                    finish();
+
+                                }else{
+                                    CommonActions.DismissesDialog();
+                                    showToast("Invalid Username/Password");
+                                }
+                            } else {
+                                CommonActions.DismissesDialog();
+                                showToast("No mobile user(s) found");
+                            }
                         }
-                    }else{
-                        startActivity(new Intent(LoginActivity.this,DeviceRegistrationActivity.class));
+
                     }
-                    //startActivity(new Intent(LoginActivity.this,BaseActivity.class));
                     break;
                 }
             }
@@ -91,11 +119,11 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
 
     private boolean checkValidation() {
 
-        if("".equals(etUsername.getText().toString().trim())){
+        if ("".equals(etUsername.getText().toString().trim())) {
             showToast("Please enter username");
-        }else if("".equals(etPassword.getText().toString().trim())){
+        } else if ("".equals(etPassword.getText().toString().trim())) {
             showToast("Please enter password");
-        }else {
+        } else {
             return true;
         }
 
@@ -116,8 +144,22 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         GSDServiceFactory.getService(getApplicationContext()).loginRequest(new LoginDTO(Constants.RESPONSE_LOGIN, etUsername.getText().toString().toString(), etPassword.getText().toString().trim(), "password"), this);
     }
 
-    void showToast(String msg){
-        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+
+    boolean checkMobileUserFromDatabase(String username, String pass) {
+
+        boolean doesUserExist = false;
+        for (int i = 0; i < lstMusers.size(); i++) {
+            if (username.equals(lstMusers.get(i).getUserName().trim()) && pass.equals(lstMusers.get(i).getPassword().trim())) {
+                doesUserExist = true;
+                break;
+            }
+        }
+
+        return doesUserExist;
+    }
+
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
 
@@ -161,8 +203,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
             Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
         else if (1 == errorDTO.getCode())
             Toast.makeText(getApplicationContext(), R.string.error_poor_con, Toast.LENGTH_LONG).show();
-        else if(400 == errorDTO.getCode())
-        {
+        else if (400 == errorDTO.getCode()) {
             new AlertDialog.Builder(LoginActivity.this)
                     .setTitle(R.string.txt_login)
                     .setMessage(R.string.msg_login_failed)
@@ -172,8 +213,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                         }
                     })
                     .show();
-        }
-       else  if (500 == errorDTO.getCode())
+        } else if (500 == errorDTO.getCode())
             Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
 
         else

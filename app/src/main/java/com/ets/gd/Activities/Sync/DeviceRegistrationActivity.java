@@ -12,7 +12,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 public class DeviceRegistrationActivity extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
     TextView tvDeviceID;
     ImageView ivBack, ivTick;
     TextView tbTitleTop, tbTitleBottom;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(DeviceRegistrationActivity.this);
         tvDeviceID.setText("" + Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID));
 
     }
@@ -69,6 +73,7 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                 case R.id.btnNext: {
 
                     if (!"".equals(etCustomerID.getText().toString().trim())) {
+                        sharedPreferencesManager.setString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID,etCustomerID.getText().toString().trim());
                         Intent in = new Intent(DeviceRegistrationActivity.this, FirstTimeSyncActicity.class);
                         in.putExtra("customerID", etCustomerID.getText().toString().trim());
                         startActivity(in);

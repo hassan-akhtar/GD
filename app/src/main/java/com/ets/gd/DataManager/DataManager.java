@@ -566,4 +566,11 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).equalTo("ID", barcodeID).findFirst();
     }
 
+
+    public RealmSyncGetResponseDTO getSyncGetResponseDTO(int ID) {
+        return realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
+    }
+
+
+
 }

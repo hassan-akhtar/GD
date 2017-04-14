@@ -18,7 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 
@@ -26,11 +29,13 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     public static Spinner spDeviceType, spManufacturer, spVendor, spAgent, spModel;
     View rootView;
-    Asset asset;
+    //Asset asset;
     public static EditText tvTagID, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
+    FireBugEquipment fireBugEquipment;
+    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
 
-    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0 , posModel =0;
+    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0;
 
 
     public AssetInformationFragment() {
@@ -69,30 +74,60 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     }
 
     private void initObj() {
+        // asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+        fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
 
-        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
+        String[] deviceTypes = new String[realmSyncGetResponseDTO.getLstDeviceType().size()];
+        String[] manufacturers  = new String[realmSyncGetResponseDTO.getLstManufacturers().size()];
+        String[] models = new String[realmSyncGetResponseDTO.getLstModels().size()];
+        String[] vendors = new String[realmSyncGetResponseDTO.getLstVendorCodes().size()];
+        String[] agents = new String[realmSyncGetResponseDTO.getLstAgentTypes().size()];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
+            deviceTypes[i] = realmSyncGetResponseDTO.getLstDeviceType().get(i).getCode();
+        }
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
+            manufacturers[i] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
+        }
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
+            models[i] = realmSyncGetResponseDTO.getLstModels().get(i).getCode();
+        }
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
+            vendors[i] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
+        }
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
+            agents[i] = realmSyncGetResponseDTO.getLstAgentTypes().get(i).getCode();
+        }
+
+
+
 
         ViewAssetInformationActivity.currentFragment = new AssetInformationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.deviceTypes));
+        ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, deviceTypes);
         dataAdapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDeviceType.setAdapter(dataAdapterDeviceType);
 
-        ArrayAdapter<String> dataAdapterManufacturer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.manufacturers));
+        ArrayAdapter<String> dataAdapterManufacturer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,manufacturers);
         dataAdapterManufacturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spManufacturer.setAdapter(dataAdapterManufacturer);
 
 
-        ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.models));
+        ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
         dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spModel.setAdapter(dataAdapterModel);
 
 
-        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.vendors));
+        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, vendors);
         dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spVendor.setAdapter(dataAdapterVendor);
 
-        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.agents));
+        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, agents);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spAgent.setAdapter(dataAdapterAgent);
 
@@ -107,45 +142,43 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     void setViewForViewAsset() {
 
-        tvTagID.setText(asset.getTagID());
+        tvTagID.setText("" + fireBugEquipment.getID());
         tvTagID.setEnabled(false);
-        tvSrNo.setText(asset.getSerialNo());
-        tvMfgDate.setText(asset.getMfgDate());
+        if (null != fireBugEquipment.getSerialNo()) {
+            tvSrNo.setText(fireBugEquipment.getSerialNo());
+        }
+        tvMfgDate.setText(fireBugEquipment.getManufacturerDate());
 
-        for (int i = 0; i < getResources().getStringArray(R.array.deviceTypes).length; i++) {
-            if (asset.getDeviceType().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
+            if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spDeviceType.setSelection(i);
             }
         }
 
-        for (int i = 0; i < getResources().getStringArray(R.array.manufacturers).length; i++) {
-            if (asset.getManufacturers().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
+            if (fireBugEquipment.getManufacturers().getCode().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
             }
         }
 
-        for (int i = 0; i < getResources().getStringArray(R.array.models).length; i++) {
-            if (asset.getModel().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
+            if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                 spModel.setSelection(i);
             }
         }
 
-        for (int i = 0; i < getResources().getStringArray(R.array.vendors).length; i++) {
-            if (asset.getVendor().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
+            if (fireBugEquipment.getVendorCode().getCode().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
                 spVendor.setSelection(i);
             }
         }
 
-        for (int i = 0; i < getResources().getStringArray(R.array.agents).length; i++) {
-            if (asset.getAgent().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
+            if (fireBugEquipment.getAgentType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spAgent.setSelection(i);
             }
         }
-
-
-        spManufacturer.setSelection(1);
-        spVendor.setSelection(1);
-        spAgent.setSelection(1);
 
     }
 

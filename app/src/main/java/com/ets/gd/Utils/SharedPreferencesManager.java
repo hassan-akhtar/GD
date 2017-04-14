@@ -20,6 +20,7 @@ public class SharedPreferencesManager {
     public static final String  LAST_SYNC_DATE = "syncDate";
     public static final String LAST_SYNC_TIME = "syncTime";
     public static final String  MY_DEVICE_ID = "deviceID";
+    public static final String  MY_SYNC_CUSTOMER_ID = "customerID";
 
 
 
