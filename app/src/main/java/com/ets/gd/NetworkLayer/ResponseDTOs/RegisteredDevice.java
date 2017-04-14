@@ -1,8 +1,12 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 
-public class RegisteredDevice {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
+public class RegisteredDevice  extends RealmObject{
+
+    @PrimaryKey
     private int ID;
     private String DeviceID;
     private String SerialNumber;

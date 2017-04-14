@@ -44,6 +44,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.NewAsset;
 import com.ets.gd.Models.Note;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -290,10 +291,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 case R.id.btnAsset: {
 
                     asset = DataManager.getInstance().getAsset(tvBarcodeValue.getText().toString().trim());
-                    ViewAssetInformationActivity.barCodeID = tvBarcodeValue.getText().toString().trim();
+
+                    FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(Integer.parseInt(tvBarcodeValue.getText().toString().trim()));
+                    showToast(""+fireBugEquipment.getDeviceType().getID());
                     if (null != asset) {
+
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
                         in.putExtra("action", "viewAsset");
+                        in.putExtra("barCode", tvBarcodeValue.getText().toString().trim());
                         startActivity(in);
                         hideScannedData();
                     } else {

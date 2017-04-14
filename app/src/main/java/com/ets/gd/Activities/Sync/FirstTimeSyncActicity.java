@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
@@ -101,6 +102,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
                     if (null != syncGetResponseDTO) {
                         CommonActions.DismissesDialog();
                         Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
+                        DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                         startActivity(new Intent(FirstTimeSyncActicity.this, BaseActivity.class));
                         finish();
                     } else {

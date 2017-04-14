@@ -1,11 +1,12 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
-/**
- * Created by hakhtar on 4/13/2017.
- * General Data
- */
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class InspectionDates {
+
+public class MyInspectionDates extends RealmObject {
+
+    @PrimaryKey
     private int ID;
     private int EquipmentID;
     private String InspectionType;

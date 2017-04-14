@@ -4,8 +4,11 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.Note;
+import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 
 import java.util.List;
 
@@ -529,7 +532,6 @@ public class DataManager {
     }
 
 
-
     // For getting asset all assets from DB
     public List<Routes> getAllInspectionRoutes() {
         RealmResults<Routes> results = realm.where(Routes.class).findAllSorted("id");
@@ -539,6 +541,29 @@ public class DataManager {
         return copied;
     }
 
+    public void saveSyncGetResponse(SyncGetResponseDTO obj) {
 
+        RealmSyncGetResponseDTO realmSyncGetResponseDTO = new RealmSyncGetResponseDTO();
+        realmSyncGetResponseDTO.setCustomerId(obj.getCustomerId());
+        realmSyncGetResponseDTO.setDeviceId(obj.getDeviceId());
+        realmSyncGetResponseDTO.setSyncGetTime(obj.getSyncGetTime());
+        realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
+        realmSyncGetResponseDTO.setLstMusers(obj.getLstMusers());
+        realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
+        realmSyncGetResponseDTO.setLstLocations(obj.getLstLocations());
+        realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
+        realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
+        realmSyncGetResponseDTO.setLstModels(obj.getLstModels());
+        realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
+        realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
+        realm.commitTransaction();
+    }
+
+    public FireBugEquipment getEquipment(int barcodeID) {
+        return realm.where(FireBugEquipment.class).equalTo("ID", barcodeID).findFirst();
+    }
 
 }

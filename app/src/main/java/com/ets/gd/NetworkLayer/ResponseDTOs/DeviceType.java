@@ -2,19 +2,24 @@ package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 import java.util.List;
 
+import io.realm.RealmList;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by hakhtar on 4/13/2017.
  * General Data
  */
 
-public class DeviceType {
+public class DeviceType  extends RealmObject {
 
+    @PrimaryKey
     private int ID;
     private String Code;
     private String Description;
     private boolean HasDueDates;
     private boolean HasReadings;
-    private List<DeviceTypeStatusCodes> DeviceTypeStatusCodes;
+    private RealmList<DeviceTypeStatusCodes> DeviceTypeStatusCodes;
 
     public int getID() {
         return ID;
@@ -60,7 +65,7 @@ public class DeviceType {
         return DeviceTypeStatusCodes;
     }
 
-    public void setDeviceTypeStatusCodes(List<com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes> deviceTypeStatusCodes) {
+    public void setDeviceTypeStatusCodes(RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes> deviceTypeStatusCodes) {
         DeviceTypeStatusCodes = deviceTypeStatusCodes;
     }
 }

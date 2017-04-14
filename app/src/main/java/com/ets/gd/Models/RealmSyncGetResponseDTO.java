@@ -1,13 +1,21 @@
-package com.ets.gd.NetworkLayer.ResponseDTOs;
+package com.ets.gd.Models;
 
-
-import java.util.List;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
+import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
 import io.realm.RealmList;
+import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 
-public class SyncGetResponseDTO extends ResponseDTO {
+public class RealmSyncGetResponseDTO extends RealmObject {
 
     @PrimaryKey
     private int CustomerId;

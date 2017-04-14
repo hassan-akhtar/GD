@@ -70,8 +70,10 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     }
 
     private void initObj() {
-        setAsset(DataManager.getInstance().getAsset(barCodeID));
         actionType = getIntent().getStringExtra("action");
+        barCodeID = getIntent().getStringExtra("barCode");
+        setAsset(DataManager.getInstance().getAsset(barCodeID));
+
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();

@@ -1,11 +1,16 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by hakhtar on 4/13/2017.
  * General Data
  */
 
-public class Size {
+public class Size extends RealmObject {
+
+    @PrimaryKey
     private int ID;
     private String Code;
     private String Description;

@@ -1,8 +1,12 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
-public class MobileUser {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class MobileUser  extends RealmObject {
 
 
+    @PrimaryKey
     private int ID;
     private String UserName;
     private String Password;

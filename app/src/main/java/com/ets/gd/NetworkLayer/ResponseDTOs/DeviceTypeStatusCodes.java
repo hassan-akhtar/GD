@@ -1,12 +1,16 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by hakhtar on 4/13/2017.
  * General Data
  */
 
-public class DeviceTypeStatusCodes {
+public class DeviceTypeStatusCodes extends RealmObject {
 
+    @PrimaryKey
     private int  ID;
     private int DeviceTypeID;
     private int StatusCodeID;
