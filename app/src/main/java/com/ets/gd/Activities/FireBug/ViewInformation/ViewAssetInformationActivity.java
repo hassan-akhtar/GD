@@ -85,7 +85,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         actionType = getIntent().getStringExtra("action");
         barCodeID = getIntent().getStringExtra("barCode");
 
-        setEquipment(DataManager.getInstance().getEquipment(Integer.parseInt(barCodeID)));
+        setEquipment(DataManager.getInstance().getEquipment(barCodeID));
         setAsset(DataManager.getInstance().getAsset(barCodeID));
 
         setupViewPager(viewPager);

@@ -25,6 +25,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class SelectAssetActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnScan, btnCross;
     RecyclerView rlLocs;
-    List<Asset> assetList = new ArrayList<Asset>();
+    List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
     Context mContext;
     String compName;
 
@@ -116,7 +117,7 @@ public class SelectAssetActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
                 in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                in.putExtra("tagID",assetList.get(position).getTagID());
+                in.putExtra("tagID",assetList.get(position).getID());
                 startActivity(in);
                 finish();
             }

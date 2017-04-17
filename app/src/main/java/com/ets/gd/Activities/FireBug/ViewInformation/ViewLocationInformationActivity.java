@@ -18,19 +18,21 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     ImageView ivBack, ivTick;
     Spinner spLocation;
     public static EditText tvSite, tvDescprition, tvBuilding;
-    Location location;
+    Locations location;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
     public static int posLoc = 0;
-    FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvBuilding = (EditText) findViewById(R.id.tvBuilding);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
+        barCodeID = getIntent().getStringExtra("barCode");
         location = DataManager.getInstance().getLocation(barCodeID);
 
     }
@@ -60,15 +63,15 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private void initObj() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
-        fireBugEquipment = ((ViewAssetInformationActivity) getApplicationContext()).getEquipment();
-        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+        sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID)));
 
         String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
             locations[i] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
         }
-        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, locations);
+        ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, locations);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
 
@@ -87,7 +90,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     void setViewForViewLoc() {
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+            if (location.getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                 spLocation.setSelection(i);
                 tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
                 tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());

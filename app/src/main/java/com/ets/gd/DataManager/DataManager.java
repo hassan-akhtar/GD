@@ -8,6 +8,8 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 
 import java.util.List;
@@ -52,24 +54,17 @@ public class DataManager {
 
 
     // For adding an asset info in DB
-    public void updateAssetLocationID(final List<Asset> assetList, final String newLocId) {
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                // for (int i=0;i>assetList.size();i++) {
-                for (Asset asset : assetList) {
-                    Asset assett = realm.where(Asset.class).equalTo("tagID", asset.getTagID()).findFirst();
-                    Location location = realm.createObject(Location.class);
-                    location.setLocationID(newLocId);
-                    location.setDescription(assett.getLocation().getDescription());
-                    location.setAgent(assett.getLocation().getAgent());
-                    location.setVendor(assett.getLocation().getVendor());
-                    location.setPlace(assett.getLocation().getPlace());
-                    asset.setLocation(location);
-                }
-            }
-            //}
-        });
+    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId) {
+
+        for (FireBugEquipment asset : assetList) {
+            realm.beginTransaction();
+            FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", asset.getID()).findFirst();
+            MyLocation myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
+            assett.setLocation(myLocation);
+            realm.commitTransaction();
+
+        }
+
     }
 
 //    // For adding an asset location in DB
@@ -168,9 +163,10 @@ public class DataManager {
             return false;
     }
 
-    public Location getLocation(String barcodeID) {
-        return realm.where(Location.class).equalTo("locationID", barcodeID).findFirst();
+    public Locations getLocation(String barcodeID) {
+        return realm.where(Locations.class).equalTo("Code", barcodeID).findFirst();
     }
+
 
     public void addLocation(final Location obj) {
         realm.executeTransaction(new Realm.Transaction() {
@@ -222,8 +218,8 @@ public class DataManager {
     }
 
     // For getting asset all assets from DB
-    public List<Asset> getAllAssets() {
-        return realm.where(Asset.class).findAllSorted("manufacturers");
+    public List<FireBugEquipment> getAllAssets() {
+        return realm.where(FireBugEquipment.class).findAllSorted("Manufacturer");
 
     }
 
@@ -234,9 +230,9 @@ public class DataManager {
     }
 
     // For getting asset all locations from DB
-    public List<Location> getAllLocations() {
-        RealmResults<Location> results = realm.where(Location.class).findAllSorted("locationID");
-        List<Location> copied = realm.copyFromRealm(results);
+    public List<Locations> getAllLocations() {
+        RealmResults<Locations> results = realm.where(Locations.class).findAllSorted("ID");
+        List<Locations> copied = realm.copyFromRealm(results);
         return copied;
     }
 
@@ -562,15 +558,14 @@ public class DataManager {
         realm.commitTransaction();
     }
 
-    public FireBugEquipment getEquipment(int barcodeID) {
-        return realm.where(FireBugEquipment.class).equalTo("ID", barcodeID).findFirst();
+    public FireBugEquipment getEquipment(String barcodeID) {
+        return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
 
     public RealmSyncGetResponseDTO getSyncGetResponseDTO(int ID) {
         return realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
     }
-
 
 
 }

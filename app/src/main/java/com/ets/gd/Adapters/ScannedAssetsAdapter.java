@@ -11,9 +11,12 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,19 +24,19 @@ import java.util.List;
  */
 public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdapter.MyViewHolder> {
 
-    private List<Asset> assetList;
-    private List<Location> locList;
+    private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
+    private List<Locations> locList;
     String type = "";
     TextDrawable drawable;
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public ScannedAssetsAdapter(Context context, List<Asset> assetList) {
+    public ScannedAssetsAdapter(Context context, List<FireBugEquipment> assetList) {
         this.assetList = assetList;
         this.mContext = context;
     }
 
-    public ScannedAssetsAdapter(List<Location> locList, Context context, String type) {
+    public ScannedAssetsAdapter(List<Locations> locList, Context context, String type) {
         this.locList = locList;
         this.mContext = context;
         this.type = type;
@@ -51,31 +54,31 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
         if ("".equals(type)) {
-            Asset asset = assetList.get(position);
+            FireBugEquipment asset = assetList.get(position);
 
-            holder.tvTag.setText("Tag: " + asset.getTagID());
+            holder.tvTag.setText("Tag: " + asset.getID());
             if (null!=asset.getLocation()) {
-                holder.tvLocation.setText("Location: " + asset.getLocation().getLocationID());
+                holder.tvLocation.setText("Location: " + asset.getLocation().getID());
             }
 
-            holder.tvName.setText(asset.getManufacturers() + ", " + asset.getModel());
+            holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
-                        .buildRound(asset.getManufacturers().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                        .buildRound(asset.getManufacturers().getCode().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
 
 
         } else {
-            Location loc = locList.get(position);
+            Locations loc = locList.get(position);
             holder.tvTag.setText(loc.getDescription() + ",");
-            holder.tvLocation.setText(loc.getPlace());
+            holder.tvLocation.setText(loc.getFloor());
 
-            holder.tvName.setText(loc.getLocationID());
+            holder.tvName.setText(""+loc.getID());
             drawable = TextDrawable.builder()
                     .beginConfig()
                     .endConfig()
-                    .buildRound(loc.getLocationID().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                    .buildRound(loc.getCode().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
             holder.ivSelectableImage.setImageDrawable(drawable);
         }
     }

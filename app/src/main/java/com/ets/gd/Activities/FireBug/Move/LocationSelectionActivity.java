@@ -24,6 +24,8 @@ import com.ets.gd.Activities.Customer.CustomerActivity;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.AssetList;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -36,8 +38,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc, tvStatement;
     Button btnSelectLoc, btnViewAllAssets;
     String taskName, companyName, loc;
-    AssetList assetList;
-    public static List<Asset> asset = new ArrayList<Asset>();
+    public static List<FireBugEquipment> asset = new ArrayList<FireBugEquipment>();
     String[] assetNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
@@ -89,7 +90,6 @@ public class LocationSelectionActivity extends AppCompatActivity {
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
         rlYes.setOnClickListener(mGlobal_OnClickListener);
         rlNo.setOnClickListener(mGlobal_OnClickListener);
-        assetList = new AssetList();
     }
 
 
@@ -99,27 +99,25 @@ public class LocationSelectionActivity extends AppCompatActivity {
         count = getIntent().getIntExtra("count", 0);
         companyName = getIntent().getStringExtra("compName");
 
-        assetList.setAssetList(DataManager.getInstance().getAllAssets(count));
-
         loc = getIntent().getStringExtra("loc");
         tbTitleBottom.setText(taskName);
         tvCompanyValue.setText(companyName);
         tvFromLoc.setText(loc);
 
-        tvMovingAsset.setText("Moving " + assetList.getAssetList().size() + " asset(s)");
+        tvMovingAsset.setText("Moving " + asset.size() + " asset(s)");
 
-        if (1 < assetList.getAssetList().size()) {
+        if (1 < asset.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
-            tvAssetsNames.setText("Ansul, An350 ...");
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode()+" ,"+asset.get(0).getModel().getCode());
         } else {
             btnViewAllAssets.setVisibility(View.GONE);
-            tvAssetsNames.setText("Ansul, An350");
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode()+" ,"+asset.get(0).getModel().getCode());
         }
 
-        assetNames = new String[assetList.getAssetList().size()];
+        assetNames = new String[asset.size()];
 
-        for (int i = 0; i < assetList.getAssetList().size(); i++) {
-            assetNames[i] = assetList.getAssetList().get(i).getManufacturers() + ", " + assetList.getAssetList().get(i).getModel();
+        for (int i = 0; i < asset.size(); i++) {
+            assetNames[i] = asset.get(i).getManufacturers().getCode() + ", " + asset.get(i).getModel().getCode();
         }
 
 
@@ -217,10 +215,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
             tvToLoc.setText(message);
             btnSelectLoc.setText("Change Location");
             if (taskName.toLowerCase().startsWith("m")) {
-                tvStatement.setText("Are you sure you want to move " + assetList.getAssetList().size() + " Asset(s) To " + message);
+                tvStatement.setText("Are you sure you want to move " + asset.size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);
             } else if (taskName.toLowerCase().startsWith("t")) {
-                tvStatement.setText("Are you sure you want to transfer " + assetList.getAssetList().size() + " Asset(s) To " + message);
+                tvStatement.setText("Are you sure you want to transfer " + asset.size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);
             }
 

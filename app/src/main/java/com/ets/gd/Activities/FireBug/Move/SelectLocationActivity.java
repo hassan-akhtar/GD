@@ -29,6 +29,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Location;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnScan, btnCross;
     RecyclerView rlLocs;
-    List<Location> locList = new ArrayList<Location>();
+    List<Locations> locList = new ArrayList<Locations>();
     Context mContext;
     String location;
 
@@ -118,7 +119,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(locList.get(position).getLocationID());
+                sendMessage(String.valueOf(locList.get(position).getID()));
                 finish();
             }
 
@@ -143,9 +144,9 @@ public class SelectLocationActivity extends AppCompatActivity {
                         in.putExtra("taskType", "loc");
                         startActivity(in);
                     } else {
-                        Location loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
+                        Locations loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
                         if (null != loc) {
-                            sendMessage(loc.getLocationID());
+                            sendMessage(String.valueOf(loc.getID()));
                             finish();
 
                         } else {
@@ -175,13 +176,18 @@ public class SelectLocationActivity extends AppCompatActivity {
             String task = intent.getStringExtra("taskType");
             if (task.startsWith("loc")) {
 
-               Location loc = DataManager.getInstance().getLocation(message);
-                if (null != loc) {
-                    sendMessage(loc.getLocationID());
-                    finish();
+                try {
+                    Locations loc = DataManager.getInstance().getLocation(message);
+                    if (null != loc) {
+                        sendMessage(String.valueOf(loc.getID()));
+                        finish();
 
-               } else {
-                    Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
+                   } else {
+                        Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
+                    }
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "Invalid Int (barcode)", Toast.LENGTH_LONG).show();
                 }
             }
 

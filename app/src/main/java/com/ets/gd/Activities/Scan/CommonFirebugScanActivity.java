@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.StringDef;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -44,6 +45,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.NewAsset;
 import com.ets.gd.Models.Note;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -67,7 +69,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     Asset asset;
     String taskType, compName;
     LinearLayout llbtns, llunderText;
-    private List<Asset> assetList = new ArrayList<Asset>();
+    private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     Context mContext;
@@ -200,13 +202,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
+
+
             switch (v.getId()) {
-                case R.id.btnScan: {
-                    if (taskType.toLowerCase().startsWith("v")) {
+                case R.id.btnScan: {if (taskType.toLowerCase().startsWith("v")) {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            tvBarcodeValue.setText(etBarcode.getText().toString().trim());
+                            tvBarcodeValue.setText(etBarcode.getText().toString());
                             etBarcode.setText("");
                             etBarcode.setVisibility(View.INVISIBLE);
                             tvBarcodeTitle.setVisibility(View.VISIBLE);
@@ -219,13 +222,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
-                            if (null != asset) {
-                                if (!assetList.contains(asset)) {
+                            fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                            if (null != fireBugEquipment) {
+                                if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
-                                    assetList.add(asset);
+                                    assetList.add(fireBugEquipment);
                                     tvTaskName.setText("MOVE ASSET");
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to Move");
@@ -243,13 +246,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
-                            if (null != asset) {
-                                if (!assetList.contains(asset)) {
+                            fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                            if (null != fireBugEquipment) {
+                                if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
-                                    assetList.add(asset);
+                                    assetList.add(fireBugEquipment);
                                     tvTaskName.setText("TRANSFER ASSET");
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to TRANSFER");
@@ -267,14 +270,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            asset = DataManager.getInstance().getAsset(etBarcode.getText().toString().trim());
-                            if (null != asset) {
-                                if (!assetList.contains(asset)) {
+                            fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                            if (null != fireBugEquipment) {
+                                if (!assetList.contains(fireBugEquipment)) {
                                     assetList.clear();
                                     etBarcode.setText("");
                                     hideKeyboard();
                                     rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
-                                    assetList.add(asset);
+                                    assetList.add(fireBugEquipment);
                                     mAdapter.notifyDataSetChanged();
                                 } else {
                                     hideKeyboard();
@@ -291,28 +294,27 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnAsset: {
 
-                    asset = DataManager.getInstance().getAsset(tvBarcodeValue.getText().toString().trim());
 
-                    fireBugEquipment = DataManager.getInstance().getEquipment(Integer.parseInt(tvBarcodeValue.getText().toString().trim()));
+                    fireBugEquipment = DataManager.getInstance().getEquipment(tvBarcodeValue.getText().toString());
                     if (null != fireBugEquipment) {
 
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
                         in.putExtra("action", "viewAsset");
-                        in.putExtra("barCode", tvBarcodeValue.getText().toString().trim());
+                        in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
                         hideScannedData();
                     } else {
                         Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                     }
-
                     break;
                 }
 
                 case R.id.btnLoc: {
-                    ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString().trim();
-                    if (null != DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString().trim())) {
+                    ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString();
+                    if (null != DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString())) {
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
                         in.putExtra("action", "viewLoc");
+                        in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
                         hideScannedData();
                     } else {
@@ -326,12 +328,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     break;
                 }
 
-
                 case R.id.tvInspectAsset: {
                     Intent in = new Intent(CommonFirebugScanActivity.this, UnitInspectionActivity.class);
-                    in.putExtra("tag", "" + assetList.get(0).getTagID());
+                    in.putExtra("tag", "" + assetList.get(0).getID());
                     if (null != assetList.get(0).getLocation()) {
-                        in.putExtra("loc", "" + assetList.get(0).getLocation().getLocationID());
+                        in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
                         in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
                     }
                     in.putExtra("compName", compName);
@@ -359,17 +360,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.rlForwardArrow: {
 
-                    AssetList listAssets = new AssetList();
+                    EquipmentList listAssets = new EquipmentList();
                     listAssets.setAssetList(assetList);
                     Intent in = new Intent(CommonFirebugScanActivity.this, LocationSelectionActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("compName", compName);
                     in.putExtra("count", assetList.size());
-                    if (null != assetList.get(0).getLocation()) {
-                        in.putExtra("loc", assetList.get(0).getLocation().getLocationID());
-                    } else {
-                        in.putExtra("loc", "L007133");
-                    }
+                    in.putExtra("loc", String.valueOf(assetList.get(0).getLocation().getID()));
                     LocationSelectionActivity.asset = assetList;
                     startActivity(in);
                     break;
@@ -493,6 +490,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             String task = intent.getStringExtra("taskType");
+
+
+
             if (!task.startsWith("loc")) {
                 if (task.toLowerCase().startsWith("v")) {
                     tvBarcodeValue.setText(message);
@@ -503,12 +503,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (task.toLowerCase().startsWith("m")) {
-                    asset = DataManager.getInstance().getAsset(message);
-                    if (null != asset) {
-                        if (!assetList.contains(asset)) {
+                    fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                    if (null != fireBugEquipment) {
+                        if (!assetList.contains(fireBugEquipment)) {
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
-                            assetList.add(asset);
+                            assetList.add(fireBugEquipment);
                             tvTaskName.setText("MOVE ASSET");
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to Move");
@@ -522,15 +522,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
                 } else if (task.toLowerCase().startsWith("t")) {
-
-
-                    asset = DataManager.getInstance().getAsset(message);
-
-                    if (null != asset) {
-                        if (!assetList.contains(asset)) {
+                    if (null != fireBugEquipment) {
+                        fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                        if (!assetList.contains(fireBugEquipment)) {
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
-                            assetList.add(asset);
+                            assetList.add(fireBugEquipment);
                             tvTaskName.setText("TRANSFER ASSET");
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to TRANSFER");
@@ -544,14 +541,13 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 } else if (task.toLowerCase().startsWith("ins")) {
 
-                    asset = DataManager.getInstance().getAsset(message);
-
-                    if (null != asset) {
-                        if (!assetList.contains(asset)) {
+                    if (null != fireBugEquipment) {
+                        fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+                        if (!assetList.contains(fireBugEquipment)) {
                             assetList.clear();
                             etBarcode.setText("");
                             rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
-                            assetList.add(asset);
+                            assetList.add(fireBugEquipment);
                             mAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
