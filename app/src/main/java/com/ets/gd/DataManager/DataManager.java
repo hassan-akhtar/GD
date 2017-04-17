@@ -219,7 +219,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<FireBugEquipment> getAllAssets() {
-        return realm.where(FireBugEquipment.class).findAllSorted("Manufacturer");
+        return realm.where(FireBugEquipment.class).findAll();
 
     }
 

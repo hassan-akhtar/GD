@@ -117,7 +117,7 @@ public class SelectAssetActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
                 in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                in.putExtra("tagID",assetList.get(position).getID());
+                in.putExtra("tagID",assetList.get(position).getCode());
                 startActivity(in);
                 finish();
             }
@@ -143,11 +143,11 @@ public class SelectAssetActivity extends AppCompatActivity {
                         in.putExtra("taskType", "loc");
                         startActivity(in);
                     } else {
-                        Asset obj = DataManager.getInstance().getAsset(etBarcode.getText().toString().toString().trim());
-                        if (null != obj) {
+                        FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString().toString());
+                        if (null != fireBugEquipment) {
                             Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
                             in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                            in.putExtra("tagID",obj.getTagID());
+                            in.putExtra("tagID",fireBugEquipment.getCode());
                             startActivity(in);
                             finish();
                         } else {
@@ -169,12 +169,12 @@ public class SelectAssetActivity extends AppCompatActivity {
             String task = intent.getStringExtra("taskType");
             if (task.startsWith("loc")) {
 
-                Asset obj = DataManager.getInstance().getAsset(message);
-                if (null != obj) {
+                FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                if (null != fireBugEquipment) {
                     finish();
                     Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
                     in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                    in.putExtra("tagID",obj.getTagID());
+                    in.putExtra("tagID",fireBugEquipment.getCode());
                     startActivity(in);
 
                 } else {
