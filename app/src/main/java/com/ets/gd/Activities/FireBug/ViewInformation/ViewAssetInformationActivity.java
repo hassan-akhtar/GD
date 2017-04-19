@@ -93,11 +93,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         setupTabIcons();
 
 
-        if ("viewAsset".equals(actionType)) {
-            ivTick.setVisibility(View.GONE);
-        } else {
-            ivTick.setVisibility(View.VISIBLE);
-        }
+//        if ("viewAsset".equals(actionType)) {
+//            ivTick.setVisibility(View.GONE);
+//        } else {
+//            ivTick.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void initListeners() {

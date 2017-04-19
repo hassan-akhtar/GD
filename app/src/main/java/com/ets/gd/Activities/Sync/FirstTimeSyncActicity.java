@@ -103,6 +103,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
                         CommonActions.DismissesDialog();
                         Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID,syncGetResponseDTO.getCustomerId());
                         startActivity(new Intent(FirstTimeSyncActicity.this, LoginActivity.class));
                         finish();
                     } else {

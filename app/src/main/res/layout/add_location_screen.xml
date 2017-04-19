@@ -6,11 +6,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-
-
-
-
-
         <RelativeLayout
 
             android:layout_width="wrap_content"
@@ -36,8 +31,32 @@
 
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/lLocationID"
+                android:id="@+id/lCusID"
                 android:layout_below="@+id/rlVendor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
+                android:theme="@style/TextLabel">
+
+                <EditText
+                    android:id="@+id/tvCustomerID"
+                    android:layout_width="match_parent"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="Cusromer ID"
+                    android:maxLines="1"
+                    android:paddingLeft="12dp" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/lLocationID"
+                android:layout_below="@+id/lCusID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
@@ -47,6 +66,7 @@
                 <EditText
                     android:id="@+id/tvDescprition"
                     android:layout_width="match_parent"
+                    android:enabled="false"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -68,6 +88,7 @@
                 <EditText
                     android:id="@+id/tvSite"
                     android:layout_width="match_parent"
+                    android:enabled="false"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
@@ -90,6 +111,7 @@
                     android:id="@+id/tvBuilding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="Building"

@@ -220,7 +220,6 @@ public class DataManager {
     // For getting asset all assets from DB
     public List<FireBugEquipment> getAllAssets() {
         return realm.where(FireBugEquipment.class).findAll();
-
     }
 
     // For getting asset all assets from DB

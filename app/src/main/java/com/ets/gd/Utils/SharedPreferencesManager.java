@@ -21,6 +21,7 @@ public class SharedPreferencesManager {
     public static final String LAST_SYNC_TIME = "syncTime";
     public static final String  MY_DEVICE_ID = "deviceID";
     public static final String  MY_SYNC_CUSTOMER_ID = "customerID";
+    public static final String  AFTER_SYNC_CUSTOMER_ID = "cusID";
 
 
 
@@ -34,6 +35,17 @@ public class SharedPreferencesManager {
     public  void setString(String key, String value){
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.putString(key, value);
+        editor.commit();
+    }
+
+    public int getInt(String key){
+        return sharedpreferences.getInt(key, 0);
+    }
+
+
+    public  void setInt(String key, int value){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putInt(key, value);
         editor.commit();
     }
 

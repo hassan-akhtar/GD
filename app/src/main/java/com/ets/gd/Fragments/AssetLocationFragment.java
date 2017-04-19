@@ -16,11 +16,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
@@ -28,9 +30,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     public static Spinner spLocation;
     View rootView;
-    public static EditText tvSite, tvDescprition, tvBuilding;
+    public static EditText tvSite, tvDescprition, tvBuilding,tvCustomerID;
     private TextInputLayout lLocationID, lDescprition;
     // Asset asset;
+    SharedPreferencesManager sharedPreferencesManager;
     public static int posLoc = 0;
     FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
@@ -54,7 +57,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     }
 
     private void initViews() {
-
+        tvCustomerID = (EditText) rootView.findViewById(R.id.tvCustomerID);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
         tvSite = (EditText) rootView.findViewById(R.id.tvSite);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
@@ -66,7 +69,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     }
 
     private void initObj() {
-
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
@@ -80,7 +83,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
 
-
+        tvCustomerID.setEnabled(false);
+        tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
         } else {
@@ -91,7 +95,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
     void setViewForViewAsset() {
-
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
             if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
