@@ -65,7 +65,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
-        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID)));
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)));
 
         String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
 

@@ -24,6 +24,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
@@ -34,6 +35,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
     FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    SharedPreferencesManager sharedPreferencesManager;
 
     public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0;
 
@@ -75,8 +77,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     private void initObj() {
         // asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
-        fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
-        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
+            fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+        }else{
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        }
+
 
 
         String[] deviceTypes = new String[realmSyncGetResponseDTO.getLstDeviceType().size()];
