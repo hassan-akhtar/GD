@@ -33,6 +33,7 @@ public class AddNoteFragment extends Fragment {
     NoteAdapter mAdapter;
     Asset asset;
     RecyclerView rvNotes;
+
     public AddNoteFragment() {
     }
 
@@ -53,13 +54,13 @@ public class AddNoteFragment extends Fragment {
 
     private void initViews() {
         fbAddNote = (FloatingActionButton) rootView.findViewById(R.id.fbAddNote);
-        rvNotes  = (RecyclerView) rootView.findViewById(R.id.rvNotes);
+        rvNotes = (RecyclerView) rootView.findViewById(R.id.rvNotes);
     }
 
     private void initObj() {
         asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
-        if (null!=asset) {
+        if (null != asset) {
             lstNotes.clear();
             lstNotes.addAll(asset.getNoteList());
         }
@@ -76,17 +77,16 @@ public class AddNoteFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-/*        mAdapter = new NoteAdapter(lstNotes);
+        mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvNotes.setLayoutManager(mLayoutManager);
         rvNotes.setItemAnimator(new DefaultItemAnimator());
-        rvNotes.setAdapter(mAdapter);*/
+        rvNotes.setAdapter(mAdapter);
 
     }
 
 
     void setViewForVAddAsset() {
-
         lstNotes.clear();
         mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -113,6 +113,7 @@ public class AddNoteFragment extends Fragment {
                     alertDialogBuilder.setView(dialogView);
                     final EditText title = (EditText) dialogView
                             .findViewById(R.id.etTitle);
+                    title.setVisibility(View.GONE);
                     final EditText desc = (EditText) dialogView
                             .findViewById(R.id.etNote);
                     alertDialogBuilder
@@ -121,14 +122,14 @@ public class AddNoteFragment extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,
                                                             int id) {
-                                            if (!"".equals(title.getText().toString().trim()) && !"".equals(desc.getText().toString().trim())) {
+                                            if (!"".equals(desc.getText().toString().trim())) {
                                                 Note note = new Note();
-                                                note.setNoteTitle(title.getText().toString().trim());
+                                                note.setNoteTitle("Date Modified: 12/12/12");
                                                 note.setNoteDescription(desc.getText().toString().trim());
                                                 lstNotes.add(note);
                                                 mAdapter.notifyDataSetChanged();
                                             } else {
-                                                Toast.makeText(getActivity(),"Title or Note was missing. Please try again",Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getActivity(), "Please enter a note and try again", Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     })

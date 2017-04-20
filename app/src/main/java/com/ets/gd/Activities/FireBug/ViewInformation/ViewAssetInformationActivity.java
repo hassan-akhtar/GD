@@ -161,8 +161,14 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetNote()) {
-                                DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
-                                showToast("Asset's Note(s) Updated");
+                              //  DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
+
+                                if ("viewAsset".equals(actionType)) {
+                                    showToast("Asset's Note(s) Updated");
+                                } else {
+                                    showToast("Asset's Note(s) Added");
+                                }
+
                             }
                         } else {
                             showToast("Please add asset first");
@@ -183,7 +189,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         InspectionDatesFragment.tvTwelveYears.getText().toString().trim()
 
                                 ));
-                                showToast("Asset's Inspection Dates Updated");
+                                if ("viewAsset".equals(actionType)) {
+                                    showToast("Asset's Inspection Dates Updated");
+                                } else {
+                                    showToast("Asset's Inspection Dates Added");
+                                }
                             }
                         } else {
                             showToast("Please add asset first");
