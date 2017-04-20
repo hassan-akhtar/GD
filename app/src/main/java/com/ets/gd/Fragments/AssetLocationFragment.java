@@ -99,7 +99,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
     void setViewForViewAsset() {
-
+        spLocation.setEnabled(false);
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
             if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                 spLocation.setSelection(i);

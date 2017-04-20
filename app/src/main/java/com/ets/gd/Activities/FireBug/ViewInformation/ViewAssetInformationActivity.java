@@ -136,16 +136,17 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             }
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
-                        if (isAssetAdded) {
+              /*          if (isAssetAdded) {
                             if (checkValidationAddAssetLocation()) {
-                              /*  DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
+                              *//*  DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
                                         AssetLocationFragment.tvDescprition.getText().toString().trim(), AssetLocationFragment.spSite.getItemAtPosition(AssetLocationFragment.posSite).toString(),
-                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));*/
+                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));*//*
                                 showToast("Asset's Location Updated");
                             }
                         } else {
                             showToast("Please add asset first");
-                        }
+                        }*/
+                        showToast("Asset's Location can't be Updated");
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {

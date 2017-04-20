@@ -65,7 +65,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
-        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)));
+        realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
         String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
 
@@ -78,6 +78,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
         actionType = getIntent().getStringExtra("action");
         if ("viewLoc".equals(actionType)) {
+            ivTick.setVisibility(View.GONE);
             setViewForViewLoc();
         } else {
             setViewForAddLoc();
@@ -90,6 +91,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvCustomerID.setEnabled(false);
         tvDescprition.setEnabled(false);
         tvBuilding.setEnabled(false);
+        spLocation.setEnabled(false);
         tvSite.setEnabled(false);
         tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
@@ -108,6 +110,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     void setViewForAddLoc() {
         tvCustomerID.setEnabled(false);
         tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        spLocation.setEnabled(false);
         spLocation.setSelection(0);
         tvDescprition.setText("No location selected");
         tvSite.setText("No location selected");
