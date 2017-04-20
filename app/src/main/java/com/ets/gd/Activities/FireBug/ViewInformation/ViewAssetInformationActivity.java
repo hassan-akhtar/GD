@@ -118,22 +118,25 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
                     if (0 == tabLayout.getSelectedTabPosition()) {
                         if (checkValidationAddAsset()) {
-                            if (!DataManager.getInstance().doesAssetExist(AssetInformationFragment.tvTagID.getText().toString().trim())) {
-                                DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
-                                        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
-                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
-                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
-                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
-                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
-                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
-                                ));
-                                showToast("Asset Added");
-                                tagID = AssetInformationFragment.tvTagID.getText().toString().trim();
-                                isAssetAdded = true;
-                            } else {
-                                showToast("Asset Already Added!");
-                            }
+//                            if (!DataManager.getInstance().doesAssetExist(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+//                                DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
+//                                        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
+//                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
+//                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
+//                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
+//                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+//                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
+//                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
+//                                ));
+//                                showToast("Asset Added");
+//                                tagID = AssetInformationFragment.tvTagID.getText().toString().trim();
+//                                isAssetAdded = true;
+//                            } else {
+//                                showToast("Asset Already Added!");
+//                            }
+
+                            tabLayout.getTabAt(1).select();
+                            showToast("Please enter location for asset!");
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
               /*          if (isAssetAdded) {
@@ -146,7 +149,14 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         } else {
                             showToast("Please add asset first");
                         }*/
-                        showToast("Asset's Location can't be Updated");
+
+                        if ("viewAsset".equals(actionType)) {
+                            showToast("Asset's Location can't be Updated");
+                        } else {
+                            showToast("Asset Added.");
+                            showToast("You can now add notes and inspection dates for this asset.");
+                        }
+
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {

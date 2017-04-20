@@ -67,11 +67,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
-        String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
+        int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
+        String[] locations = new String[size];
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            locations[i] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
+            locations[i+1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
         }
+        locations[0] = "Please select a location";
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, locations);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
@@ -82,6 +84,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             setViewForViewLoc();
         } else {
             setViewForAddLoc();
+            spLocation.setEnabled(true);
         }
 
     }
@@ -110,7 +113,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     void setViewForAddLoc() {
         tvCustomerID.setEnabled(false);
         tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-        spLocation.setEnabled(false);
+        spLocation.setEnabled(true);
         spLocation.setSelection(0);
         tvDescprition.setText("No location selected");
         tvSite.setText("No location selected");
@@ -159,7 +162,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     private boolean checkValidation() {
         if (0 == posLoc) {
-            showToast("Please enter location ID");
+            showToast("Please select a location");
         } else {
             return true;
         }
@@ -177,7 +180,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         int viewID = parent.getId();
         switch (viewID) {
             case R.id.spLocation: {
-                position = position;
+                posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (!"viewLoc".equals(actionType)) {
                     if (0 == position) {
@@ -186,17 +189,23 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
                 }
 
-                if (null != DataManager.getInstance().getLocation(strSelectedState)) {
-                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-                        if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
-                            spLocation.setSelection(i);
-                            tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
-                            tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
-                            tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
-                            break;
+
+             //   if (position != 0) {
+                    if (null != DataManager.getInstance().getLocation(strSelectedState)) {
+                        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+                            if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                                spLocation.setSelection(i);
+                                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
+                                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
+                                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+                                break;
+                            }
                         }
+                    }else{
+                        setViewForAddLoc();
                     }
-                }
+              //  }
+
 
             }
             break;

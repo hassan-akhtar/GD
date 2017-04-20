@@ -86,33 +86,45 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
 
+        int sizeDeviceType = realmSyncGetResponseDTO.getLstDeviceType().size()+1;
+        int sizeManufacturers= realmSyncGetResponseDTO.getLstManufacturers().size()+1;
+        int sizeModels= realmSyncGetResponseDTO.getLstModels().size()+1;
+        int sizeVendors = realmSyncGetResponseDTO.getLstVendorCodes().size()+1;
+        int sizeAgents = realmSyncGetResponseDTO.getLstAgentTypes().size()+1;
 
-        String[] deviceTypes = new String[realmSyncGetResponseDTO.getLstDeviceType().size()];
-        String[] manufacturers  = new String[realmSyncGetResponseDTO.getLstManufacturers().size()];
-        String[] models = new String[realmSyncGetResponseDTO.getLstModels().size()];
-        String[] vendors = new String[realmSyncGetResponseDTO.getLstVendorCodes().size()];
-        String[] agents = new String[realmSyncGetResponseDTO.getLstAgentTypes().size()];
+        String[] deviceTypes = new String[sizeDeviceType];
+        String[] manufacturers  = new String[sizeManufacturers];
+        String[] models = new String[sizeModels];
+        String[] vendors = new String[sizeVendors];
+        String[] agents = new String[sizeAgents];
+
+
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
-            deviceTypes[i] = realmSyncGetResponseDTO.getLstDeviceType().get(i).getCode();
+            deviceTypes[i+1] = realmSyncGetResponseDTO.getLstDeviceType().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
-            manufacturers[i] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
+            manufacturers[i+1] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
-            models[i] = realmSyncGetResponseDTO.getLstModels().get(i).getCode();
+            models[i+1] = realmSyncGetResponseDTO.getLstModels().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
-            vendors[i] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
+            vendors[i+1] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
-            agents[i] = realmSyncGetResponseDTO.getLstAgentTypes().get(i).getCode();
+            agents[i+1] = realmSyncGetResponseDTO.getLstAgentTypes().get(i).getCode();
         }
 
+        deviceTypes[0] ="Please select a device type";
+        manufacturers[0] ="Please select a manufacturer";
+        models[0] = "Please select a model";
+        vendors[0] ="Please select a vendor";
+        agents[0] = "Please select a agent";
 
 
 
@@ -198,7 +210,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
 
     void setViewForVAddAsset() {
-
         tvTagID.setText("");
         tvTagID.setEnabled(true);
         tvSrNo.setText("");

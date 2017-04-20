@@ -78,11 +78,13 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }
 
-        String[] locations = new String[realmSyncGetResponseDTO.getLstLocations().size()];
+        int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
+        String[] locations = new String[size];
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            locations[i] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
+            locations[i+1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
         }
+        locations[0] = "Please select a location";
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
@@ -115,10 +117,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
     void setViewForVAddAsset() {
+        spLocation.setEnabled(true);
         spLocation.setSelection(0);
-        tvDescprition.setText("");
-        tvSite.setText("");
-        tvBuilding.setText("");
+        tvDescprition.setText("No location selected");
+        tvSite.setText("No location selected");
+        tvBuilding.setText("No location selected");
 
 
     }
@@ -137,12 +140,27 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             case R.id.spLocation: {
                 posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getDescription());
-                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getSite().getCode());
-                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getBuilding().getCode());
+                if (null != DataManager.getInstance().getLocation(strSelectedState)) {
+                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+                        if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                            spLocation.setSelection(i);
+                            tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
+                            tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
+                            tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+                            break;
+                        }
+                    }
+                }else{
+                    setViewForVAddAsset();
+                }
+//
+//                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getDescription());
+//                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getSite().getCode());
+//                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getBuilding().getCode());
                 try {
                     if (0 == position) {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
