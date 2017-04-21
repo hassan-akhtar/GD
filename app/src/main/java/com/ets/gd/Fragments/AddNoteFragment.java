@@ -17,8 +17,9 @@ import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
-import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.Note;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -28,11 +29,11 @@ import java.util.List;
 public class AddNoteFragment extends Fragment {
 
     View rootView;
-    public static List<Note> lstNotes = new ArrayList<Note>();
+    public static List<EquipmentNote> lstNotes = new ArrayList<EquipmentNote>();
     FloatingActionButton fbAddNote;
     NoteAdapter mAdapter;
-    Asset asset;
     RecyclerView rvNotes;
+    FireBugEquipment fireBugEquipment;
 
     public AddNoteFragment() {
     }
@@ -58,13 +59,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void initObj() {
-        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
-        if (null != asset) {
-            lstNotes.clear();
-            lstNotes.addAll(asset.getNoteList());
-        }
-
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
@@ -76,7 +71,9 @@ public class AddNoteFragment extends Fragment {
 
 
     void setViewForViewAsset() {
-
+        lstNotes.clear();
+        fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
+        lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getID());
         mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvNotes.setLayoutManager(mLayoutManager);
@@ -123,9 +120,9 @@ public class AddNoteFragment extends Fragment {
                                         public void onClick(DialogInterface dialog,
                                                             int id) {
                                             if (!"".equals(desc.getText().toString().trim())) {
-                                                Note note = new Note();
-                                                note.setNoteTitle("Date Modified: 12/12/12");
-                                                note.setNoteDescription(desc.getText().toString().trim());
+                                                EquipmentNote note = new EquipmentNote();
+                                                note.setModifiedTime("Date Modified: 12/12/12");
+                                                note.setNote(desc.getText().toString().trim());
                                                 lstNotes.add(note);
                                                 mAdapter.notifyDataSetChanged();
                                             } else {

@@ -29,6 +29,20 @@ public class FireBugEquipment  extends RealmObject {
     private RealmList<MyInspectionDates> InspectionDates;
     private RealmList<InspectionResult> InspectionResults;
 
+    public FireBugEquipment(String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model) {
+        Code = code;
+        SerialNo = serialNo;
+        ManufacturerDate = manufacturerDate;
+        AgentType = agentType;
+        Customer = customer;
+        DeviceType = deviceType;
+        Location = location;
+        Manufacturer = manufacturer;
+        VendorCode = vendorCode;
+        Model = model;
+    }
+
+    public FireBugEquipment(){}
 
     public int getID() {
         return ID;

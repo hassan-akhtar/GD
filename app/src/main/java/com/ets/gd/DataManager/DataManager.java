@@ -7,10 +7,17 @@ import com.ets.gd.Models.Note;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
 import java.util.List;
 
@@ -222,11 +229,65 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).findAll();
     }
 
+
+    // For getting asset all assets from DB
+    public Manufacturer getAssetManufacturer(String Code) {
+        return realm.where(Manufacturer.class).equalTo("Code",Code).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public DeviceType getAssetDeviceType(String Code) {
+        return realm.where(DeviceType.class).equalTo("Code",Code).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public MyLocation getAssetLocation(String Code) {
+        return realm.where(MyLocation.class).equalTo("Code",Code).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public Customer getAssetCustomer(int id) {
+        return realm.where(Customer.class).equalTo("ID",id).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public AgentType getAssetAgentType(String Code) {
+        return realm.where(AgentType.class).equalTo("Code",Code).findFirst();
+    }
+
+
+    // For getting asset all assets from DB
+    public VendorCode getAssetVendorCode(String Code) {
+        return realm.where(VendorCode.class).equalTo("Code",Code).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public Model getAssetModel(String Code) {
+        return realm.where(Model.class).equalTo("Code",Code).findFirst();
+    }
+
+
+
+    // For getting asset all assets from DB
+    public void addEquipment(FireBugEquipment fireBugEquipment) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(fireBugEquipment);
+        realm.commitTransaction();
+    }
+
+
     // For getting asset all assets from DB
     public List<Asset> getAllAssets(int count) {
         return realm.where(Asset.class).findAllSorted("manufacturers").subList(0, count);
 
     }
+
+
+    public List<EquipmentNote> getAllNotes(int EquipmentID) {
+        return realm.where(EquipmentNote.class).equalTo("ID", EquipmentID).findAll();
+
+    }
+
 
     // For getting asset all locations from DB
     public List<Locations> getAllLocations() {

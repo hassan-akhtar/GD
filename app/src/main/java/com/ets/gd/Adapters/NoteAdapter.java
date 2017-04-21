@@ -4,19 +4,18 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ets.gd.Models.Note;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder>{
-    List<Note> lvNotes = new ArrayList<Note>();
+    List<EquipmentNote> lvNotes = new ArrayList<EquipmentNote>();
 
-    public NoteAdapter(List<Note> lvNotes ) {
+    public NoteAdapter(List<EquipmentNote> lvNotes ) {
         this.lvNotes = lvNotes;
     }
 
@@ -30,8 +29,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.MyViewHolder>{
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.noteTitle.setText(lvNotes.get(position).getNoteTitle());
-        holder.noteDescription.setText(lvNotes.get(position).getNoteDescription());
+        holder.noteTitle.setText(lvNotes.get(position).getModifiedTime());
+        holder.noteDescription.setText(lvNotes.get(position).getNote());
     }
 
     @Override

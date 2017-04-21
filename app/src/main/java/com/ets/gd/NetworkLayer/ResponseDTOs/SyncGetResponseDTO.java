@@ -1,8 +1,6 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.annotations.PrimaryKey;
 
@@ -19,6 +17,7 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<Locations> lstLocations;
     RealmList<DeviceType> lstDeviceType;
     RealmList<Manufacturer> lstManufacturers;
+    RealmList<EquipmentNote> lstFbEquipmentNotes;
     RealmList<Model> lstModels;
     RealmList<VendorCode> lstVendorCodes;
     RealmList<AgentType> lstAgentTypes;
@@ -53,6 +52,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstDevices(RealmList<RegisteredDevice> lstDevices) {
         this.lstDevices = lstDevices;
+    }
+
+    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
+        return lstFbEquipmentNotes;
+    }
+
+    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
+        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
     }
 
     public RealmList<MobileUser> getLstMusers() {

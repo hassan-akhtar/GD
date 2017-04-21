@@ -23,6 +23,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +39,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     static String tagID = "";
     Asset asset;
     FireBugEquipment fireBugEquipment;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +94,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
+        sharedPreferencesManager = new SharedPreferencesManager(ViewAssetInformationActivity.this);
 
 //        if ("viewAsset".equals(actionType)) {
 //            ivTick.setVisibility(View.GONE);
@@ -153,7 +156,37 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");
                         } else {
-                            showToast("Asset Added.");
+                            FireBugEquipment fireBugEquipment = null;
+                            try {
+                                fireBugEquipment = new FireBugEquipment(
+                                        AssetInformationFragment.tvTagID.getText().toString().trim(),
+                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                        DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
+                                        DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                                        DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
+                                        DataManager.getInstance().getAssetLocation(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString()),
+                                        DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
+                                        DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
+                                        DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString())
+                                );
+                                showToast("Asset Added.");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                showToast("Asset not saved..");
+                            }
+
+
+                            //        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
+//                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
+//                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
+//                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
+//                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+//                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
+//                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
+
+
+                            DataManager.getInstance().addEquipment(fireBugEquipment);
                             showToast("You can now add notes and inspection dates for this asset.");
                         }
 
