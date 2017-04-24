@@ -16,6 +16,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
@@ -139,24 +140,31 @@ public class DataManager {
 
     }
 
-    public void addUpdateAssetInspecDates(final String barcodeID, final InspectionDates inspectionDates) {
+    public void addUpdateAssetInspecDates( final String barcodeID, final InspectionDates inspectionNewDates) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
-                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
-                inspectionDates.setDaily(inspectionDates.getDaily());
-                inspectionDates.setWeekly(inspectionDates.getWeekly());
-                inspectionDates.setMonthly(inspectionDates.getMonthly());
-                inspectionDates.setQuaterly(inspectionDates.getQuaterly());
-                inspectionDates.setSemiAnnual(inspectionDates.getSemiAnnual());
-                inspectionDates.setAnnual(inspectionDates.getAnnual());
-                inspectionDates.setFiveYear(inspectionDates.getFiveYear());
-                inspectionDates.setSixYear(inspectionDates.getSixYear());
-                inspectionDates.setTenYear(inspectionDates.getTenYear());
-                inspectionDates.setTwelveYear(inspectionDates.getTwelveYear());
-                asset.setInspectionDates(inspectionDates);
+                FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
+
+                RealmResults<MyInspectionDates> results =  realm.where(MyInspectionDates.class).equalTo("EquipmentID", fireBugEquipment.getID()).findAll();
+
+                results.get(0).setDueDate(inspectionNewDates.getDaily());
+                results.get(1).setDueDate(inspectionNewDates.getWeekly());
+                results.get(2).setDueDate(inspectionNewDates.getMonthly());
+                results.get(3).setDueDate(inspectionNewDates.getQuaterly());
+                results.get(4).setDueDate(inspectionNewDates.getSemiAnnual());
+                results.get(5).setDueDate(inspectionNewDates.getAnnual());
+                results.get(6).setDueDate(inspectionNewDates.getFiveYear());
+                results.get(7).setDueDate(inspectionNewDates.getSixYear());
+                results.get(8).setDueDate(inspectionNewDates.getTenYear());
+                results.get(9).setDueDate(inspectionNewDates.getTwelveYear());
+                RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
+                res.addAll(results);
+/*                RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
+                res.get(0).setDueDate();*/
+                fireBugEquipment.setInspectionDates(res);
+                fireBugEquipment.setUpdated(true);
             }
         });
 
@@ -297,6 +305,7 @@ public class DataManager {
         return realm.where(Asset.class).findAllSorted("manufacturers").subList(0, count);
 
     }
+
 
 
     public List<EquipmentNote> getAllNotes(int EquipmentID) {

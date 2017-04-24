@@ -99,11 +99,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
         sharedPreferencesManager = new SharedPreferencesManager(ViewAssetInformationActivity.this);
 
-//        if ("viewAsset".equals(actionType)) {
-//            ivTick.setVisibility(View.GONE);
-//        } else {
-//            ivTick.setVisibility(View.VISIBLE);
-//        }
+        if ("viewAsset".equals(actionType)) {
+            isAssetAdded = true;
+        } else {
+            isAssetAdded = false;
+        }
     }
 
     private void initListeners() {
@@ -141,8 +141,33 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 //                                showToast("Asset Already Added!");
 //                            }
 
-                            tabLayout.getTabAt(1).select();
-                            showToast("Please enter location for asset!");
+                            if ("viewAsset".equals(actionType)) {
+                                FireBugEquipment fireBugEquipmentt = null;
+                                try {
+                                    fireBugEquipmentt = new FireBugEquipment(
+                                            fireBugEquipment.getID(),
+                                            AssetInformationFragment.tvTagID.getText().toString(),
+                                            AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                            AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                            DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
+                                            DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                                            DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
+                                            DataManager.getInstance().getAssetLocation(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString()),
+                                            DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
+                                            DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
+                                            DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
+                                            true, false);
+                                    showToast("Asset Updated.");
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    showToast("Asset not Updated.");
+                                }
+                                DataManager.getInstance().addEquipment(fireBugEquipmentt);
+                            }else{
+                                tabLayout.getTabAt(1).select();
+                                showToast("Please enter location for asset!");
+                            }
+
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
               /*          if (isAssetAdded) {
@@ -159,45 +184,40 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");
                         } else {
-                            FireBugEquipment fireBugEquipment = null;
-                            try {
-                                fireBugEquipment = new FireBugEquipment(
-                                        AssetInformationFragment.tvTagID.getText().toString().trim(),
-                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
-                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-                                        DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
-                                        DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
-                                        DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
-                                        DataManager.getInstance().getAssetLocation(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString()),
-                                        DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
-                                        DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
-                                        DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString())
-                                );
-                                showToast("Asset Added.");
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                showToast("Asset not saved..");
+                            if (null==DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+                                FireBugEquipment fireBugEquipment = null;
+                                try {
+                                    fireBugEquipment = new FireBugEquipment(
+                                            0,
+                                            AssetInformationFragment.tvTagID.getText().toString(),
+                                            AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                            AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                            DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
+                                            DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                                            DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
+                                            DataManager.getInstance().getAssetLocation(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString()),
+                                            DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
+                                            DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
+                                            DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
+                                            false, true);
+                                    DataManager.getInstance().addEquipment(fireBugEquipment);
+                                    showToast("Asset Added.");
+                                    isAssetAdded = true;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    showToast("Asset not saved..");
+                                }
+                                showToast("You can now add notes and inspection dates for this asset.");
+                            } else {
+                                showToast("Asset with tag Id: "+AssetInformationFragment.tvTagID.getText().toString().trim()+" Already exists.");
                             }
-
-
-                            //        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
-//                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
-//                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
-//                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
-//                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-//                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
-//                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
-
-
-                            DataManager.getInstance().addEquipment(fireBugEquipment);
-                            showToast("You can now add notes and inspection dates for this asset.");
                         }
 
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetNote()) {
-                              //  DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
+                                //  DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
 
                                 if ("viewAsset".equals(actionType)) {
                                     showToast("Asset's Note(s) Updated");
@@ -212,7 +232,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (3 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetInspectionDates()) {
-                                DataManager.getInstance().addUpdateAssetInspecDates(tagID, new InspectionDates(
+                                DataManager.getInstance().addUpdateAssetInspecDates( AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
                                         InspectionDatesFragment.tvDaily.getText().toString().trim(),
                                         InspectionDatesFragment.tvWeekly.getText().toString().trim(),
                                         InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
@@ -274,7 +294,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     private boolean checkValidationAddAssetLocation() {
         if (0 == AssetLocationFragment.posLoc) {
             showToast("Please select Location ID");
-        }  else {
+        } else {
             return true;
         }
 

@@ -3,8 +3,8 @@ package com.ets.gd.Constants;
 public class Constants {
 
 
-    public static final int READ_TIMEOUT_SECONDS = 45;
-    public static final int CONNECTION_TIMEOUT_SECONDS = 45;
+    public static final int READ_TIMEOUT_SECONDS = 600;
+    public static final int CONNECTION_TIMEOUT_SECONDS = 600;
 
     // Base URLs
     public static final String BASE_URL_PROD = "";

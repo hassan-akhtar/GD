@@ -7,8 +7,8 @@ import io.realm.annotations.PrimaryKey;
 
 public class FireBugEquipment  extends RealmObject {
 
-    @PrimaryKey
     private int ID;
+    @PrimaryKey
     private String Code;
     private String SerialNo;
     private String ManufacturerDate;
@@ -20,6 +20,8 @@ public class FireBugEquipment  extends RealmObject {
     private MyLocation Location;
     private Manufacturer Manufacturer;
     private Rating Rating;
+    private boolean isUpdated;
+    private boolean isAdded;
     private Size Size;
     private VendorCode VendorCode;
     private Model Model;
@@ -40,6 +42,46 @@ public class FireBugEquipment  extends RealmObject {
         Manufacturer = manufacturer;
         VendorCode = vendorCode;
         Model = model;
+    }
+
+    public FireBugEquipment(int ID, String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isUpdated, boolean isAdded) {
+        this.ID = ID;
+        Code = code;
+        SerialNo = serialNo;
+        ManufacturerDate = manufacturerDate;
+        AgentType = agentType;
+        Customer = customer;
+        DeviceType = deviceType;
+        Location = location;
+        Manufacturer = manufacturer;
+        VendorCode = vendorCode;
+        Model = model;
+        this.isUpdated = isUpdated;
+        this.isAdded = isAdded;
+    }
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer getManufacturer() {
+        return Manufacturer;
+    }
+
+    public void setManufacturer(com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer) {
+        Manufacturer = manufacturer;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
+    }
+
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
     }
 
     public FireBugEquipment(){}

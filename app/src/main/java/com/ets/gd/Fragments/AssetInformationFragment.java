@@ -163,13 +163,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     void setViewForViewAsset() {
 
-        tvTagID.setText("" + fireBugEquipment.getID());
+        tvTagID.setText("" + fireBugEquipment.getCode());
         tvTagID.setEnabled(false);
         if (null != fireBugEquipment.getSerialNo()) {
             tvSrNo.setText(fireBugEquipment.getSerialNo());
         }
         tvMfgDate.setText(fireBugEquipment.getManufacturerDate());
-
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
             if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {

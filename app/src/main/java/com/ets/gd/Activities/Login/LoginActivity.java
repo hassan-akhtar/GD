@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         }
         if (!"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID))) {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID)));
-            if (null!=realmSyncGetResponseDTO) {
+            if (null != realmSyncGetResponseDTO) {
                 lstMusers = realmSyncGetResponseDTO.getLstMusers();
             }
         }
@@ -94,14 +94,14 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                     } else {
                         if (checkValidation()) {
                             CommonActions.showProgressDialog(LoginActivity.this);
-                            if (null!=lstMusers) {
+                            if (null != lstMusers) {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
                                     CommonActions.DismissesDialog();
                                     showToast("Login Successful");
                                     startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                                     finish();
 
-                                }else{
+                                } else {
                                     CommonActions.DismissesDialog();
                                     showToast("Invalid Username/Password");
                                 }
@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                 LoginResponseDTO loginResponseDTO = (LoginResponseDTO) responseDTO;
                 if (responseDTO != null) {
                     if (null != loginResponseDTO.getAccess_token()) {
+                        sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USER_ID, etUsername.getText().toString().trim());
                         CommonActions.DismissesDialog();
                         startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                         finish();
