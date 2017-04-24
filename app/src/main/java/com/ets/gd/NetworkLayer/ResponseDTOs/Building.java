@@ -25,6 +25,13 @@ public class Building extends RealmObject{
     private String ModifiedBy;
     private String ModifiedTime;
 
+    public Building(String code) {
+        Code = code;
+    }
+
+    public Building( ) {
+    }
+
     public int getID() {
         return ID;
     }

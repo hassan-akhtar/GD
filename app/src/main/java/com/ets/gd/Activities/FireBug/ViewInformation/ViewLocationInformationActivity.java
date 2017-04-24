@@ -15,10 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Fragments.AssetLocationFragment;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -26,7 +29,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     ImageView ivBack, ivTick;
     Spinner spLocation;
-    public static EditText tvSite, tvDescprition, tvBuilding,tvCustomerID;
+    public static EditText tvSite, tvDescprition, tvBuilding, tvCustomerID, tvLocationID;
     Locations location;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
@@ -50,6 +53,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spLocation = (Spinner) findViewById(R.id.spLocation);
         tvSite = (EditText) findViewById(R.id.tvSite);
         tvCustomerID = (EditText) findViewById(R.id.tvCustomerID);
+        tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         lDescprition = (TextInputLayout) findViewById(R.id.lDescprition);
@@ -67,11 +71,11 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
-        int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
+        int size = realmSyncGetResponseDTO.getLstLocations().size() + 1;
         String[] locations = new String[size];
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            locations[i+1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
+            locations[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
         }
         locations[0] = "Please select a location";
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, locations);
@@ -84,40 +88,44 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             setViewForViewLoc();
         } else {
             setViewForAddLoc();
-            spLocation.setEnabled(true);
         }
 
     }
 
-
     void setViewForViewLoc() {
         tvCustomerID.setEnabled(false);
+        tvLocationID.setVisibility(View.VISIBLE);
+        tvLocationID.setEnabled(false);
+        spLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(false);
         tvBuilding.setEnabled(false);
-        spLocation.setEnabled(false);
         tvSite.setEnabled(false);
-        tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            if (location.getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
-                spLocation.setSelection(i);
-                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
-                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
-                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
-                break;
-            }
+        tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        tvLocationID.setText(location.getCode());
+        tvDescprition.setText(location.getDescription());
+        if (null!=location.getSite()) {
+            tvSite.setText(location.getSite().getCode());
         }
+        if (null!=location.getBuilding()) {
+            tvBuilding.setText(location.getBuilding().getCode());
+        }
+
     }
 
 
     void setViewForAddLoc() {
+        tvLocationID.setVisibility(View.VISIBLE);
+        tvLocationID.setText("");
+        tvDescprition.setText("");
+        tvSite.setText("");
+        tvBuilding.setText("");
+        spLocation.setVisibility(View.GONE);
+        tvDescprition.setEnabled(true);
+        tvLocationID.setEnabled(true);
+        tvBuilding.setEnabled(true);
+        tvSite.setEnabled(true);
         tvCustomerID.setEnabled(false);
-        tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-        spLocation.setEnabled(true);
-        spLocation.setSelection(0);
-        tvDescprition.setText("No location selected");
-        tvSite.setText("No location selected");
-        tvBuilding.setText("No location selected");
+        tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
 
     }
@@ -146,6 +154,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 //                                            tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
 //                                            spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
 //                            );
+                        Locations locations = new Locations(tvLocationID.getText().toString().trim(),
+                                tvDescprition.getText().toString().trim(),
+                                DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                               // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
+                              //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
+                                new Site(tvSite.getText().toString().trim()) , new Building(tvBuilding.getText().toString().trim()));
+                        DataManager.getInstance().addNewLocation(locations);
                         Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                         finish();
 //                        } else {
@@ -161,8 +176,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     };
 
     private boolean checkValidation() {
-        if (0 == posLoc) {
-            showToast("Please select a location");
+        if ("".equals(tvLocationID.getText().toString().trim())) {
+            showToast("Please enter a location");
         } else {
             return true;
         }
@@ -190,21 +205,21 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 }
 
 
-             //   if (position != 0) {
-                    if (null != DataManager.getInstance().getLocation(strSelectedState)) {
-                        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-                            if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
-                                spLocation.setSelection(i);
-                                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
-                                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
-                                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
-                                break;
-                            }
+                //   if (position != 0) {
+                if (null != DataManager.getInstance().getLocation(strSelectedState)) {
+                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+                        if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                            spLocation.setSelection(i);
+                            tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
+                            tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
+                            tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+                            break;
                         }
-                    }else{
-                        setViewForAddLoc();
                     }
-              //  }
+                } else {
+                    setViewForAddLoc();
+                }
+                //  }
 
 
             }

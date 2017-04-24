@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
  * General Data
  */
 
-public class Locations  extends RealmObject {
+public class Locations extends RealmObject {
 
     @PrimaryKey
     private int ID;
@@ -20,6 +20,17 @@ public class Locations  extends RealmObject {
     private Site Site;
     private Building Building;
 
+    public Locations(String code, String description, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.Site site, com.ets.gd.NetworkLayer.ResponseDTOs.Building building) {
+        Code = code;
+        Description = description;
+        Customer = customer;
+        Site = site;
+        Building = building;
+    }
+
+    public Locations() {
+
+    }
 
     public int getID() {
         return ID;

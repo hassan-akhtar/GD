@@ -30,8 +30,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     public static Spinner spLocation;
     View rootView;
-    public static EditText tvSite, tvDescprition, tvBuilding,tvCustomerID;
-    private TextInputLayout lLocationID, lDescprition;
+    public static EditText tvSite, tvDescprition, tvBuilding,tvCustomerID,tvLocationID;;
+    private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
     public static int posLoc = 0;
@@ -62,9 +62,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         tvSite = (EditText) rootView.findViewById(R.id.tvSite);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
         lDescprition = (TextInputLayout) rootView.findViewById(R.id.lDescprition);
+        letLocationID  = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
         tvBuilding = (EditText) rootView.findViewById(R.id.tvBuilding);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
-
+        tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
+        letLocationID.setVisibility(View.INVISIBLE);
+        tvLocationID.setVisibility(View.INVISIBLE);
 
     }
 

@@ -8,6 +8,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
@@ -16,6 +17,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
@@ -174,6 +176,21 @@ public class DataManager {
         return realm.where(Locations.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public Site getLocationSite(String barcodeID) {
+        return realm.where(Site.class).equalTo("Code", barcodeID).findFirst();
+    }
+
+    public Building getLocationBuilding(String barcodeID) {
+        return realm.where(Building.class).equalTo("Code", barcodeID).findFirst();
+    }
+
+
+    public void addNewLocation(Locations location) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(location);
+        realm.commitTransaction();
+    }
+
 
     public void addLocation(final Location obj) {
         realm.executeTransaction(new Realm.Transaction() {
@@ -232,40 +249,39 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
-        return realm.where(Manufacturer.class).equalTo("Code",Code).findFirst();
+        return realm.where(Manufacturer.class).equalTo("Code", Code).findFirst();
     }
 
     // For getting asset all assets from DB
     public DeviceType getAssetDeviceType(String Code) {
-        return realm.where(DeviceType.class).equalTo("Code",Code).findFirst();
+        return realm.where(DeviceType.class).equalTo("Code", Code).findFirst();
     }
 
     // For getting asset all assets from DB
     public MyLocation getAssetLocation(String Code) {
-        return realm.where(MyLocation.class).equalTo("Code",Code).findFirst();
+        return realm.where(MyLocation.class).equalTo("Code", Code).findFirst();
     }
 
     // For getting asset all assets from DB
     public Customer getAssetCustomer(int id) {
-        return realm.where(Customer.class).equalTo("ID",id).findFirst();
+        return realm.where(Customer.class).equalTo("ID", id).findFirst();
     }
 
     // For getting asset all assets from DB
     public AgentType getAssetAgentType(String Code) {
-        return realm.where(AgentType.class).equalTo("Code",Code).findFirst();
+        return realm.where(AgentType.class).equalTo("Code", Code).findFirst();
     }
 
 
     // For getting asset all assets from DB
     public VendorCode getAssetVendorCode(String Code) {
-        return realm.where(VendorCode.class).equalTo("Code",Code).findFirst();
+        return realm.where(VendorCode.class).equalTo("Code", Code).findFirst();
     }
 
     // For getting asset all assets from DB
     public Model getAssetModel(String Code) {
-        return realm.where(Model.class).equalTo("Code",Code).findFirst();
+        return realm.where(Model.class).equalTo("Code", Code).findFirst();
     }
-
 
 
     // For getting asset all assets from DB
@@ -284,8 +300,10 @@ public class DataManager {
 
 
     public List<EquipmentNote> getAllNotes(int EquipmentID) {
-        return realm.where(EquipmentNote.class).equalTo("ID", EquipmentID).findAll();
 
+        RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentID", EquipmentID).findAll();
+        List<EquipmentNote> copied = realm.copyFromRealm(results);
+        return copied;
     }
 
 

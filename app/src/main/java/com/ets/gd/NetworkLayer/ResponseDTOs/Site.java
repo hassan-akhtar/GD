@@ -17,6 +17,13 @@ public class Site extends RealmObject{
     private String ModifiedBy;
     private String ModifiedTime;
 
+    public Site(String code) {
+        Code = code;
+    }
+
+    public Site() {
+    }
+
 
     public int getID() {
         return ID;

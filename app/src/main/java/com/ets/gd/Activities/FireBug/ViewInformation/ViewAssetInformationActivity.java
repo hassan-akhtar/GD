@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     boolean isAssetAdded = false;
     static String tagID = "";
     Asset asset;
+
     FireBugEquipment fireBugEquipment;
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -54,6 +56,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
     private void initViews() {
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
+
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
