@@ -22,6 +22,8 @@ import com.ets.gd.Fragments.InspectionDatesFragment;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
+import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -39,6 +41,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     boolean isAssetAdded = false;
     static String tagID = "";
     Asset asset;
+    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    public static List<EquipmentNote> newNotesList = new ArrayList<EquipmentNote>();
 
     FireBugEquipment fireBugEquipment;
     SharedPreferencesManager sharedPreferencesManager;
@@ -55,8 +59,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        newNotesList.clear();
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
-
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -163,7 +167,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                     showToast("Asset not Updated.");
                                 }
                                 DataManager.getInstance().addEquipment(fireBugEquipmentt);
-                            }else{
+                            } else {
                                 tabLayout.getTabAt(1).select();
                                 showToast("Please enter location for asset!");
                             }
@@ -184,7 +188,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");
                         } else {
-                            if (null==DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+                            if (null == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
                                 FireBugEquipment fireBugEquipment = null;
                                 try {
                                     fireBugEquipment = new FireBugEquipment(
@@ -209,7 +213,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                 }
                                 showToast("You can now add notes and inspection dates for this asset.");
                             } else {
-                                showToast("Asset with tag Id: "+AssetInformationFragment.tvTagID.getText().toString().trim()+" Already exists.");
+                                showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                             }
                         }
 
@@ -217,8 +221,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetNote()) {
-                                //  DataManager.getInstance().addUpdateAssetNote(tagID, AddNoteFragment.lstNotes);
-
+                                DataManager.getInstance().addUpdateAssetNote(fireBugEquipment.getID(), sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
                                 if ("viewAsset".equals(actionType)) {
                                     showToast("Asset's Note(s) Updated");
                                 } else {
@@ -232,7 +235,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (3 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetInspectionDates()) {
-                                DataManager.getInstance().addUpdateAssetInspecDates( AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
+                                DataManager.getInstance().addUpdateAssetInspecDates(AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
                                         InspectionDatesFragment.tvDaily.getText().toString().trim(),
                                         InspectionDatesFragment.tvWeekly.getText().toString().trim(),
                                         InspectionDatesFragment.tvQuarterly.getText().toString().trim(),

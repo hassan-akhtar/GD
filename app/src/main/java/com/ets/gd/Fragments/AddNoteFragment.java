@@ -21,9 +21,14 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class AddNoteFragment extends Fragment {
@@ -34,6 +39,7 @@ public class AddNoteFragment extends Fragment {
     NoteAdapter mAdapter;
     RecyclerView rvNotes;
     FireBugEquipment fireBugEquipment;
+    SharedPreferencesManager sharedPreferencesManager;
 
     public AddNoteFragment() {
     }
@@ -59,6 +65,7 @@ public class AddNoteFragment extends Fragment {
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         ViewAssetInformationActivity.currentFragment = new AddNoteFragment();
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
@@ -94,6 +101,8 @@ public class AddNoteFragment extends Fragment {
 
     }
 
+
+
     private void initListeners() {
         fbAddNote.setOnClickListener(mGlobal_OnClickListener);
     }
@@ -121,9 +130,14 @@ public class AddNoteFragment extends Fragment {
                                                             int id) {
                                             if (!"".equals(desc.getText().toString().trim())) {
                                                 EquipmentNote note = new EquipmentNote();
-                                                note.setModifiedTime("Date Modified: 12/12/12");
+                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                                                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                                                note.setModifiedTime(sdf.format(new Date()).toString());
+                                                note.setEquipmentID(fireBugEquipment.getID());
                                                 note.setNote(desc.getText().toString().trim());
+                                                note.setModifiedBy(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USER_ID));
                                                 lstNotes.add(note);
+                                                ViewAssetInformationActivity.newNotesList.add(note);
                                                 mAdapter.notifyDataSetChanged();
                                             } else {
                                                 Toast.makeText(getActivity(), "Please enter a note and try again", Toast.LENGTH_LONG).show();

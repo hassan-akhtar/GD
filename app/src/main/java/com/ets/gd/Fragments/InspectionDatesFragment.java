@@ -11,9 +11,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentTextView;
+
+import io.realm.RealmList;
 
 
 public class InspectionDatesFragment extends Fragment {
@@ -22,7 +27,8 @@ public class InspectionDatesFragment extends Fragment {
     RelativeLayout rlDaily, rlWeekly, rlMonthly, rlQuarterly, rlSemiAnnual, rlAnnual, rlFiveYears, rlSixYears, rlTenYears, rlTwelveYears;
     public static TextView tvDaily, tvWeekly, tvMonthly, tvQuarterly, tvSemiAnnual, tvAnnual, tvFiveYears, tvSixYears, tvTenYears, tvTwelveYears;
     public static int viewID = 0;
-    Asset asset;
+    FireBugEquipment fireBugEquipment;
+    RealmList<MyInspectionDates> InspectionDates;
 
     public InspectionDatesFragment() {
     }
@@ -69,8 +75,7 @@ public class InspectionDatesFragment extends Fragment {
     }
 
     private void initObj() {
-        asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
-        ViewAssetInformationActivity.currentFragment = new InspectionDatesFragment();
+
     }
 
     private void initListeners() {
@@ -96,18 +101,22 @@ public class InspectionDatesFragment extends Fragment {
 
     void setViewForViewAsset() {
 
-/*        if (null!=asset.getInspectionDates()) {
-            tvDaily.setText(asset.getInspectionDates().getDaily());
-            tvWeekly.setText(asset.getInspectionDates().getWeekly());
-            tvMonthly.setText(asset.getInspectionDates().getMonthly());
-            tvQuarterly.setText(asset.getInspectionDates().getQuaterly());
-            tvSemiAnnual.setText(asset.getInspectionDates().getSemiAnnual());
-            tvAnnual.setText(asset.getInspectionDates().getAnnual());
-            tvFiveYears.setText(asset.getInspectionDates().getFiveYear());
-            tvSixYears.setText(asset.getInspectionDates().getSixYear());
-            tvTenYears.setText(asset.getInspectionDates().getTenYear());
-            tvTwelveYears.setText(asset.getInspectionDates().getTwelveYear());
-        }*/
+        fireBugEquipment = DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString());
+        if (null != fireBugEquipment) {
+            InspectionDates = fireBugEquipment.getInspectionDates();
+            if (null != InspectionDates && 0!=InspectionDates.size() ) {
+                tvDaily.setText("" + InspectionDates.get(0).getDueDate());
+                tvWeekly.setText("" + InspectionDates.get(1).getDueDate());
+                tvMonthly.setText("" + InspectionDates.get(2).getDueDate());
+                tvQuarterly.setText("" + InspectionDates.get(3).getDueDate());
+                tvSemiAnnual.setText("" + InspectionDates.get(4).getDueDate());
+                tvAnnual.setText("" + InspectionDates.get(5).getDueDate());
+                tvFiveYears.setText("" + InspectionDates.get(6).getDueDate());
+                tvSixYears.setText("" + InspectionDates.get(7).getDueDate());
+                tvTenYears.setText("" + InspectionDates.get(8).getDueDate());
+                tvTwelveYears.setText("" + InspectionDates.get(9).getDueDate());
+            }
+        }
 
     }
 

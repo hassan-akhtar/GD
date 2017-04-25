@@ -2,6 +2,7 @@ package com.ets.gd.Models;
 
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
@@ -24,6 +25,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<RegisteredDevice> lstDevices;
     RealmList<MobileUser> lstMusers;
     RealmList<FireBugEquipment> lstFbEquipments;
+    RealmList<EquipmentNote> lstFbEquipmentNotes;
     RealmList<Locations> lstLocations;
     RealmList<DeviceType> lstDeviceType;
     RealmList<Manufacturer> lstManufacturers;
@@ -49,6 +51,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public String getSyncGetTime() {
         return SyncGetTime;
+    }
+
+    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
+        return lstFbEquipmentNotes;
+    }
+
+    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
+        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
     }
 
     public void setSyncGetTime(String syncGetTime) {

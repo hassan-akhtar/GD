@@ -1,5 +1,6 @@
 package com.ets.gd.DataManager;
 
+import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
@@ -120,35 +121,73 @@ public class DataManager {
 
     }
 
-    public void addUpdateAssetNote(final String barcodeID, final List<Note> noteList) {
+    public void addUpdateAssetNote(final int equipmentID, final int customerID, final List<EquipmentNote> noteList) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                Asset asset = realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
-                RealmList<Note> noteListNew = new RealmList<Note>();
-                Note note = realm.createObject(Note.class);
+                RealmSyncGetResponseDTO realmSyncGetResponse = realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", customerID).findFirst();
+                RealmResults<EquipmentNote> oldList = realm.where(EquipmentNote.class).findAll();
+                RealmList<EquipmentNote> res = new RealmList<EquipmentNote>();
+                res.addAll(oldList);
+                RealmList<EquipmentNote> newItems = new RealmList<EquipmentNote>();
+
+//                for (int i = 0; i < noteList.size(); i++) {
+//                    for (int j = 0; j < res.size(); j++) {
+//                        if (!res.get(j).getNote().equals(noteList.get(i).getNote())) {
+//                            EquipmentNote equipmentNote =realm.createObject(EquipmentNote.class);
+//                            equipmentNote.setNote(noteList.get(i).getNote());
+//                            equipmentNote.setEquipmentID(noteList.get(i).getEquipmentID());
+//                            equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
+//                            equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
+//                            newItems.add(equipmentNote);
+//                            break;
+//
+//                        } else if (res.get(j).getNote().equals(noteList.get(i).getNote()) && res.get(j).getEquipmentID() != noteList.get(i).getEquipmentID()) {
+//                            EquipmentNote equipmentNote =realm.createObject(EquipmentNote.class);
+//                            equipmentNote.setNote(noteList.get(i).getNote());
+//                            equipmentNote.setEquipmentID(noteList.get(i).getID());
+//                            equipmentNote.setModifiedBy(noteList.get(i).getModifiedTime());
+//                            newItems.add(equipmentNote);
+//                            break;
+//                        } else {
+//
+//                        }
+//                    }
+//
+//                }
+
                 for (int i = 0; i < noteList.size(); i++) {
-                    note.setNoteTitle(noteList.get(i).getNoteTitle());
-                    note.setNoteDescription(noteList.get(i).getNoteDescription());
-                    noteListNew.add(note);
+                            EquipmentNote equipmentNote = realm.createObject(EquipmentNote.class);
+                            equipmentNote.setNote(noteList.get(i).getNote());
+                            equipmentNote.setEquipmentID(noteList.get(i).getEquipmentID());
+                            equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
+                            equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
+                            newItems.add(equipmentNote);
+                            break;
                 }
-                asset.setNoteList(noteListNew);
+
+                if (0 != newItems.size()) {
+                    FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("ID", noteList.get(0).getEquipmentID()).findFirst();
+                    res.addAll(newItems);
+                    fireBugEquipment.setUpdated(true);
+                    realmSyncGetResponse.setLstFbEquipmentNotes(res);
+                }
+
+                ViewAssetInformationActivity.newNotesList.clear();
 
             }
         });
 
     }
 
-    public void addUpdateAssetInspecDates( final String barcodeID, final InspectionDates inspectionNewDates) {
+    public void addUpdateAssetInspecDates(final String barcodeID, final InspectionDates inspectionNewDates) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
-
-                RealmResults<MyInspectionDates> results =  realm.where(MyInspectionDates.class).equalTo("EquipmentID", fireBugEquipment.getID()).findAll();
-
+                RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", fireBugEquipment.getID()).findAll();
                 results.get(0).setDueDate(inspectionNewDates.getDaily());
                 results.get(1).setDueDate(inspectionNewDates.getWeekly());
                 results.get(2).setDueDate(inspectionNewDates.getMonthly());
@@ -161,8 +200,6 @@ public class DataManager {
                 results.get(9).setDueDate(inspectionNewDates.getTwelveYear());
                 RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
                 res.addAll(results);
-/*                RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
-                res.get(0).setDueDate();*/
                 fireBugEquipment.setInspectionDates(res);
                 fireBugEquipment.setUpdated(true);
             }
@@ -305,7 +342,6 @@ public class DataManager {
         return realm.where(Asset.class).findAllSorted("manufacturers").subList(0, count);
 
     }
-
 
 
     public List<EquipmentNote> getAllNotes(int EquipmentID) {
@@ -632,6 +668,7 @@ public class DataManager {
         realmSyncGetResponseDTO.setSyncGetTime(obj.getSyncGetTime());
         realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
         realmSyncGetResponseDTO.setLstMusers(obj.getLstMusers());
+        realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
         realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
         realmSyncGetResponseDTO.setLstLocations(obj.getLstLocations());
         realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
@@ -644,6 +681,15 @@ public class DataManager {
         realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
         realm.commitTransaction();
     }
+
+
+    public void saveSyncGetRealmResponse(RealmSyncGetResponseDTO obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(obj);
+        realm.commitTransaction();
+    }
+
 
     public FireBugEquipment getEquipment(String barcodeID) {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();

@@ -93,6 +93,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                         startActivity(new Intent(LoginActivity.this, DeviceRegistrationActivity.class));
                     } else {
                         if (checkValidation()) {
+                            sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USER_ID, etUsername.getText().toString().trim());
                             CommonActions.showProgressDialog(LoginActivity.this);
                             if (null != lstMusers) {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
 
     void loginCall() {
         CommonActions.showProgressDialog(LoginActivity.this);
-        GSDServiceFactory.getService(getApplicationContext()).loginRequest(new LoginDTO(Constants.RESPONSE_LOGIN, etUsername.getText().toString().toString(), etPassword.getText().toString().trim(), "password"), this);
+        GSDServiceFactory.getService(getApplicationContext()).loginRequest(new LoginDTO(Constants.RESPONSE_LOGIN, etUsername.getText().toString().trim(), etPassword.getText().toString().trim(), "password"), this);
     }
 
 
@@ -174,7 +175,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                 LoginResponseDTO loginResponseDTO = (LoginResponseDTO) responseDTO;
                 if (responseDTO != null) {
                     if (null != loginResponseDTO.getAccess_token()) {
-                        sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USER_ID, etUsername.getText().toString().trim());
+
                         CommonActions.DismissesDialog();
                         startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                         finish();

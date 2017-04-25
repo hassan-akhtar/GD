@@ -39,9 +39,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
 
     public AssetLocationFragment() {
-
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
