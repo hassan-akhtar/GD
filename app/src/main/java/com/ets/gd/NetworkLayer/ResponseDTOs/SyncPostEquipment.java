@@ -5,6 +5,8 @@ public class SyncPostEquipment  {
 
 
     private int ID;
+    private String Code;
+    private String status;
     private String Operation;
     private String ErrorMessage;
     private int ErrorCode;
@@ -39,5 +41,21 @@ public class SyncPostEquipment  {
 
     public void setErrorCode(int errorCode) {
         ErrorCode = errorCode;
+    }
+
+    public String getCode() {
+        return Code;
+    }
+
+    public void setCode(String code) {
+        Code = code;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

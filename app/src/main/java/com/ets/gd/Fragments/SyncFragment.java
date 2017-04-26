@@ -2,21 +2,19 @@ package com.ets.gd.Fragments;
 
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
-import com.ets.gd.Activities.Sync.FirstTimeSyncActicity;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
@@ -42,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import io.realm.RealmList;
-
 public class SyncFragment extends Fragment implements MyCallBack {
 
     View rootView;
@@ -51,7 +47,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SharedPreferencesManager sharedPreferencesManager;
     String lastSyncDate, lastSyncTime;
     SyncPostEquipmentRequestDTO syncPostEquipmentRequestDTO;
-
+    String[] itemList;
     private List<SyncPostEquipment> lstSyncPostEquipmentResults = new ArrayList<SyncPostEquipment>();
     private List<Equipment> lstAddEquipment = new ArrayList<Equipment>();
     private List<Equipment> lstEditEquipment = new ArrayList<Equipment>();
@@ -115,7 +111,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         lstEquipmentsEdit = DataManager.getInstance().getAllUpdateAssets();
         if (null != lstEquipmentsEdit) {
-            for ( FireBugEquipment fireBugEquipment : lstEquipmentsEdit) {
+            for (FireBugEquipment fireBugEquipment : lstEquipmentsEdit) {
                 Equipment equipment = new Equipment();
                 equipment.setID(fireBugEquipment.getID());
                 equipment.setCode(fireBugEquipment.getCode());
@@ -161,9 +157,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         if (null != lstEquipmentsAdd) {
 
-            for ( FireBugEquipment fireBugEquipment : lstEquipmentsAdd) {
+            for (FireBugEquipment fireBugEquipment : lstEquipmentsAdd) {
                 Equipment equipment = new Equipment();
-                equipment.setID(fireBugEquipment.getID());
+                equipment.setID(0);
                 equipment.setCode(fireBugEquipment.getCode());
                 equipment.setDeviceTypeID(fireBugEquipment.getDeviceType().getID());
                 equipment.setManufacturerID(fireBugEquipment.getManufacturer().getID());
@@ -206,7 +202,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         syncPostEquipmentRequestDTO = new SyncPostEquipmentRequestDTO(Constants.RESPONSE_SYNC_POST_EQUIPMENT,
                 String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
                 lstAddEquipment,
-                lstEditEquipment );
+                lstEditEquipment);
 
 
         callSyncPostEqupmentService();
@@ -217,7 +213,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
             CommonActions.showProgressDialog(getActivity());
-           // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
+            // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
             tvSyncInProgress.setText("Sync post in progress...");
             GSDServiceFactory.getService(getActivity()).postSyncEquipment(
                     syncPostEquipmentRequestDTO, this
@@ -255,13 +251,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
             case Constants.RESPONSE_SYNC_POST_EQUIPMENT: {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
-                if (null!=syncPostEquipmentResponseDTO) {
+                if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     lstSyncPostEquipmentResults = syncPostEquipmentResponseDTO.getSyncPostEquipments();
                     //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
                     setCurrentDateAndTime();
                     DataManager.getInstance().deleteRealm();
-                   // Toast.makeText(getActivity(), "Sync Get Initiated", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(getActivity(), "Sync Get Initiated", Toast.LENGTH_LONG).show();
                     callSyncGetService();
                 } else {
                     CommonActions.DismissesDialog();
@@ -285,20 +281,44 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     if (null != syncGetResponseDTO) {
                         CommonActions.DismissesDialog();
                         tvSyncInProgress.setText("Sync Complete!");
-                       // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
+                        // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
+
+                        itemList = new String[lstSyncPostEquipmentResults.size()+1];
+
+                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
+                            String status = "";
+                            if(lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")){
+                                status = "FAILURE";
+                            }else{
+                                status = "SUCCESS";
+                            }
+                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation()+", "+status;
+                        }
+
+                        itemList[itemList.length-1] = "Update Db SUCCESS";
+
+
+
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID,syncGetResponseDTO.getCustomerId());
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
+
+                        showSyncResults();
                     } else {
                         CommonActions.DismissesDialog();
-                        new AlertDialog.Builder(getActivity())
-                                .setTitle("Syncing")
-                                .setMessage(R.string.msg_login_failed)
-                                .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
+                        itemList = new String[lstSyncPostEquipmentResults.size()+1];
 
-                                    }
-                                })
-                                .show();
+                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
+                            String status = "";
+                            if(lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")){
+                                status = "FAILURE";
+                            }else{
+                                status = "SUCCESS";
+                            }
+                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation()+", "+status;
+                        }
+
+                        itemList[itemList.length-1] = "Update Db FAILURE";
+                        showSyncResults();
                     }
                 }
                 break;
@@ -312,7 +332,35 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private void callSyncGetService() {
         tvSyncInProgress.setText("Sync get in progress...");
         CommonActions.showProgressDialog(getActivity());
-        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET,  sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), "abas"), this);
+        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), "abas"), this);
+    }
+
+
+    void showSyncResults() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, itemList);
+
+
+        LayoutInflater li = LayoutInflater.from(getActivity());
+        View dialogView = li.inflate(R.layout.assets_view_all, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+        alertDialogBuilder.setTitle("Sync Results");
+        alertDialogBuilder.setView(dialogView);
+        final ListView listAssets = (ListView) dialogView
+                .findViewById(R.id.lvAssets);
+        listAssets.setAdapter(adapter);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
 
