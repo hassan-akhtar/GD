@@ -28,15 +28,17 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    public static Spinner spLocation;
+    public static Spinner spLocation, spSite, spBuilding;
     View rootView;
-    public static EditText tvSite, tvDescprition, tvBuilding,tvCustomerID,tvLocationID;;
+    public static EditText tvDescprition,tvCustomerID,tvLocationID;;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
-    public static int posLoc = 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0;
     FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    String[] sites;
+    String[] buildings;
 
     public AssetLocationFragment() {
     }
@@ -56,12 +58,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initViews() {
         tvCustomerID = (EditText) rootView.findViewById(R.id.tvCustomerID);
+        spSite = (Spinner) rootView.findViewById(R.id.spSite);
+        spBuilding = (Spinner) rootView.findViewById(R.id.spBuilding);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
-        tvSite = (EditText) rootView.findViewById(R.id.tvSite);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
-        lDescprition = (TextInputLayout) rootView.findViewById(R.id.lDescprition);
         letLocationID  = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
-        tvBuilding = (EditText) rootView.findViewById(R.id.tvBuilding);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
         tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
         letLocationID.setVisibility(View.INVISIBLE);
@@ -90,6 +91,32 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
 
+
+
+        int sizeSite = realmSyncGetResponseDTO.getLstLocations().size() + 1;
+        sites = new String[sizeSite];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            sites[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode();
+        }
+        sites[0] = "Please select a site";
+        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, sites);
+        dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSite.setAdapter(dataAdapterSIte);
+
+
+        int sizeBuilding = realmSyncGetResponseDTO.getLstLocations().size() + 1;
+        buildings = new String[sizeBuilding];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            buildings[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode();
+        }
+        buildings[0] = "Please select a building";
+        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
+        dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spBuilding.setAdapter(dataAdapterBuilding);
+
+
         tvCustomerID.setEnabled(false);
         tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
@@ -108,11 +135,25 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                 spLocation.setSelection(i);
                 tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i-1).getDescription());
-                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i-1).getSite().getCode());
-                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i-1).getBuilding().getCode());
+
+                for (int j = 0; j < sites.length; j++) {
+                    if (realmSyncGetResponseDTO.getLstLocations().get(i-1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
+                        spSite.setSelection(j);
+                        break;
+                    }
+                }
+
+                for (int k = 0; k < buildings.length; k++) {
+                    if (realmSyncGetResponseDTO.getLstLocations().get(i-1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
+                        spBuilding.setSelection(i);
+                        break;
+                    }
+                }
+
                 break;
             }
         }
+
 
 
     }
@@ -122,8 +163,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spLocation.setEnabled(true);
         spLocation.setSelection(0);
         tvDescprition.setText("No location selected");
-        tvSite.setText("No location selected");
-        tvBuilding.setText("No location selected");
+        spSite.setSelection(0);
+        spBuilding.setSelection(0);
 
 
     }
@@ -147,8 +188,19 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
-                            tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
-                            tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+                            for (int k = 0; k < sites.length;k++) {
+                                if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
+                                    spSite.setSelection(k);
+                                    break;
+                                }
+                            }
+
+                            for (int j = 0; j < buildings.length; j++) {
+                                if (DataManager.getInstance().getLocation(strSelectedState).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
+                                    spBuilding.setSelection(j);
+                                    break;
+                                }
+                            }
                             break;
                         }
                     }
@@ -170,6 +222,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
             }
             break;
+
+
 
         }
     }

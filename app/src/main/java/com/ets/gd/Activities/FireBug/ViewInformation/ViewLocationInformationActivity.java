@@ -28,14 +28,16 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     ImageView ivBack, ivTick;
-    Spinner spLocation;
-    public static EditText tvSite, tvDescprition, tvBuilding, tvCustomerID, tvLocationID;
+    Spinner spLocation, spSite, spBuilding;
+    public static EditText tvDescprition, tvCustomerID, tvLocationID;
     Locations location;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
-    public static int posLoc = 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
+    String[] sites;
+    String[] buildings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,12 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private void initViews() {
 
         spLocation = (Spinner) findViewById(R.id.spLocation);
-        tvSite = (EditText) findViewById(R.id.tvSite);
+        spSite = (Spinner) findViewById(R.id.spSite);
         tvCustomerID = (EditText) findViewById(R.id.tvCustomerID);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
-        lDescprition = (TextInputLayout) findViewById(R.id.lDescprition);
-        tvBuilding = (EditText) findViewById(R.id.tvBuilding);
+        spBuilding = (Spinner) findViewById(R.id.spBuilding);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         barCodeID = getIntent().getStringExtra("barCode");
@@ -82,6 +83,31 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
 
+
+        int sizeSite = realmSyncGetResponseDTO.getLstLocations().size() + 1;
+        sites = new String[sizeSite];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            sites[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode();
+        }
+        sites[0] = "Please select a site";
+        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
+        dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSite.setAdapter(dataAdapterSIte);
+
+
+        int sizeBuilding = realmSyncGetResponseDTO.getLstLocations().size() + 1;
+        buildings = new String[sizeBuilding];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+            buildings[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode();
+        }
+        buildings[0] = "Please select a building";
+        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
+        dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spBuilding.setAdapter(dataAdapterBuilding);
+
+
         actionType = getIntent().getStringExtra("action");
         if ("viewLoc".equals(actionType)) {
             ivTick.setVisibility(View.GONE);
@@ -98,16 +124,25 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID.setEnabled(false);
         spLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(false);
-        tvBuilding.setEnabled(false);
-        tvSite.setEnabled(false);
+        spBuilding.setEnabled(false);
+        spSite.setEnabled(false);
         tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         tvLocationID.setText(location.getCode());
         tvDescprition.setText(location.getDescription());
-        if (null!=location.getSite()) {
-            tvSite.setText(location.getSite().getCode());
+
+
+        for (int i = 0; i < sites.length; i++) {
+            if (location.getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
+                spSite.setSelection(i);
+                break;
+            }
         }
-        if (null!=location.getBuilding()) {
-            tvBuilding.setText(location.getBuilding().getCode());
+
+        for (int i = 0; i < buildings.length; i++) {
+            if (location.getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
+                spBuilding.setSelection(i);
+                break;
+            }
         }
 
     }
@@ -117,13 +152,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID.setVisibility(View.VISIBLE);
         tvLocationID.setText("");
         tvDescprition.setText("");
-        tvSite.setText("");
-        tvBuilding.setText("");
+        spSite.setSelection(0);
+        spBuilding.setSelection(0);
         spLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(true);
         tvLocationID.setEnabled(true);
-        tvBuilding.setEnabled(true);
-        tvSite.setEnabled(true);
+        spBuilding.setEnabled(true);
+        spSite.setEnabled(true);
         tvCustomerID.setEnabled(false);
         tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
 
@@ -132,6 +167,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     private void initListeners() {
         spLocation.setOnItemSelectedListener(this);
+        spSite.setOnItemSelectedListener(this);
+        spBuilding.setOnItemSelectedListener(this);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
 
@@ -157,10 +194,10 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                         Locations locations = new Locations(tvLocationID.getText().toString().trim(),
                                 tvDescprition.getText().toString().trim(),
                                 DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
-                               // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
-                              //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
-                                DataManager.getInstance().getLocationSite(tvSite.getText().toString()) ,
-                                DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString()),true);
+                                // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
+                                //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
+                                DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()),
+                                DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()), true);
                         DataManager.getInstance().addNewLocation(locations);
                         Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                         finish();
@@ -179,6 +216,10 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private boolean checkValidation() {
         if ("".equals(tvLocationID.getText().toString().trim())) {
             showToast("Please enter a location");
+        } else if (0 == posSite) {
+            showToast("Please select a site");
+        } else if (0 == posBuilding) {
+            showToast("Please select a building");
         } else {
             return true;
         }
@@ -212,8 +253,21 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
-                            tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode());
-                            tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode());
+
+
+                            for (int k = 0; k < sites.length;k++) {
+                                if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
+                                    spSite.setSelection(k);
+                                    break;
+                                }
+                            }
+
+                            for (int j = 0; j < buildings.length; j++) {
+                                if (DataManager.getInstance().getLocation(strSelectedState).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
+                                    spBuilding.setSelection(j);
+                                    break;
+                                }
+                            }
                             break;
                         }
                     }
@@ -225,6 +279,34 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
             }
             break;
+
+            case R.id.spSite: {
+                posSite = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                if (!"viewLoc".equals(actionType)) {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    }
+
+                }
+
+            }
+            break;
+
+            case R.id.spBuilding: {
+                posBuilding = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                if (!"viewLoc".equals(actionType)) {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    }
+
+                }
+
+            }
+            break;
+
+
 
         }
     }
