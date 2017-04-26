@@ -17,13 +17,17 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.Location;
+import com.ets.gd.NetworkLayer.RequestDTOs.AddLocation;
 import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates;
 import com.ets.gd.NetworkLayer.RequestDTOs.Note;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
@@ -53,6 +57,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private List<Equipment> lstEditEquipment = new ArrayList<Equipment>();
     private List<FireBugEquipment> lstEquipmentsEdit = new ArrayList<FireBugEquipment>();
     private List<FireBugEquipment> lstEquipmentsAdd = new ArrayList<FireBugEquipment>();
+    List<Locations> locationsList = new ArrayList<Locations>();
+    List<AddLocation> lstAddLocation = new ArrayList<AddLocation>();
+    SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
+    boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false;
 
     public SyncFragment() {
     }
@@ -94,21 +102,104 @@ public class SyncFragment extends Fragment implements MyCallBack {
             tvLastSyncTime.setText(lastSyncTime);
         }
 
-       /* CommonActions.showProgressDialog(getActivity());
-        DataManager.getInstance().setupSyncData();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(getActivity(), "Sync Complete", Toast.LENGTH_LONG);
-                tvSyncInProgress.setText("Sync Complete!");
-                CommonActions.DismissesDialog();
-                setCurrentDateAndTime();
+        setupPostAddUpdateEquipmentData();
+        setupPostAddedLocationsData();
 
+
+        if (sendEquipmentCall) {
+            callSyncPostEqupmentService();
+        } else if (sendLocationcall) {
+            callSyncPostLocationService();
+        } else {
+            tvSyncInProgress.setText("No data found for syncing");
+            showToast("No data found for syncing");
+
+        }
+    }
+
+    private void callSyncPostLocationService() {
+
+        CommonActions.showProgressDialog(getActivity());
+        tvSyncInProgress.setText("Sync post in progress...");
+        GSDServiceFactory.getService(getActivity()).postSyncLocation(
+                syncPostAddLocationRequestDTO, this
+        );
+
+
+    }
+
+
+    void callSyncPostEqupmentService() {
+
+        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
+        CommonActions.showProgressDialog(getActivity());
+        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
+        tvSyncInProgress.setText("Sync post in progress...");
+        GSDServiceFactory.getService(getActivity()).postSyncEquipment(
+                syncPostEquipmentRequestDTO, this
+        );
+        //} else {
+        //     tvSyncInProgress.setText("No data found for syncing");
+        //      showToast("No data found for syncing");
+        //  }
+    }
+
+    private void initListeners() {
+    }
+
+    void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    void setCurrentDateAndTime() {
+
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedDate = df.format(c.getTime());
+        tvLastSyncDate.setText("" + formattedDate);
+        String delegate = "hh:mm aaa";
+        tvLastSyncTime.setText("" + DateFormat.format(delegate, Calendar.getInstance().getTime()));
+        sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_DATE, formattedDate);
+        sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_TIME,
+                DateFormat.format(delegate, Calendar.getInstance().getTime()).toString());
+
+    }
+
+
+    private void callSyncGetService() {
+        tvSyncInProgress.setText("Sync get in progress...");
+        CommonActions.showProgressDialog(getActivity());
+        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), "abas"), this);
+    }
+
+    private void setupPostAddedLocationsData() {
+        locationsList = DataManager.getInstance().getAllAddedLocations();
+
+        if (null != locationsList) {
+            for (Locations location : locationsList) {
+                AddLocation addLocation = new AddLocation();
+                addLocation.setCode(location.getCode());
+                addLocation.setDescription(location.getDescription());
+                addLocation.setCustomer(location.getCustomer().getID());
+                addLocation.setSite(location.getSite().getID());
+                addLocation.setBuilding(location.getBuilding().getID());
+                lstAddLocation.add(addLocation);
             }
-        }, 4000);
-*/
+        }
 
 
+        syncPostAddLocationRequestDTO = new SyncPostAddLocationRequestDTO(Constants.RESPONSE_SYNC_POST_ADD_LOCATION,
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                lstAddLocation);
+
+        if (0 != lstAddLocation.size()) {
+            sendLocationcall = true;
+        }
+
+    }
+
+
+    void setupPostAddUpdateEquipmentData() {
         lstEquipmentsEdit = DataManager.getInstance().getAllUpdateAssets();
         if (null != lstEquipmentsEdit) {
             for (FireBugEquipment fireBugEquipment : lstEquipmentsEdit) {
@@ -204,135 +295,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 lstAddEquipment,
                 lstEditEquipment);
 
-
-        callSyncPostEqupmentService();
-    }
-
-
-    void callSyncPostEqupmentService() {
-
         if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
-            CommonActions.showProgressDialog(getActivity());
-            // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
-            tvSyncInProgress.setText("Sync post in progress...");
-            GSDServiceFactory.getService(getActivity()).postSyncEquipment(
-                    syncPostEquipmentRequestDTO, this
-            );
-        } else {
-            tvSyncInProgress.setText("No data found for syncing");
-            showToast("No data found for syncing");
+            sendEquipmentCall = true;
         }
-    }
-
-    private void initListeners() {
-    }
-
-    void showToast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-    }
-
-    void setCurrentDateAndTime() {
-
-        Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-        String formattedDate = df.format(c.getTime());
-        tvLastSyncDate.setText("" + formattedDate);
-        String delegate = "hh:mm aaa";
-        tvLastSyncTime.setText("" + DateFormat.format(delegate, Calendar.getInstance().getTime()));
-        sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_DATE, formattedDate);
-        sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_TIME,
-                DateFormat.format(delegate, Calendar.getInstance().getTime()).toString());
-
-    }
-
-    @Override
-    public void onSuccess(ResponseDTO responseDTO) {
-        switch (responseDTO.getCallBackId()) {
-
-            case Constants.RESPONSE_SYNC_POST_EQUIPMENT: {
-                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
-                if (null != syncPostEquipmentResponseDTO) {
-                    CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults = syncPostEquipmentResponseDTO.getSyncPostEquipments();
-                    //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
-                    setCurrentDateAndTime();
-                    DataManager.getInstance().deleteRealm();
-                    // Toast.makeText(getActivity(), "Sync Get Initiated", Toast.LENGTH_LONG).show();
-                    callSyncGetService();
-                } else {
-                    CommonActions.DismissesDialog();
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.txt_login)
-                            .setMessage("Something went wrong!")
-                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            })
-                            .show();
-                }
-            }
-            break;
-
-
-            case Constants.RESPONSE_SYNC_GET:
-                SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
-                if (responseDTO != null) {
-                    if (null != syncGetResponseDTO) {
-                        CommonActions.DismissesDialog();
-                        tvSyncInProgress.setText("Sync Complete!");
-                        // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
-
-                        itemList = new String[lstSyncPostEquipmentResults.size()+1];
-
-                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
-                            String status = "";
-                            if(lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")){
-                                status = "FAILURE";
-                            }else{
-                                status = "SUCCESS";
-                            }
-                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation()+", "+status;
-                        }
-
-                        itemList[itemList.length-1] = "Update Db SUCCESS";
-
-
-
-                        DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
-
-                        showSyncResults();
-                    } else {
-                        CommonActions.DismissesDialog();
-                        itemList = new String[lstSyncPostEquipmentResults.size()+1];
-
-                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
-                            String status = "";
-                            if(lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")){
-                                status = "FAILURE";
-                            }else{
-                                status = "SUCCESS";
-                            }
-                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation()+", "+status;
-                        }
-
-                        itemList[itemList.length-1] = "Update Db FAILURE";
-                        showSyncResults();
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
-
-    }
-
-    private void callSyncGetService() {
-        tvSyncInProgress.setText("Sync get in progress...");
-        CommonActions.showProgressDialog(getActivity());
-        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), "abas"), this);
     }
 
 
@@ -361,6 +326,128 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         });
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+
+    @Override
+    public void onSuccess(ResponseDTO responseDTO) {
+        switch (responseDTO.getCallBackId()) {
+
+            case Constants.RESPONSE_SYNC_POST_EQUIPMENT: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
+                    setCurrentDateAndTime();
+
+                    if (sendLocationcall) {
+                        callSyncPostLocationService();
+                    } else {
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+                    }
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
+
+
+            case Constants.RESPONSE_SYNC_POST_ADD_LOCATION: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    setCurrentDateAndTime();
+
+                    if (sendMovecall) {
+                        callSyncPostMoveService();
+                    } else {
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+                    }
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
+
+
+            case Constants.RESPONSE_SYNC_GET:
+                SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
+                if (responseDTO != null) {
+                    if (null != syncGetResponseDTO) {
+                        CommonActions.DismissesDialog();
+                        tvSyncInProgress.setText("Sync Complete!");
+                        // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
+
+                        itemList = new String[lstSyncPostEquipmentResults.size() + 1];
+
+                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
+                            String status = "";
+                            if (lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")) {
+                                status = "FAILURE";
+                            } else {
+                                status = "SUCCESS";
+                            }
+                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation() + ", " + status;
+                        }
+
+                        itemList[itemList.length - 1] = "Update Db SUCCESS";
+
+
+                        DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
+
+                        showSyncResults();
+                    } else {
+                        CommonActions.DismissesDialog();
+                        itemList = new String[lstSyncPostEquipmentResults.size() + 1];
+
+                        for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
+                            String status = "";
+                            if (lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")) {
+                                status = "FAILURE";
+                            } else {
+                                status = "SUCCESS";
+                            }
+                            itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation() + ", " + status;
+                        }
+
+                        itemList[itemList.length - 1] = "Update Db FAILURE";
+                        showSyncResults();
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+    }
+
+    private void callSyncPostMoveService() {
     }
 
 

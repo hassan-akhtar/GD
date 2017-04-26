@@ -3,11 +3,6 @@ package com.ets.gd.NetworkLayer.ResponseDTOs;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-/**
- * Created by hakhtar on 4/13/2017.
- * General Data
- */
-
 public class Locations extends RealmObject {
 
     @PrimaryKey
@@ -17,15 +12,17 @@ public class Locations extends RealmObject {
     private String Floor;
     private String Room;
     private Customer Customer;
+    private boolean isAdded;
     private Site Site;
     private Building Building;
 
-    public Locations(String code, String description, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.Site site, com.ets.gd.NetworkLayer.ResponseDTOs.Building building) {
+    public Locations(String code, String description, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.Site site, com.ets.gd.NetworkLayer.ResponseDTOs.Building building, boolean isAdded) {
         Code = code;
         Description = description;
         Customer = customer;
         Site = site;
         Building = building;
+        this.isAdded = isAdded;
     }
 
     public Locations() {
@@ -78,6 +75,14 @@ public class Locations extends RealmObject {
 
     public void setCustomer(com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer) {
         Customer = customer;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Site getSite() {

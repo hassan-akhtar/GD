@@ -159,7 +159,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                                 DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
                                // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
                               //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
-                                new Site(tvSite.getText().toString().trim()) , new Building(tvBuilding.getText().toString().trim()));
+                                DataManager.getInstance().getLocationSite(tvSite.getText().toString()) ,
+                                DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString()),true);
                         DataManager.getInstance().addNewLocation(locations);
                         Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                         finish();

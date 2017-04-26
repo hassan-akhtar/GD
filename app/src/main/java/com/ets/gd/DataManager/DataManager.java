@@ -252,6 +252,12 @@ public class DataManager {
     }
 
 
+    public List<Locations> getAllAddedLocations() {
+        return realm.where(Locations.class).equalTo("isAdded", true).findAll();
+    }
+
+
+
     public void addLocation(final Location obj) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
