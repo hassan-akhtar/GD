@@ -2,18 +2,19 @@ package com.ets.gd.NetworkLayer.Service;
 
 
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipmentResponseDTO;
 
 import java.util.List;
 
 import retrofit.Callback;
+import retrofit.http.Body;
 import retrofit.http.Field;
 import retrofit.http.FormUrlEncoded;
-import retrofit.http.GET;
-import retrofit.http.Header;
 import retrofit.http.POST;
-import retrofit.http.Path;
 
 public interface GSDRESTService {
 
@@ -33,6 +34,11 @@ public interface GSDRESTService {
     public void getSyncData(@Field("CustomerId") int customerId,
                             @Field("DeviceId") String deviceId,
                             Callback<SyncGetResponseDTO> syncGetResponseDTOCallback);
+
+    // Sync post data request equipment
+    @POST(Constants.URL_SYNC_POST_EQUIPMENT)
+    public void postSyncEquipment(@Body SyncPostEquipmentRequestDTO syncPostRequestDTO,
+                                  Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 
 }

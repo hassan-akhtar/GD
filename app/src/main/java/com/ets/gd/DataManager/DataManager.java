@@ -44,6 +44,21 @@ public class DataManager {
     }
 
 
+
+    public static Realm getRealm(){
+        return realm;
+    }
+
+
+    public void deleteRealm(){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+             realm.deleteAll();
+            }
+        });
+    }
+
     // For adding an asset info in DB
     public void AddAssetInfo(final Asset obj) {
 
@@ -291,6 +306,17 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).findAll();
     }
 
+    public List<FireBugEquipment> getAllAddAssets() {
+        return realm.where(FireBugEquipment.class).equalTo("isAdded", true).findAll();
+    }
+
+
+    public List<FireBugEquipment> getAllUpdateAssets() {
+        return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
+    }
+
+
+
 
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
@@ -348,6 +374,13 @@ public class DataManager {
 
         RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentID", EquipmentID).findAll();
         List<EquipmentNote> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public List<MyInspectionDates> getEquipmentInspectionDates(int EquipmentID) {
+
+        RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", EquipmentID).findAll();
+        List<MyInspectionDates> copied = realm.copyFromRealm(results);
         return copied;
     }
 

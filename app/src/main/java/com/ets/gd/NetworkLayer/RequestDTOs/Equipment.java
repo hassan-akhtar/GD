@@ -1,6 +1,7 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
 
+import java.util.List;
 
 /**
  * Created by hakhtar on 4/24/2017.
@@ -20,8 +21,8 @@ public class Equipment  {
     private int AgentID;
     private int AssignedLocation;
     private int CustomerID;
-    private InspectionDates InspectionDates;
-    private Note lstFbEquipmentNotes;
+    private List<InspectionDates> InspectionDates;
+    private List<Note> lstFbEquipmentNotes;
 
 
     public int getID() {
@@ -112,19 +113,19 @@ public class Equipment  {
         CustomerID = customerID;
     }
 
-    public com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates getInspectionDates() {
+    public List<com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates> getInspectionDates() {
         return InspectionDates;
     }
 
-    public void setInspectionDates(com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates inspectionDates) {
+    public void setInspectionDates(List<com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates> inspectionDates) {
         InspectionDates = inspectionDates;
     }
 
-    public Note getLstFbEquipmentNotes() {
+    public List<Note> getLstFbEquipmentNotes() {
         return lstFbEquipmentNotes;
     }
 
-    public void setLstFbEquipmentNotes(Note lstFbEquipmentNotes) {
+    public void setLstFbEquipmentNotes(List<Note> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
     }
 }

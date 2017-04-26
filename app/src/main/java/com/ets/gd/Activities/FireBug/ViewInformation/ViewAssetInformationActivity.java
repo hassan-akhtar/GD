@@ -160,7 +160,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                             DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
                                             DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
                                             DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
-                                            true, false);
+                                            true, fireBugEquipment.isAdded());
                                     showToast("Asset Updated.");
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -189,7 +189,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             showToast("Asset's Location can't be Updated");
                         } else {
                             if (null == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
-                                FireBugEquipment fireBugEquipment = null;
+                                FireBugEquipment fireBugEquipment = new FireBugEquipment();
                                 try {
                                     fireBugEquipment = new FireBugEquipment(
                                             0,
@@ -203,15 +203,16 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                             DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
                                             DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
                                             DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
-                                            false, true);
+                                            fireBugEquipment.isUpdated(), true);
                                     DataManager.getInstance().addEquipment(fireBugEquipment);
                                     showToast("Asset Added.");
+                                    showToast("You can now add notes and inspection dates for this asset.");
                                     isAssetAdded = true;
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     showToast("Asset not saved..");
                                 }
-                                showToast("You can now add notes and inspection dates for this asset.");
+
                             } else {
                                 showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                             }

@@ -16,10 +16,14 @@ public class Constants {
     public static final int RESPONSE_LOGIN = 0;
     public static final int RESPONSE_CUSTOMERS = 1;
     public static final int RESPONSE_SYNC_GET = 2;
+    public static final int RESPONSE_SYNC_POST_EQUIPMENT = 3;
 
     // Urls
     public static final String URL_LOGIN = "/Login";
     public static final String URL_SYNC_GET= "/GetCustomerData";
+    public static final String URL_SYNC_POST_EQUIPMENT= "/CreateEquipment";
+
+
 
 
 
