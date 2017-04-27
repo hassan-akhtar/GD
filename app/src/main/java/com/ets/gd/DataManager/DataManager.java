@@ -251,9 +251,20 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+    public void addNewLocation(MyLocation location) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(location);
+        realm.commitTransaction();
+    }
+
+
 
     public List<Locations> getAllAddedLocations() {
         return realm.where(Locations.class).equalTo("isAdded", true).findAll();
+    }
+
+    public List<Locations> getOldLocations() {
+        return realm.where(Locations.class).equalTo("isAdded", false).findAll();
     }
 
 
@@ -337,6 +348,11 @@ public class DataManager {
     // For getting asset all assets from DB
     public MyLocation getAssetLocation(String Code) {
         return realm.where(MyLocation.class).equalTo("Code", Code).findFirst();
+    }
+
+    // For getting asset all assets from DB
+    public Locations getAssetLocations(String Code) {
+        return realm.where(Locations.class).equalTo("Code", Code).findFirst();
     }
 
     // For getting asset all assets from DB
@@ -708,7 +724,7 @@ public class DataManager {
         realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
         realmSyncGetResponseDTO.setLstMusers(obj.getLstMusers());
         realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
-        realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
+         realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
         realmSyncGetResponseDTO.setLstLocations(obj.getLstLocations());
         realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
         realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());

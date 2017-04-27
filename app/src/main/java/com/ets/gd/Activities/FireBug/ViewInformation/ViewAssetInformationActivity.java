@@ -25,6 +25,8 @@ import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -191,6 +193,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             if (null == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
                                 FireBugEquipment fireBugEquipment = new FireBugEquipment();
                                 try {
+                                    Locations locations = DataManager.getInstance().getAssetLocations(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString());
+                                    MyLocation myLocation = new MyLocation(locations.getID(),locations.getCode(),locations.getDescription(),locations.getCustomer().getID(),locations.getSite().getID(),locations.getBuilding().getID());
                                     fireBugEquipment = new FireBugEquipment(
                                             0,
                                             AssetInformationFragment.tvTagID.getText().toString(),
@@ -199,7 +203,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                             DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
                                             DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
                                             DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
-                                            DataManager.getInstance().getAssetLocation(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString()),
+                                            myLocation,
                                             DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
                                             DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
                                             DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),

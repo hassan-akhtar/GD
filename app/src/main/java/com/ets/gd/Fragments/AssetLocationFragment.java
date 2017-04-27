@@ -21,8 +21,11 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import io.realm.RealmList;
 
 
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
@@ -80,11 +83,21 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }
 
-        int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
+
+        RealmList<Locations> locationsRealmList = new RealmList<Locations>();
+
+        for (int k = 0 ; k <realmSyncGetResponseDTO.getLstLocations().size();k++)
+        {
+            if(!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()){
+                locationsRealmList.add(realmSyncGetResponseDTO.getLstLocations().get(k));
+            }
+        }
+
+        int size = locationsRealmList.size()+ 1 ;
         String[] locations = new String[size];
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            locations[i+1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
+        for (int i = 0; i < locationsRealmList.size(); i++) {
+            locations[i+1] = locationsRealmList.get(i).getCode();
         }
         locations[0] = "Please select a location";
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
@@ -163,6 +176,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spLocation.setEnabled(true);
         spLocation.setSelection(0);
         tvDescprition.setText("No location selected");
+        spSite.setEnabled(false);
+        spBuilding.setEnabled(false);
         spSite.setSelection(0);
         spBuilding.setSelection(0);
 
@@ -187,7 +202,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                     for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
-                            tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
+                            tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
                             for (int k = 0; k < sites.length;k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
                                     spSite.setSelection(k);

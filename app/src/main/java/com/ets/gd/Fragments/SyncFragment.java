@@ -244,8 +244,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
         }
 
         lstEquipmentsAdd = DataManager.getInstance().getAllAddAssets();
-
-
         if (null != lstEquipmentsAdd) {
 
             for (FireBugEquipment fireBugEquipment : lstEquipmentsAdd) {
@@ -259,7 +257,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
                 equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
                 equipment.setAgentID(fireBugEquipment.getAgentType().getID());
+                // if (null==fireBugEquipment.getLocation().getID()) {
                 equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
+                //  }
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
 

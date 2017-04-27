@@ -23,6 +23,29 @@ public class MyLocation extends RealmObject {
     private int locationTypeVM;
 
 
+    public MyLocation(String code, String description, int customer, int site, int building) {
+
+        Code = code;
+        Description = description;
+        Customer = customer;
+        Site = site;
+        Building = building;
+    }
+
+
+    public MyLocation(int ID, String code, String description, int customer, int site, int building) {
+        this.ID = ID;
+        Code = code;
+        Description = description;
+        Customer = customer;
+        Site = site;
+        Building = building;
+    }
+
+
+    public MyLocation() {
+    }
+
     public int getID() {
         return ID;
     }

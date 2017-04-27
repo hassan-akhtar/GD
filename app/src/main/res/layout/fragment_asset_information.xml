@@ -31,6 +31,8 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:hint="@string/txt_tagID"
+                    android:imeOptions="actionDone"
+                    android:singleLine="true"
                     android:maxLines="1"
                     android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
@@ -109,6 +111,8 @@
                     android:layout_marginRight="20dp"
                     android:hint="@string/txt_serialNo"
                     android:maxLines="1"
+                    android:singleLine="true"
+                    android:imeOptions="actionDone"
                     android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
 

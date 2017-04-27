@@ -21,6 +21,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -199,6 +200,14 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                                 DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()),
                                 DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()), true);
                         DataManager.getInstance().addNewLocation(locations);
+//                        MyLocation myLocation = new MyLocation(
+//                                tvLocationID.getText().toString(),
+//                                tvDescprition.getText().toString(),
+//                                sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID),
+//                                DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()).getID(),
+//                                DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()).getID());
+//
+//                        DataManager.getInstance().addNewLocation(myLocation);
                         Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                         finish();
 //                        } else {

@@ -2,6 +2,7 @@ package com.ets.gd.NetworkLayer.Service;
 
 
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
@@ -47,6 +48,13 @@ public interface GSDRESTService {
     public void postSyncLocation(@Body SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO,
                                   Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
+
+
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_MOVE_TRANSFER)
+    public void postMoveTransfer(@Body MoveTransferRequestDTO moveTransferRequestDTO,
+                                 Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 }
 

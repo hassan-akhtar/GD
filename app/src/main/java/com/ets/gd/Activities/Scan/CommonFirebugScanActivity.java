@@ -205,7 +205,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
             switch (v.getId()) {
-                case R.id.btnScan: {if (taskType.toLowerCase().startsWith("v")) {
+                case R.id.btnScan: {
+                    if (taskType.toLowerCase().startsWith("v")) {
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
@@ -223,7 +224,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             checkCameraPermission();
                         } else {
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
-                            if (null != fireBugEquipment) {
+                            if (null != fireBugEquipment && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
@@ -237,6 +238,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
+                            } else if (null != fireBugEquipment && fireBugEquipment.isAdded()) {
+                                hideKeyboard();
+                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
                             } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -247,7 +251,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             checkCameraPermission();
                         } else {
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
-                            if (null != fireBugEquipment) {
+                            if (null != fireBugEquipment && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
@@ -261,6 +265,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
+                            } else if (null != fireBugEquipment && fireBugEquipment.isAdded()) {
+                                hideKeyboard();
+                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
                             } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -271,7 +278,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             checkCameraPermission();
                         } else {
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
-                            if (null != fireBugEquipment) {
+                            if (null != fireBugEquipment && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     assetList.clear();
                                     etBarcode.setText("");
@@ -283,7 +290,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else {
+                            }else if (null != fireBugEquipment && fireBugEquipment.isAdded()) {
+                                    hideKeyboard();
+                                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
+                                } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
@@ -490,7 +500,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             String task = intent.getStringExtra("taskType");
-
 
 
             if (!task.startsWith("loc")) {

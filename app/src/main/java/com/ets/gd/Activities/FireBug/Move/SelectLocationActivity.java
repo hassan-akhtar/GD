@@ -35,6 +35,8 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class SelectLocationActivity extends AppCompatActivity {
 
 
@@ -104,7 +106,17 @@ public class SelectLocationActivity extends AppCompatActivity {
     private void setupLocList() {
 
         locList.clear();
-        locList = DataManager.getInstance().getAllLocations();
+
+        List<Locations> locationsRealmList = new RealmList<Locations>();
+        locationsRealmList = DataManager.getInstance().getAllLocations();
+
+        for (int k = 0 ; k <locationsRealmList.size();k++)
+        {
+            if(!locationsRealmList.get(k).isAdded()){
+                locList.add(locationsRealmList.get(k));
+            }
+        }
+
     }
 
 
