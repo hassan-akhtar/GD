@@ -21,6 +21,8 @@ import com.ets.gd.Models.Location;
 import com.ets.gd.NetworkLayer.RequestDTOs.AddLocation;
 import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransfer;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.Note;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
@@ -61,6 +63,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
     List<AddLocation> lstAddLocation = new ArrayList<AddLocation>();
     SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
     boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false;
+    MoveTransferRequestDTO moveTransferRequestDTO;
+    List<MoveTransfer> lstMoveEquipment = new ArrayList<MoveTransfer>();
+    List<FireBugEquipment> lstAllAssets = new ArrayList<FireBugEquipment>();
 
     public SyncFragment() {
     }
@@ -104,18 +109,22 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         setupPostAddUpdateEquipmentData();
         setupPostAddedLocationsData();
+        setupPostMoveAssetData();
 
 
         if (sendEquipmentCall) {
             callSyncPostEqupmentService();
         } else if (sendLocationcall) {
             callSyncPostLocationService();
+        } else if (sendMovecall) {
+            callSyncPostMoveService();
         } else {
             tvSyncInProgress.setText("No data found for syncing");
             showToast("No data found for syncing");
 
         }
     }
+
 
     private void callSyncPostLocationService() {
 
@@ -171,6 +180,34 @@ public class SyncFragment extends Fragment implements MyCallBack {
         CommonActions.showProgressDialog(getActivity());
         GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), "abas"), this);
     }
+
+
+    private void setupPostMoveAssetData() {
+        lstAllAssets = DataManager.getInstance().getAllAssets();
+
+        if (null != lstAllAssets) {
+            for (FireBugEquipment asset : lstAllAssets) {
+                if (asset.isMoved()) {
+                    MoveTransfer equipment = new MoveTransfer();
+                    equipment.setAction("Move");
+                    equipment.setCustomerID(asset.getCustomer().getID());
+                    equipment.setEquipmentID(asset.getID());
+                    equipment.setLocationID(asset.getLocation().getID());
+                    lstMoveEquipment.add(equipment);
+                }
+            }
+        }
+
+
+        moveTransferRequestDTO = new MoveTransferRequestDTO(Constants.RESPONSE_SYNC_POST_MOVE_TRANSFER,
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                lstMoveEquipment);
+
+        if (0 != lstMoveEquipment.size()) {
+            sendMovecall = true;
+        }
+    }
+
 
     private void setupPostAddedLocationsData() {
         locationsList = DataManager.getInstance().getAllAddedLocations();
@@ -339,11 +376,12 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     CommonActions.DismissesDialog();
                     lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
-                    setCurrentDateAndTime();
 
                     if (sendLocationcall) {
                         callSyncPostLocationService();
-                    } else {
+                    } else if(sendMovecall){
+                        callSyncPostMoveService();
+                    }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -369,7 +407,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-                    setCurrentDateAndTime();
 
                     if (sendMovecall) {
                         callSyncPostMoveService();
@@ -393,6 +430,30 @@ public class SyncFragment extends Fragment implements MyCallBack {
             }
             break;
 
+
+            case Constants.RESPONSE_SYNC_POST_MOVE_TRANSFER: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
 
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
@@ -419,7 +480,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                         sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
-
+                        setCurrentDateAndTime();
                         showSyncResults();
                     } else {
                         CommonActions.DismissesDialog();
@@ -448,6 +509,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
     }
 
     private void callSyncPostMoveService() {
+        CommonActions.showProgressDialog(getActivity());
+        tvSyncInProgress.setText("Sync post in progress...");
+        GSDServiceFactory.getService(getActivity()).postMoveTransfer(
+                moveTransferRequestDTO, this
+        );
     }
 
 

@@ -51,9 +51,15 @@ public interface GSDRESTService {
 
 
 
-    // Sync post data request location
+    // Sync post data request move transfer
     @POST(Constants.URL_SYNC_POST_MOVE_TRANSFER)
     public void postMoveTransfer(@Body MoveTransferRequestDTO moveTransferRequestDTO,
+                                 Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+
+    // Sync post data request inspect equipment
+    @POST(Constants.URL_SYNC_POST_INSPECT_EQUIPMENT)
+    public void postInspectEquipment(@Body MoveTransferRequestDTO moveTransferRequestDTO,
                                  Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 }

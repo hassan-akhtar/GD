@@ -76,8 +76,9 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
+        fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
-            fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
+
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
         }else{
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));

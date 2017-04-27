@@ -137,10 +137,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
-                    DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString().trim());
+
                     if (taskName.toLowerCase().startsWith("m")) {
+                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"move" );
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Moved!",Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
+                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"transfer");
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Transferred!",Toast.LENGTH_LONG).show();
                     }
                     sendMessage("finish");

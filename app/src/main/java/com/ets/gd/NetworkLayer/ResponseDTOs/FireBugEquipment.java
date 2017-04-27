@@ -22,6 +22,8 @@ public class FireBugEquipment  extends RealmObject {
     private Rating Rating;
     private boolean isUpdated;
     private boolean isAdded;
+    private boolean isMoved;
+    private boolean isTransferred;
     private Size Size;
     private VendorCode VendorCode;
     private Model Model;
@@ -62,6 +64,22 @@ public class FireBugEquipment  extends RealmObject {
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer getManufacturer() {
         return Manufacturer;
+    }
+
+    public boolean isMoved() {
+        return isMoved;
+    }
+
+    public void setMoved(boolean moved) {
+        isMoved = moved;
+    }
+
+    public boolean isTransferred() {
+        return isTransferred;
+    }
+
+    public void setTransferred(boolean transferred) {
+        isTransferred = transferred;
     }
 
     public void setManufacturer(com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer) {

@@ -20,6 +20,9 @@ public class MoveTransfer {
         LocationID = locationID;
     }
 
+    public MoveTransfer() {
+    }
+
     public String getAction() {
         return Action;
     }
