@@ -61,12 +61,32 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
                 holder.tvLocation.setText("Location: " + asset.getLocation().getID());
             }
 
-            holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
+
+            if(null!=asset.getManufacturers() && null != asset.getModel()) {
+                holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
+            }else if (null==asset.getManufacturers() && null != asset.getModel()) {
+                holder.tvName.setText( asset.getModel().getCode());
+            }else if (null!=asset.getManufacturers() && null == asset.getModel()) {
+                holder.tvName.setText( asset.getManufacturers().getCode());
+            }else  {
+                holder.tvName.setText("N/A");
+            }
+
+            if(null!=asset.getManufacturers()) {
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
                         .buildRound(asset.getManufacturers().getCode().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
+            }else{
+                drawable = TextDrawable.builder()
+                        .beginConfig()
+                        .endConfig()
+                        .buildRound("N/A", mContext.getResources().getColor(R.color.colorPrimaryDark));
+                holder.ivSelectableImage.setImageDrawable(drawable);
+            }
+
+
 
 
         } else {
