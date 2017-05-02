@@ -41,7 +41,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     public static Fragment currentFragment;
     public static String actionType, barCodeID;
     boolean isAssetAdded = false;
-    static String tagID = "";
+    static String tagID = "", compName="";
     Asset asset;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     public static List<EquipmentNote> newNotesList = new ArrayList<EquipmentNote>();
@@ -70,8 +70,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-
-
+        compName = getIntent().getStringExtra("compName");
+        tvCompanyValue.setText(compName);
     }
 
     public Asset getAsset() {
@@ -109,6 +109,12 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             isAssetAdded = true;
         } else {
             isAssetAdded = false;
+        }
+
+        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
+            ivChangeCompany.setVisibility(View.GONE);
+        }else{
+            ivChangeCompany.setVisibility(View.VISIBLE);
         }
     }
 

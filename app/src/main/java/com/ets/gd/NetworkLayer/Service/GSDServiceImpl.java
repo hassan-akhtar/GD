@@ -9,6 +9,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
@@ -74,7 +75,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void getSyncData(final SyncGetDTO syncGetDTO, final MyCallBack callback) {
-        adapter.getSyncData(syncGetDTO.getCustomerId(), syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
+        adapter.getSyncData(syncGetDTO.getCustomerCode(), syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
             @Override
             public void success(SyncGetResponseDTO syncGetResponseDTO, Response response) {
                 syncGetResponseDTO.setCallBackId(syncGetDTO.getCallBackId());
@@ -144,6 +145,28 @@ public class GSDServiceImpl implements GSDService {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
                 syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
                 syncPostEquipmentResponseDTO.setCallBackId(moveTransferRequestDTO.getCallBackId());
+                callback.onSuccess(syncPostEquipmentResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void postInspectEquipment(final SyncPostUnitInspectionRequestDTO syncPostUnitInspectionRequestDTO, final MyCallBack callback) {
+        adapter.postInspectEquipment(syncPostUnitInspectionRequestDTO, new Callback<List<SyncPostEquipment>>() {
+            @Override
+            public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
+                syncPostEquipmentResponseDTO.setCallBackId(syncPostUnitInspectionRequestDTO.getCallBackId());
                 callback.onSuccess(syncPostEquipmentResponseDTO);
             }
 

@@ -24,6 +24,7 @@ public class FireBugEquipment  extends RealmObject {
     private boolean isAdded;
     private boolean isMoved;
     private boolean isTransferred;
+    private boolean isUnitInspected;
     private Size Size;
     private VendorCode VendorCode;
     private Model Model;
@@ -103,6 +104,14 @@ public class FireBugEquipment  extends RealmObject {
     }
 
     public FireBugEquipment(){}
+
+    public boolean isUnitInspected() {
+        return isUnitInspected;
+    }
+
+    public void setUnitInspected(boolean unitInspected) {
+        isUnitInspected = unitInspected;
+    }
 
     public int getID() {
         return ID;

@@ -2,21 +2,21 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 
 public class SyncGetDTO extends  BaseDTO {
 
-    private int customerId;
+    private String CustomerCode;
     private String deviceId;
 
-    public SyncGetDTO(int callBackId, int customerId, String deviceId) {
+    public SyncGetDTO(int callBackId, String customerId, String deviceId) {
         super(callBackId);
-        this.customerId = customerId;
+        this.CustomerCode = customerId;
         this.deviceId = deviceId;
     }
 
-    public int getCustomerId() {
-        return customerId;
+    public String getCustomerCode() {
+        return CustomerCode;
     }
 
-    public void setCustomerId(int customerId) {
-        this.customerId = customerId;
+    public void setCustomerCode(String customerCode) {
+        this.CustomerCode = customerCode;
     }
 
     public String getDeviceId() {

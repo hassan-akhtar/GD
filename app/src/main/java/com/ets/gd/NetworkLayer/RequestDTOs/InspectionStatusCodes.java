@@ -1,11 +1,13 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
+import io.realm.RealmObject;
+
 /**
  * Created by hakhtar on 4/27/2017.
  * General Data
  */
 
-public class InspectionStatusCodes {
+public class InspectionStatusCodes extends RealmObject {
 
     private int StatusCodeID;
 

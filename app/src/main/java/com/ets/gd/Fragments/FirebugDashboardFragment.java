@@ -26,6 +26,7 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
@@ -51,6 +52,7 @@ public class FirebugDashboardFragment extends Fragment {
     Context mContext;
     TextView tvCompanyValue;
     ImageView ivChangeCompany;
+    SharedPreferencesManager sharedPreferencesManager;
 
     public FirebugDashboardFragment() {
         // Required empty public constructor
@@ -163,6 +165,13 @@ public class FirebugDashboardFragment extends Fragment {
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
 
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
+            ivChangeCompany.setVisibility(View.GONE);
+        }else{
+            ivChangeCompany.setVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initListeners() {
@@ -233,6 +242,7 @@ public class FirebugDashboardFragment extends Fragment {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ViewAssetInformationActivity.class);
                     in.putExtra("action", "addAsset");
+                    in.putExtra("compName",  tvCompanyValue.getText().toString().trim());
                     startActivity(in);
                     break;
                 }

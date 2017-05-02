@@ -22,14 +22,17 @@ import com.ets.gd.Activities.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.CustomerFragment;
 import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -42,10 +45,11 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
     private RecyclerView rvCustomers;
     private CustomerAdapter customerAdapter;
     TextView companiesCount;
-    private List<Customer> customerList;
+    private List<AllCustomers> customerList;
     CommonActions ca;
     ImageView ivBack, ivTick;
     TextView tbTitleBottom;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +72,9 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
     private void initObj() {
         ca = new CommonActions(CustomerActivity.this);
+        sharedPreferencesManager = new SharedPreferencesManager(CustomerActivity.this);
         customerList = new ArrayList<>();
-        tbTitleBottom.setText("Select Location");
+        tbTitleBottom.setText("Select Company");
     }
 
     private void initListeners() {
@@ -81,6 +86,8 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
             public void onClick(View view, int position) {
 
                 Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
+                sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID,customerList.get(position).getID());
+                sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME,customerList.get(position).getCode());
                 in.putExtra("location",customerList.get(position).getCode());
                 startActivity(in);
                 finish();
@@ -106,7 +113,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
     };
 
     void getCustomersCall() {
-        Customer customer = new Customer();
+       /* Customer customer = new Customer();
         customer.setCode("Bow wow Animal Hospital");
         customerList.add(customer);
         customer = new Customer();
@@ -121,14 +128,14 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
         customer = new Customer();
         customer.setCode("Bruce and Co. Traders");
         customerList.add(customer);
-        companiesCount.setText("" + customerList.size());
-        customerAdapter = new CustomerAdapter(CustomerActivity.this, customerList);
+        companiesCount.setText(""+customerList.size());*/
+        customerList = DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        customerAdapter = new CustomerAdapter(CustomerActivity.this,customerList);
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);
         rvCustomers.setLayoutManager(mLayoutManager);
         rvCustomers.setItemAnimator(new DefaultItemAnimator());
         customerAdapter.notifyDataSetChanged();
-
     }
 
     @Override

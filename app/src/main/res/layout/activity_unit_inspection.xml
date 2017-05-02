@@ -190,7 +190,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="24dp"
-                    android:hint="Status Code"
+                    android:hint="Status Codes"
                     android:maxLines="1"
                     android:textSize="16sp"
                     android:paddingLeft="12dp" />
@@ -216,184 +216,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/etStatusCode">
 
-                    <LinearLayout
-                        android:id="@+id/llFirst"
+                    <com.ets.gd.Adapters.CheckBoxGroupView
+                        android:id="@+id/cbGroup"
+                        android:columnCount="2"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
+                        android:layout_height="wrap_content">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbBracket"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Bracket" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbNozzel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Nozzel" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/llSecond"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/llFirst"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbDamaged"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Damaged" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbOperational"
-                                android:layout_width="wrap_content"
-                                android:layout_marginLeft="16dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Operational" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-
-                    <LinearLayout
-                        android:id="@+id/llthird"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/llSecond"
-
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbHose"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Hose" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbRecharge"
-                                android:layout_width="wrap_content"
-                                android:layout_marginLeft="32dp"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Recharge" />
-                        </LinearLayout>
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/llFourth"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/llthird"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbAccessible"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Not Accessible" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1">
-
-                            <CheckBox
-                                android:id="@+id/cbTag"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginLeft="5dp"
-                                android:text="Tag                   " />
-                        </LinearLayout>
-                    </LinearLayout>
-
+                    </com.ets.gd.Adapters.CheckBoxGroupView>
 
                 </RelativeLayout>
             </RelativeLayout>

@@ -1,37 +1,37 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
-/**
- * Created by hakhtar on 4/27/2017.
- * General Data
- */
+import java.util.List;
 
-public class InspectionResult {
-    private int StatusCodeID;
+import io.realm.RealmList;
+import io.realm.RealmObject;
+
+public class UnitinspectionResult extends RealmObject {
 
     private int EquipmentID;
     private String InspectionType;
     private String InspectionDate;
     private int UserId;
     private boolean  Result;
+    private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
-    public InspectionResult(int statusCodeID, int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result) {
-        StatusCodeID = statusCodeID;
+    public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes) {
         EquipmentID = equipmentID;
         InspectionType = inspectionType;
         InspectionDate = inspectionDate;
         UserId = userId;
         Result = result;
+        InspectionStatusCodes = inspectionStatusCodes;
     }
 
-    public InspectionResult() {
+    public UnitinspectionResult() {
     }
 
-    public int getStatusCodeID() {
-        return StatusCodeID;
+    public RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> getInspectionStatusCodes() {
+        return InspectionStatusCodes;
     }
 
-    public void setStatusCodeID(int statusCodeID) {
-        StatusCodeID = statusCodeID;
+    public void setInspectionStatusCodes(RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes) {
+        InspectionStatusCodes = inspectionStatusCodes;
     }
 
     public int getEquipmentID() {

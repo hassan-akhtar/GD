@@ -73,9 +73,9 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                 case R.id.btnNext: {
 
                     if (!"".equals(etCustomerID.getText().toString().trim())) {
-                        sharedPreferencesManager.setString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID,etCustomerID.getText().toString().trim());
+                        //sharedPreferencesManager.setString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID,etCustomerID.getText().toString().trim());
                         Intent in = new Intent(DeviceRegistrationActivity.this, FirstTimeSyncActicity.class);
-                        in.putExtra("customerID", etCustomerID.getText().toString().trim());
+                        in.putExtra("customerCode", etCustomerID.getText().toString().trim());
                         startActivity(in);
 
                     } else {

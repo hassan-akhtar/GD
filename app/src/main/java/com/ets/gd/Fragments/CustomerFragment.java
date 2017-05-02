@@ -17,11 +17,14 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,8 +37,8 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     private RecyclerView rvCustomers;
     private CustomerAdapter customerAdapter;
     TextView companiesCount;
-    private List<Customer> customerList;
-
+    List<AllCustomers> customerList;
+    SharedPreferencesManager sharedPreferencesManager;
     CommonActions ca;
 
     public CustomerFragment() {
@@ -59,6 +62,8 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+
         ca = new CommonActions(getActivity());
         customerList = new ArrayList<>();
 
@@ -83,7 +88,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
 
 
     void getCustomersCall() {
-        Customer customer = new Customer();
+       /* Customer customer = new Customer();
         customer.setCode("Bow wow Animal Hospital");
         customerList.add(customer);
         customer = new Customer();
@@ -98,7 +103,8 @@ public class CustomerFragment extends Fragment implements MyCallBack {
         customer = new Customer();
         customer.setCode("Bruce and Co. Traders");
         customerList.add(customer);
-        companiesCount.setText(""+customerList.size());
+        companiesCount.setText(""+customerList.size());*/
+        customerList = DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         customerAdapter = new CustomerAdapter(getActivity(),customerList);
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());

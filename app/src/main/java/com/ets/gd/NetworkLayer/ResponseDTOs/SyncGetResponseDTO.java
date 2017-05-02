@@ -11,6 +11,8 @@ public class SyncGetResponseDTO extends ResponseDTO {
     private int CustomerId;
     private String DeviceId;
     private String SyncGetTime;
+    private boolean IsServiceCompany;
+    RealmList<AllCustomers> lstCustomers;
     RealmList<RegisteredDevice> lstDevices;
     RealmList<MobileUser> lstMusers;
     RealmList<FireBugEquipment> lstFbEquipments;
@@ -52,6 +54,22 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstDevices(RealmList<RegisteredDevice> lstDevices) {
         this.lstDevices = lstDevices;
+    }
+
+    public RealmList<AllCustomers> getLstCustomers() {
+        return lstCustomers;
+    }
+
+    public boolean isServiceCompany() {
+        return IsServiceCompany;
+    }
+
+    public void setServiceCompany(boolean serviceCompany) {
+        IsServiceCompany = serviceCompany;
+    }
+
+    public void setLstCustomers(RealmList<AllCustomers> lstCustomers) {
+        this.lstCustomers = lstCustomers;
     }
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {

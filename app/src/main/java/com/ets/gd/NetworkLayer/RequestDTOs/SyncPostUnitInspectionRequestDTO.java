@@ -3,12 +3,13 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 import java.util.List;
 
 
-public class SyncPostUnitInspectionRequestDTO {
+public class SyncPostUnitInspectionRequestDTO extends BaseDTO{
 
-    private int userId;
-    private List<InspectionResult> lstInspectionResult;
+    private String userId;
+    private List<UnitinspectionResult> lstInspectionResult;
 
-    public SyncPostUnitInspectionRequestDTO(int userId, List<InspectionResult> lstInspectionResult) {
+    public SyncPostUnitInspectionRequestDTO(int callBackId,String userId, List<UnitinspectionResult> lstInspectionResult) {
+        setCallBackId(callBackId);
         this.userId = userId;
         this.lstInspectionResult = lstInspectionResult;
     }
@@ -18,19 +19,19 @@ public class SyncPostUnitInspectionRequestDTO {
     }
 
 
-    public int getUserId() {
+    public String getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(String userId) {
         this.userId = userId;
     }
 
-    public List<InspectionResult> getLstInspectionResult() {
+    public List<UnitinspectionResult> getLstInspectionResult() {
         return lstInspectionResult;
     }
 
-    public void setLstInspectionResult(List<InspectionResult> lstInspectionResult) {
+    public void setLstInspectionResult(List<UnitinspectionResult> lstInspectionResult) {
         this.lstInspectionResult = lstInspectionResult;
     }
 }

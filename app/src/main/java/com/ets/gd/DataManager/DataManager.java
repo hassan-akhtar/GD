@@ -8,10 +8,13 @@ import com.ets.gd.Models.Note;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -20,6 +23,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
+import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
@@ -79,7 +83,7 @@ public class DataManager {
 
 
     // For adding an asset info in DB
-    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation) {
+    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation, int cusID) {
         realm.beginTransaction();
         MyLocation myLocation;
         if (null!=realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
@@ -89,7 +93,12 @@ public class DataManager {
             myLocation = realm.createObject(MyLocation.class,locations.getID());
             myLocation.setCode(locations.getCode());
             myLocation.setDescription(locations.getDescription());
-            myLocation.setCustomer(locations.getCustomer().getID());
+            if (operation.startsWith("move")) {
+                myLocation.setCustomer(locations.getCustomer().getID());
+            } else {
+                myLocation.setCustomer(cusID);
+            }
+
             myLocation.setSite(locations.getSite().getID());
             myLocation.setBuilding(locations.getBuilding().getID());
         }
@@ -739,6 +748,8 @@ public class DataManager {
         realmSyncGetResponseDTO.setSyncGetTime(obj.getSyncGetTime());
         realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
         realmSyncGetResponseDTO.setLstMusers(obj.getLstMusers());
+        realmSyncGetResponseDTO.setServiceCompany(obj.isServiceCompany());
+        realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
         realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
         realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
         realmSyncGetResponseDTO.setLstLocations(obj.getLstLocations());
@@ -759,6 +770,51 @@ public class DataManager {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(obj);
         realm.commitTransaction();
+    }
+
+
+    public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                UnitinspectionResult unitinspectionResult = realm.createObject(UnitinspectionResult.class);
+                unitinspectionResult.setEquipmentID(inspectionResult.getEquipmentID());
+                unitinspectionResult.setInspectionType(inspectionResult.getInspectionType());
+                unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
+                unitinspectionResult.setUserId(inspectionResult.getUserId());
+                unitinspectionResult.setResult(inspectionResult.isResult());
+                unitinspectionResult.setInspectionStatusCodes(inspectionResult.getInspectionStatusCodes());
+            }
+        });
+
+    }
+
+
+    public List<UnitinspectionResult>  getAllUnitInspectedAssets( ) {
+        RealmResults<UnitinspectionResult> results = realm.where(UnitinspectionResult.class).findAll();
+        List<UnitinspectionResult> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public StatusCode  getStatusCodeID(String desc ) {
+        return  realm.where(StatusCode.class).endsWith("Description",desc ).findFirst();
+    }
+
+
+
+
+
+    public List<DeviceTypeStatusCodes> getDeviceStatusCodesList(int DeviceTypeID) {
+        RealmResults<DeviceTypeStatusCodes> results = realm.where(DeviceTypeStatusCodes.class).equalTo("DeviceTypeID", DeviceTypeID).findAll();
+        List<DeviceTypeStatusCodes> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public List<AllCustomers> getAllCustomerList(int ID) {
+        RealmSyncGetResponseDTO results =  realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
+        List<AllCustomers> copied = results.getLstCustomers();
+        return copied;
     }
 
 

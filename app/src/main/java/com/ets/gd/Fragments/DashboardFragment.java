@@ -14,6 +14,8 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 public class DashboardFragment extends Fragment {
 
@@ -108,7 +110,15 @@ public class DashboardFragment extends Fragment {
                 }
 
                 case R.id.ivForwardArrowFb: {
-                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
+
+                    if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()
+                            && 0!=DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
+                        BaseActivity.refreshMainViewByNew(new CustomerFragment());
+                    } else {
+                        BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                        EventBus.getDefault().post(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+
+                    }
                     break;
                 }
             }

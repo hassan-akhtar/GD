@@ -1,6 +1,7 @@
 package com.ets.gd.Models;
 
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -22,6 +23,8 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     private int CustomerId;
     private String DeviceId;
     private String SyncGetTime;
+    private boolean IsServiceCompany;
+    RealmList<AllCustomers> lstCustomers;
     RealmList<RegisteredDevice> lstDevices;
     RealmList<MobileUser> lstMusers;
     RealmList<FireBugEquipment> lstFbEquipments;
@@ -59,6 +62,22 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public boolean isServiceCompany() {
+        return IsServiceCompany;
+    }
+
+    public void setServiceCompany(boolean serviceCompany) {
+        IsServiceCompany = serviceCompany;
+    }
+
+    public RealmList<AllCustomers> getLstCustomers() {
+        return lstCustomers;
+    }
+
+    public void setLstCustomers(RealmList<AllCustomers> lstCustomers) {
+        this.lstCustomers = lstCustomers;
     }
 
     public void setSyncGetTime(String syncGetTime) {

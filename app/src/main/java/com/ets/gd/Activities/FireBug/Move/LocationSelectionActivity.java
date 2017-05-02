@@ -27,6 +27,7 @@ import com.ets.gd.Models.AssetList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +44,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
     int count;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
                 new IntentFilter("moveToLoc"));
+        sharedPreferencesManager = new SharedPreferencesManager(LocationSelectionActivity.this);
     }
 
     private void initListeners() {
@@ -139,10 +142,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 case R.id.rlYes: {
 
                     if (taskName.toLowerCase().startsWith("m")) {
-                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"move" );
+                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"move",0 );
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Moved!",Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"transfer");
+                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"transfer",sharedPreferencesManager.getInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID));
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Transferred!",Toast.LENGTH_LONG).show();
                     }
                     sendMessage("finish");
@@ -220,7 +223,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 tvStatement.setText("Are you sure you want to move " + asset.size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);
             } else if (taskName.toLowerCase().startsWith("t")) {
-                tvStatement.setText("Are you sure you want to transfer " + asset.size() + " Asset(s) To " + message);
+                tvStatement.setText("Are you sure you want to transfer " + asset.size() + " Asset(s) To " + message + " in "+sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME));
                 rlBottomSheet.setVisibility(View.VISIBLE);
             }
 

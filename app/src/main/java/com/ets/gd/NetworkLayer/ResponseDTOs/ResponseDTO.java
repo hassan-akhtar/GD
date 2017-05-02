@@ -11,6 +11,8 @@ public class ResponseDTO extends BaseDTO {
     public static final String SUCCESS = "000";
     private String status;
     private String Message;
+    private String errorMsg;
+    private int errorCode;
     private int code;
 
 
@@ -33,6 +35,22 @@ public class ResponseDTO extends BaseDTO {
     public ResponseDTO(String message, int code) {
         this.Message = message;
         this.code = code;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     public String getStatus() {

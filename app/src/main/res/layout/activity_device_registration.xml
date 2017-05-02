@@ -66,7 +66,7 @@
             android:layout_marginTop="32dp"
             android:background="@drawable/et_bottom_line"
             android:ems="10"
-            android:hint="Customer Id"
+            android:hint="Customer Code"
             android:inputType="textEmailAddress"
             android:maxLength="16"
             android:textColorHint="@color/veryLightGrey" />

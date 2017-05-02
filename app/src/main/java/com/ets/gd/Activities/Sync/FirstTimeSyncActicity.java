@@ -49,13 +49,13 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
     private void callSyncGetService() {
         CommonActions.showProgressDialog(FirstTimeSyncActicity.this);
         //GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.MY_DEVICE_ID), customerID), this);
-        GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, Integer.parseInt(customerID), "abas"), this);
+        GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, customerID, "hassan"), this);
     }
 
     private void initViews() {
         btnSync = (Button) findViewById(R.id.btnSync);
         ivBack = (ImageView) findViewById(R.id.ivBack);
-        tbTitleBottom  = (TextView) findViewById(R.id.tbTitleBottom);
+        tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivTick.setVisibility(View.GONE);
@@ -65,7 +65,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(FirstTimeSyncActicity.this);
-        customerID = getIntent().getStringExtra("customerID");
+        customerID = getIntent().getStringExtra("customerCode");
 
     }
 
@@ -98,19 +98,20 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
 
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
-                if (responseDTO != null) {
-                    if (null != syncGetResponseDTO) {
+                if (null != responseDTO) {
+                    if (null != syncGetResponseDTO.getDeviceId()) {
                         CommonActions.DismissesDialog();
                         Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID,syncGetResponseDTO.getCustomerId());
+                        sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, getIntent().getStringExtra("customerCode"));
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
                         startActivity(new Intent(FirstTimeSyncActicity.this, LoginActivity.class));
                         finish();
                     } else {
                         CommonActions.DismissesDialog();
                         new AlertDialog.Builder(FirstTimeSyncActicity.this)
                                 .setTitle("Syncing")
-                                .setMessage(R.string.msg_login_failed)
+                                .setMessage(""+syncGetResponseDTO.getErrorMsg())
                                 .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 

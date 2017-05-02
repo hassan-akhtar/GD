@@ -22,7 +22,10 @@ public class SharedPreferencesManager {
     public static final String  MY_DEVICE_ID = "deviceID";
     public static final String  MY_SYNC_CUSTOMER_ID = "customerID";
     public static final String  AFTER_SYNC_CUSTOMER_ID = "cusID";
+    public static final String  AFTER_SYNC_CUSTOMER_CODE = "cusCode";
     public static final String  LOGGED_IN_USER_ID = "userID";
+    public static final String  CURRENT_TRANSFER_CUSTOMER_ID = "transCusID";
+    public static final String  CURRENT_TRANSFER_CUSTOMER_NAME= "transCusName";
 
 
 

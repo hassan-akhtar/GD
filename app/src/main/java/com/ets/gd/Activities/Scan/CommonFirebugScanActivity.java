@@ -161,7 +161,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         mContext);
                 alertDialogBuilder.setTitle("Remove Asset");
-                alertDialogBuilder.setMessage("Are you sure you want to remove " + assetList.get(position).getManufacturers() + ", " + assetList.get(position).getModel());
+                alertDialogBuilder.setMessage("Are you sure you want to remove " + assetList.get(position).getManufacturers().getCode() + ", " + assetList.get(position).getModel().getCode());
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("REMOVE",
@@ -344,6 +344,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
                         in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
+                        int DeviceTypeID = 0 ;
+                        if (0!=assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
+                            DeviceTypeID = assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().get(0).getDeviceTypeID();
+                        }
+                        in.putExtra("deviceTypeID",DeviceTypeID );
+                        in.putExtra("equipmentID",assetList.get(0).getID() );
                     }
                     in.putExtra("compName", compName);
                     in.putExtra("deviceType", "" + assetList.get(0).getDeviceType().getCode());

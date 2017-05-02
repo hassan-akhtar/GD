@@ -5,6 +5,7 @@ import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipment;
@@ -33,7 +34,7 @@ public interface GSDRESTService {
     // Sync get data request
     @FormUrlEncoded
     @POST(Constants.URL_SYNC_GET)
-    public void getSyncData(@Field("CustomerId") int customerId,
+    public void getSyncData(@Field("CustomerCode") String CustomerCode,
                             @Field("DeviceId") String deviceId,
                             Callback<SyncGetResponseDTO> syncGetResponseDTOCallback);
 
@@ -59,7 +60,7 @@ public interface GSDRESTService {
 
     // Sync post data request inspect equipment
     @POST(Constants.URL_SYNC_POST_INSPECT_EQUIPMENT)
-    public void postInspectEquipment(@Body MoveTransferRequestDTO moveTransferRequestDTO,
+    public void postInspectEquipment(@Body SyncPostUnitInspectionRequestDTO syncPostUnitInspectionRequestDTO,
                                  Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 }

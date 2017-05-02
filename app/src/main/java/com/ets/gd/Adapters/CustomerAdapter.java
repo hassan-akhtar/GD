@@ -8,16 +8,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ets.gd.Models.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.R;
 
 import java.util.List;
 
 public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder>{
-    private List<Customer> customerList;
+    private List<AllCustomers> customerList;
     private final Context mContext;
     private RecyclerView.ViewHolder viewHolder;
 
-    public CustomerAdapter( Context context, List<Customer> customerList) {
+    public CustomerAdapter( Context context, List<AllCustomers> customerList) {
         this.customerList = customerList;
         this.mContext = context;
     }
@@ -32,7 +33,7 @@ public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        Customer camper = customerList.get(position);
+        AllCustomers camper = customerList.get(position);
         holder.code.setText(camper.getCode());
 
 

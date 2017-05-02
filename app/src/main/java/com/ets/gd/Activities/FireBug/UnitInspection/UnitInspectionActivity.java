@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,7 +25,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Adapters.CheckBoxGroupView;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
+import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+
+import io.realm.RealmList;
 
 public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener {
 
@@ -34,8 +52,12 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
-    int posInspType, posInspectionResult;
-    CheckBox cbBracket, cbNozzel, cbDamaged, cbOperational, cbHose, cbRecharge, cbAccessible, cbTag;
+    int posInspType, posInspectionResult, deviceTypeID, equipmentID;
+    //CheckBox cbBracket, cbNozzel, cbDamaged, cbOperational, cbHose, cbRecharge, cbAccessible, cbTag;
+    List<DeviceTypeStatusCodes>  deviceTypeStatusCodes;
+    List<String>  statusCodesDescList = new ArrayList<String>();
+    CheckBoxGroupView cbGroup;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +70,15 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
 
     private void initViews() {
-        cbBracket = (CheckBox) findViewById(R.id.cbBracket);
+/*        cbBracket = (CheckBox) findViewById(R.id.cbBracket);
         cbNozzel = (CheckBox) findViewById(R.id.cbNozzel);
         cbDamaged = (CheckBox) findViewById(R.id.cbDamaged);
         cbOperational = (CheckBox) findViewById(R.id.cbOperational);
         cbHose = (CheckBox) findViewById(R.id.cbHose);
         cbRecharge = (CheckBox) findViewById(R.id.cbRecharge);
         cbAccessible = (CheckBox) findViewById(R.id.cbAccessible);
-        cbTag = (CheckBox) findViewById(R.id.cbTag);
+        cbTag = (CheckBox) findViewById(R.id.cbTag);*/
+        cbGroup = (CheckBoxGroupView) findViewById(R.id.cbGroup);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
@@ -80,19 +103,21 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(UnitInspectionActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
         loc = getIntent().getStringExtra("loc");
         desp = getIntent().getStringExtra("desp");
+        deviceTypeID = getIntent().getIntExtra("deviceTypeID",0);
         deviceType = getIntent().getStringExtra("deviceType");
-
+        equipmentID = getIntent().getIntExtra("equipmentID",0);
         tvCompanyValue.setText("" + compName);
         tvAssetName.setText("" + tag);
         tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + loc);
 
-
+        deviceTypeStatusCodes = DataManager.getInstance().getDeviceStatusCodesList(deviceTypeID);
         ArrayAdapter<String> dataAdapterInspType = new ArrayAdapter<String>(UnitInspectionActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspTypes));
         dataAdapterInspType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspType.setAdapter(dataAdapterInspType);
@@ -101,6 +126,37 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         dataAdapterInspectionResult.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspectionResult.setAdapter(dataAdapterInspectionResult);
 
+        setupStatusCodes();
+
+    }
+
+    private void setupStatusCodes() {
+
+
+        ColorStateList colorStateList = new ColorStateList(
+                new int[][]{
+
+                        new int[]{-android.R.attr.state_enabled}, //disabled
+                        new int[]{android.R.attr.state_enabled} //enabled
+                },
+                new int[] {
+
+                        Color.WHITE //disabled
+                        ,Color.parseColor("#66bcb0") //enabled
+
+                }
+        );
+
+        for( int i = 0 ; i<deviceTypeStatusCodes.size();i++ ){
+            AppCompatCheckBox cb  = new AppCompatCheckBox(this);
+           // cb.setHighlightColor(getResources().getColor(R.color.colorAccent));
+           // cb.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            cb.setSupportButtonTintList(colorStateList);
+            cb.setTag(i+1);
+            statusCodesDescList.add(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
+            cb.setText(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
+            cbGroup.put(cb);
+        }
     }
 
     private void initListeners() {
@@ -111,14 +167,14 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         etStatusCode.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
-        cbBracket.setOnCheckedChangeListener(this);
+       /* cbBracket.setOnCheckedChangeListener(this);
         cbNozzel.setOnCheckedChangeListener(this);
         cbDamaged.setOnCheckedChangeListener(this);
         cbOperational.setOnCheckedChangeListener(this);
         cbHose.setOnCheckedChangeListener(this);
         cbRecharge.setOnCheckedChangeListener(this);
         cbAccessible.setOnCheckedChangeListener(this);
-        cbTag.setOnCheckedChangeListener(this);
+        cbTag.setOnCheckedChangeListener(this);*/
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -131,6 +187,39 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                 case R.id.tvSave: {
                     if (checkValidation()) {
+
+                        UnitinspectionResult inspectionResult = new UnitinspectionResult();
+                        inspectionResult.setEquipmentID(equipmentID);
+                        inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                        String timeStamp =  sdf.format(new Date()).toString();
+                        inspectionResult.setInspectionDate(timeStamp);
+                        inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+                        boolean result  = false;
+                        if(spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")){
+                            result = true;
+                        }
+                        inspectionResult.setResult(result);
+                        RealmList<InspectionStatusCodes> inspectionStatusCodes = new RealmList<InspectionStatusCodes>();
+
+                        if(0<cbGroup.getCheckedIds().size()){
+
+                            List<Object> lst = cbGroup.getCheckedIds();
+                            lst.clear();
+                            lst = cbGroup.getCheckedIds();
+
+                            for(int i = 0 ; i<lst.size();i++){
+                                int pos = Integer.parseInt(lst.get(i).toString());
+                                StatusCode statusCode = new StatusCode();
+                                statusCode = DataManager.getInstance().getStatusCodeID(statusCodesDescList.get(pos));
+                                inspectionStatusCodes.add(new InspectionStatusCodes(statusCode.getID()));
+
+                            }
+                        }
+                        inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
+
+                        DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                         showToast("Inspection completed Successfully");
                         sendMessage("finish");
                         finish();
@@ -171,7 +260,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     private boolean checkValidation() {
         if (0 == posInspType) {
             showToast("Please select Inspection Type");
-        } else if ("".equals(etStatusCode.getText().toString().trim())) {
+        } else if (0 == cbGroup.getCheckedIds().size()) {
             showToast("Please select status Code(s)");
         } else if (0 == posInspectionResult) {
             showToast("Please select Inspection Result");
@@ -229,11 +318,16 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             case R.id.spInspectionResult: {
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 lp.gravity = Gravity.CENTER_VERTICAL;
-
+                tvReplace.setVisibility(View.GONE);
+                lp.weight = 0;
+                tvReplace.setLayoutParams(lp);
+                lp.weight = 1.5f;
+                tvSave.setLayoutParams(lp);
+                tvCancel.setLayoutParams(lp);
                 posInspectionResult = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
 
-                if ("fail".equals(strSelectedState.toLowerCase())) {
+             /*   if ("fail".equals(strSelectedState.toLowerCase())) {
                     tvReplace.setVisibility(View.VISIBLE);
                     lp.weight = 1;
                     tvReplace.setLayoutParams(lp);
@@ -247,7 +341,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     lp.weight = 1.5f;
                     tvSave.setLayoutParams(lp);
                     tvCancel.setLayoutParams(lp);
-                }
+                }*/
                 if (0 == position) {
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
@@ -280,7 +374,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        int viewID = buttonView.getId();
+        /*int viewID = buttonView.getId();
         switch (viewID) {
             case R.id.cbBracket: {
 
@@ -451,6 +545,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 }
             }
             break;
-        }
+        }*/
     }
 }
