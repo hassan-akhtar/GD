@@ -2,6 +2,7 @@ package com.ets.gd.Activities.Sync;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,7 +50,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
     private void callSyncGetService() {
         CommonActions.showProgressDialog(FirstTimeSyncActicity.this);
         //GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.MY_DEVICE_ID), customerID), this);
-        GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, customerID, "hassan"), this);
+        GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, customerID, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)), this);
     }
 
     private void initViews() {

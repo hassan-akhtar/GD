@@ -3,6 +3,7 @@ package com.ets.gd.Activities.Login;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.GSDServiceFactory;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
@@ -27,10 +29,13 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import io.realm.RealmList;
 
 
-public class LoginActivity extends AppCompatActivity implements MyCallBack {
+public class LoginActivity extends AppCompatActivity  {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
@@ -39,6 +44,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
     SharedPreferencesManager sharedPreferencesManager;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     RealmList<MobileUser> lstMusers;
+    RealmList<RegisteredDevice> lstDevices;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
             if (null != realmSyncGetResponseDTO) {
                 lstMusers = realmSyncGetResponseDTO.getLstMusers();
+                lstDevices = realmSyncGetResponseDTO.getLstDevices();
             }
         }
     }
@@ -98,9 +105,13 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
                             if (null != lstMusers) {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
                                     CommonActions.DismissesDialog();
-                                    showToast("Login Successful");
-                                    startActivity(new Intent(LoginActivity.this, BaseActivity.class));
-                                    finish();
+                                    if (checkDevice()) {
+                                        showToast("Login Successful");
+                                        startActivity(new Intent(LoginActivity.this, BaseActivity.class));
+                                        finish();
+                                    }else{
+                                        showToast("This Device is not registered!");
+                                    }
 
                                 } else {
                                     CommonActions.DismissesDialog();
@@ -142,18 +153,16 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
 
     }
 
-    void loginCall() {
-        CommonActions.showProgressDialog(LoginActivity.this);
-        GSDServiceFactory.getService(getApplicationContext()).loginRequest(new LoginDTO(Constants.RESPONSE_LOGIN, etUsername.getText().toString().trim(), etPassword.getText().toString().trim(), "password"), this);
-    }
-
 
     boolean checkMobileUserFromDatabase(String username, String pass) {
 
         boolean doesUserExist = false;
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        String encryptedDeviceID = md5(deviceID);
         for (int i = 0; i < lstMusers.size(); i++) {
             if (username.equals(lstMusers.get(i).getUserName().trim()) && pass.equals(lstMusers.get(i).getPassword().trim())) {
                 doesUserExist = true;
+
                 break;
             }
         }
@@ -161,66 +170,56 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         return doesUserExist;
     }
 
+
+    boolean checkDevice() {
+        boolean doesDeviceisRegistered = false;
+        String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        if (null!=lstDevices) {
+            for (int j = 0; j < lstDevices.size(); j++) {
+                if (deviceID.equals(lstDevices.get(j).getDeviceID())) {
+                    doesDeviceisRegistered = true;
+                    break;
+                }
+            }
+        }else {
+            showToast("No Device Registered for Customer "+sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+        }
+
+        return doesDeviceisRegistered;
+    }
+
+
+
+
+
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
 
-    @Override
-    public void onSuccess(ResponseDTO responseDTO) {
+    public static final String md5(final String s) {
+        //final String MD5 = "54686F6D-6173-4D63-446F-6E616C64";
+        final String MD5 = "MD5";
+        try {
+            // Create MD5 Hash
+            MessageDigest digest = java.security.MessageDigest
+                    .getInstance(MD5);
+            digest.update(s.getBytes());
+            byte messageDigest[] = digest.digest();
 
-        switch (responseDTO.getCallBackId()) {
+            // Create Hex String
+            StringBuilder hexString = new StringBuilder();
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
+                while (h.length() < 2)
+                    h = "0" + h;
+                hexString.append(h);
+            }
+            return hexString.toString();
 
-            case Constants.RESPONSE_LOGIN:
-                LoginResponseDTO loginResponseDTO = (LoginResponseDTO) responseDTO;
-                if (responseDTO != null) {
-                    if (null != loginResponseDTO.getAccess_token()) {
-
-                        CommonActions.DismissesDialog();
-                        startActivity(new Intent(LoginActivity.this, BaseActivity.class));
-                        finish();
-                    } else {
-                        CommonActions.DismissesDialog();
-                        new AlertDialog.Builder(LoginActivity.this)
-                                .setTitle(R.string.txt_login)
-                                .setMessage(R.string.msg_login_failed)
-                                .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-
-                                    }
-                                })
-                                .show();
-                    }
-                }
-                break;
-
-            default:
-                break;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
-
-    }
-
-    @Override
-    public void onFailure(ResponseDTO errorDTO) {
-        CommonActions.DismissesDialog();
-        if (404 == errorDTO.getCode())
-            Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
-        else if (1 == errorDTO.getCode())
-            Toast.makeText(getApplicationContext(), R.string.error_poor_con, Toast.LENGTH_LONG).show();
-        else if (400 == errorDTO.getCode()) {
-            new AlertDialog.Builder(LoginActivity.this)
-                    .setTitle(R.string.txt_login)
-                    .setMessage(R.string.msg_login_failed)
-                    .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .show();
-        } else if (500 == errorDTO.getCode())
-            Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
-
-        else
-            Toast.makeText(getApplicationContext(), R.string.error_con_timeout, Toast.LENGTH_LONG).show();
+        return "";
     }
 }

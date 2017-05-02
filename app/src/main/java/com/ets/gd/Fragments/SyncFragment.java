@@ -2,7 +2,9 @@ package com.ets.gd.Fragments;
 
 
 import android.content.DialogInterface;
+import android.nfc.FormatException;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateFormat;
@@ -42,6 +44,8 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -196,7 +200,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private void callSyncGetService() {
         tvSyncInProgress.setText("Sync get in progress...");
         CommonActions.showProgressDialog(getActivity());
-        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE), "abas"), this);
+        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE), Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID)), this);
     }
 
 
@@ -614,5 +618,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
         else
             Toast.makeText(getActivity(), R.string.error_con_timeout, Toast.LENGTH_LONG).show();
     }
+
+
+
+
+
 
 }
