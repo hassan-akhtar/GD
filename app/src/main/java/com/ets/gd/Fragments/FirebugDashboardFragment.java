@@ -44,8 +44,12 @@ public class FirebugDashboardFragment extends Fragment {
 
     private static FloatingActionMenu fab;
     private static FloatingActionButton fabItemAddAsset, itemAddLocation;
+    String[] fbTasksWithoutTransfer = {"View Information", "Move Assets", "Unit Inspection", "Route Inspection"};
+    int[] fbTasksImagesWithoutTransfer = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};
+
     String[] fbTasks = {"View Information", "Move Assets", "Transfer Assets", "Unit Inspection", "Route Inspection"};
-    int[] fbTasksImages = {R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer, R.drawable.ic_transfer};
+    int[] fbTasksImages = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};
+
     View rootView;
     RecyclerView rvTasks;
     AssetsAdapter adapter;
@@ -68,83 +72,10 @@ public class FirebugDashboardFragment extends Fragment {
         initObj();
         initListeners();
 
-        //addRoutesToRealm();
-
         return rootView;
     }
 
-    private void addRoutesToRealm() {
-        List<Routes> inspectionRoutes = new ArrayList<Routes>();
-        for (int i = 0; i < 5; i++) {
 
-            Routes route = new Routes();
-            route.setId(1);
-            route.setCode("AnnExit SGNWK");
-            route.setDesc("AnnExit");
-            route.setRouteType("Roaming");
-            RealmList<RouteLocation> routeLocations = new RealmList<RouteLocation>();
-            RealmList<Asset> routeAssets = new RealmList<Asset>();
-            RouteLocation routeLocation = new RouteLocation();
-            Asset asset = new Asset();
-            asset.setTagID("00A222");
-            asset.setDeviceType("EXT");
-            asset.setManufacturers("Ansul");
-            asset.setSerialNo("005555");
-            asset.setModel("002216");
-            asset.setMfgDate("2/2/2017");
-            asset.setVendor("Lipsum");
-            asset.setAgent("Lipsum");
-            routeAssets.add(asset);
-            asset = new Asset();
-            asset.setTagID("00A222");
-            asset.setDeviceType("EXT");
-            asset.setManufacturers("Ansul");
-            asset.setSerialNo("005555");
-            asset.setModel("002216");
-            asset.setMfgDate("2/2/2017");
-            asset.setVendor("Lipsum");
-            asset.setAgent("Lipsum");
-            routeAssets.add(asset);
-            asset = new Asset();
-            asset.setTagID("00A222");
-            asset.setDeviceType("EXT");
-            asset.setManufacturers("Ansul");
-            asset.setSerialNo("005555");
-            asset.setModel("002216");
-            asset.setMfgDate("2/2/2017");
-            asset.setVendor("Lipsum");
-            asset.setAgent("Lipsum");
-            routeAssets.add(asset);
-
-
-            routeLocation.setLocationID("00416");
-            routeLocation.setDescription("This is a Desc");
-            routeLocation.setSite("Lipsum");
-            routeLocation.setBuilding("Lipsum");
-            routeLocation.setPlace("Shelf");
-            routeLocation.setRouteAssets(routeAssets);
-            routeLocations.add(routeLocation);
-
-            routeLocation = new RouteLocation();
-            routeLocation.setLocationID("00416");
-            routeLocation.setDescription("This is a Desc");
-            routeLocation.setSite("Lipsum");
-            routeLocation.setBuilding("Lipsum");
-            routeLocation.setPlace("Shelf");
-            routeLocation.setRouteAssets(routeAssets);
-            routeLocations.add(routeLocation);
-
-            route.setRouteLocations(routeLocations);
-
-
-            inspectionRoutes.add(route);
-        }
-
-
-        DataManager.getInstance().addInspectionRoutes(inspectionRoutes);
-
-        showToast("Routes added");
-    }
 
     private void initViews() {
         rvTasks = (RecyclerView) rootView.findViewById(R.id.lvTasks);
@@ -156,7 +87,20 @@ public class FirebugDashboardFragment extends Fragment {
     }
 
     private void initObj() {
-        adapter = new AssetsAdapter(fbTasks, fbTasksImages);
+
+        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
+            ivChangeCompany.setVisibility(View.GONE);
+            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
+        }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
+                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
+            ivChangeCompany.setVisibility(View.GONE);
+            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
+        } else {
+            ivChangeCompany.setVisibility(View.VISIBLE);
+            adapter = new AssetsAdapter(fbTasks, fbTasksImages);
+        }
+
         BaseActivity.currentFragment = new FirebugDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvTasks.setLayoutManager(mLayoutManager);
@@ -165,12 +109,7 @@ public class FirebugDashboardFragment extends Fragment {
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
 
-        sharedPreferencesManager = new SharedPreferencesManager(getActivity());
-        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
-            ivChangeCompany.setVisibility(View.GONE);
-        }else{
-            ivChangeCompany.setVisibility(View.VISIBLE);
-        }
+
 
     }
 

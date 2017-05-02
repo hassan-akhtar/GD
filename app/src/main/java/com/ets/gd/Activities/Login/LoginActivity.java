@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity implements MyCallBack {
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {
             tbSync.setChecked(true);
         }
-        if (0==sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)) {
+        if (0!=sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)) {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
             if (null != realmSyncGetResponseDTO) {
                 lstMusers = realmSyncGetResponseDTO.getLstMusers();

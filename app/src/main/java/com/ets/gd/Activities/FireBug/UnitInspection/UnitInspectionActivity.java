@@ -152,7 +152,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
            // cb.setHighlightColor(getResources().getColor(R.color.colorAccent));
            // cb.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             cb.setSupportButtonTintList(colorStateList);
-            cb.setTag(i+1);
+            cb.setTag(i);
             statusCodesDescList.add(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
             cb.setText(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
             cbGroup.put(cb);
@@ -217,7 +217,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                             }
                         }
-                        inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
+                       inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
 
                         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                         showToast("Inspection completed Successfully");

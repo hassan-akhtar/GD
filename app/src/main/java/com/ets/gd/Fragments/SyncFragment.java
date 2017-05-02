@@ -148,8 +148,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         CommonActions.showProgressDialog(getActivity());
         tvSyncInProgress.setText("Sync post in progress...");
-        GSDServiceFactory.getService(getActivity()).postSyncLocation(
-                syncPostAddLocationRequestDTO, this
+        GSDServiceFactory.getService(getActivity()).postInspectEquipment(
+                syncPostUnitInspectionRequestDTO, this
         );
 
 

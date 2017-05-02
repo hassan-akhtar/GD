@@ -29,6 +29,7 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
+
         holder.code.setText(fbTasks[position]);
         holder.ivIcon.setBackgroundResource(fbTasksImages[position]);
     }

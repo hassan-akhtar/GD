@@ -8,6 +8,7 @@ import com.ets.gd.Models.Note;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.Models.RouteLocation;
 import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
@@ -784,7 +785,17 @@ public class DataManager {
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
                 unitinspectionResult.setResult(inspectionResult.isResult());
-                unitinspectionResult.setInspectionStatusCodes(inspectionResult.getInspectionStatusCodes());
+
+                RealmList<InspectionStatusCodes> inspectionStatusCodesList = new RealmList<InspectionStatusCodes>();
+
+               for(int i = 0 ; i<inspectionResult.getInspectionStatusCodes().size();i++){
+                   InspectionStatusCodes inspectionStatusCodes= realm.createObject(InspectionStatusCodes.class);
+                   inspectionStatusCodes.setStatusCodeID(inspectionResult.getInspectionStatusCodes().get(i).getStatusCodeID());
+                   inspectionStatusCodesList.add(inspectionStatusCodes);
+               }
+
+
+                unitinspectionResult.setInspectionStatusCodes(inspectionStatusCodesList);
             }
         });
 

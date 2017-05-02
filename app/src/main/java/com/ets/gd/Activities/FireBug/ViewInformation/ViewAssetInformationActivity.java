@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.AddNoteFragment;
 import com.ets.gd.Fragments.AssetInformationFragment;
@@ -113,7 +114,10 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
         if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
             ivChangeCompany.setVisibility(View.GONE);
-        }else{
+        }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
+                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
+            ivChangeCompany.setVisibility(View.GONE);
+        } else {
             ivChangeCompany.setVisibility(View.VISIBLE);
         }
     }
