@@ -83,7 +83,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
             fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
-            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }else{
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }

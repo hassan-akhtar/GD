@@ -20,6 +20,7 @@ import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActi
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
@@ -31,17 +32,19 @@ import io.realm.RealmList;
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    public static Spinner spLocation, spSite, spBuilding;
+    public static Spinner spLocation, spSite, spBuilding, spCustomer;
     View rootView;
-    public static EditText tvDescprition,tvCustomerID,tvLocationID;;
+    public static EditText tvDescprition,tvLocationID;;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
-    public static int posLoc = 0, posSite = 0, posBuilding = 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     String[] sites;
     String[] buildings;
+    String[] customers;
+    Customer customer;
 
     public AssetLocationFragment() {
     }
@@ -60,7 +63,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     }
 
     private void initViews() {
-        tvCustomerID = (EditText) rootView.findViewById(R.id.tvCustomerID);
+        spCustomer = (Spinner) rootView.findViewById(R.id.spCustomer);
         spSite = (Spinner) rootView.findViewById(R.id.spSite);
         spBuilding = (Spinner) rootView.findViewById(R.id.spBuilding);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
@@ -77,9 +80,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
-        if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
 
-            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(fireBugEquipment.getCustomer().getID());
+        if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
+            customer = fireBugEquipment.getCustomer();
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }else{
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         }
@@ -107,6 +111,19 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
 
+        int sizeCustomer = realmSyncGetResponseDTO.getLstCustomers().size() + 1;
+        customers = new String[sizeCustomer];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomers().size(); i++) {
+            customers[i + 1] = realmSyncGetResponseDTO.getLstCustomers().get(i).getCode();
+        }
+        customers[0] = "Please select a company";
+        ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, customers);
+        dataAdapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCustomer.setAdapter(dataAdapterCustomer);
+
+
+
         int sizeSite = realmSyncGetResponseDTO.getLstLocations().size() + 1;
         sites = new String[sizeSite];
 
@@ -131,8 +148,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spBuilding.setAdapter(dataAdapterBuilding);
 
 
-        tvCustomerID.setEnabled(false);
-        tvCustomerID.setText(""+sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
         } else {
@@ -143,6 +158,18 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
     void setViewForViewAsset() {
+
+        spSite.setEnabled(false);
+        spBuilding.setEnabled(false);
+        spCustomer.setEnabled(false);
+        for (int i = 0; i < customers.length; i++) {
+            if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                spCustomer.setSelection(i);
+                break;
+            }
+        }
+
+
         spLocation.setEnabled(false);
         int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
         for (int i = 0; i <= size; i++) {
@@ -181,12 +208,14 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spBuilding.setEnabled(false);
         spSite.setSelection(0);
         spBuilding.setSelection(0);
-
+        spCustomer.setEnabled(true);
+        spCustomer.setSelection(0);
 
     }
 
     private void initListeners() {
         spLocation.setOnItemSelectedListener(this);
+        spCustomer.setOnItemSelectedListener(this);
 
     }
 
@@ -223,10 +252,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 }else{
                     setViewForVAddAsset();
                 }
-//
-//                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getDescription());
-//                tvSite.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getSite().getCode());
-//                tvBuilding.setText(realmSyncGetResponseDTO.getLstLocations().get(position).getBuilding().getCode());
+
                 try {
                     if (0 == position) {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
@@ -239,7 +265,20 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             }
             break;
 
+            case R.id.spCustomer: {
+                posCustomer = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                try {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
 
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+            break;
 
         }
     }

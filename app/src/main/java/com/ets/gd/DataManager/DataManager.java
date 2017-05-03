@@ -87,11 +87,11 @@ public class DataManager {
     public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation, int cusID) {
         realm.beginTransaction();
         MyLocation myLocation;
-        if (null!=realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
+        if (null != realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
             myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
         } else {
             Locations locations = realm.where(Locations.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
-            myLocation = realm.createObject(MyLocation.class,locations.getID());
+            myLocation = realm.createObject(MyLocation.class, locations.getID());
             myLocation.setCode(locations.getCode());
             myLocation.setDescription(locations.getDescription());
             if (operation.startsWith("move")) {
@@ -404,6 +404,20 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+
+    // For getting asset all assets from DB
+    public Customer getCustomerByCode(String Code) {
+        realm.beginTransaction();
+        AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("Code", Code).findFirst();
+        Customer customer = realm.createObject(Customer.class, allCustomer.getID());
+        customer.setDescription(allCustomer.getDescription());
+        customer.setCode(allCustomer.getCode());
+        customer.setApplicationID(allCustomer.getApplicationID());
+        customer.setServiceCompany(allCustomer.isServiceCompany());
+        realm.commitTransaction();
+        return customer;
+
+    }
 
     // For getting asset all assets from DB
     public List<Asset> getAllAssets(int count) {
@@ -788,11 +802,11 @@ public class DataManager {
 
                 RealmList<InspectionStatusCodes> inspectionStatusCodesList = new RealmList<InspectionStatusCodes>();
 
-               for(int i = 0 ; i<inspectionResult.getInspectionStatusCodes().size();i++){
-                   InspectionStatusCodes inspectionStatusCodes= realm.createObject(InspectionStatusCodes.class);
-                   inspectionStatusCodes.setStatusCodeID(inspectionResult.getInspectionStatusCodes().get(i).getStatusCodeID());
-                   inspectionStatusCodesList.add(inspectionStatusCodes);
-               }
+                for (int i = 0; i < inspectionResult.getInspectionStatusCodes().size(); i++) {
+                    InspectionStatusCodes inspectionStatusCodes = realm.createObject(InspectionStatusCodes.class);
+                    inspectionStatusCodes.setStatusCodeID(inspectionResult.getInspectionStatusCodes().get(i).getStatusCodeID());
+                    inspectionStatusCodesList.add(inspectionStatusCodes);
+                }
 
 
                 unitinspectionResult.setInspectionStatusCodes(inspectionStatusCodesList);
@@ -802,18 +816,15 @@ public class DataManager {
     }
 
 
-    public List<UnitinspectionResult>  getAllUnitInspectedAssets( ) {
+    public List<UnitinspectionResult> getAllUnitInspectedAssets() {
         RealmResults<UnitinspectionResult> results = realm.where(UnitinspectionResult.class).findAll();
         List<UnitinspectionResult> copied = realm.copyFromRealm(results);
         return copied;
     }
 
-    public StatusCode  getStatusCodeID(String desc ) {
-        return  realm.where(StatusCode.class).endsWith("Description",desc ).findFirst();
+    public StatusCode getStatusCodeID(String desc) {
+        return realm.where(StatusCode.class).endsWith("Description", desc).findFirst();
     }
-
-
-
 
 
     public List<DeviceTypeStatusCodes> getDeviceStatusCodesList(int DeviceTypeID) {
@@ -823,7 +834,7 @@ public class DataManager {
     }
 
     public List<AllCustomers> getAllCustomerList(int ID) {
-        RealmSyncGetResponseDTO results =  realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
+        RealmSyncGetResponseDTO results = realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
         List<AllCustomers> copied = results.getLstCustomers();
         return copied;
     }

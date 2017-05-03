@@ -50,28 +50,24 @@
 
             </android.support.design.widget.TextInputLayout>
 
-            <android.support.design.widget.TextInputLayout
+
+            <RelativeLayout
                 android:id="@+id/lCusID"
+                android:layout_width="wrap_content"
                 android:layout_below="@+id/letLocationID"
-                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="1dp"
-                android:theme="@style/TextLabel">
+                android:layout_marginTop="15dp">
 
-                <EditText
-                    android:id="@+id/tvCustomerID"
+                <Spinner
+                    android:id="@+id/spCustomer"
                     android:layout_width="match_parent"
-                    android:enabled="false"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
-                    android:hint="Customer"
-                    android:maxLines="1"
-                    android:paddingLeft="12dp" />
-
-            </android.support.design.widget.TextInputLayout>
-
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
 
 
             <android.support.design.widget.TextInputLayout
@@ -80,7 +76,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="15dp"
                 android:theme="@style/TextLabel">
 
                 <EditText

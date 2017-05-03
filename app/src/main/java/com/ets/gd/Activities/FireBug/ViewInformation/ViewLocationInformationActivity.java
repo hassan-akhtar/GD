@@ -19,6 +19,7 @@ import com.ets.gd.Fragments.AssetLocationFragment;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
@@ -29,16 +30,18 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     ImageView ivBack, ivTick;
-    Spinner spLocation, spSite, spBuilding;
-    public static EditText tvDescprition, tvCustomerID, tvLocationID;
+    Spinner spLocation, spSite, spBuilding,spCustomer;
+    public static EditText tvDescprition, tvLocationID;
     Locations location;
+    Customer customer;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
-    public static int posLoc = 0, posSite = 0, posBuilding = 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer= 0;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
     String[] buildings;
+    String[] customers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +58,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
         spLocation = (Spinner) findViewById(R.id.spLocation);
         spSite = (Spinner) findViewById(R.id.spSite);
-        tvCustomerID = (EditText) findViewById(R.id.tvCustomerID);
+        spCustomer = (Spinner) findViewById(R.id.spCustomer);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -63,7 +66,10 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         barCodeID = getIntent().getStringExtra("barCode");
-        location = DataManager.getInstance().getLocation(barCodeID);
+        if (null != barCodeID) {
+            location = DataManager.getInstance().getLocation(barCodeID);
+            customer = location.getCustomer();
+        }
 
     }
 
@@ -96,6 +102,17 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
+        int sizeCustomer = realmSyncGetResponseDTO.getLstCustomers().size() + 1;
+        customers = new String[sizeCustomer];
+
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomers().size(); i++) {
+            customers[i + 1] = realmSyncGetResponseDTO.getLstCustomers().get(i).getCode();
+        }
+        customers[0] = "Please select a company";
+        ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, customers);
+        dataAdapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCustomer.setAdapter(dataAdapterCustomer);
+
 
         int sizeBuilding = realmSyncGetResponseDTO.getLstLocations().size() + 1;
         buildings = new String[sizeBuilding];
@@ -120,16 +137,25 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     }
 
     void setViewForViewLoc() {
-        tvCustomerID.setEnabled(false);
+        spCustomer.setEnabled(false);
         tvLocationID.setVisibility(View.VISIBLE);
         tvLocationID.setEnabled(false);
         spLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(false);
         spBuilding.setEnabled(false);
         spSite.setEnabled(false);
-        tvCustomerID.setText("" + sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+
         tvLocationID.setText(location.getCode());
         tvDescprition.setText(location.getDescription());
+
+
+        for (int i = 0; i < customers.length; i++) {
+            if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                spCustomer.setSelection(i);
+                break;
+            }
+        }
+
 
 
         for (int i = 0; i < sites.length; i++) {
@@ -160,8 +186,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID.setEnabled(true);
         spBuilding.setEnabled(true);
         spSite.setEnabled(true);
-        tvCustomerID.setEnabled(false);
-        tvCustomerID.setText("" + sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+        spCustomer.setEnabled(true);
+        spCustomer.setSelection(0);
 
 
     }
@@ -169,6 +195,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private void initListeners() {
         spLocation.setOnItemSelectedListener(this);
         spSite.setOnItemSelectedListener(this);
+        spCustomer.setOnItemSelectedListener(this);
         spBuilding.setOnItemSelectedListener(this);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
@@ -194,7 +221,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 //                            );
                         Locations locations = new Locations(tvLocationID.getText().toString().trim(),
                                 tvDescprition.getText().toString().trim(),
-                                DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                                DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()),
                                 // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
                                 //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
                                 DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()),
@@ -225,7 +252,9 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private boolean checkValidation() {
         if ("".equals(tvLocationID.getText().toString().trim())) {
             showToast("Please enter a location");
-        } else if (0 == posSite) {
+        }else if (0 == posCustomer) {
+            showToast("Please select a company");
+        }  else if (0 == posSite) {
             showToast("Please select a site");
         } else if (0 == posBuilding) {
             showToast("Please select a building");
@@ -285,6 +314,23 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 }
                 //  }
 
+
+            }
+            break;
+
+
+
+            case R.id.spCustomer: {
+                posCustomer = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                try {
+                    if (0 == position) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
             }
             break;
