@@ -35,11 +35,20 @@ public class DatePickerFragmentTextView extends DialogFragment implements DatePi
     public void onDateSet(DatePicker view, int year, int month, int day) {
         diff = 0.0;
         TextView tvDate = (TextView) getActivity().findViewById(InspectionDatesFragment.viewID);
-        month = month+1;
-        tvDate.setText(day + "/" + month + "/" + year);
-        month = month-1;
-        diff = new Date(year-1900, month, day).getTime()/1000.0;
-        Log.e( "onDateSet: ", ""+diff);
+        month = month + 1;
+        String monthStr = "" + month;
+        String dayStr = "" + day;
+        if (monthStr.length() == 1) {
+            monthStr = "0" + month;
+        }
+        if (dayStr.length() == 1) {
+            dayStr = "0" + day;
+        }
+
+        tvDate.setText("" + year + "-" + monthStr + "-" + dayStr);
+        month = month - 1;
+        diff = new Date(year - 1900, month, day).getTime() / 1000.0;
+        Log.e("onDateSet: ", "" + diff);
 
 
     }

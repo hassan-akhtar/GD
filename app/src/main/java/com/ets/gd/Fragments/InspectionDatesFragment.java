@@ -58,8 +58,6 @@ public class InspectionDatesFragment extends Fragment {
         rlSixYears = (RelativeLayout) rootView.findViewById(R.id.rlSixYears);
         rlTenYears = (RelativeLayout) rootView.findViewById(R.id.rlTenYears);
         rlTwelveYears = (RelativeLayout) rootView.findViewById(R.id.rlTwelveYears);
-
-
         tvDaily = (TextView) rootView.findViewById(R.id.tvDaily);
         tvWeekly = (TextView) rootView.findViewById(R.id.tvWeekly);
         tvMonthly = (TextView) rootView.findViewById(R.id.tvMonthly);
@@ -105,16 +103,84 @@ public class InspectionDatesFragment extends Fragment {
         if (null != fireBugEquipment) {
             InspectionDates = fireBugEquipment.getInspectionDates();
             if (null != InspectionDates && 0!=InspectionDates.size() ) {
-                tvDaily.setText("" + InspectionDates.get(0).getDueDate());
-                tvWeekly.setText("" + InspectionDates.get(1).getDueDate());
-                tvMonthly.setText("" + InspectionDates.get(2).getDueDate());
-                tvQuarterly.setText("" + InspectionDates.get(3).getDueDate());
-                tvSemiAnnual.setText("" + InspectionDates.get(4).getDueDate());
-                tvAnnual.setText("" + InspectionDates.get(5).getDueDate());
-                tvFiveYears.setText("" + InspectionDates.get(6).getDueDate());
-                tvSixYears.setText("" + InspectionDates.get(7).getDueDate());
-                tvTenYears.setText("" + InspectionDates.get(8).getDueDate());
-                tvTwelveYears.setText("" + InspectionDates.get(9).getDueDate());
+
+                if(null!=InspectionDates.get(0).getDueDate()){
+                    String[] separated = InspectionDates.get(0).getDueDate().split("T");
+                    tvDaily.setText("" + separated[0]);
+                }else{
+                    tvDaily.setText("YY-MM-DD");
+                }
+
+                if(null!=InspectionDates.get(1).getDueDate()){
+                    String[] separated = InspectionDates.get(1).getDueDate().split("T");
+                    tvWeekly.setText("" + separated[0]);
+                }else{
+                    tvWeekly.setText("YY-MM-DD");
+                }
+
+                if(null!=InspectionDates.get(2).getDueDate()){
+                    String[] separated = InspectionDates.get(2).getDueDate().split("T");
+                    tvMonthly.setText("" + separated[0]);
+                }else{
+                    tvMonthly.setText("YY-MM-DD");
+                }
+
+
+                if(null!=InspectionDates.get(3).getDueDate()){
+                    String[] separated = InspectionDates.get(3).getDueDate().split("T");
+                    tvQuarterly.setText("" + separated[0]);
+                }else{
+                    tvQuarterly.setText("YY-MM-DD");
+                }
+
+
+                if(null!=InspectionDates.get(4).getDueDate()){
+                    String[] separated = InspectionDates.get(4).getDueDate().split("T");
+                    tvSemiAnnual.setText("" + separated[0]);
+                }else{
+                    tvSemiAnnual.setText("YY-MM-DD");
+                }
+
+
+                if(null!=InspectionDates.get(5).getDueDate()){
+                    String[] separated = InspectionDates.get(5).getDueDate().split("T");
+                    tvAnnual.setText("" + separated[0]);
+                }else{
+                    tvAnnual.setText("YY-MM-DD");
+                }
+
+                if(null!=InspectionDates.get(6).getDueDate()){
+                    String[] separated = InspectionDates.get(6).getDueDate().split("T");
+                    tvFiveYears.setText("" + separated[0]);
+                }else{
+                    tvFiveYears.setText("YY-MM-DD");
+                }
+
+
+                if(null!=InspectionDates.get(7).getDueDate()){
+                    String[] separated = InspectionDates.get(7).getDueDate().split("T");
+                    tvSixYears.setText("" + separated[0]);
+                }else{
+                    tvSixYears.setText("YY-MM-DD");
+                }
+
+
+                if(null!=InspectionDates.get(8).getDueDate()){
+                    String[] separated = InspectionDates.get(8).getDueDate().split("T");
+                    tvTenYears.setText("" + separated[0]);
+                }else{
+                    tvTenYears.setText("YY-MM-DD");
+                }
+
+                if(null!=InspectionDates.get(9).getDueDate()){
+                    String[] separated = InspectionDates.get(9).getDueDate().split("T");
+                    tvTwelveYears.setText("" + separated[0]);
+                }else{
+                    tvTwelveYears.setText("YY-MM-DD");
+                }
+
+
+
             }
         }
 
@@ -123,16 +189,16 @@ public class InspectionDatesFragment extends Fragment {
 
     void setViewForVAddAsset() {
 
-        tvDaily.setText("DD/MM/YY");
-        tvWeekly.setText("DD/MM/YY");
-        tvMonthly.setText("DD/MM/YY");
-        tvQuarterly.setText("DD/MM/YY");
-        tvSemiAnnual.setText("DD/MM/YY");
-        tvAnnual.setText("DD/MM/YY");
-        tvFiveYears.setText("DD/MM/YY");
-        tvSixYears.setText("DD/MM/YY");
-        tvTenYears.setText("DD/MM/YY");
-        tvTwelveYears.setText("DD/MM/YY");
+        tvDaily.setText("YY-MM-DD");
+        tvWeekly.setText("YY-MM-DD");
+        tvMonthly.setText("YY-MM-DD");
+        tvQuarterly.setText("YY-MM-DD");
+        tvSemiAnnual.setText("YY-MM-DD");
+        tvAnnual.setText("YY-MM-DD");
+        tvFiveYears.setText("YY-MM-DD");
+        tvSixYears.setText("YY-MM-DD");
+        tvTenYears.setText("YY-MM-DD");
+        tvTwelveYears.setText("YY-MM-DD");
 
     }
 
