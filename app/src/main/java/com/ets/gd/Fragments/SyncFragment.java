@@ -130,9 +130,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
         } else if (sendUnitInspcall) {
             callSyncPostUnitInspectService();
         } else {
-            tvSyncInProgress.setText("No data found for syncing");
-            showToast("No data found for syncing");
-
+           // tvSyncInProgress.setText("No data found for syncing");
+           // showToast("No data found for syncing");
+            DataManager.getInstance().deleteRealm();
+            callSyncGetService();
         }
     }
 
