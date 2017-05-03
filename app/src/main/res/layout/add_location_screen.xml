@@ -66,7 +66,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:hint="Cusromer ID"
+                    android:hint="Customer"
                     android:maxLines="1"
                     android:paddingLeft="12dp" />
 

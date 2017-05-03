@@ -127,7 +127,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition.setEnabled(false);
         spBuilding.setEnabled(false);
         spSite.setEnabled(false);
-        tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        tvCustomerID.setText("" + sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
         tvLocationID.setText(location.getCode());
         tvDescprition.setText(location.getDescription());
 
@@ -161,7 +161,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spBuilding.setEnabled(true);
         spSite.setEnabled(true);
         tvCustomerID.setEnabled(false);
-        tvCustomerID.setText("" + sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        tvCustomerID.setText("" + sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
 
 
     }

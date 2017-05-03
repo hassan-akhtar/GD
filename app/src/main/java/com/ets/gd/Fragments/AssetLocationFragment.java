@@ -132,7 +132,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
         tvCustomerID.setEnabled(false);
-        tvCustomerID.setText(""+sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        tvCustomerID.setText(""+sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
         } else {
