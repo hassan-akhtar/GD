@@ -43,6 +43,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     String[] sites;
     String[] buildings;
+    String[] locations;
     String[] customers;
     Customer customer;
 
@@ -99,7 +100,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         }
 
         int size = locationsRealmList.size()+ 1 ;
-        String[] locations = new String[size];
+         locations = new String[size];
 
         for (int i = 0; i < locationsRealmList.size(); i++) {
             locations[i+1] = locationsRealmList.get(i).getCode();
@@ -171,8 +172,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
         spLocation.setEnabled(false);
-        int size = realmSyncGetResponseDTO.getLstLocations().size()+ 1 ;
-        for (int i = 0; i <= size; i++) {
+        for (int i = 0; i < locations.length; i++) {
             if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                 spLocation.setSelection(i);
                 tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i-1).getDescription());

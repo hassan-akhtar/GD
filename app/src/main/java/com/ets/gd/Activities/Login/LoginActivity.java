@@ -2,6 +2,8 @@ package com.ets.gd.Activities.Login;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
@@ -62,6 +64,13 @@ public class LoginActivity extends AppCompatActivity  {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
         etUsername.requestFocus();
+
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            etPassword.setBackgroundColor(Color.parseColor("#ffffff"));
+            etUsername.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
+
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 

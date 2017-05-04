@@ -171,7 +171,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         if (null != fireBugEquipment.getSerialNo()) {
             tvSrNo.setText(fireBugEquipment.getSerialNo());
         }
-        tvMfgDate.setText(fireBugEquipment.getManufacturerDate());
+
+        if(null!=fireBugEquipment.getManufacturerDate()){
+            String[] separated =fireBugEquipment.getManufacturerDate().split("T");
+            tvMfgDate.setText("" + separated[0]);
+        }else{
+            tvMfgDate.setText("YY-MM-DD");
+        }
+
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
             if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
@@ -215,7 +222,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvTagID.setText("");
         tvTagID.setEnabled(true);
         tvSrNo.setText("");
-        tvMfgDate.setText("");
+        tvMfgDate.setText("YY-MM-DD");
         spDeviceType.setSelection(0);
         spManufacturer.setSelection(0);
         spVendor.setSelection(0);

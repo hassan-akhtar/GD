@@ -6,7 +6,6 @@ import io.realm.annotations.PrimaryKey;
 
 public class MyInspectionDates extends RealmObject {
 
-    @PrimaryKey
     private int ID;
     private int EquipmentID;
     private String InspectionType;
