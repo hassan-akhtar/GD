@@ -46,10 +46,8 @@ public class FirebugDashboardFragment extends Fragment {
     private static FloatingActionButton fabItemAddAsset, itemAddLocation;
     String[] fbTasksWithoutTransfer = {"View Information", "Move Assets", "Unit Inspection", "Route Inspection"};
     int[] fbTasksImagesWithoutTransfer = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};
-
     String[] fbTasks = {"View Information", "Move Assets", "Transfer Assets", "Unit Inspection", "Route Inspection"};
     int[] fbTasksImages = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};
-
     View rootView;
     RecyclerView rvTasks;
     AssetsAdapter adapter;
@@ -89,17 +87,17 @@ public class FirebugDashboardFragment extends Fragment {
     private void initObj() {
 
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
-        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
-            ivChangeCompany.setVisibility(View.GONE);
-            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
-        }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
-                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
-            ivChangeCompany.setVisibility(View.GONE);
-            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
-        } else {
+//        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
+//            ivChangeCompany.setVisibility(View.GONE);
+//            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
+//        }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
+//                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
+//            ivChangeCompany.setVisibility(View.GONE);
+//            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
+      //  } else {
             ivChangeCompany.setVisibility(View.VISIBLE);
             adapter = new AssetsAdapter(fbTasks, fbTasksImages);
-        }
+      //  }
 
         BaseActivity.currentFragment = new FirebugDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -120,24 +118,61 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (fbTasks[position].toLowerCase().startsWith("ro")) {
-                    /*Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);*/
-                    showToast("" + fbTasks[position]);
 
-                } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
-                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType", "Inspect Assets");
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);
 
-                } else {
-                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType", fbTasks[position]);
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);
-                }
+//                if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
+//                    if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("ro")) {
+//                        showToast("" + fbTasksWithoutTransfer[position]);
+//
+//                    } else if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("uni")) {
+//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+//                        in.putExtra("taskType", "Inspect Assets");
+//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+//                        startActivity(in);
+//
+//                    } else {
+//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+//                        in.putExtra("taskType", fbTasksWithoutTransfer[position]);
+//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+//                        startActivity(in);
+//                    }
+//                }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
+//                        0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
+//                    if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("ro")) {
+//                        showToast("" + fbTasksWithoutTransfer[position]);
+//
+//                    } else if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("uni")) {
+//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+//                        in.putExtra("taskType", "Inspect Assets");
+//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+//                        startActivity(in);
+//
+//                    } else {
+//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+//                        in.putExtra("taskType", fbTasksWithoutTransfer[position]);
+//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+//                        startActivity(in);
+//                    }
+//                } else {
+                    if (fbTasks[position].toLowerCase().startsWith("ro")) {
+                        showToast("" + fbTasks[position]);
+
+                    } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
+                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                        in.putExtra("taskType", "Inspect Assets");
+                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                        startActivity(in);
+
+                    } else {
+                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                        in.putExtra("taskType", fbTasks[position]);
+                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                        startActivity(in);
+                    }
+               // }
+
+
+
             }
 
             @Override

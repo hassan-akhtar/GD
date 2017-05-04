@@ -35,6 +35,8 @@ import com.ets.gd.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import org.greenrobot.eventbus.EventBus;
+
 
 public class BaseActivity extends AppCompatActivity
         implements FragmentDrawer.FragmentDrawerListener {
@@ -304,10 +306,14 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 tbTitleTop.setText("Firebug");
                 tbTitleBottom.setText("Select Company");
-//                if(DataManager.getInstance().getSyncGetResponseDTO(Integer.parseInt(sharedPreferencesManager.getString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID))).getC){
-//
-//                }
-                refreshMainViewByNew(new CustomerFragment());
+               // if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()
+               //         && 0!=DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
+                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
+              //  } else {
+              //      BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+              //      EventBus.getDefault().post(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+
+              //  }
                 break;
 
 

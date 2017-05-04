@@ -10,7 +10,7 @@ public class Constants {
     public static final String BASE_URL_UAT = "http://gd-uat.deliveredoncloud.com/Services/Services/Mobile/";
     public static final String BASE_URL_STAGE = "http://192.168.0.131/Services/Services/Mobile/";
 
-    public static final String URL_BASE = BASE_URL_STAGE;
+    public static final String URL_BASE = BASE_URL_UAT;
 
     //  Callback Keys
     public static final int RESPONSE_LOGIN = 0;

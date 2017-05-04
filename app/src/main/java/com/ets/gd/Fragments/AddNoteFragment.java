@@ -128,19 +128,29 @@ public class AddNoteFragment extends Fragment {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog,
                                                             int id) {
-                                            if (!"".equals(desc.getText().toString().trim())) {
-                                                EquipmentNote note = new EquipmentNote();
-                                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-                                                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-                                                note.setModifiedTime(sdf.format(new Date()).toString());
-                                                note.setEquipmentID(fireBugEquipment.getID());
-                                                note.setNote(desc.getText().toString().trim());
-                                                note.setModifiedBy(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USER_ID));
-                                                lstNotes.add(note);
-                                                ViewAssetInformationActivity.newNotesList.add(note);
-                                                mAdapter.notifyDataSetChanged();
-                                            } else {
-                                                Toast.makeText(getActivity(), "Please enter a note and try again", Toast.LENGTH_LONG).show();
+                                            if (ViewAssetInformationActivity.isAssetAdded) {
+                                                if (!"".equals(desc.getText().toString().trim())) {
+                                                    int ID = 0;
+
+                                                    if( null!=fireBugEquipment && 0!=fireBugEquipment.getID()){
+                                                        ID = fireBugEquipment.getID();
+                                                    }
+
+                                                    EquipmentNote note = new EquipmentNote();
+                                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                                                    sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                                                    note.setModifiedTime(sdf.format(new Date()).toString());
+                                                    note.setEquipmentID(ID);
+                                                    note.setNote(desc.getText().toString().trim());
+                                                    note.setModifiedBy(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USER_ID));
+                                                    lstNotes.add(note);
+                                                    ViewAssetInformationActivity.newNotesList.add(note);
+                                                    mAdapter.notifyDataSetChanged();
+                                                } else {
+                                                    Toast.makeText(getActivity(), "Please enter a note and try again", Toast.LENGTH_LONG).show();
+                                                }
+                                            }else{
+                                                Toast.makeText(getActivity(), "Please add an asset first", Toast.LENGTH_LONG).show();
                                             }
                                         }
                                     })

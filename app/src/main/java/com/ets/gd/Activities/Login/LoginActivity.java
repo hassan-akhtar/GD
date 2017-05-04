@@ -58,15 +58,15 @@ public class LoginActivity extends AppCompatActivity  {
 
     private void initViews() {
         etUsername = (EditText) findViewById(R.id.etEmail);
-        etPassword = (EditText) findViewById(R.id.etPassword);
+       etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
         etUsername.requestFocus();
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 
-        etUsername.setText("a345");
-        etPassword.setText("13244567");
+     //   etUsername.setText("a345");
+     //   etPassword.setText("13244567");
     }
 
     private void initObj() {

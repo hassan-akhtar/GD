@@ -546,7 +546,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                         for (int i = 0; i < lstSyncPostEquipmentResults.size(); i++) {
                             String status = "";
-                            if (lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")) {
+                            if (null !=lstSyncPostEquipmentResults.get(i).getStatus() && lstSyncPostEquipmentResults.get(i).getStatus().toLowerCase().startsWith("f")) {
                                 status = "FAILURE";
                             } else {
                                 status = "SUCCESS";

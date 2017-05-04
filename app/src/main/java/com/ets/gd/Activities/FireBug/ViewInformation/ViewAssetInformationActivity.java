@@ -42,7 +42,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     private ViewPager viewPager;
     public static Fragment currentFragment;
     public static String actionType, barCodeID;
-    boolean isAssetAdded = false;
+    public static boolean isAssetAdded = false;
     static String tagID = "", compName = "";
     Asset asset;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
@@ -239,7 +239,12 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetNote()) {
-                                DataManager.getInstance().addUpdateAssetNote(fireBugEquipment.getID(), sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
+                                int ID = 0;
+
+                                if( null!=fireBugEquipment && 0!=fireBugEquipment.getID()){
+                                    ID = fireBugEquipment.getID();
+                                }
+                                DataManager.getInstance().addUpdateAssetNote(ID, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
                                 if ("viewAsset".equals(actionType)) {
                                     showToast("Asset's Note(s) Updated");
                                 } else {

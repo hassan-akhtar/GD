@@ -49,7 +49,6 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="125dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:layout_toEndOf="@+id/rl1Overdue"
             android:layout_toRightOf="@+id/rl1Overdue">
@@ -79,7 +78,7 @@
                         android:id="@+id/WeeklyOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -107,7 +106,7 @@
                         android:id="@+id/SemiAnnualOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -141,7 +140,7 @@
                         android:id="@+id/MonthlyOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="17dp"
+                        android:layout_marginLeft="7dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -168,7 +167,7 @@
                         android:id="@+id/AnnualOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_marginLeft="42dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -202,7 +201,7 @@
                         android:id="@+id/QuarterlyOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="17dp"
+                        android:layout_marginLeft="7dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -229,7 +228,7 @@
                         android:id="@+id/YearsOverdueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
+                        android:layout_marginLeft="3dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -302,7 +301,6 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="125dp"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="25dp"
             android:layout_toEndOf="@+id/rl1"
             android:layout_toRightOf="@+id/rl1">
@@ -331,7 +329,7 @@
                         android:id="@+id/tvWeeklyDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -358,7 +356,7 @@
                         android:id="@+id/SemiAnnualDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginLeft="10dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -392,7 +390,7 @@
                         android:id="@+id/MonthlyDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="17dp"
+                        android:layout_marginLeft="7dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -419,7 +417,7 @@
                         android:id="@+id/AnnualDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="55dp"
+                        android:layout_marginLeft="42dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -453,7 +451,7 @@
                         android:id="@+id/QuarterlyDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="17dp"
+                        android:layout_marginLeft="7dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -480,7 +478,7 @@
                         android:id="@+id/YearsDueValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="13dp"
+                        android:layout_marginLeft="3dp"
                         android:text=" 02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />

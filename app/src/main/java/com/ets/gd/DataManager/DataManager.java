@@ -407,15 +407,19 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public Customer getCustomerByCode(String Code) {
-        realm.beginTransaction();
-        AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("Code", Code).findFirst();
-        Customer customer = realm.createObject(Customer.class, allCustomer.getID());
-        customer.setDescription(allCustomer.getDescription());
-        customer.setCode(allCustomer.getCode());
-        customer.setApplicationID(allCustomer.getApplicationID());
-        customer.setServiceCompany(allCustomer.isServiceCompany());
-        realm.commitTransaction();
-        return customer;
+        if (null != realm.where(Customer.class).equalTo("Code", Code).findFirst()) {
+            return realm.where(Customer.class).equalTo("Code", Code).findFirst();
+        } else {
+            realm.beginTransaction();
+            AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("Code", Code).findFirst();
+            Customer customer = realm.createObject(Customer.class, allCustomer.getID());
+            customer.setDescription(allCustomer.getDescription());
+            customer.setCode(allCustomer.getCode());
+            customer.setApplicationID(allCustomer.getApplicationID());
+            customer.setServiceCompany(allCustomer.isServiceCompany());
+            realm.commitTransaction();
+            return customer;
+        }
 
     }
 
