@@ -1,6 +1,7 @@
 package com.ets.gd.Activities.FireBug.ViewInformation;
 
 import android.graphics.Color;
+import android.os.Build;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -71,6 +72,12 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             customer = location.getCustomer();
         }
 
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            spCustomer.setBackgroundColor(Color.parseColor("#ffffff"));
+            spSite.setBackgroundColor(Color.parseColor("#ffffff"));
+            spLocation.setBackgroundColor(Color.parseColor("#ffffff"));
+            spBuilding.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
     }
 
     private void initObj() {

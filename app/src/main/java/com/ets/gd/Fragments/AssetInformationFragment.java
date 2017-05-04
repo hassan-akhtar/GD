@@ -4,6 +4,7 @@ package com.ets.gd.Fragments;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvMfgDate = (EditText) rootView.findViewById(R.id.tvMfgDate);
         tvSrNo = (EditText) rootView.findViewById(R.id.tvSrNo);
 
+
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            spDeviceType.setBackgroundColor(Color.parseColor("#ffffff"));
+            spManufacturer.setBackgroundColor(Color.parseColor("#ffffff"));
+            spVendor.setBackgroundColor(Color.parseColor("#ffffff"));
+            spAgent.setBackgroundColor(Color.parseColor("#ffffff"));
+            spModel.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
 
     }
 

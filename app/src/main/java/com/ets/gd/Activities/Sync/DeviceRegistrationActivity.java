@@ -1,6 +1,8 @@
 package com.ets.gd.Activities.Sync;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +49,10 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
         ivTick.setVisibility(View.GONE);
         tbTitleTop.setText("ETS");
         tbTitleBottom.setText("Device Registration");
+
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            etCustomerID.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
     }
 
     private void initObj() {

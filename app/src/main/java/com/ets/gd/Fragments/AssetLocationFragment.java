@@ -2,6 +2,7 @@ package com.ets.gd.Fragments;
 
 
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -75,6 +76,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         letLocationID.setVisibility(View.INVISIBLE);
         tvLocationID.setVisibility(View.INVISIBLE);
 
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            spCustomer.setBackgroundColor(Color.parseColor("#ffffff"));
+            spSite.setBackgroundColor(Color.parseColor("#ffffff"));
+            spLocation.setBackgroundColor(Color.parseColor("#ffffff"));
+            spBuilding.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
     }
 
     private void initObj() {
