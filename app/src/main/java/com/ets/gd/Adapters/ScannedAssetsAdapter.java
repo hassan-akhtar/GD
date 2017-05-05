@@ -58,7 +58,7 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
 
             holder.tvTag.setText("Tag: " + asset.getID());
             if (null!=asset.getLocation()) {
-                holder.tvLocation.setText("Location: " + asset.getLocation().getID());
+                holder.tvLocation.setText("Location: " + asset.getLocation().getCode());
             }
 
 

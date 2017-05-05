@@ -150,9 +150,11 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             dashboardFragment).commit();
+            tbTitleTop.setText("ETS");
             tbTitleBottom.setText("Dashboard");
         } else if (fragment instanceof CustomerFragment) {
             //searchMenuItem.setVisible(false);
+            tbTitleTop.setText("Firebug");
             tbTitleBottom.setText("Select Company");
             fragmentManager
                     .beginTransaction()
@@ -230,6 +232,7 @@ public class BaseActivity extends AppCompatActivity
             refreshMainViewByNew(new CustomerFragment());
         } else if (currentFragment instanceof CustomerFragment || currentFragment instanceof ToolhawkDashboardFragment) {
             refreshMainViewByNew(new DashboardFragment());
+
         } else {
 
             new AlertDialog.Builder(BaseActivity.this)

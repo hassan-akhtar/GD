@@ -44,6 +44,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
     int count;
+    int locID;
     SharedPreferencesManager sharedPreferencesManager;
 
     @Override
@@ -80,7 +81,6 @@ public class LocationSelectionActivity extends AppCompatActivity {
     }
 
     private void initObj() {
-
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
                 new IntentFilter("moveToLoc"));
         sharedPreferencesManager = new SharedPreferencesManager(LocationSelectionActivity.this);
@@ -142,10 +142,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 case R.id.rlYes: {
 
                     if (taskName.toLowerCase().startsWith("m")) {
-                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"move",0 );
+                        DataManager.getInstance().updateAssetLocationID(asset,String.valueOf(locID),"move",0 );
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Moved!",Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset,tvToLoc.getText().toString(),"transfer",sharedPreferencesManager.getInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID));
+                        DataManager.getInstance().updateAssetLocationID(asset,String.valueOf(locID),"transfer",sharedPreferencesManager.getInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID));
                         Toast.makeText(getApplicationContext(),"Asset(s) Successfully Transferred!",Toast.LENGTH_LONG).show();
                     }
                     sendMessage("finish");
@@ -217,6 +217,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+             locID = intent.getIntExtra("locID",0);
             tvToLoc.setText(message);
             btnSelectLoc.setText("Change Location");
             if (taskName.toLowerCase().startsWith("m")) {

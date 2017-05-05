@@ -131,7 +131,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(String.valueOf(locList.get(position).getID()));
+                sendMessage(String.valueOf(locList.get(position).getCode()),locList.get(position).getID());
                 finish();
             }
 
@@ -158,7 +158,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                     } else {
                         Locations loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
                         if (null != loc) {
-                            sendMessage(String.valueOf(loc.getID()));
+                            sendMessage(String.valueOf(loc.getCode()),loc.getID());
                             finish();
 
                         } else {
@@ -173,10 +173,11 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     };
 
-    private void sendMessage(String msg) {
+    private void sendMessage(String msg, int locID) {
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("moveToLoc");
         intent.putExtra("message", msg);
+        intent.putExtra("locID", locID);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 
@@ -191,7 +192,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 try {
                     Locations loc = DataManager.getInstance().getLocation(message);
                     if (null != loc) {
-                        sendMessage(String.valueOf(loc.getID()));
+                        sendMessage(String.valueOf(loc.getCode()),loc.getID());
                         finish();
 
                    } else {

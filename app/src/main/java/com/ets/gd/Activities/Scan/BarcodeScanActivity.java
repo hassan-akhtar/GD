@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 import com.ets.gd.R;
 
+import org.greenrobot.eventbus.EventBus;
+
 import me.dm7.barcodescanner.zbar.Result;
 import me.dm7.barcodescanner.zbar.ZBarScannerView;
 
@@ -18,6 +20,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
     private ZBarScannerView mScannerView;
     private String barCode;
     private String taskType;
+
 
     @Override
     public void onCreate(Bundle state) {
@@ -53,10 +56,13 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
     public void handleResult(@NonNull Result rawResult) {
 //        Toast.makeText(this, "Contents = " + rawResult.getContents() +
 //                ", Format = " + rawResult.getBarcodeFormat().getName(), Toast.LENGTH_SHORT).show();
-        barCode = rawResult.getContents();
-        sendMessage(barCode);
-        mScannerView.stopCamera();
-        finish();
+
+            barCode = rawResult.getContents();
+            sendMessage(barCode);
+            mScannerView.stopCamera();
+            finish();
+
+
     }
 
 
