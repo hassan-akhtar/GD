@@ -70,12 +70,14 @@ public class LoginActivity extends AppCompatActivity  {
             etUsername.setBackgroundColor(Color.parseColor("#ffffff"));
         }
 
-
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 
      //   etUsername.setText("a345");
      //   etPassword.setText("13244567");
+
+        etUsername.setText("dsit");
+        etPassword.setText("1324");
     }
 
     private void initObj() {

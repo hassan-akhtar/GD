@@ -140,10 +140,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 
     //    @Override
 //    protected void onStop() {
