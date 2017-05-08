@@ -189,7 +189,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         String formattedDate = df.format(c.getTime());
         tvLastSyncDate.setText("" + formattedDate);
-        String delegate = "hh:mm aaa";
+        String delegate = "hh:mm A";
         tvLastSyncTime.setText("" + DateFormat.format(delegate, Calendar.getInstance().getTime()));
         sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_DATE, formattedDate);
         sharedPreferencesManager.setString(SharedPreferencesManager.LAST_SYNC_TIME,

@@ -70,6 +70,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_firebug);
+        assetList.clear();
         initViews();
         initObj();
         initListeners();

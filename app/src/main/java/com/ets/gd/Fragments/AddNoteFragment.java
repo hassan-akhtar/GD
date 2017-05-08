@@ -2,6 +2,8 @@ package com.ets.gd.Fragments;
 
 
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -122,6 +124,9 @@ public class AddNoteFragment extends Fragment {
                     title.setVisibility(View.GONE);
                     final EditText desc = (EditText) dialogView
                             .findViewById(R.id.etNote);
+                    if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                        desc.setBackgroundColor(Color.parseColor("#ffffff"));
+                    }
                     alertDialogBuilder
                             .setCancelable(false)
                             .setPositiveButton("ADD",

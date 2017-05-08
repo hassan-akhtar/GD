@@ -231,7 +231,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvTagID.setText("");
         tvTagID.setEnabled(true);
         tvSrNo.setText("");
-        tvMfgDate.setText("YY-MM-DD");
+        tvMfgDate.setText("MM/DD/YYYY");
         spDeviceType.setSelection(0);
         spManufacturer.setSelection(0);
         spVendor.setSelection(0);

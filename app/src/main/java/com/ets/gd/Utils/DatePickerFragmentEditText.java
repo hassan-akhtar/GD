@@ -43,7 +43,7 @@ public class DatePickerFragmentEditText extends DialogFragment implements DatePi
             dayStr = "0" + day;
         }
 
-        tvDate.setText("" + year + "-" + monthStr + "-" + dayStr);
+        tvDate.setText("" + monthStr + "/" + dayStr + "/" + year);
         month = month-1;
         diff = new Date(year-1900, month, day).getTime()/1000.0;
         Log.e( "onDateSet: ", ""+diff);
