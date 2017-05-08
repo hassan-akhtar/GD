@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class BaseActivity extends AppCompatActivity
     View llDeviceInfo, llSync, llLogout;
     public static Fragment currentFragment;
     String title;
+    public static boolean isSearching = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +186,13 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new InventoryDashboardFragment()).commit();
-        }else if (fragment instanceof SyncFragment) {
+        } else if (fragment instanceof SyncFragment) {
             //searchMenuItem.setVisible(false);
             fragmentManager
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new SyncFragment()).commit();
-        }else if (fragment instanceof DeviceInfoFragment) {
+        } else if (fragment instanceof DeviceInfoFragment) {
             //searchMenuItem.setVisible(false);
             tbTitleTop.setText("ETS");
             tbTitleBottom.setText("Device Info");
@@ -206,22 +210,22 @@ public class BaseActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.dashboard, menu);
         return true;
-    }*/
+    }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -309,14 +313,14 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 tbTitleTop.setText("Firebug");
                 tbTitleBottom.setText("Select Company");
-               // if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()
-               //         && 0!=DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
-                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
-              //  } else {
-              //      BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-              //      EventBus.getDefault().post(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+                // if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()
+                //         && 0!=DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
+                BaseActivity.refreshMainViewByNew(new CustomerFragment());
+                //  } else {
+                //      BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                //      EventBus.getDefault().post(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
 
-              //  }
+                //  }
                 break;
 
 
@@ -347,13 +351,60 @@ public class BaseActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.clear();
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.search, menu);
-        Fragment currentFragment = fragmentManager.findFragmentById(R.id.container_body);
-        searchMenuItem = menu.findItem(R.id.activity_customer_search);
-        searchMenuItem.setVisible(false);
-        SearchView searchView = (SearchView) searchMenuItem.getActionView();
+        final Fragment currentFragment = fragmentManager.findFragmentById(R.id.container_body);
+        searchMenuItem = menu.findItem(R.id.mSearch);
+        if (currentFragment instanceof CustomerFragment) {
+            searchMenuItem.setVisible(true);
+        } else {
+            searchMenuItem.setVisible(false);
+        }
+        final CustomerFragment customerFragment = new CustomerFragment();
+        final SearchView searchView = (SearchView) searchMenuItem.getActionView();
+
+        View closeButton = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isSearching = false;
+                searchView.setQuery("", false);
+                customerFragment.updateAdapterForSearchKey("refresh");
+            }
+        });
+/*
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                isSearching = false;
+                Toast t = Toast.makeText(BaseActivity.this, "close", Toast.LENGTH_SHORT);
+                t.show();
+
+                return false;
+            }
+        });
+*/
+
+        MenuItemCompat.setOnActionExpandListener(searchMenuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                isSearching = false;
+                customerFragment.updateAdapterForSearchKey("refresh");
+                return true;
+            }
+        });
+
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -367,13 +418,13 @@ public class BaseActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(@NonNull String newText) {
-//                if (newText != null) {
-//                    customerFragment.updateAdapterForSearchKey(newText);
-//                    if (currentFragment instanceof CustomerFragment) {
-//                        customerFragment.updateAdapterForSearchKey(newText);
-//                    }
-//                    return false;
-//                }
+                if (!"".equals(newText)) {
+                    isSearching = true;
+                    if (currentFragment instanceof CustomerFragment) {
+                        customerFragment.updateAdapterForSearchKey(newText);
+                    }
+                }
+
                 return true;
 
             }
@@ -387,7 +438,7 @@ public class BaseActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Take appropriate action for each action item click
         switch (item.getItemId()) {
-            case R.id.activity_customer_search:
+            case R.id.mSearch:
                 // search action
                 Log.i("onOptionsItemSelected: ", "search something");
                 return true;

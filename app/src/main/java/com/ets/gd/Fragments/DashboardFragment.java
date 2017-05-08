@@ -48,6 +48,12 @@ public class DashboardFragment extends Fragment {
     }
 
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu() ;
+    }
+
     private void doSync() {
     }
 

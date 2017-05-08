@@ -236,7 +236,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
-                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
+                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size()+1; i++) {
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
@@ -257,7 +257,13 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                         }
                     }
                 }else{
-                    setViewForVAddAsset();
+                    spLocation.setEnabled(true);
+                    spLocation.setSelection(0);
+                    tvDescprition.setText("No location selected");
+                    spSite.setEnabled(false);
+                    spBuilding.setEnabled(false);
+                    spSite.setSelection(0);
+                    spBuilding.setSelection(0);
                 }
 
                 try {

@@ -112,6 +112,8 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
     };
 
+
+
     void getCustomersCall() {
        /* Customer customer = new Customer();
         customer.setCode("Bow wow Animal Hospital");

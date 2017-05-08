@@ -204,6 +204,12 @@ public class FirebugDashboardFragment extends Fragment {
         tvCompanyValue.setText(companyName);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu() ;
+    }
+
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {

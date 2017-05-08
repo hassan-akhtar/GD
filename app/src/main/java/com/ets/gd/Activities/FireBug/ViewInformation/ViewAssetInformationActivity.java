@@ -201,6 +201,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");
                         } else {
+                            if(checkValidationAddAsset())  {
                             if (null == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
                                 if (checkValidationAddAssetLocation()) {
                                     FireBugEquipment fireBugEquipment = new FireBugEquipment();
@@ -233,7 +234,10 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             } else {
                                 showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                             }
-                        }
+                        }else{
+                                tabLayout.getTabAt(0).select();
+                            }
+                    }
 
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {

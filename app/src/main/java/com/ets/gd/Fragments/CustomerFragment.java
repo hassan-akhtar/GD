@@ -34,10 +34,11 @@ import java.util.List;
 public class CustomerFragment extends Fragment implements MyCallBack {
 
     private View rootView;
-    private RecyclerView rvCustomers;
-    private CustomerAdapter customerAdapter;
-    TextView companiesCount;
-    List<AllCustomers> customerList;
+    private static RecyclerView rvCustomers;
+    private static  CustomerAdapter customerAdapter;
+    static  TextView companiesCount;
+    static List<AllCustomers> customerList;
+    static List<AllCustomers> filteredCustomerList = new ArrayList<AllCustomers>();
     SharedPreferencesManager sharedPreferencesManager;
     CommonActions ca;
 
@@ -76,7 +77,11 @@ public class CustomerFragment extends Fragment implements MyCallBack {
             @Override
             public void onClick(View view, int position) {
                 BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                EventBus.getDefault().post(customerList.get(position).getCode());
+                if (BaseActivity.isSearching) {
+                    EventBus.getDefault().post(filteredCustomerList.get(position).getCode());
+                } else {
+                    EventBus.getDefault().post(customerList.get(position).getCode());
+                }
             }
 
             @Override
@@ -86,6 +91,46 @@ public class CustomerFragment extends Fragment implements MyCallBack {
         }));
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().invalidateOptionsMenu() ;
+    }
+
+    public  void updateAdapterForSearchKey(String query){
+        query = query.toString().toLowerCase();
+
+        if (!"refresh".equals(query)) {
+            filteredCustomerList.clear();
+            for (int i = 0; i < customerList.size(); i++) {
+
+                final String name = customerList.get(i).getCode().toLowerCase();
+                if (name.startsWith(query)) {
+                    filteredCustomerList.add(customerList.get(i));
+                }
+            }
+
+            if (0 == filteredCustomerList.size()) {
+                companiesCount.setText("0");
+                customerAdapter = new CustomerAdapter(getActivity(), filteredCustomerList);
+                rvCustomers.setAdapter(customerAdapter);
+                customerAdapter.notifyDataSetChanged();  // data set changed
+            } else {
+                companiesCount.setText(""+filteredCustomerList.size());
+                rvCustomers.setLayoutManager(new LinearLayoutManager(getActivity()));
+                customerAdapter = new CustomerAdapter(getActivity(), filteredCustomerList);
+                rvCustomers.setAdapter(customerAdapter);
+                customerAdapter.notifyDataSetChanged();  // data set changed
+            }
+        } else {
+            companiesCount.setText(""+customerList.size());
+            rvCustomers.setLayoutManager(new LinearLayoutManager(getActivity()));
+            customerAdapter = new CustomerAdapter(getActivity(), customerList);
+            rvCustomers.setAdapter(customerAdapter);
+            customerAdapter.notifyDataSetChanged();  // data set changed
+        }
+    }
 
     void getCustomersCall() {
        /* Customer customer = new Customer();
