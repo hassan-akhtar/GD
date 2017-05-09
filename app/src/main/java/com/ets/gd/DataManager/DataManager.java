@@ -476,6 +476,13 @@ public class DataManager {
 
 
     // For getting asset all assets from DB
+    public List<Model> getModelFromManufacturerID(int id) {
+        return realm.where(Model.class).equalTo("ManufacturerId", id).findAll();
+    }
+
+
+
+    // For getting asset all assets from DB
     public void addEquipment(FireBugEquipment fireBugEquipment) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(fireBugEquipment);

@@ -26,9 +26,14 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import java.util.List;
+
+import io.realm.RealmList;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
@@ -100,13 +105,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         int sizeDeviceType = realmSyncGetResponseDTO.getLstDeviceType().size()+1;
         int sizeManufacturers= realmSyncGetResponseDTO.getLstManufacturers().size()+1;
-        int sizeModels= realmSyncGetResponseDTO.getLstModels().size()+1;
         int sizeVendors = realmSyncGetResponseDTO.getLstVendorCodes().size()+1;
         int sizeAgents = realmSyncGetResponseDTO.getLstAgentTypes().size()+1;
 
         String[] deviceTypes = new String[sizeDeviceType];
         String[] manufacturers  = new String[sizeManufacturers];
-        String[] models = new String[sizeModels];
         String[] vendors = new String[sizeVendors];
         String[] agents = new String[sizeAgents];
 
@@ -120,9 +123,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             manufacturers[i+1] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
         }
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
-            models[i+1] = realmSyncGetResponseDTO.getLstModels().get(i).getCode();
-        }
+
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
             vendors[i+1] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
@@ -134,7 +135,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         deviceTypes[0] ="Please select a device type";
         manufacturers[0] ="Please select a manufacturer";
-        models[0] = "Please select a model";
+
         vendors[0] ="Please select a vendor";
         agents[0] = "Please select a agent";
 
@@ -151,6 +152,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         spManufacturer.setAdapter(dataAdapterManufacturer);
 
 
+        String[] models = new String[1];
+        models[0] = "Please select a model";
         ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
         dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spModel.setAdapter(dataAdapterModel);
@@ -231,6 +234,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         tvTagID.setText("");
         tvTagID.setEnabled(true);
         tvSrNo.setText("");
+        tvMfgDate.setTextColor(Color.GRAY);
         tvMfgDate.setText("MM/DD/YYYY");
         spDeviceType.setSelection(0);
         spManufacturer.setSelection(0);
@@ -328,6 +332,28 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     }
                 }
 
+                if (0!=posManufacturer) {
+                    int macufacturerID = DataManager.getInstance().getAssetManufacturer(strSelectedState).getID();
+
+                    if (0!=macufacturerID) {
+                        List<Model> modelsList =  DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                        if (0!=modelsList.size()) {
+                            int sizeModels= modelsList.size()+1;
+                            String[] models = new String[sizeModels];
+                            for (int i = 0; i < modelsList.size(); i++) {
+                                models[i+1] = modelsList.get(i).getCode();
+                            }
+                            models[0] = "Please select a model";
+                            ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
+                            dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spModel.setAdapter(dataAdapterModel);
+                        } else {
+                            showToast("No Models found for selected Manufacturer");
+                        }
+                    }else{
+                        showToast("Manufacturer Id not found");
+                    }
+                }
             }
             break;
 

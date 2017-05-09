@@ -4,6 +4,7 @@ package com.ets.gd.Utils;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
@@ -42,7 +43,7 @@ public class DatePickerFragmentEditText extends DialogFragment implements DatePi
         if (dayStr.length() == 1) {
             dayStr = "0" + day;
         }
-
+        tvDate.setTextColor(Color.BLACK);
         tvDate.setText("" + monthStr + "/" + dayStr + "/" + year);
         month = month-1;
         diff = new Date(year-1900, month, day).getTime()/1000.0;
