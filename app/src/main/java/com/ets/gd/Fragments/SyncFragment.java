@@ -201,7 +201,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private void callSyncGetService() {
         tvSyncInProgress.setText("Sync get in progress...");
         CommonActions.showProgressDialog(getActivity());
-        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE), Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID)), this);
+        GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID)), this);
     }
 
 
@@ -558,7 +558,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
+                      //  sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
                         setCurrentDateAndTime();
                         showSyncResults();
                     } else {

@@ -150,7 +150,7 @@
     <string-array name="inspTypes">
         <item>Inspection Type</item>
         <item>Daily</item>
-        <item>Weelky</item>
+        <item>Weekly</item>
         <item>Monthly</item>
         <item>Quarterly</item>
         <item>Semi Annual</item>

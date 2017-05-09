@@ -15,6 +15,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipmentResponseDTO;
+import com.ets.gd.Utils.SharedPreferencesManager;
 import com.squareup.okhttp.OkHttpClient;
 
 import java.util.List;
@@ -31,18 +32,20 @@ public class GSDServiceImpl implements GSDService {
 
     private GSDRESTService adapter;
     SharedPreferences sharedpreferences;
+    SharedPreferencesManager sharedPreferencesManager;
     SharedPreferences.Editor editor;
     public static final String MyPREFERENCES = "My_Pref";
 
     GSDServiceImpl(Context context) {
         sharedpreferences = context.getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferencesManager = new SharedPreferencesManager(context);
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.setReadTimeout(Constants.READ_TIMEOUT_SECONDS,
                 TimeUnit.SECONDS);
         okHttpClient.setConnectTimeout(Constants.CONNECTION_TIMEOUT_SECONDS,
                 TimeUnit.SECONDS);
         final RestAdapter retroAdapter = new RestAdapter.Builder()
-                .setEndpoint(Constants.URL_BASE)
+                .setEndpoint(sharedPreferencesManager.getString(SharedPreferencesManager.BASE_URL))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(new OkClient(okHttpClient)).build();
         adapter = retroAdapter.create(GSDRESTService.class);
@@ -75,7 +78,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void getSyncData(final SyncGetDTO syncGetDTO, final MyCallBack callback) {
-        adapter.getSyncData(syncGetDTO.getCustomerCode(), syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
+        adapter.getSyncData( syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
             @Override
             public void success(SyncGetResponseDTO syncGetResponseDTO, Response response) {
                 syncGetResponseDTO.setCallBackId(syncGetDTO.getCallBackId());

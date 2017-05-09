@@ -25,6 +25,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -38,7 +39,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer= 0;
-    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    SyncCustomer realmSyncGetResponseDTO;
+    RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
     String[] buildings;
@@ -85,7 +87,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-
+        realmSyncGetResponse =  DataManager.getInstance().getSyncRealmGetResponseDTO();
         int size = realmSyncGetResponseDTO.getLstLocations().size() + 1;
         String[] locations = new String[size];
 
@@ -109,11 +111,11 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-        int sizeCustomer = realmSyncGetResponseDTO.getLstCustomers().size() + 1;
+        int sizeCustomer = realmSyncGetResponse.getLstCustomers().size() + 1;
         customers = new String[sizeCustomer];
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomers().size(); i++) {
-            customers[i + 1] = realmSyncGetResponseDTO.getLstCustomers().get(i).getCode();
+        for (int i = 0; i < realmSyncGetResponse.getLstCustomers().size(); i++) {
+            customers[i + 1] = realmSyncGetResponse.getLstCustomers().get(i).getCode();
         }
         customers[0] = "Please select a company";
         ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, customers);

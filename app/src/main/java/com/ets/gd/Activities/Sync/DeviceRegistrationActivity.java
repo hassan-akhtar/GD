@@ -79,7 +79,12 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                 case R.id.btnNext: {
 
                     if (!"".equals(etCustomerID.getText().toString().trim())) {
-                        //sharedPreferencesManager.setString(SharedPreferencesManager.MY_SYNC_CUSTOMER_ID,etCustomerID.getText().toString().trim());
+
+                        String baseUrl = etCustomerID.getText().toString().trim();
+                        if(!baseUrl.endsWith("/")){
+                            baseUrl = baseUrl+"/";
+                        }
+                        sharedPreferencesManager.setString(SharedPreferencesManager.BASE_URL,baseUrl);
                         Intent in = new Intent(DeviceRegistrationActivity.this, FirstTimeSyncActicity.class);
                         in.putExtra("customerCode", etCustomerID.getText().toString().trim());
                         startActivity(in);

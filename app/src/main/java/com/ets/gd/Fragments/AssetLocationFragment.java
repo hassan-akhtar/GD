@@ -24,6 +24,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -41,7 +42,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     SharedPreferencesManager sharedPreferencesManager;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     FireBugEquipment fireBugEquipment;
-    RealmSyncGetResponseDTO realmSyncGetResponseDTO;
+    SyncCustomer realmSyncGetResponseDTO;
+    RealmSyncGetResponseDTO realmSyncGetResponse;
     String[] sites;
     String[] buildings;
     String[] locations;
@@ -92,8 +94,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
             customer = fireBugEquipment.getCustomer();
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+            realmSyncGetResponse=  DataManager.getInstance().getSyncRealmGetResponseDTO();
         }else{
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+            realmSyncGetResponse =  DataManager.getInstance().getSyncRealmGetResponseDTO();
         }
 
 
@@ -119,11 +123,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
 
-        int sizeCustomer = realmSyncGetResponseDTO.getLstCustomers().size() + 1;
+        int sizeCustomer = realmSyncGetResponse.getLstCustomers().size() + 1;
         customers = new String[sizeCustomer];
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomers().size(); i++) {
-            customers[i + 1] = realmSyncGetResponseDTO.getLstCustomers().get(i).getCode();
+        for (int i = 0; i < realmSyncGetResponse.getLstCustomers().size(); i++) {
+            customers[i + 1] = realmSyncGetResponse.getLstCustomers().get(i).getCode();
         }
         customers[0] = "Please select a company";
         ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, customers);

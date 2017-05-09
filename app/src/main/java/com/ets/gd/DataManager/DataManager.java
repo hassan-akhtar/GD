@@ -23,8 +23,10 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
@@ -165,7 +167,7 @@ public class DataManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmSyncGetResponseDTO realmSyncGetResponse = realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", customerID).findFirst();
+                SyncCustomer realmSyncGetResponse = realm.where(SyncCustomer.class).equalTo("CustomerId", customerID).findFirst();
                 RealmResults<EquipmentNote> oldList = realm.where(EquipmentNote.class).findAll();
                 RealmList<EquipmentNote> res = new RealmList<EquipmentNote>();
                 res.addAll(oldList);
@@ -349,13 +351,13 @@ public class DataManager {
 
     public void addNewLocation(Locations location) {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(location);
+        realm.copyToRealm(location);
         realm.commitTransaction();
     }
 
     public void addNewLocation(MyLocation location) {
         realm.beginTransaction();
-        realm.copyToRealmOrUpdate(location);
+        realm.copyToRealm(location);
         realm.commitTransaction();
     }
 
@@ -544,249 +546,6 @@ public class DataManager {
     }
 
 
-    public void setupDataForApp() {
-        // Adding dummy asset 1
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Asset asset = realm.createObject(Asset.class);
-                asset.setTagID("8961006040044");
-                asset.setDeviceType("EXT");
-                asset.setManufacturers("Ansul");
-                asset.setModel("002199");
-                asset.setSerialNo("002323");
-                asset.setMfgDate("2/6/2017");
-                asset.setVendor("Lipsum");
-                asset.setAgent("Lipsum");
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00416");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-                asset.setLocation(location);
-                RealmList<Note> list = new RealmList<Note>();
-                Note note = realm.createObject(Note.class);
-                note.setNoteTitle("Note 1");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                note.setNoteTitle("Note 2");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                asset.setNoteList(list);
-                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
-                inspectionDates.setDaily("2/2/2017");
-                inspectionDates.setWeekly("2/2/2017");
-                inspectionDates.setMonthly("2/2/2017");
-                inspectionDates.setQuaterly("2/2/2017");
-                inspectionDates.setSemiAnnual("2/2/2017");
-                inspectionDates.setAnnual("2/2/2017");
-                inspectionDates.setFiveYear("2/2/2017");
-                inspectionDates.setSixYear("2/2/2017");
-                inspectionDates.setTenYear("2/2/2017");
-                inspectionDates.setTwelveYear("2/2/2017");
-                asset.setInspectionDates(inspectionDates);
-            }
-        });
-
-        // Adding dummy asset 2
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Asset asset = realm.createObject(Asset.class);
-                asset.setTagID("6951582500720");
-                asset.setDeviceType("EXT");
-                asset.setManufacturers("Ansul");
-                asset.setSerialNo("005555");
-                asset.setModel("002216");
-                asset.setMfgDate("2/2/2017");
-                asset.setVendor("Lipsum");
-                asset.setAgent("Lipsum");
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00416");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-                asset.setLocation(location);
-                RealmList<Note> list = new RealmList<Note>();
-                Note note = realm.createObject(Note.class);
-                note.setNoteTitle("Note 1");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                note.setNoteTitle("Note 2");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                note.setNoteTitle("Note 3");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                note.setNoteTitle("Note 4");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                asset.setNoteList(list);
-                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
-                inspectionDates.setDaily("2/2/2017");
-                inspectionDates.setWeekly("2/2/2017");
-                inspectionDates.setMonthly("2/2/2017");
-                inspectionDates.setQuaterly("2/2/2017");
-                inspectionDates.setSemiAnnual("2/2/2017");
-                inspectionDates.setAnnual("2/2/2017");
-                inspectionDates.setFiveYear("2/2/2017");
-                inspectionDates.setSixYear("2/2/2017");
-                inspectionDates.setTenYear("2/2/2017");
-                inspectionDates.setTwelveYear("2/2/2017");
-                asset.setInspectionDates(inspectionDates);
-            }
-        });
-
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("8961006040044");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-            }
-        });
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("87126228");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-            }
-        });
-
-
-    }
-
-
-    public void setupSyncData() {
-        // Adding dummy asset 1
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Asset asset = realm.createObject(Asset.class);
-                asset.setTagID("00A111");
-                asset.setDeviceType("EXT");
-                asset.setManufacturers("Ansul");
-                asset.setModel("002199");
-                asset.setSerialNo("002323");
-                asset.setMfgDate("2/6/2017");
-                asset.setVendor("Lipsum");
-                asset.setAgent("Lipsum");
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00416");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-                asset.setLocation(location);
-                RealmList<Note> list = new RealmList<Note>();
-                Note note = realm.createObject(Note.class);
-                note.setNoteTitle("Note 1");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                note.setNoteTitle("Note 2");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                asset.setNoteList(list);
-                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
-                inspectionDates.setDaily("2/2/2017");
-                inspectionDates.setWeekly("2/2/2017");
-                inspectionDates.setMonthly("2/2/2017");
-                inspectionDates.setQuaterly("2/2/2017");
-                inspectionDates.setSemiAnnual("2/2/2017");
-                inspectionDates.setAnnual("2/2/2017");
-                inspectionDates.setFiveYear("2/2/2017");
-                inspectionDates.setSixYear("2/2/2017");
-                inspectionDates.setTenYear("2/2/2017");
-                inspectionDates.setTwelveYear("2/2/2017");
-                asset.setInspectionDates(inspectionDates);
-            }
-        });
-
-        // Adding dummy asset 2
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Asset asset = realm.createObject(Asset.class);
-                asset.setTagID("00A222");
-                asset.setDeviceType("EXT");
-                asset.setManufacturers("Ansul");
-                asset.setSerialNo("005555");
-                asset.setModel("002216");
-                asset.setMfgDate("2/2/2017");
-                asset.setVendor("Lipsum");
-                asset.setAgent("Lipsum");
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00416");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-                asset.setLocation(location);
-                RealmList<Note> list = new RealmList<Note>();
-                Note note = realm.createObject(Note.class);
-                note.setNoteTitle("Note 1");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                note.setNoteTitle("Note 2");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                note.setNoteTitle("Note 3");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                note.setNoteTitle("Note 4");
-                note.setNoteDescription("Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum");
-                list.add(note);
-                asset.setNoteList(list);
-                InspectionDates inspectionDates = realm.createObject(InspectionDates.class);
-                inspectionDates.setDaily("2/2/2017");
-                inspectionDates.setWeekly("2/2/2017");
-                inspectionDates.setMonthly("2/2/2017");
-                inspectionDates.setQuaterly("2/2/2017");
-                inspectionDates.setSemiAnnual("2/2/2017");
-                inspectionDates.setAnnual("2/2/2017");
-                inspectionDates.setFiveYear("2/2/2017");
-                inspectionDates.setSixYear("2/2/2017");
-                inspectionDates.setTenYear("2/2/2017");
-                inspectionDates.setTwelveYear("2/2/2017");
-                asset.setInspectionDates(inspectionDates);
-            }
-        });
-
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00L111");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-            }
-        });
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                Location location = realm.createObject(Location.class);
-                location.setLocationID("00L222");
-                location.setDescription("This is a Desc");
-                location.setAgent("Lipsum");
-                location.setVendor("Lipsum");
-                location.setPlace("Shelf");
-            }
-        });
-
-
-    }
-
     // For adding Asset Inspection Dates in DB
     public void addInspectionRoutes(final List<Routes> inspectionRoutes) {
 
@@ -844,24 +603,19 @@ public class DataManager {
         return copied;
     }
 
-    public void saveSyncGetResponse(SyncGetResponseDTO obj) {
+    public void saveSyncGetResponse(final SyncGetResponseDTO obj) {
 
         RealmSyncGetResponseDTO realmSyncGetResponseDTO = new RealmSyncGetResponseDTO();
-        realmSyncGetResponseDTO.setCustomerId(obj.getCustomerId());
-        realmSyncGetResponseDTO.setDeviceId(obj.getDeviceId());
-        realmSyncGetResponseDTO.setSyncGetTime(obj.getSyncGetTime());
-        realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
-        realmSyncGetResponseDTO.setLstMusers(obj.getLstMusers());
-        realmSyncGetResponseDTO.setServiceCompany(obj.isServiceCompany());
+        realmSyncGetResponseDTO.setID(0);
+        realmSyncGetResponseDTO.setLstCustomerData(obj.getLstCustomerData());
         realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
-        realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
-        realmSyncGetResponseDTO.setLstFbEquipments(obj.getLstFbEquipments());
-        realmSyncGetResponseDTO.setLstLocations(obj.getLstLocations());
         realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
         realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
         realmSyncGetResponseDTO.setLstModels(obj.getLstModels());
         realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
         realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
+        realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
+
 
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
@@ -922,10 +676,8 @@ public class DataManager {
         return copied;
     }
 
-    public List<AllCustomers> getAllCustomerList(int ID) {
-        RealmSyncGetResponseDTO results = realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
-        List<AllCustomers> copied = results.getLstCustomers();
-        return copied;
+    public List<AllCustomers> getAllCustomerList() {
+        return realm.where(AllCustomers.class).findAll();
     }
 
 
@@ -934,8 +686,33 @@ public class DataManager {
     }
 
 
-    public RealmSyncGetResponseDTO getSyncGetResponseDTO(int ID) {
-        return realm.where(RealmSyncGetResponseDTO.class).equalTo("CustomerId", ID).findFirst();
+    public SyncCustomer getSyncGetResponseDTO(int ID) {
+        return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst();
+    }
+
+    public RealmSyncGetResponseDTO getSyncGetResponse() {
+        return realm.where(RealmSyncGetResponseDTO.class).findFirst();
+    }
+
+    public boolean isServiceCompany(){
+
+        AllCustomers allCustomers = realm.where(AllCustomers.class).equalTo("IsServiceCompany", true).findFirst();
+        if (null!=allCustomers) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public AllCustomers getParentCompany(){
+
+        return realm.where(AllCustomers.class).equalTo("IsServiceCompany", true).findFirst();
+
+    }
+
+    public RealmSyncGetResponseDTO getSyncRealmGetResponseDTO() {
+        return realm.where(RealmSyncGetResponseDTO.class).findFirst();
     }
 
 

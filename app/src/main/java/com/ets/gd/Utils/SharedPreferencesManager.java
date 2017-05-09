@@ -26,6 +26,7 @@ public class SharedPreferencesManager {
     public static final String  LOGGED_IN_USER_ID = "userID";
     public static final String  CURRENT_TRANSFER_CUSTOMER_ID = "transCusID";
     public static final String  CURRENT_TRANSFER_CUSTOMER_NAME= "transCusName";
+    public static final String  BASE_URL= "baseURL";
 
 
 

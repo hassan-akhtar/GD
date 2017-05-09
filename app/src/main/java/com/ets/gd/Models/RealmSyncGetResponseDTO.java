@@ -10,6 +10,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
 import io.realm.RealmList;
@@ -20,101 +21,16 @@ import io.realm.annotations.PrimaryKey;
 public class RealmSyncGetResponseDTO extends RealmObject {
 
     @PrimaryKey
-    private int CustomerId;
-    private String DeviceId;
-    private String SyncGetTime;
-    private boolean IsServiceCompany;
+    int ID;
     RealmList<AllCustomers> lstCustomers;
-    RealmList<RegisteredDevice> lstDevices;
-    RealmList<MobileUser> lstMusers;
-    RealmList<FireBugEquipment> lstFbEquipments;
-    RealmList<EquipmentNote> lstFbEquipmentNotes;
-    RealmList<Locations> lstLocations;
+    RealmList<SyncCustomer> lstCustomerData;
     RealmList<DeviceType> lstDeviceType;
     RealmList<Manufacturer> lstManufacturers;
     RealmList<Model> lstModels;
     RealmList<VendorCode> lstVendorCodes;
     RealmList<AgentType> lstAgentTypes;
+    RealmList<RegisteredDevice> lstDevices;
 
-    public int getCustomerId() {
-        return CustomerId;
-    }
-
-    public void setCustomerId(int customerId) {
-        CustomerId = customerId;
-    }
-
-    public String getDeviceId() {
-        return DeviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        DeviceId = deviceId;
-    }
-
-    public String getSyncGetTime() {
-        return SyncGetTime;
-    }
-
-    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
-        return lstFbEquipmentNotes;
-    }
-
-    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
-        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
-    }
-
-    public boolean isServiceCompany() {
-        return IsServiceCompany;
-    }
-
-    public void setServiceCompany(boolean serviceCompany) {
-        IsServiceCompany = serviceCompany;
-    }
-
-    public RealmList<AllCustomers> getLstCustomers() {
-        return lstCustomers;
-    }
-
-    public void setLstCustomers(RealmList<AllCustomers> lstCustomers) {
-        this.lstCustomers = lstCustomers;
-    }
-
-    public void setSyncGetTime(String syncGetTime) {
-        SyncGetTime = syncGetTime;
-    }
-
-    public RealmList<RegisteredDevice> getLstDevices() {
-        return lstDevices;
-    }
-
-    public void setLstDevices(RealmList<RegisteredDevice> lstDevices) {
-        this.lstDevices = lstDevices;
-    }
-
-    public RealmList<MobileUser> getLstMusers() {
-        return lstMusers;
-    }
-
-    public void setLstMusers(RealmList<MobileUser> lstMusers) {
-        this.lstMusers = lstMusers;
-    }
-
-    public RealmList<FireBugEquipment> getLstFbEquipments() {
-        return lstFbEquipments;
-    }
-
-    public void setLstFbEquipments(RealmList<FireBugEquipment> lstFbEquipments) {
-        this.lstFbEquipments = lstFbEquipments;
-    }
-
-    public RealmList<Locations> getLstLocations() {
-        return lstLocations;
-    }
-
-    public void setLstLocations(RealmList<Locations> lstLocations) {
-        this.lstLocations = lstLocations;
-    }
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -122,6 +38,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public RealmList<Manufacturer> getLstManufacturers() {
@@ -155,4 +79,30 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     public void setLstAgentTypes(RealmList<AgentType> lstAgentTypes) {
         this.lstAgentTypes = lstAgentTypes;
     }
+
+    public RealmList<AllCustomers> getLstCustomers() {
+        return lstCustomers;
+    }
+
+    public void setLstCustomers(RealmList<AllCustomers> lstCustomers) {
+        this.lstCustomers = lstCustomers;
+    }
+
+    public RealmList<SyncCustomer> getLstCustomerData() {
+        return lstCustomerData;
+    }
+
+    public void setLstCustomerData(RealmList<SyncCustomer> lstCustomerData) {
+        this.lstCustomerData = lstCustomerData;
+    }
+
+    public RealmList<RegisteredDevice> getLstDevices() {
+        return lstDevices;
+    }
+
+    public void setLstDevices(RealmList<RegisteredDevice> lstDevices) {
+        this.lstDevices = lstDevices;
+    }
+
+
 }

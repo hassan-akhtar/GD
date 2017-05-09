@@ -21,6 +21,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
@@ -64,7 +65,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
-
+        BaseActivity.isSearching = false;
         ca = new CommonActions(getActivity());
         customerList = new ArrayList<>();
 
@@ -77,9 +78,14 @@ public class CustomerFragment extends Fragment implements MyCallBack {
             @Override
             public void onClick(View view, int position) {
                 BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+
                 if (BaseActivity.isSearching) {
+                    sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, filteredCustomerList.get(position).getID());
+                    sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, filteredCustomerList.get(position).getCode());
                     EventBus.getDefault().post(filteredCustomerList.get(position).getCode());
                 } else {
+                   sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, customerList.get(position).getID());
+                    sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, customerList.get(position).getCode());
                     EventBus.getDefault().post(customerList.get(position).getCode());
                 }
             }
@@ -147,10 +153,11 @@ public class CustomerFragment extends Fragment implements MyCallBack {
         customerList.add(customer);
         customer = new Customer();
         customer.setCode("Bruce and Co. Traders");
-        customerList.add(customer);
-        companiesCount.setText(""+customerList.size());*/
-        customerList = DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        customerList.add(customer);*/
+
+        customerList = DataManager.getInstance().getAllCustomerList();
         customerAdapter = new CustomerAdapter(getActivity(),customerList);
+        companiesCount.setText(""+customerList.size());
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvCustomers.setLayoutManager(mLayoutManager);

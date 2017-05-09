@@ -37,7 +37,7 @@ import java.security.NoSuchAlgorithmException;
 import io.realm.RealmList;
 
 
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity  {
     ToggleButton tbSync;
     SharedPreferencesManager sharedPreferencesManager;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
-    RealmList<MobileUser> lstMusers;
+    RealmList<MobileUser> lstMusers = new RealmList<MobileUser>();
     RealmList<RegisteredDevice> lstDevices;
 
     @Override
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity  {
 
     private void initViews() {
         etUsername = (EditText) findViewById(R.id.etEmail);
-       etPassword = (EditText) findViewById(R.id.etPassword);
+        etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
         etUsername.requestFocus();
@@ -73,11 +73,9 @@ public class LoginActivity extends AppCompatActivity  {
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 
-     //   etUsername.setText("a345");
-     //   etPassword.setText("13244567");
+        //   etUsername.setText("a345");
+        //   etPassword.setText("13244567");
 
-        etUsername.setText("dsit");
-        etPassword.setText("1324");
     }
 
     private void initObj() {
@@ -87,11 +85,13 @@ public class LoginActivity extends AppCompatActivity  {
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {
             tbSync.setChecked(true);
         }
-        if (0!=sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)) {
-            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-            if (null != realmSyncGetResponseDTO) {
-                lstMusers = realmSyncGetResponseDTO.getLstMusers();
-                lstDevices = realmSyncGetResponseDTO.getLstDevices();
+        if (null != DataManager.getInstance().getSyncRealmGetResponseDTO()) {
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncRealmGetResponseDTO();
+            lstDevices = realmSyncGetResponseDTO.getLstDevices();
+            lstMusers.clear();
+            for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomerData().size(); i++) {
+                lstMusers.addAll(realmSyncGetResponseDTO.getLstCustomerData().get(i).getLstMusers());
+
             }
         }
     }
@@ -121,7 +121,7 @@ public class LoginActivity extends AppCompatActivity  {
                                         showToast("Login Successful");
                                         startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                                         finish();
-                                    }else{
+                                    } else {
                                         showToast("This Device is not registered!");
                                     }
 
@@ -186,22 +186,19 @@ public class LoginActivity extends AppCompatActivity  {
     boolean checkDevice() {
         boolean doesDeviceisRegistered = false;
         String deviceID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        if (null!=lstDevices) {
+        if (null != lstDevices) {
             for (int j = 0; j < lstDevices.size(); j++) {
                 if (deviceID.equals(lstDevices.get(j).getDeviceID())) {
                     doesDeviceisRegistered = true;
                     break;
                 }
             }
-        }else {
-            showToast("No Device Registered for Customer "+sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+        } else {
+            showToast("No Device Registered for Customer " + sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
         }
 
         return doesDeviceisRegistered;
     }
-
-
-
 
 
     void showToast(String msg) {

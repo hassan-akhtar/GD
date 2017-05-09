@@ -49,7 +49,7 @@
             <TextView
                 android:layout_centerVertical="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="22dp"
+                android:layout_marginLeft="19dp"
                 android:textColor="@android:color/white"
                 android:text="YES"
                 android:textStyle="bold"

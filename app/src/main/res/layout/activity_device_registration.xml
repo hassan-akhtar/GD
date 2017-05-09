@@ -68,7 +68,6 @@
             android:ems="10"
             android:hint="Customer Code"
             android:inputType="textEmailAddress"
-            android:maxLength="16"
             android:textColorHint="@color/veryLightGrey" />
 
 

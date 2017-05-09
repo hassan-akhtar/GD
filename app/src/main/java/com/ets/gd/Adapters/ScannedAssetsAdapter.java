@@ -56,7 +56,7 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
         if ("".equals(type)) {
             FireBugEquipment asset = assetList.get(position);
 
-            holder.tvTag.setText("Tag: " + asset.getID());
+            holder.tvTag.setText("Tag: " + asset.getCode());
             if (null!=asset.getLocation()) {
                 holder.tvLocation.setText("Location: " + asset.getLocation().getCode());
             }
@@ -91,10 +91,15 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
 
         } else {
             Locations loc = locList.get(position);
-            holder.tvTag.setText(loc.getDescription() + ",");
-            holder.tvLocation.setText(loc.getFloor());
+            if (!"".equals(loc.getFloor())) {
+                holder.tvTag.setText(loc.getDescription() + ",");
+                holder.tvLocation.setText(loc.getFloor());
+            } else {
+                holder.tvTag.setText(loc.getDescription());
+                holder.tvLocation.setText(loc.getFloor());
+            }
 
-            holder.tvName.setText(""+loc.getID());
+            holder.tvName.setText(""+loc.getCode());
             drawable = TextDrawable.builder()
                     .beginConfig()
                     .endConfig()

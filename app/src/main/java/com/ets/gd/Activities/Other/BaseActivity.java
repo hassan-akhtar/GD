@@ -313,14 +313,13 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 tbTitleTop.setText("Firebug");
                 tbTitleBottom.setText("Select Company");
-                // if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()
-                //         && 0!=DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
-                BaseActivity.refreshMainViewByNew(new CustomerFragment());
-                //  } else {
-                //      BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                //      EventBus.getDefault().post(sharedPreferencesManager.getString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE));
+                if (DataManager.getInstance().isServiceCompany()) {
+                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
+                } else {
+                    BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                    EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
 
-                //  }
+                }
                 break;
 
 

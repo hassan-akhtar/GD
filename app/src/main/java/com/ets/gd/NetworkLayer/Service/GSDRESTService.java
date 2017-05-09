@@ -34,8 +34,7 @@ public interface GSDRESTService {
     // Sync get data request
     @FormUrlEncoded
     @POST(Constants.URL_SYNC_GET)
-    public void getSyncData(@Field("CustomerCode") String CustomerCode,
-                            @Field("DeviceId") String deviceId,
+    public void getSyncData(@Field("DeviceId") String deviceId,
                             Callback<SyncGetResponseDTO> syncGetResponseDTOCallback);
 
     // Sync post data request equipment

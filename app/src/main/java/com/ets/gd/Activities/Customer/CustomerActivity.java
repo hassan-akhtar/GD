@@ -131,7 +131,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
         customer.setCode("Bruce and Co. Traders");
         customerList.add(customer);
         companiesCount.setText(""+customerList.size());*/
-        customerList = DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        customerList = DataManager.getInstance().getAllCustomerList();
         customerAdapter = new CustomerAdapter(CustomerActivity.this,customerList);
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);

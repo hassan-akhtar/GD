@@ -115,8 +115,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
         if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
             ivChangeCompany.setVisibility(View.GONE);
-        } else if (DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
-                0 == DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()) {
+        } else if (DataManager.getInstance().isServiceCompany() &&
+                0 == DataManager.getInstance().getAllCustomerList().size()) {
             ivChangeCompany.setVisibility(View.GONE);
         } else {
             ivChangeCompany.setVisibility(View.VISIBLE);

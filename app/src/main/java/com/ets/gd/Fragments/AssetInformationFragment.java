@@ -27,10 +27,12 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -43,6 +45,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     public static EditText tvTagID, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
     FireBugEquipment fireBugEquipment;
+    //SyncCustomer realmSyncGetResponseDTO;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
 
@@ -97,9 +100,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
             fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
-            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponse();
         }else{
-            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+            realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponse();
         }
 
 
@@ -206,12 +209,37 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             }
         }
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstModels().size(); i++) {
-            if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
-                spModel.setSelection(i);
-                break;
+        if (0!=posManufacturer) {
+            int macufacturerID = DataManager.getInstance().getAssetManufacturer(spManufacturer.getSelectedItem().toString()).getID();
+            List<Model> modelsList = new ArrayList<Model>();
+            if (0!=macufacturerID) {
+                modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                if (0!=modelsList.size()) {
+                    int sizeModels= modelsList.size()+1;
+                    String[] models = new String[sizeModels];
+                    for (int i = 0; i < modelsList.size(); i++) {
+                        models[i+1] = modelsList.get(i).getCode();
+                    }
+                    models[0] = "Please select a model";
+                    ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
+                    dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spModel.setAdapter(dataAdapterModel);
+                } else {
+                    showToast("No Models found for selected Manufacturer");
+                }
+            }else{
+                showToast("Manufacturer Id not found");
+            }
+
+            for (int i = 0; i < modelsList.size(); i++) {
+                if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
+                    spModel.setSelection(i);
+                    break;
+                }
             }
         }
+
+
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
             if (fireBugEquipment.getVendorCode().getCode().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
