@@ -8,7 +8,7 @@ import io.realm.annotations.PrimaryKey;
  * General Data
  */
 
-public class Model  extends RealmObject {
+public class Model extends RealmObject {
 
     @PrimaryKey
     private int ID;
@@ -16,6 +16,7 @@ public class Model  extends RealmObject {
     private String UnitCost;
     private String Description;
     private int ManufacturerId;
+    private int Manufacturer;
     private String CompanyName;
     private String DataSheetUrl;
     private String ModifiedBy;
@@ -31,6 +32,14 @@ public class Model  extends RealmObject {
 
     public String getCode() {
         return Code;
+    }
+
+    public int getManufacturer() {
+        return Manufacturer;
+    }
+
+    public void setManufacturer(int manufacturer) {
+        Manufacturer = manufacturer;
     }
 
     public void setCode(String code) {

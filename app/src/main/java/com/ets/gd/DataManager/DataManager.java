@@ -479,7 +479,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Model> getModelFromManufacturerID(int id) {
-        return realm.where(Model.class).equalTo("ManufacturerId", id).findAll();
+        return realm.where(Model.class).equalTo("Manufacturer", id).findAll();
     }
 
 

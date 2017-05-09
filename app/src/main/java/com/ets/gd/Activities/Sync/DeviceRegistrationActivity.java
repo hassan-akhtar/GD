@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.Login.LoginActivity;
+import com.ets.gd.NetworkLayer.Service.GSDServiceFactory;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -85,6 +86,8 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                             baseUrl = baseUrl+"/";
                         }
                         sharedPreferencesManager.setString(SharedPreferencesManager.BASE_URL,baseUrl);
+                        GSDServiceFactory.setService();
+                        GSDServiceFactory.getService(DeviceRegistrationActivity.this);
                         Intent in = new Intent(DeviceRegistrationActivity.this, FirstTimeSyncActicity.class);
                         in.putExtra("customerCode", etCustomerID.getText().toString().trim());
                         startActivity(in);

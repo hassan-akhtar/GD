@@ -14,4 +14,9 @@ public class GSDServiceFactory {
         return service;
     }
 
+    public static void setService() {
+        service = null;
+
+    }
+
 }
