@@ -36,8 +36,10 @@ import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -65,6 +67,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_SETTING = 101;
     Context mContext;
     FireBugEquipment fireBugEquipment;
+    Locations locations;
+    private List<Locations> currentCustomerLocationList = new ArrayList<Locations>();
+    private List<FireBugEquipment> currentCustomerAssetList = new ArrayList<FireBugEquipment>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,6 +234,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             checkCameraPermission();
                         } else {
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
+
                             if (null != fireBugEquipment && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
@@ -295,10 +301,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            }else if (null != fireBugEquipment && fireBugEquipment.isAdded()) {
-                                    hideKeyboard();
-                                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
-                                } else {
+                            } else if (null != fireBugEquipment && fireBugEquipment.isAdded()) {
+                                hideKeyboard();
+                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
+                            } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                             }
@@ -309,7 +315,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnAsset: {
                     fireBugEquipment = DataManager.getInstance().getEquipment(tvBarcodeValue.getText().toString());
-                    if (null != fireBugEquipment) {
+                    currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+
+                    if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment)) {
 
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
                         in.putExtra("action", "viewAsset");
@@ -324,7 +332,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                 case R.id.btnLoc: {
                     ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString();
-                    if (null != DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString())) {
+                    locations = DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString());
+                            currentCustomerLocationList = DataManager.getInstance().getCustomerLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+                    if (0 != currentCustomerLocationList.size() && currentCustomerLocationList.contains(locations)) {
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
                         in.putExtra("action", "viewLoc");
                         in.putExtra("barCode", tvBarcodeValue.getText().toString());
@@ -347,12 +357,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
                         in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
-                        int DeviceTypeID = 0 ;
-                        if (0!=assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
+                        int DeviceTypeID = 0;
+                        if (0 != assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
                             DeviceTypeID = assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().get(0).getDeviceTypeID();
                         }
-                        in.putExtra("deviceTypeID",DeviceTypeID );
-                        in.putExtra("equipmentID",assetList.get(0).getID() );
+                        in.putExtra("deviceTypeID", DeviceTypeID);
+                        in.putExtra("equipmentID", assetList.get(0).getID());
                     }
                     in.putExtra("compName", compName);
                     in.putExtra("deviceType", "" + assetList.get(0).getDeviceType().getCode());
@@ -521,41 +531,41 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     llunderText.setVisibility(View.GONE);
                     llbtns.setVisibility(View.VISIBLE);
                 } else if (task.toLowerCase().startsWith("m")) {
-                        fireBugEquipment = DataManager.getInstance().getEquipment(message);
-                        if (null != fireBugEquipment) {
-                            if (!assetList.contains(fireBugEquipment)) {
-                                etBarcode.setText("");
-                                rlBottomSheet.setVisibility(View.VISIBLE);
-                                assetList.add(fireBugEquipment);
-                                tvTaskName.setText("MOVE ASSET");
-                                tvCount.setText("" + assetList.size());
-                                tvCountSupportText.setText("Asset Selected to Move");
-                                mAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
-                            }
+                    fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                    if (null != fireBugEquipment) {
+                        if (!assetList.contains(fireBugEquipment)) {
+                            etBarcode.setText("");
+                            rlBottomSheet.setVisibility(View.VISIBLE);
+                            assetList.add(fireBugEquipment);
+                            tvTaskName.setText("MOVE ASSET");
+                            tvCount.setText("" + assetList.size());
+                            tvCountSupportText.setText("Asset Selected to Move");
+                            mAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
 
 
                 } else if (task.toLowerCase().startsWith("t")) {
-                        fireBugEquipment = DataManager.getInstance().getEquipment(message);
-                        if (null != fireBugEquipment) {
-                            if (!assetList.contains(fireBugEquipment)) {
-                                etBarcode.setText("");
-                                rlBottomSheet.setVisibility(View.VISIBLE);
-                                assetList.add(fireBugEquipment);
-                                tvTaskName.setText("TRANSFER ASSET");
-                                tvCount.setText("" + assetList.size());
-                                tvCountSupportText.setText("Asset Selected to TRANSFER");
-                                mAdapter.notifyDataSetChanged();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
-                            }
+                    fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                    if (null != fireBugEquipment) {
+                        if (!assetList.contains(fireBugEquipment)) {
+                            etBarcode.setText("");
+                            rlBottomSheet.setVisibility(View.VISIBLE);
+                            assetList.add(fireBugEquipment);
+                            tvTaskName.setText("TRANSFER ASSET");
+                            tvCount.setText("" + assetList.size());
+                            tvCountSupportText.setText("Asset Selected to TRANSFER");
+                            mAdapter.notifyDataSetChanged();
                         } else {
-                            Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                    }
 
                 } else if (task.toLowerCase().startsWith("ins")) {
                     fireBugEquipment = DataManager.getInstance().getEquipment(message);

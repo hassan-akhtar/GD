@@ -340,6 +340,11 @@ public class DataManager {
         return realm.where(Locations.class).equalTo("Code", barcodeID).findFirst();
     }
 
+
+    public List<Locations> getCustomerLocations(int ID) {
+        return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst().getLstLocations();
+    }
+
     public Site getLocationSite(String barcodeID) {
         return realm.where(Site.class).equalTo("Code", barcodeID).findFirst();
     }
@@ -685,6 +690,19 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public FireBugEquipment getEquipmentForCompany(String compCode, String assetCode) {
+        List<FireBugEquipment> list = realm.where(SyncCustomer.class).equalTo("CustomerId", getCustomerByCode(compCode).getID()).findFirst().getLstFbEquipments();
+
+        for(FireBugEquipment equip : list){
+            if (equip.getCode() == assetCode)
+                return equip;
+        }
+        return  null;
+    }
+
+    public List<FireBugEquipment> getCompanyEquipments(int ID) {
+        return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst().getLstFbEquipments();
+    }
 
     public SyncCustomer getSyncGetResponseDTO(int ID) {
         return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst();
