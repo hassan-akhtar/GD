@@ -29,17 +29,22 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ViewLocationInformationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     ImageView ivBack, ivTick;
-    Spinner spLocation, spSite, spBuilding,spCustomer;
+    Spinner spLocation, spSite, spBuilding, spCustomer;
     public static EditText tvDescprition, tvLocationID;
     Locations location;
     Customer customer;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
-    public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer= 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     SyncCustomer realmSyncGetResponseDTO;
+    List<Site> allSites = new ArrayList<Site>();
+    List<Building> allBuilding = new ArrayList<Building>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
@@ -87,7 +92,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-        realmSyncGetResponse =  DataManager.getInstance().getSyncRealmGetResponseDTO();
+        realmSyncGetResponse = DataManager.getInstance().getSyncRealmGetResponseDTO();
         int size = realmSyncGetResponseDTO.getLstLocations().size() + 1;
         String[] locations = new String[size];
 
@@ -111,14 +116,25 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spCustomer.setAdapter(dataAdapterCustomer);
 
 
-        sites = new String[1];
+        allSites = DataManager.getInstance().getAllSites();
+        allBuilding = DataManager.getInstance().getAllBuildings();
+        int sizeSite = allSites.size() + 1;
+        sites = new String[sizeSite];
+
+        for (int i = 0; i < allSites.size(); i++) {
+            sites[i + 1] = allSites.get(i).getCode();
+        }
         sites[0] = "Please select a site";
         ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
+        int sizeBuilding = allBuilding.size() + 1;
+        buildings = new String[sizeBuilding];
 
-        buildings = new String[1];
+        for (int i = 0; i < allBuilding.size(); i++) {
+            buildings[i + 1] = allBuilding.get(i).getCode();
+        }
         buildings[0] = "Please select a building";
         ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -154,7 +170,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 break;
             }
         }
-
 
 
         for (int i = 0; i < sites.length; i++) {
@@ -251,9 +266,9 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private boolean checkValidation() {
         if ("".equals(tvLocationID.getText().toString().trim())) {
             showToast("Please enter a location");
-        }else if (0 == posCustomer) {
+        } else if (0 == posCustomer) {
             showToast("Please select a company");
-        }  else if (0 == posSite) {
+        } else if (0 == posSite) {
             showToast("Please select a site");
         } else if (0 == posBuilding) {
             showToast("Please select a building");
@@ -292,7 +307,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                             tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i).getDescription());
 
 
-                            for (int k = 0; k < sites.length;k++) {
+                            for (int k = 0; k < sites.length; k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
                                     spSite.setSelection(k);
                                     break;
@@ -318,7 +333,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             break;
 
 
-
             case R.id.spCustomer: {
                 posCustomer = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
@@ -331,31 +345,31 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     e.printStackTrace();
                 }
 
-                if(0!=posCustomer){
-                    Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
-                    SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
-                    int sizeSite = syncCustomer.getLstLocations().size() + 1;
-                    sites = new String[sizeSite];
-
-                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                        sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
-                    }
-                    sites[0] = "Please select a site";
-                    ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
-                    dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spSite.setAdapter(dataAdapterSIte);
-
-                    int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
-                    buildings = new String[sizeBuilding];
-
-                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                        buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
-                    }
-                    buildings[0] = "Please select a building";
-                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
-                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    spBuilding.setAdapter(dataAdapterBuilding);
-                }
+//                if(0!=posCustomer){
+//                    Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
+//                    SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
+//                    int sizeSite = syncCustomer.getLstLocations().size() + 1;
+//                    sites = new String[sizeSite];
+//
+//                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
+//                        sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
+//                    }
+//                    sites[0] = "Please select a site";
+//                    ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
+//                    dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    spSite.setAdapter(dataAdapterSIte);
+//
+//                    int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
+//                    buildings = new String[sizeBuilding];
+//
+//                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
+//                        buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
+//                    }
+//                    buildings[0] = "Please select a building";
+//                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
+//                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                    spBuilding.setAdapter(dataAdapterBuilding);
+//                }
             }
             break;
 
@@ -384,7 +398,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
             }
             break;
-
 
 
         }

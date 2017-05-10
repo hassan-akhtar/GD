@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (checkValidation()) {
                             sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USER_ID, etUsername.getText().toString().trim());
                             CommonActions.showProgressDialog(LoginActivity.this);
-                            if (null != lstMusers) {
+                            if (null != lstMusers && 0!=lstMusers.size()) {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
                                     CommonActions.DismissesDialog();
                                     if (checkDevice()) {

@@ -205,6 +205,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
             if (fireBugEquipment.getManufacturers().getCode().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
+                posManufacturer = i;
                 break;
             }
         }
@@ -212,11 +213,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         if (0!=posManufacturer) {
             int macufacturerID = DataManager.getInstance().getAssetManufacturer(spManufacturer.getSelectedItem().toString()).getID();
             List<Model> modelsList = new ArrayList<Model>();
+            String[] models = new String[0];
             if (0!=macufacturerID) {
                 modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
                 if (0!=modelsList.size()) {
                     int sizeModels= modelsList.size()+1;
-                    String[] models = new String[sizeModels];
+                     models = new String[sizeModels];
                     for (int i = 0; i < modelsList.size(); i++) {
                         models[i+1] = modelsList.get(i).getCode();
                     }
@@ -226,12 +228,18 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     spModel.setAdapter(dataAdapterModel);
                 } else {
                     showToast("No Models found for selected Manufacturer");
+                     models = new String[1];
+                    models[0] = "Please select a model";
+                    ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
+                    dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spModel.setAdapter(dataAdapterModel);
+
                 }
             }else{
                 showToast("Manufacturer Id not found");
             }
 
-            for (int i = 0; i < modelsList.size(); i++) {
+            for (int i = 0; i <  modelsList.size()+1; i++) {
                 if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                     spModel.setSelection(i);
                     break;
@@ -362,9 +370,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
                 if (0!=posManufacturer) {
                     int macufacturerID = DataManager.getInstance().getAssetManufacturer(strSelectedState).getID();
-
+                    List<Model> modelsList = new ArrayList<Model>();
                     if (0!=macufacturerID) {
-                        List<Model> modelsList =  DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                        modelsList =  DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
                         if (0!=modelsList.size()) {
                             int sizeModels= modelsList.size()+1;
                             String[] models = new String[sizeModels];
@@ -377,9 +385,23 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                             spModel.setAdapter(dataAdapterModel);
                         } else {
                             showToast("No Models found for selected Manufacturer");
+                            String[] models = new String[1];
+                            models[0] = "Please select a model";
+                            ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
+                            dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spModel.setAdapter(dataAdapterModel);
                         }
                     }else{
                         showToast("Manufacturer Id not found");
+                    }
+
+                    if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
+                        for (int i = 0; i <  modelsList.size()+1; i++) {
+                            if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
+                                spModel.setSelection(i);
+                                break;
+                            }
+                        }
                     }
                 }
             }

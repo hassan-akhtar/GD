@@ -322,11 +322,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
 
     private boolean checkValidationAddAssetLocation() {
-        if (0 == AssetLocationFragment.posLoc) {
-            showToast("Please select Location ID");
-        } else if (0 == AssetLocationFragment.posCustomer) {
+        if (0 == AssetLocationFragment.posCustomer) {
             showToast("Please select company");
-        } else {
+        } else if (0 == AssetLocationFragment.posLoc) {
+            showToast("Please select Location ID");
+        }  else {
             return true;
         }
 

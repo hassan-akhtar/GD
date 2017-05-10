@@ -50,6 +50,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
     ImageView ivBack, ivTick;
     TextView tbTitleBottom;
     SharedPreferencesManager sharedPreferencesManager;
+    String compName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
         sharedPreferencesManager = new SharedPreferencesManager(CustomerActivity.this);
         customerList = new ArrayList<>();
         tbTitleBottom.setText("Select Company");
+        compName = getIntent().getStringExtra("compName");
     }
 
     private void initListeners() {
@@ -85,12 +87,18 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
             @Override
             public void onClick(View view, int position) {
 
-                Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
-                sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID,customerList.get(position).getID());
-                sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME,customerList.get(position).getCode());
-                in.putExtra("location",customerList.get(position).getCode());
-                startActivity(in);
-                finish();
+                if (!customerList.get(position).getCode().toLowerCase().equals(compName)) {
+                    Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
+                    sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID,customerList.get(position).getID());
+                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME,customerList.get(position).getCode());
+                    in.putExtra("compName",customerList.get(position).getCode());
+                    in.putExtra("type","transfer");
+                    startActivity(in);
+                    finish();
+                } else {
+                    Toast.makeText(CustomerActivity.this,"You can not transfer Asset to same company",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CustomerActivity.this,"Please select any other company",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

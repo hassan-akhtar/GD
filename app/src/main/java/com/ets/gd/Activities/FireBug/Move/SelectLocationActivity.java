@@ -48,7 +48,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     RecyclerView rlLocs;
     List<Locations> locList = new ArrayList<Locations>();
     Context mContext;
-    String location;
+    String location, taskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +88,11 @@ public class SelectLocationActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
         mContext = this;
-        location = getIntent().getStringExtra("location");
+        location = getIntent().getStringExtra("compName");
+        taskType = getIntent().getStringExtra("type");
+
+
+
         tvCompanyValue.setText(location);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
@@ -108,13 +112,17 @@ public class SelectLocationActivity extends AppCompatActivity {
         locList.clear();
 
         List<Locations> locationsRealmList = new RealmList<Locations>();
-        locationsRealmList = DataManager.getInstance().getAllLocations();
+        locationsRealmList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
         for (int k = 0 ; k <locationsRealmList.size();k++)
         {
             if(!locationsRealmList.get(k).isAdded()){
                 locList.add(locationsRealmList.get(k));
             }
+        }
+
+        if(0==locList.size()){
+            Toast.makeText(SelectLocationActivity.this, "No Location(s) found for "+tvCompanyValue.getText().toString() , Toast.LENGTH_SHORT).show();
         }
 
     }

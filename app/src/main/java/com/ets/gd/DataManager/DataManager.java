@@ -435,6 +435,16 @@ public class DataManager {
     }
 
 
+    public List<Site> getAllSites() {
+        return realm.where(Site.class).findAll();
+    }
+
+    public List<Building> getAllBuildings() {
+        return realm.where(Building.class).findAll();
+    }
+
+
+
     public List<FireBugEquipment> getAllUpdateAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
     }
@@ -542,6 +552,13 @@ public class DataManager {
         RealmResults<Locations> results = realm.where(Locations.class).findAllSorted("ID");
         List<Locations> copied = realm.copyFromRealm(results);
         return copied;
+    }
+
+    // For getting asset all locations from DB
+    public List<Locations> getAllCompanyLocations(int compCode) {
+        return  realm.where(SyncCustomer.class).equalTo("CustomerId", compCode).findFirst().getLstLocations();
+
+
     }
 
     // For getting asset all locations from DB

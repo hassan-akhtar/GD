@@ -101,7 +101,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (null != responseDTO) {
-                    if (0 != syncGetResponseDTO.getLstCustomerData().size()) {
+                    if (null != syncGetResponseDTO && null!=syncGetResponseDTO.getLstCustomerData()  && 0 != syncGetResponseDTO.getLstCustomerData().size()) {
                         CommonActions.DismissesDialog();
                         Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
@@ -136,7 +136,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
         if (404 == errorDTO.getCode())
             Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
         else if (1 == errorDTO.getCode())
-            Toast.makeText(getApplicationContext(), R.string.error_poor_con, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Please enter correct company URL", Toast.LENGTH_LONG).show();
         else if (400 == errorDTO.getCode()) {
             new AlertDialog.Builder(FirstTimeSyncActicity.this)
                     .setTitle(R.string.txt_login)
