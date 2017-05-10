@@ -327,6 +327,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewAssetInformationActivity.class);
                         in.putExtra("action", "viewAsset");
+                        in.putExtra("compName", tvCompanyValue.getText().toString());
                         in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
                         hideScannedData();
