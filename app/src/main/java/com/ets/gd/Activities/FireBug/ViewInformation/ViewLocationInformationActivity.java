@@ -225,16 +225,28 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 }
 
                 case R.id.ivTick: {
+                    List<Locations> locationsList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString()).getID());
+                    Locations location = DataManager.getInstance().getLocation(tvLocationID.getText().toString());
+                   boolean exists = false;
                     if (checkValidation()) {
-//                        if (!DataManager.getInstance().doesLocationExist(tvLocationID.getText().toString().trim())) {
+
+                        if (null!=location) {
+                            for(Locations loc : locationsList){
+                                if(loc.getCode().equals(location.getCode())){
+                                    exists = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!exists) {
 //                            DataManager.getInstance().addLocation(
 //
 //                                    new Location(tvLocationID.getText().toString().trim(),
 //                                            tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
 //                                            spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
 //                            );
-                        Locations locations = new Locations(tvLocationID.getText().toString().trim(),
-                                tvDescprition.getText().toString().trim(),
+                        Locations locations = new Locations(tvLocationID.getText().toString(),
+                                tvDescprition.getText().toString(),
                                 DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()),
                                 // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
                                 //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
@@ -251,9 +263,9 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 //                        DataManager.getInstance().addNewLocation(myLocation);
                         Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                         finish();
-//                        } else {
-//                            Toast.makeText(getApplicationContext(), "Location Already Added!", Toast.LENGTH_LONG).show();
-//                        }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Location Already Added!", Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     break;

@@ -202,8 +202,22 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             showToast("Asset's Location can't be Updated");
                         } else {
                             if(checkValidationAddAsset())  {
-                            if (null == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString().trim())) {
+                                List<FireBugEquipment> fireBugEquipmentList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getSelectedItem().toString()).getID());
+                                FireBugEquipment equipment = DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString());
+                                boolean exists = false;
+
+                          //  if (fireBugEquipment == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString())) {
                                 if (checkValidationAddAssetLocation()) {
+
+                                    if (null!=equipment) {
+                                        for(FireBugEquipment eq : fireBugEquipmentList){
+                                            if(eq.getCode().equals(equipment.getCode())){
+                                                exists = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    if (!exists) {
                                     FireBugEquipment fireBugEquipment = new FireBugEquipment();
                                     try {
                                         customer = DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getItemAtPosition(AssetLocationFragment.posCustomer).toString());
@@ -215,7 +229,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                                 AssetInformationFragment.tvSrNo.getText().toString().trim(),
                                                 AssetInformationFragment.tvMfgDate.getText().toString().trim(),
                                                 DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
-                                                DataManager.getInstance().getAssetCustomer(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                                                customer,
                                                 DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
                                                 myLocation,
                                                 DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
@@ -230,10 +244,13 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         e.printStackTrace();
                                         showToast("Asset not saved..");
                                     }
+                                }else{
+                                        showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                                 }
-                            } else {
-                                showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
-                            }
+                                }
+                          //  } else {
+                           //     showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
+                           // }
                         }else{
                                 tabLayout.getTabAt(0).select();
                             }

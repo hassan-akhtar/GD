@@ -444,7 +444,6 @@ public class DataManager {
     }
 
 
-
     public List<FireBugEquipment> getAllUpdateAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
     }
@@ -496,7 +495,6 @@ public class DataManager {
     public List<Model> getModelFromManufacturerID(int id) {
         return realm.where(Model.class).equalTo("Manufacturer", id).findAll();
     }
-
 
 
     // For getting asset all assets from DB
@@ -556,10 +554,28 @@ public class DataManager {
 
     // For getting asset all locations from DB
     public List<Locations> getAllCompanyLocations(int compCode) {
-        return  realm.where(SyncCustomer.class).equalTo("CustomerId", compCode).findFirst().getLstLocations();
+        return realm.where(Locations.class).equalTo("Customer.ID", compCode).findAll();
+    }
 
+
+    // For getting asset all assets from DB
+    public Customer getCustomerByID(int Code) {
+        if (null != realm.where(Customer.class).equalTo("ID", Code).findFirst()) {
+            return realm.where(Customer.class).equalTo("ID", Code).findFirst();
+        } else {
+            realm.beginTransaction();
+            AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("ID", Code).findFirst();
+            Customer customer = realm.createObject(Customer.class, allCustomer.getID());
+            customer.setDescription(allCustomer.getDescription());
+            customer.setCode(allCustomer.getCode());
+            customer.setApplicationID(allCustomer.getApplicationID());
+            customer.setServiceCompany(allCustomer.isServiceCompany());
+            realm.commitTransaction();
+            return customer;
+        }
 
     }
+
 
     // For getting asset all locations from DB
     public void addAllLocationstoMyLocations(List<Locations> lstLocations) {
@@ -710,15 +726,15 @@ public class DataManager {
     public FireBugEquipment getEquipmentForCompany(String compCode, String assetCode) {
         List<FireBugEquipment> list = realm.where(SyncCustomer.class).equalTo("CustomerId", getCustomerByCode(compCode).getID()).findFirst().getLstFbEquipments();
 
-        for(FireBugEquipment equip : list){
+        for (FireBugEquipment equip : list) {
             if (equip.getCode() == assetCode)
                 return equip;
         }
-        return  null;
+        return null;
     }
 
     public List<FireBugEquipment> getCompanyEquipments(int ID) {
-        return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst().getLstFbEquipments();
+        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", ID).findAll();
     }
 
     public SyncCustomer getSyncGetResponseDTO(int ID) {
@@ -729,10 +745,10 @@ public class DataManager {
         return realm.where(RealmSyncGetResponseDTO.class).findFirst();
     }
 
-    public boolean isServiceCompany(){
+    public boolean isServiceCompany() {
 
         AllCustomers allCustomers = realm.where(AllCustomers.class).equalTo("IsServiceCompany", true).findFirst();
-        if (null!=allCustomers) {
+        if (null != allCustomers) {
             return true;
         } else {
             return false;
@@ -740,7 +756,7 @@ public class DataManager {
     }
 
 
-    public AllCustomers getParentCompany(){
+    public AllCustomers getParentCompany() {
 
         return realm.where(AllCustomers.class).equalTo("IsServiceCompany", true).findFirst();
 

@@ -104,23 +104,28 @@ public class InspectionDatesFragment extends Fragment {
             InspectionDates = fireBugEquipment.getInspectionDates();
             if (null != InspectionDates && 0!=InspectionDates.size() ) {
 
-                if(null!=InspectionDates.get(0).getDueDate()){
+                if(null!=InspectionDates.get(0).getDueDate() && !InspectionDates.get(0).getDueDate().contains("/") ){
                     String[] separated = InspectionDates.get(0).getDueDate().split("T");
-                    tvDaily.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvDaily.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                }else   if(null!=InspectionDates.get(0).getDueDate() && InspectionDates.get(0).getDueDate().contains("/") ){
+                    tvDaily.setText(""+InspectionDates.get(0).getDueDate());
                 }else{
                     tvDaily.setText("MM/DD/YYYY");
                 }
 
                 if(null!=InspectionDates.get(1).getDueDate()){
                     String[] separated = InspectionDates.get(1).getDueDate().split("T");
-                    tvWeekly.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvWeekly.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvWeekly.setText("MM/DD/YYYY");
                 }
 
                 if(null!=InspectionDates.get(2).getDueDate()){
                     String[] separated = InspectionDates.get(2).getDueDate().split("T");
-                    tvMonthly.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvMonthly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvMonthly.setText("MM/DD/YYYY");
                 }
@@ -128,7 +133,8 @@ public class InspectionDatesFragment extends Fragment {
 
                 if(null!=InspectionDates.get(3).getDueDate()){
                     String[] separated = InspectionDates.get(3).getDueDate().split("T");
-                    tvQuarterly.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvQuarterly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvQuarterly.setText("MM/DD/YYYY");
                 }
@@ -136,7 +142,8 @@ public class InspectionDatesFragment extends Fragment {
 
                 if(null!=InspectionDates.get(4).getDueDate()){
                     String[] separated = InspectionDates.get(4).getDueDate().split("T");
-                    tvSemiAnnual.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvSemiAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvSemiAnnual.setText("MM/DD/YYYY");
                 }
@@ -144,14 +151,16 @@ public class InspectionDatesFragment extends Fragment {
 
                 if(null!=InspectionDates.get(5).getDueDate()){
                     String[] separated = InspectionDates.get(5).getDueDate().split("T");
-                    tvAnnual.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvAnnual.setText("MM/DD/YYYY");
                 }
 
                 if(null!=InspectionDates.get(6).getDueDate()){
                     String[] separated = InspectionDates.get(6).getDueDate().split("T");
-                    tvFiveYears.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvFiveYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvFiveYears.setText("MM/DD/YYYY");
                 }
@@ -159,7 +168,8 @@ public class InspectionDatesFragment extends Fragment {
 
                 if(null!=InspectionDates.get(7).getDueDate()){
                     String[] separated = InspectionDates.get(7).getDueDate().split("T");
-                    tvSixYears.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvSixYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvSixYears.setText("MM/DD/YYYY");
                 }
@@ -167,14 +177,16 @@ public class InspectionDatesFragment extends Fragment {
 
                 if(null!=InspectionDates.get(8).getDueDate()){
                     String[] separated = InspectionDates.get(8).getDueDate().split("T");
-                    tvTenYears.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvTenYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvTenYears.setText("MM/DD/YYYY");
                 }
 
                 if(null!=InspectionDates.get(9).getDueDate()){
                     String[] separated = InspectionDates.get(9).getDueDate().split("T");
-                    tvTwelveYears.setText("" + separated[0]);
+                    String[] newFormat = separated[0].split("-");
+                    tvTwelveYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
                 }else{
                     tvTwelveYears.setText("MM/DD/YYYY");
                 }

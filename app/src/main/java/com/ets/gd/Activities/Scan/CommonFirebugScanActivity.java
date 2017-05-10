@@ -340,7 +340,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 case R.id.btnLoc: {
                     ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString();
                     locations = DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString());
-                            currentCustomerLocationList = DataManager.getInstance().getCustomerLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+                            currentCustomerLocationList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
                     if (0 != currentCustomerLocationList.size() && currentCustomerLocationList.contains(locations)) {
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
                         in.putExtra("action", "viewLoc");

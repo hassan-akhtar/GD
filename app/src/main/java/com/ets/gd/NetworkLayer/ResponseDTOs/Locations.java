@@ -7,7 +7,6 @@ public class Locations extends RealmObject {
 
 
     private int ID;
-    @PrimaryKey
     private String Code;
     private String Description;
     private String Floor;
