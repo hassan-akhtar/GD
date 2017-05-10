@@ -99,18 +99,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
 
-
-        int sizeSite = realmSyncGetResponseDTO.getLstLocations().size() + 1;
-        sites = new String[sizeSite];
-
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            sites[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getSite().getCode();
-        }
-        sites[0] = "Please select a site";
-        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
-        dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSite.setAdapter(dataAdapterSIte);
-
         int sizeCustomer = realmSyncGetResponse.getLstCustomers().size() + 1;
         customers = new String[sizeCustomer];
 
@@ -123,12 +111,14 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spCustomer.setAdapter(dataAdapterCustomer);
 
 
-        int sizeBuilding = realmSyncGetResponseDTO.getLstLocations().size() + 1;
-        buildings = new String[sizeBuilding];
+        sites = new String[1];
+        sites[0] = "Please select a site";
+        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
+        dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSite.setAdapter(dataAdapterSIte);
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
-            buildings[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getBuilding().getCode();
-        }
+
+        buildings = new String[1];
         buildings[0] = "Please select a building";
         ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -341,6 +331,31 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     e.printStackTrace();
                 }
 
+                if(0!=posCustomer){
+                    Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
+                    SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
+                    int sizeSite = syncCustomer.getLstLocations().size() + 1;
+                    sites = new String[sizeSite];
+
+                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
+                        sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
+                    }
+                    sites[0] = "Please select a site";
+                    ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
+                    dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spSite.setAdapter(dataAdapterSIte);
+
+                    int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
+                    buildings = new String[sizeBuilding];
+
+                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
+                        buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
+                    }
+                    buildings[0] = "Please select a building";
+                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
+                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spBuilding.setAdapter(dataAdapterBuilding);
+                }
             }
             break;
 
