@@ -63,6 +63,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     String taskType, compName;
     LinearLayout llbtns, llunderText;
     private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
+    String[] locationNames;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     Context mContext;
@@ -147,7 +148,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         super.onResume();
 
         if(assetViewed || locViewed){
-            hideScannedData();
+
         }
     }
 
@@ -418,6 +419,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("count", assetList.size());
                     in.putExtra("loc", String.valueOf(assetList.get(0).getLocation().getCode()));
                     LocationSelectionActivity.asset = assetList;
+                    locationNames = new String[assetList.size()];
+                    for(int i =0;i<assetList.size();i++){
+                        locationNames[i] = assetList.get(i).getLocation().getCode();
+                    }
+                    LocationSelectionActivity.locationNames = locationNames;
                     startActivity(in);
                     break;
                 }

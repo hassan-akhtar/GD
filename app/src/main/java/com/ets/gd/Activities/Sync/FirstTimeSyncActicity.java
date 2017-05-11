@@ -100,6 +100,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
         switch (responseDTO.getCallBackId()) {
 
             case Constants.RESPONSE_SYNC_GET:
+
                 try {
                     CommonActions.DismissesDialog();
                 } catch (Exception e) {
@@ -127,6 +128,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
                                 })
                                 .show();
                     }
+                    btnSync.setEnabled(true);
                 }
                 break;
 

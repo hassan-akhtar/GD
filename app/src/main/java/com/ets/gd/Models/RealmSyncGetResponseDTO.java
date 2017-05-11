@@ -30,7 +30,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<VendorCode> lstVendorCodes;
     RealmList<AgentType> lstAgentTypes;
     RealmList<RegisteredDevice> lstDevices;
-
+    RealmList<EquipmentNote> lstFbEquipmentNotes;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -38,6 +38,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
+        return lstFbEquipmentNotes;
+    }
+
+    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
+        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
     }
 
     public int getID() {

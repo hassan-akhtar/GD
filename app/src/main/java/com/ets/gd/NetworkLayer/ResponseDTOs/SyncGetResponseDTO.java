@@ -16,7 +16,15 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<VendorCode> lstVendorCodes;
     RealmList<AgentType> lstAgentTypes;
     RealmList<RegisteredDevice> lstDevices;
+    RealmList<EquipmentNote> lstFbEquipmentNotes;
 
+    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
+        return lstFbEquipmentNotes;
+    }
+
+    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
+        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;

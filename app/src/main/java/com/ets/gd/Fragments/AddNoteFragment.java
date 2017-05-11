@@ -83,6 +83,17 @@ public class AddNoteFragment extends Fragment {
         lstNotes.clear();
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
         lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getID());
+
+        for(int i=0 ; i<lstNotes.size();i++){
+            if (null!=lstNotes.get(i).getModifiedTime()) {
+                String title = lstNotes.get(i).getModifiedTime();
+                String[] separated = title.split("T");
+                String[] newFormat = separated[0].split("-");
+                title = "" + newFormat[1] + "/" + newFormat[2] + "/" + newFormat[0];
+                lstNotes.get(i).setModifiedTime(title);
+            }
+
+        }
         mAdapter = new NoteAdapter(lstNotes);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvNotes.setLayoutManager(mLayoutManager);
@@ -142,7 +153,8 @@ public class AddNoteFragment extends Fragment {
                                                     }
 
                                                     EquipmentNote note = new EquipmentNote();
-                                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                                                   // SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                                                    SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
                                                     sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                                                     note.setModifiedTime(sdf.format(new Date()).toString());
                                                     note.setEquipmentID(ID);

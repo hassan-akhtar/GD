@@ -37,7 +37,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     public static Spinner spLocation, spSite, spBuilding, spCustomer;
     View rootView;
     public static EditText tvDescprition, tvLocationID;
-    ;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
@@ -180,7 +179,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spCustomer.setEnabled(false);
 
 
-        Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
+        Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString());
         SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
 
         int sizeSite = syncCustomer.getLstLocations().size() + 1;

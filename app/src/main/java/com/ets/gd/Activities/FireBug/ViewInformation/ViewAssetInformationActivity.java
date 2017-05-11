@@ -142,22 +142,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
                     if (0 == tabLayout.getSelectedTabPosition()) {
                         if (checkValidationAddAsset()) {
-//                            if (!DataManager.getInstance().doesAssetExist(AssetInformationFragment.tvTagID.getText().toString().trim())) {
-//                                DataManager.getInstance().AddAssetInfo(new Asset(AssetInformationFragment.tvTagID.getText().toString().trim(),
-//                                        AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString(),
-//                                        AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString(),
-//                                        AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString(),
-//                                        AssetInformationFragment.tvSrNo.getText().toString().trim(),
-//                                        AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-//                                        AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString(),
-//                                        AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()
-//                                ));
-//                                showToast("Asset Added");
-//                                tagID = AssetInformationFragment.tvTagID.getText().toString().trim();
-//                                isAssetAdded = true;
-//                            } else {
-//                                showToast("Asset Already Added!");
-//                            }
 
                             if ("viewAsset".equals(actionType)) {
                                 FireBugEquipment fireBugEquipmentt = null;
@@ -188,16 +172,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
                         }
                     } else if (1 == tabLayout.getSelectedTabPosition()) {
-              /*          if (isAssetAdded) {
-                            if (checkValidationAddAssetLocation()) {
-                              *//*  DataManager.getInstance().addUpdateAssetLocation(tagID, new Location(AssetLocationFragment.tvLocationID.getText().toString().trim(),
-                                        AssetLocationFragment.tvDescprition.getText().toString().trim(), AssetLocationFragment.spSite.getItemAtPosition(AssetLocationFragment.posSite).toString(),
-                                        AssetLocationFragment.spBuilding.getItemAtPosition(AssetLocationFragment.posBuilding).toString(), ""));*//*
-                                showToast("Asset's Location Updated");
-                            }
-                        } else {
-                            showToast("Please add asset first");
-                        }*/
 
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");

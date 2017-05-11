@@ -12,7 +12,6 @@ public class SyncCustomer extends RealmObject {
     private boolean IsServiceCompany;
     RealmList<MobileUser> lstMusers;
     RealmList<FireBugEquipment> lstFbEquipments;
-    RealmList<EquipmentNote> lstFbEquipmentNotes;
     RealmList<Locations> lstLocations;
 
     public int getCustomerId() {
@@ -71,11 +70,4 @@ public class SyncCustomer extends RealmObject {
         this.lstFbEquipments = lstFbEquipments;
     }
 
-    public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
-        return lstFbEquipmentNotes;
-    }
-
-    public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
-        this.lstFbEquipmentNotes = lstFbEquipmentNotes;
-    }
 }

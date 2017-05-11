@@ -3,11 +3,6 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 
 import java.util.List;
 
-/**
- * Created by hakhtar on 4/24/2017.
- * General Data
- */
-
 public class Equipment  {
 
     private int ID;

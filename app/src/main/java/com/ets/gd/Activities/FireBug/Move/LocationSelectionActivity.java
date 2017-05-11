@@ -37,10 +37,11 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
     ImageView ivBack, ivChangeCompany, ivTick;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc, tvStatement;
-    Button btnSelectLoc, btnViewAllAssets;
+    Button btnSelectLoc, btnViewAllAssets, btnViewAllLocations;
     String taskName, companyName, loc;
     public static List<FireBugEquipment> asset = new ArrayList<FireBugEquipment>();
     String[] assetNames;
+    public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
     int count;
@@ -70,6 +71,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         tvAssetsNames = (TextView) findViewById(R.id.tvAssetsNames);
         tvToLoc = (TextView) findViewById(R.id.tvToLoc);
         btnSelectLoc = (Button) findViewById(R.id.btnSelectLoc);
+        btnViewAllLocations = (Button) findViewById(R.id.btnViewAllLocations);
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -91,6 +93,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
         btnSelectLoc.setOnClickListener(mGlobal_OnClickListener);
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
+        btnViewAllLocations.setOnClickListener(mGlobal_OnClickListener);
         rlYes.setOnClickListener(mGlobal_OnClickListener);
         rlNo.setOnClickListener(mGlobal_OnClickListener);
     }
@@ -115,16 +118,24 @@ public class LocationSelectionActivity extends AppCompatActivity {
         loc = getIntent().getStringExtra("loc");
         tbTitleBottom.setText(taskName);
         tvCompanyValue.setText(companyName);
-        tvFromLoc.setText(loc);
+
+        if (1<locationNames.length) {
+            btnViewAllLocations.setVisibility(View.VISIBLE);
+            tvFromLoc.setText(loc+" in " + tvCompanyValue.getText().toString()+",...");
+
+        } else {
+            btnViewAllLocations.setVisibility(View.GONE);
+            tvFromLoc.setText(loc+" in " + tvCompanyValue.getText().toString());
+        }
 
         tvMovingAsset.setText("Moving " + asset.size() + " asset(s)");
 
         if (1 < asset.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ", " + asset.get(0).getModel().getCode());
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ",..." );
         } else {
             btnViewAllAssets.setVisibility(View.GONE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ", " + asset.get(0).getModel().getCode());
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode());
         }
 
         assetNames = new String[asset.size()];
@@ -188,6 +199,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
                     break;
                 }
 
+                case R.id.btnViewAllLocations: {
+                    showLocationsList();
+                    break;
+                }
 
             }
         }
@@ -211,6 +226,33 @@ public class LocationSelectionActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 LocationSelectionActivity.this);
         alertDialogBuilder.setTitle("Assets From " + loc);
+        alertDialogBuilder.setView(dialogView);
+        final ListView listAssets = (ListView) dialogView
+                .findViewById(R.id.lvAssets);
+        listAssets.setAdapter(adapter);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    void showLocationsList() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, locationNames);
+
+
+        LayoutInflater li = LayoutInflater.from(LocationSelectionActivity.this);
+        View dialogView = li.inflate(R.layout.assets_view_all, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                LocationSelectionActivity.this);
+        alertDialogBuilder.setTitle("Locations From " + tvCompanyValue.getText().toString());
         alertDialogBuilder.setView(dialogView);
         final ListView listAssets = (ListView) dialogView
                 .findViewById(R.id.lvAssets);

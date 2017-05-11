@@ -76,7 +76,20 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
+
             </LinearLayout>
+
+            <Button
+                android:id="@+id/btnViewAllLocations"
+                android:layout_toRightOf="@+id/llFrom"
+                android:padding="7dp"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                android:text="View All"
+                android:background="@drawable/btn_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp" />
 
             <View
                 android:layout_below="@+id/llFrom"
