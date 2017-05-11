@@ -151,7 +151,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         super.onResume();
 
         if(assetViewed || locViewed){
-
+            hideScannedData();
         }
     }
 
