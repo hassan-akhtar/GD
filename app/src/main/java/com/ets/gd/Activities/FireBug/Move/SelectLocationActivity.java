@@ -49,6 +49,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     List<Locations> locList = new ArrayList<Locations>();
     Context mContext;
     String location, taskType;
+    int cusID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         mContext = this;
         location = getIntent().getStringExtra("compName");
         taskType = getIntent().getStringExtra("type");
-
+        cusID = getIntent().getIntExtra("cusID",0);
 
 
         tvCompanyValue.setText(location);
@@ -181,11 +182,13 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     };
 
-    private void sendMessage(String msg, int locID) {
+    private void sendMessage(String msg, int locID ) {
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("moveToLoc");
         intent.putExtra("message", msg);
         intent.putExtra("locID", locID);
+        intent.putExtra("cusID", cusID);
+
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

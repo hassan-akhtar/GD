@@ -92,6 +92,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
                     sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID,customerList.get(position).getID());
                     sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME,customerList.get(position).getCode());
                     in.putExtra("compName",customerList.get(position).getCode());
+                    in.putExtra("cusID",customerList.get(position).getID());
                     in.putExtra("type","transfer");
                     startActivity(in);
                     finish();
@@ -123,23 +124,9 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
 
     void getCustomersCall() {
-       /* Customer customer = new Customer();
-        customer.setCode("Bow wow Animal Hospital");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("DSI");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Hiltop Daycare");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Spring Valley");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Bruce and Co. Traders");
-        customerList.add(customer);
-        companiesCount.setText(""+customerList.size());*/
+
         customerList = DataManager.getInstance().getAllCustomerList();
+        companiesCount.setText(""+customerList.size());
         customerAdapter = new CustomerAdapter(CustomerActivity.this,customerList);
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);

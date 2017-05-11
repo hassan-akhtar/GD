@@ -39,6 +39,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     public static EditText tvDescprition, tvLocationID;
     Locations location;
     Customer customer;
+    String customerName;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
@@ -74,6 +75,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         barCodeID = getIntent().getStringExtra("barCode");
+        customerName = getIntent().getStringExtra("customerName");
         if (null != barCodeID) {
             location = DataManager.getInstance().getLocation(barCodeID);
             customer = location.getCustomer();
@@ -114,6 +116,23 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, customers);
         dataAdapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCustomer.setAdapter(dataAdapterCustomer);
+
+
+        if (null != barCodeID) {
+            for (int i = 0; i < customers.length; i++) {
+                if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                    spCustomer.setSelection(i);
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < customers.length; i++) {
+                if (customerName.toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                    spCustomer.setSelection(i);
+                    break;
+                }
+            }
+        }
 
 
         allSites = DataManager.getInstance().getAllSites();
@@ -164,14 +183,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition.setText(location.getDescription());
 
 
-        for (int i = 0; i < customers.length; i++) {
-            if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
-                spCustomer.setSelection(i);
-                break;
-            }
-        }
-
-
         for (int i = 0; i < sites.length; i++) {
             if (location.getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
                 spSite.setSelection(i);
@@ -201,7 +212,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spBuilding.setEnabled(true);
         spSite.setEnabled(true);
         spCustomer.setEnabled(true);
-        spCustomer.setSelection(0);
+        //spCustomer.setSelection(0);
 
 
     }

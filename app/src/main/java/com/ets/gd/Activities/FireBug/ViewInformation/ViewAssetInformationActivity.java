@@ -74,6 +74,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         compName = getIntent().getStringExtra("compName");
         tvCompanyValue.setText(compName);
+        AssetLocationFragment.customerName = compName;
     }
 
     public Asset getAsset() {

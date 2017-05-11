@@ -36,7 +36,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     public static Spinner spLocation, spSite, spBuilding, spCustomer;
     View rootView;
-    public static EditText tvDescprition,tvLocationID;;
+    public static EditText tvDescprition, tvLocationID;
+    ;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
@@ -49,6 +50,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     String[] locations;
     String[] customers;
     Customer customer;
+    public static String customerName ;
 
     public AssetLocationFragment() {
     }
@@ -72,7 +74,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spBuilding = (Spinner) rootView.findViewById(R.id.spBuilding);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
-        letLocationID  = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
+        letLocationID = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
         tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
         letLocationID.setVisibility(View.INVISIBLE);
@@ -94,18 +96,17 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
             customer = fireBugEquipment.getCustomer();
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-            realmSyncGetResponse=  DataManager.getInstance().getSyncRealmGetResponseDTO();
-        }else{
+            realmSyncGetResponse = DataManager.getInstance().getSyncRealmGetResponseDTO();
+        } else {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
-            realmSyncGetResponse =  DataManager.getInstance().getSyncRealmGetResponseDTO();
+            realmSyncGetResponse = DataManager.getInstance().getSyncRealmGetResponseDTO();
         }
 
 
         RealmList<Locations> locationsRealmList = new RealmList<Locations>();
 
-        for (int k = 0 ; k <realmSyncGetResponseDTO.getLstLocations().size();k++)
-        {
-            if(!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()){
+        for (int k = 0; k < realmSyncGetResponseDTO.getLstLocations().size(); k++) {
+            if (!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()) {
                 locationsRealmList.add(realmSyncGetResponseDTO.getLstLocations().get(k));
             }
         }
@@ -115,7 +116,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
         dataAdapterAgent.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spLocation.setAdapter(dataAdapterAgent);
-
 
 
         int sizeCustomer = realmSyncGetResponse.getLstCustomers().size() + 1;
@@ -128,6 +128,25 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, customers);
         dataAdapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCustomer.setAdapter(dataAdapterCustomer);
+
+        if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
+            for (int i = 0; i < customers.length; i++) {
+                if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                    spCustomer.setSelection(i);
+                    posCustomer = i;
+                    break;
+                }
+            }
+        } else {
+            for (int i = 0; i < customers.length; i++) {
+                if (customerName.toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                    spCustomer.setSelection(i);
+                    posCustomer = i;
+                    break;
+                }
+            }
+        }
+
 
         sites = new String[1];
         sites[0] = "Please select a site";
@@ -155,19 +174,15 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     void setViewForViewAsset() {
 
 
-
+        spLocation.setEnabled(false);
         spSite.setEnabled(false);
         spBuilding.setEnabled(false);
         spCustomer.setEnabled(false);
-        for (int i = 0; i < customers.length; i++) {
-            if (customer.getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
-                spCustomer.setSelection(i);
-                posCustomer=i;
-                break;
-            }
-        }
+
+
         Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
         SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
+
         int sizeSite = syncCustomer.getLstLocations().size() + 1;
         sites = new String[sizeSite];
 
@@ -207,17 +222,17 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         for (int i = 0; i < locations.length; i++) {
             if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                 spLocation.setSelection(i);
-                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i-1).getDescription());
+                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
 
                 for (int j = 0; j < sites.length; j++) {
-                    if (realmSyncGetResponseDTO.getLstLocations().get(i-1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
+                    if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
                         spSite.setSelection(j);
                         break;
                     }
                 }
 
                 for (int k = 0; k < buildings.length; k++) {
-                    if (realmSyncGetResponseDTO.getLstLocations().get(i-1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
+                    if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
                         spBuilding.setSelection(i);
                         break;
                     }
@@ -226,7 +241,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 break;
             }
         }
-
 
 
     }
@@ -241,7 +255,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spSite.setSelection(0);
         spBuilding.setSelection(0);
         spCustomer.setEnabled(true);
-        spCustomer.setSelection(0);
+        //spCustomer.setSelection(0);
 
     }
 
@@ -261,11 +275,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
-                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size()+1; i++) {
+                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size() + 1; i++) {
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
-                            for (int k = 0; k < sites.length;k++) {
+                            for (int k = 0; k < sites.length; k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
                                     spSite.setSelection(k);
                                     break;
@@ -281,7 +295,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                             break;
                         }
                     }
-                }else{
+                } else {
                     spLocation.setEnabled(true);
                     spLocation.setSelection(0);
                     tvDescprition.setText("No location selected");
@@ -317,7 +331,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
             }
 
-            if(0!=posCustomer && !"viewAsset".equals(ViewAssetInformationActivity.actionType)){
+            if (0 != posCustomer && !"viewAsset".equals(ViewAssetInformationActivity.actionType)) {
                 Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
                 SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
                 int sizeSite = syncCustomer.getLstLocations().size() + 1;

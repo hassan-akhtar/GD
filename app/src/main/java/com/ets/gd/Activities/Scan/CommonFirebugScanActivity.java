@@ -68,6 +68,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     Context mContext;
     FireBugEquipment fireBugEquipment;
     Locations locations;
+    boolean clearAssets = true, assetViewed = false, locViewed=false;
     private List<Locations> currentCustomerLocationList = new ArrayList<Locations>();
     private List<FireBugEquipment> currentCustomerAssetList = new ArrayList<FireBugEquipment>();
 
@@ -144,6 +145,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        if(assetViewed || locViewed){
+            hideScannedData();
+        }
     }
 
 
@@ -239,6 +244,10 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
+
+                                    if(clearAssets){
+                                        assetList.clear();
+                                    }
                                     hideKeyboard();
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
@@ -247,6 +256,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to Move");
                                     mAdapter.notifyDataSetChanged();
+                                    clearAssets = false;
                                 } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
@@ -269,6 +279,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
+                                    if(clearAssets){
+                                        assetList.clear();
+                                    }
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
                                     assetList.add(fireBugEquipment);
@@ -276,6 +289,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to TRANSFER");
                                     mAdapter.notifyDataSetChanged();
+                                    clearAssets = false;
                                 } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
@@ -330,7 +344,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         in.putExtra("compName", tvCompanyValue.getText().toString());
                         in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
-                        hideScannedData();
+                        assetViewed = true;
                     } else {
                         Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
                     }
@@ -346,7 +360,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                         in.putExtra("action", "viewLoc");
                         in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
-                        hideScannedData();
+                        locViewed = true;
                     } else {
                         Toast.makeText(getApplicationContext(), "Location Not found!", Toast.LENGTH_LONG).show();
                     }
@@ -544,6 +558,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                         if (!assetList.contains(fireBugEquipment)) {
                             hideKeyboard();
+                            if(clearAssets){
+                                assetList.clear();
+                            }
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
                             assetList.add(fireBugEquipment);
@@ -551,6 +568,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to Move");
                             mAdapter.notifyDataSetChanged();
+                            clearAssets = false;
                         } else {
                             hideKeyboard();
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
@@ -570,6 +588,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                     if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                         if (!assetList.contains(fireBugEquipment)) {
+                            if(clearAssets){
+                                assetList.clear();
+                            }
                             hideKeyboard();
                             etBarcode.setText("");
                             rlBottomSheet.setVisibility(View.VISIBLE);
@@ -578,6 +599,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to TRANSFER");
                             mAdapter.notifyDataSetChanged();
+                            clearAssets =false;
                         } else {
                             hideKeyboard();
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();

@@ -61,6 +61,7 @@ public class DataManager {
             @Override
             public void execute(Realm realm) {
                 realm.deleteAll();
+
             }
         });
     }
@@ -642,7 +643,9 @@ public class DataManager {
     }
 
     public void saveSyncGetResponse(final SyncGetResponseDTO obj) {
-
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
         RealmSyncGetResponseDTO realmSyncGetResponseDTO = new RealmSyncGetResponseDTO();
         realmSyncGetResponseDTO.setID(0);
         realmSyncGetResponseDTO.setLstCustomerData(obj.getLstCustomerData());
@@ -653,11 +656,9 @@ public class DataManager {
         realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
         realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
         realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
-
-
-        realm.beginTransaction();
         realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
-        realm.commitTransaction();
+            }
+        });
     }
 
 

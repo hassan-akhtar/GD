@@ -231,6 +231,7 @@ public class FirebugDashboardFragment extends Fragment {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ViewLocationInformationActivity.class);
                     in.putExtra("action", "addLoc");
+                    in.putExtra("customerName", tvCompanyValue.getText().toString());
                     startActivity(in);
                     break;
                 }

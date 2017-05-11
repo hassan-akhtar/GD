@@ -101,47 +101,44 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
             fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponse();
-        }else{
+        } else {
             realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponse();
         }
 
 
-        int sizeDeviceType = realmSyncGetResponseDTO.getLstDeviceType().size()+1;
-        int sizeManufacturers= realmSyncGetResponseDTO.getLstManufacturers().size()+1;
-        int sizeVendors = realmSyncGetResponseDTO.getLstVendorCodes().size()+1;
-        int sizeAgents = realmSyncGetResponseDTO.getLstAgentTypes().size()+1;
+        int sizeDeviceType = realmSyncGetResponseDTO.getLstDeviceType().size() + 1;
+        int sizeManufacturers = realmSyncGetResponseDTO.getLstManufacturers().size() + 1;
+        int sizeVendors = realmSyncGetResponseDTO.getLstVendorCodes().size() + 1;
+        int sizeAgents = realmSyncGetResponseDTO.getLstAgentTypes().size() + 1;
 
         String[] deviceTypes = new String[sizeDeviceType];
-        String[] manufacturers  = new String[sizeManufacturers];
+        String[] manufacturers = new String[sizeManufacturers];
         String[] vendors = new String[sizeVendors];
         String[] agents = new String[sizeAgents];
 
 
-
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
-            deviceTypes[i+1] = realmSyncGetResponseDTO.getLstDeviceType().get(i).getCode();
+            deviceTypes[i + 1] = realmSyncGetResponseDTO.getLstDeviceType().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
-            manufacturers[i+1] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
+            manufacturers[i + 1] = realmSyncGetResponseDTO.getLstManufacturers().get(i).getCode();
         }
-
 
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
-            vendors[i+1] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
+            vendors[i + 1] = realmSyncGetResponseDTO.getLstVendorCodes().get(i).getCode();
         }
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstAgentTypes().size(); i++) {
-            agents[i+1] = realmSyncGetResponseDTO.getLstAgentTypes().get(i).getCode();
+            agents[i + 1] = realmSyncGetResponseDTO.getLstAgentTypes().get(i).getCode();
         }
 
-        deviceTypes[0] ="Please select a device type";
-        manufacturers[0] ="Please select a manufacturer";
+        deviceTypes[0] = "Please select a device type";
+        manufacturers[0] = "Please select a manufacturer";
 
-        vendors[0] ="Please select a vendor";
+        vendors[0] = "Please select a vendor";
         agents[0] = "Please select a agent";
-
 
 
         ViewAssetInformationActivity.currentFragment = new AssetInformationFragment();
@@ -150,7 +147,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         dataAdapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDeviceType.setAdapter(dataAdapterDeviceType);
 
-        ArrayAdapter<String> dataAdapterManufacturer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,manufacturers);
+        ArrayAdapter<String> dataAdapterManufacturer = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, manufacturers);
         dataAdapterManufacturer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spManufacturer.setAdapter(dataAdapterManufacturer);
 
@@ -187,10 +184,13 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             tvSrNo.setText(fireBugEquipment.getSerialNo());
         }
 
-        if(null!=fireBugEquipment.getManufacturerDate()){
-            String[] separated =fireBugEquipment.getManufacturerDate().split("T");
-            tvMfgDate.setText("" + separated[0]);
-        }else{
+        if (null != fireBugEquipment.getManufacturerDate()&& !fireBugEquipment.getManufacturerDate().contains("/")) {
+            String[] separated = fireBugEquipment.getManufacturerDate().split("T");
+            String[] newFormat = separated[0].split("-");
+            tvMfgDate.setText("" + newFormat[1] + "/" + newFormat[2] + "/" + newFormat[0]);
+        } else if (null != fireBugEquipment.getManufacturerDate() && fireBugEquipment.getManufacturerDate().contains("/")) {
+            tvMfgDate.setText("" + fireBugEquipment.getManufacturerDate());
+        } else {
             tvMfgDate.setText("YY-MM-DD");
         }
 
@@ -210,43 +210,42 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             }
         }
 
-        if (0!=posManufacturer) {
+        if (0 != posManufacturer) {
             int macufacturerID = DataManager.getInstance().getAssetManufacturer(spManufacturer.getSelectedItem().toString()).getID();
             List<Model> modelsList = new ArrayList<Model>();
             String[] models = new String[0];
-            if (0!=macufacturerID) {
+            if (0 != macufacturerID) {
                 modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
-                if (0!=modelsList.size()) {
-                    int sizeModels= modelsList.size()+1;
-                     models = new String[sizeModels];
+                if (0 != modelsList.size()) {
+                    int sizeModels = modelsList.size() + 1;
+                    models = new String[sizeModels];
                     for (int i = 0; i < modelsList.size(); i++) {
-                        models[i+1] = modelsList.get(i).getCode();
+                        models[i + 1] = modelsList.get(i).getCode();
                     }
                     models[0] = "Please select a model";
                     ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
                     dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spModel.setAdapter(dataAdapterModel);
                 } else {
-                    showToast("No Models found for selected Manufacturer");
-                     models = new String[1];
+                  //  showToast("No Models found for selected Manufacturer");
+                    models = new String[1];
                     models[0] = "Please select a model";
                     ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
                     dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spModel.setAdapter(dataAdapterModel);
 
                 }
-            }else{
+            } else {
                 showToast("Manufacturer Id not found");
             }
 
-            for (int i = 0; i <  modelsList.size()+1; i++) {
+            for (int i = 0; i < modelsList.size() + 1; i++) {
                 if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                     spModel.setSelection(i);
                     break;
                 }
             }
         }
-
 
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size(); i++) {
@@ -322,6 +321,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         imm.hideSoftInputFromWindow(
                 tvTagID.getWindowToken(), 0);
     }
+
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
@@ -368,35 +368,35 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     }
                 }
 
-                if (0!=posManufacturer) {
+                if (0 != posManufacturer) {
                     int macufacturerID = DataManager.getInstance().getAssetManufacturer(strSelectedState).getID();
                     List<Model> modelsList = new ArrayList<Model>();
-                    if (0!=macufacturerID) {
-                        modelsList =  DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
-                        if (0!=modelsList.size()) {
-                            int sizeModels= modelsList.size()+1;
+                    if (0 != macufacturerID) {
+                        modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                        if (0 != modelsList.size()) {
+                            int sizeModels = modelsList.size() + 1;
                             String[] models = new String[sizeModels];
                             for (int i = 0; i < modelsList.size(); i++) {
-                                models[i+1] = modelsList.get(i).getCode();
+                                models[i + 1] = modelsList.get(i).getCode();
                             }
                             models[0] = "Please select a model";
                             ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
                             dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spModel.setAdapter(dataAdapterModel);
                         } else {
-                            showToast("No Models found for selected Manufacturer");
+                           // showToast("No Models found for selected Manufacturer");
                             String[] models = new String[1];
                             models[0] = "Please select a model";
                             ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
                             dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spModel.setAdapter(dataAdapterModel);
                         }
-                    }else{
+                    } else {
                         showToast("Manufacturer Id not found");
                     }
 
                     if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
-                        for (int i = 0; i <  modelsList.size()+1; i++) {
+                        for (int i = 0; i < modelsList.size() + 1; i++) {
                             if (fireBugEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                                 spModel.setSelection(i);
                                 break;

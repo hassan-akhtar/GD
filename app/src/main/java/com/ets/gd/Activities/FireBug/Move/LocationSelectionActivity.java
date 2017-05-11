@@ -44,7 +44,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType;
     int count;
-    int locID;
+    int locID, cusID;
     SharedPreferencesManager sharedPreferencesManager;
 
     @Override
@@ -121,10 +121,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         if (1 < asset.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + " ," + asset.get(0).getModel().getCode());
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ", " + asset.get(0).getModel().getCode());
         } else {
             btnViewAllAssets.setVisibility(View.GONE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + " ," + asset.get(0).getModel().getCode());
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ", " + asset.get(0).getModel().getCode());
         }
 
         assetNames = new String[asset.size()];
@@ -155,7 +155,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
                         DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "move", 0);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "transfer", sharedPreferencesManager.getInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID));
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "transfer", cusID);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Transferred!", Toast.LENGTH_LONG).show();
                     }
                     sendMessage("finish");
@@ -233,8 +233,15 @@ public class LocationSelectionActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             locID = intent.getIntExtra("locID", 0);
+            cusID = intent.getIntExtra("cusID", 0);
             tvToLoc.setText(message);
-            btnSelectLoc.setText("Change Location");
+            if (taskName.toLowerCase().startsWith("m")) {
+                btnSelectLoc.setText("Change Location");
+            } else if (taskName.toLowerCase().startsWith("t")) {
+                btnSelectLoc.setText("Change Company");
+            } else {
+                btnSelectLoc.setText("Change Location");
+            }
             if (taskName.toLowerCase().startsWith("m")) {
                 tvStatement.setText("Are you sure you want to move " + asset.size() + " Asset(s) To " + message);
                 rlBottomSheet.setVisibility(View.VISIBLE);

@@ -48,6 +48,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
     }
 
     private void callSyncGetService() {
+        btnSync.setEnabled(false);
         CommonActions.showProgressDialog(FirstTimeSyncActicity.this);
         DataManager.getInstance().deleteRealm();
         //GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.MY_DEVICE_ID), customerID), this);
@@ -99,18 +100,23 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
         switch (responseDTO.getCallBackId()) {
 
             case Constants.RESPONSE_SYNC_GET:
+                try {
+                    CommonActions.DismissesDialog();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (null != responseDTO) {
                     if (null != syncGetResponseDTO && null!=syncGetResponseDTO.getLstCustomerData()  && 0 != syncGetResponseDTO.getLstCustomerData().size()) {
-                        CommonActions.DismissesDialog();
-                        Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
+
+
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                         sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, getIntent().getStringExtra("customerCode"));
                        // sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
                         startActivity(new Intent(FirstTimeSyncActicity.this, LoginActivity.class));
+                        Toast.makeText(getApplicationContext(), "Sync Complete!", Toast.LENGTH_LONG).show();
                         finish();
                     } else {
-                        CommonActions.DismissesDialog();
                         new AlertDialog.Builder(FirstTimeSyncActicity.this)
                                 .setTitle("Syncing")
                                 .setMessage(""+syncGetResponseDTO.getErrorMsg())
