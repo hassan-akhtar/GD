@@ -37,12 +37,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
     ImageView ivBack, ivChangeCompany, ivTick;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc, tvStatement;
-    Button btnSelectLoc, btnViewAllAssets, btnViewAllLocations;
+    Button btnSelectLoc, btnViewAllAssets, btnViewAllLocations, btnSelectCompany, btnSelectLoction;
     String taskName, companyName, loc;
     public static List<FireBugEquipment> asset = new ArrayList<FireBugEquipment>();
     String[] assetNames;
     public static String[] locationNames;
-    RelativeLayout rlYes, rlNo, rlBottomSheet;
+    RelativeLayout rlYes, rlNo, rlBottomSheet, rlTransferOptions;
     private String taskType;
     int count;
     int locID, cusID;
@@ -71,6 +71,8 @@ public class LocationSelectionActivity extends AppCompatActivity {
         tvAssetsNames = (TextView) findViewById(R.id.tvAssetsNames);
         tvToLoc = (TextView) findViewById(R.id.tvToLoc);
         btnSelectLoc = (Button) findViewById(R.id.btnSelectLoc);
+        btnSelectCompany = (Button) findViewById(R.id.btnSelectCompany);
+        btnSelectLoction = (Button) findViewById(R.id.btnSelectLoction);
         btnViewAllLocations = (Button) findViewById(R.id.btnViewAllLocations);
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
@@ -78,6 +80,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         rlYes = (RelativeLayout) findViewById(R.id.rlYes);
         rlNo = (RelativeLayout) findViewById(R.id.rlNo);
         rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheetMove);
+        rlTransferOptions = (RelativeLayout) findViewById(R.id.rlTransferOptions);
         ivTick.setVisibility(View.GONE);
         ivChangeCompany.setVisibility(View.GONE);
     }
@@ -92,6 +95,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivChangeCompany.setOnClickListener(mGlobal_OnClickListener);
         btnSelectLoc.setOnClickListener(mGlobal_OnClickListener);
+
+        btnSelectCompany.setOnClickListener(mGlobal_OnClickListener);
+        btnSelectLoction.setOnClickListener(mGlobal_OnClickListener);
+
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
         btnViewAllLocations.setOnClickListener(mGlobal_OnClickListener);
         rlYes.setOnClickListener(mGlobal_OnClickListener);
@@ -107,8 +114,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
 
         if (taskName.toLowerCase().startsWith("m")) {
+            btnSelectLoc.setVisibility(View.VISIBLE);
+            rlTransferOptions.setVisibility(View.GONE);
             btnSelectLoc.setText("Select Location");
         } else if (taskName.toLowerCase().startsWith("t")) {
+            btnSelectLoc.setVisibility(View.VISIBLE);
+            rlTransferOptions.setVisibility(View.GONE);
             btnSelectLoc.setText("Select Company");
         } else {
             btnSelectLoc.setText("Select Location");
@@ -119,20 +130,20 @@ public class LocationSelectionActivity extends AppCompatActivity {
         tbTitleBottom.setText(taskName);
         tvCompanyValue.setText(companyName);
 
-        if (1<locationNames.length) {
+        if (1 < locationNames.length) {
             btnViewAllLocations.setVisibility(View.VISIBLE);
-            tvFromLoc.setText(loc+" in " + tvCompanyValue.getText().toString()+",...");
+            tvFromLoc.setText(loc + " in " + tvCompanyValue.getText().toString() + ",...");
 
         } else {
             btnViewAllLocations.setVisibility(View.GONE);
-            tvFromLoc.setText(loc+" in " + tvCompanyValue.getText().toString());
+            tvFromLoc.setText(loc + " in " + tvCompanyValue.getText().toString());
         }
 
         tvMovingAsset.setText("Moving " + asset.size() + " asset(s)");
 
         if (1 < asset.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ",..." );
+            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ",...");
         } else {
             btnViewAllAssets.setVisibility(View.GONE);
             tvAssetsNames.setText(asset.get(0).getManufacturers().getCode());
@@ -183,13 +194,29 @@ public class LocationSelectionActivity extends AppCompatActivity {
                     if (taskName.toLowerCase().startsWith("m")) {
                         Intent in = new Intent(LocationSelectionActivity.this, SelectLocationActivity.class);
                         in.putExtra("compName", tvCompanyValue.getText().toString());
-                        in.putExtra("type","move");
+                        in.putExtra("type", "move");
                         startActivity(in);
                     } else if (taskName.toLowerCase().startsWith("t")) {
                         Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
                         in.putExtra("compName", tvCompanyValue.getText().toString());
                         startActivity(in);
                     }
+                    break;
+                }
+
+                case R.id.btnSelectCompany: {
+                        Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
+                        in.putExtra("compName", tvCompanyValue.getText().toString());
+                        startActivity(in);
+                    break;
+                }
+
+
+                case R.id.btnSelectLoction: {
+                    Intent in = new Intent(LocationSelectionActivity.this, SelectLocationActivity.class);
+                    in.putExtra("compName", sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME));
+                    in.putExtra("type", "move");
+                    startActivity(in);
                     break;
                 }
 
@@ -280,7 +307,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
             if (taskName.toLowerCase().startsWith("m")) {
                 btnSelectLoc.setText("Change Location");
             } else if (taskName.toLowerCase().startsWith("t")) {
-                btnSelectLoc.setText("Change Company");
+                btnSelectLoc.setVisibility(View.GONE);
+                rlTransferOptions.setVisibility(View.VISIBLE);
+                btnSelectCompany.setText("Change Company");
+                btnSelectLoction.setText("Change Location");
             } else {
                 btnSelectLoc.setText("Change Location");
             }

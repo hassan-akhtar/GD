@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,19 +16,13 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
-import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.Location;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 
@@ -91,7 +85,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         mContext = this;
         location = getIntent().getStringExtra("compName");
         taskType = getIntent().getStringExtra("type");
-        cusID = getIntent().getIntExtra("cusID",0);
+        cusID = getIntent().getIntExtra("cusID", 0);
 
 
         tvCompanyValue.setText(location);
@@ -115,15 +109,14 @@ public class SelectLocationActivity extends AppCompatActivity {
         List<Locations> locationsRealmList = new RealmList<Locations>();
         locationsRealmList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-        for (int k = 0 ; k <locationsRealmList.size();k++)
-        {
-            if(!locationsRealmList.get(k).isAdded()){
+        for (int k = 0; k < locationsRealmList.size(); k++) {
+            if (!locationsRealmList.get(k).isAdded()) {
                 locList.add(locationsRealmList.get(k));
             }
         }
 
-        if(0==locList.size()){
-            Toast.makeText(SelectLocationActivity.this, "No Location(s) found for "+tvCompanyValue.getText().toString() , Toast.LENGTH_SHORT).show();
+        if (0 == locList.size()) {
+            Toast.makeText(SelectLocationActivity.this, "No Location(s) found for " + tvCompanyValue.getText().toString(), Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -140,7 +133,7 @@ public class SelectLocationActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(String.valueOf(locList.get(position).getCode()),locList.get(position).getID());
+                sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
                 finish();
             }
 
@@ -167,7 +160,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                     } else {
                         Locations loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
                         if (null != loc) {
-                            sendMessage(String.valueOf(loc.getCode()),loc.getID());
+                            sendMessage(String.valueOf(loc.getCode()), loc.getID());
                             finish();
 
                         } else {
@@ -182,7 +175,7 @@ public class SelectLocationActivity extends AppCompatActivity {
 
     };
 
-    private void sendMessage(String msg, int locID ) {
+    private void sendMessage(String msg, int locID) {
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("moveToLoc");
         intent.putExtra("message", msg);
@@ -203,10 +196,10 @@ public class SelectLocationActivity extends AppCompatActivity {
                 try {
                     Locations loc = DataManager.getInstance().getLocation(message);
                     if (null != loc) {
-                        sendMessage(String.valueOf(loc.getCode()),loc.getID());
+                        sendMessage(String.valueOf(loc.getCode()), loc.getID());
                         finish();
 
-                   } else {
+                    } else {
                         Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
                     }
                 } catch (NumberFormatException e) {

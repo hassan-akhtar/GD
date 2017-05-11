@@ -44,7 +44,10 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CommonFirebugScanActivity extends AppCompatActivity {
 
@@ -422,6 +425,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     locationNames = new String[assetList.size()];
                     for(int i =0;i<assetList.size();i++){
                         locationNames[i] = assetList.get(i).getLocation().getCode();
+                    }
+
+                    Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
+                    locationNames = new String[uniqueWords.size()];
+                    int j =0;
+                    for (String loc :uniqueWords){
+                        locationNames[j] = loc;
+                        j++;
                     }
                     LocationSelectionActivity.locationNames = locationNames;
                     startActivity(in);
