@@ -97,24 +97,27 @@ public class DataManager {
             myLocation = realm.createObject(MyLocation.class, locations.getID());
             myLocation.setCode(locations.getCode());
             myLocation.setDescription(locations.getDescription());
-            if (operation.startsWith("move")) {
-                myLocation.setCustomer(locations.getCustomer().getID());
-            } else {
-                myLocation.setCustomer(cusID);
-            }
-
             myLocation.setSite(locations.getSite().getID());
             myLocation.setBuilding(locations.getBuilding().getID());
         }
 
+        if (operation.startsWith("m")) {
+            Locations locations = realm.where(Locations.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
+            myLocation.setCustomer(locations.getCustomer().getID());
+        } else {
+            myLocation.setCustomer(cusID);
+        }
+
         for (FireBugEquipment asset : assetList) {
             FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", asset.getID()).findFirst();
-            if (operation.startsWith("move")) {
+            assett.setLocation(myLocation);
+            if (operation.startsWith("m")) {
                 assett.setMoved(true);
             } else {
                 assett.setTransferred(true);
+                assett.setCustomer(DataManager.getInstance().getCustomerByID(cusID));
             }
-            assett.setLocation(myLocation);
+
         }
         realm.commitTransaction();
     }

@@ -177,7 +177,8 @@ public class LocationSelectionActivity extends AppCompatActivity {
                         DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "move", 0);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "transfer", cusID);
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "transfer",
+                                DataManager.getInstance().getCustomerByCode(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME)).getID());
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Transferred!", Toast.LENGTH_LONG).show();
                     }
                     sendMessage("finish");
@@ -205,9 +206,9 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 }
 
                 case R.id.btnSelectCompany: {
-                        Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
-                        in.putExtra("compName", tvCompanyValue.getText().toString());
-                        startActivity(in);
+                    Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
+                    in.putExtra("compName", tvCompanyValue.getText().toString());
+                    startActivity(in);
                     break;
                 }
 
