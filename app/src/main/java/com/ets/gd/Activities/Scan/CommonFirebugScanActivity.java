@@ -160,6 +160,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
         if (assetViewed || locViewed) {
             hideScannedData();
+            assetViewed = false;
+            locViewed =false;
         }
     }
 
