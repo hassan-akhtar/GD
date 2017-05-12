@@ -171,13 +171,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
     void setViewForViewAsset() {
-
-
         spLocation.setEnabled(false);
         spSite.setEnabled(false);
         spBuilding.setEnabled(false);
         spCustomer.setEnabled(false);
-
 
         Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString());
         SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
