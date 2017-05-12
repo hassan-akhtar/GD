@@ -42,10 +42,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ltvTagID"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="2dp">
+
+                <TextView
+                    android:id="@+id/tvLableDeviceType"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Device Type"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
                     android:id="@+id/spDeviceType"
+                    android:layout_below="@+id/tvLableDeviceType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -61,9 +73,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlInspType"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="17dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableManufacturer"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="12sp"
+                    android:text="Manufacturer"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
+                    android:layout_below="@+id/tvLableManufacturer"
                     android:id="@+id/spManufacturer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,10 +105,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlStatusCode"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="17dp">
 
+                <TextView
+                    android:id="@+id/tvLableModel"
+                    android:visibility="visible"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Model"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
+                    android:layout_below="@+id/tvLableModel"
                     android:id="@+id/spModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,8 +135,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlInspectionResult"
-                android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="18dp"
                 android:theme="@style/TextLabel">
 
                 <EditText
@@ -123,7 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lSrNo"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="0dp"
+                android:layout_marginTop="16dp"
                 android:theme="@style/TextLabel">
 
                 <EditText
@@ -142,10 +178,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lMfgDate"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="3dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableVendor"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Vendor Code"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
 
                 <Spinner
                     android:id="@+id/spVendor"
+                    android:layout_below="@+id/tvLableVendor"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -161,10 +211,22 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlVendor"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="17dp">
+
+                <TextView
+                    android:id="@+id/tvLableAgentType"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Agent Type"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
                     android:id="@+id/spAgent"
+                    android:layout_below="@+id/tvLableAgentType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -172,6 +234,16 @@
                     android:layout_marginRight="23dp"
                     android:background="@drawable/sp_bg_new"
                     android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlSpace"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_below="@+id/rlAgent"
+                android:layout_marginBottom="20dp"
+                android:layout_marginTop="28dp">
             </RelativeLayout>
 
 

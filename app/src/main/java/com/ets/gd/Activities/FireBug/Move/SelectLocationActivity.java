@@ -1,11 +1,18 @@
 package com.ets.gd.Activities.FireBug.Move;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,6 +32,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,9 +48,12 @@ public class SelectLocationActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnScan, btnCross;
     RecyclerView rlLocs;
+    SharedPreferencesManager sharedPreferencesManager;
     List<Locations> locList = new ArrayList<Locations>();
     Context mContext;
-    String location, taskType;
+    private static final int CAMERA_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    String location, taskType, assetLoc;
     int cusID;
 
     @Override
@@ -80,14 +91,15 @@ public class SelectLocationActivity extends AppCompatActivity {
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(SelectLocationActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
         mContext = this;
         location = getIntent().getStringExtra("compName");
         taskType = getIntent().getStringExtra("type");
+        assetLoc = getIntent().getStringExtra("assetLoc");
         cusID = getIntent().getIntExtra("cusID", 0);
-
-
+        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE,taskType);
         tvCompanyValue.setText(location);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
@@ -133,8 +145,20 @@ public class SelectLocationActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectLocationActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
-                finish();
+
+                if (taskType.startsWith("ins")) {
+                    if (!assetLoc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
+                        sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
+                        finish();
+                    } else {
+                        Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
+
+                    }
+                } else {
+                    sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
+                    finish();
+                }
             }
 
             @Override
@@ -154,14 +178,25 @@ public class SelectLocationActivity extends AppCompatActivity {
 
                 case R.id.btnScan: {
                     if ("".equals(etBarcode.getText().toString().trim())) {
-                        Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
-                        in.putExtra("taskType", "loc");
-                        startActivity(in);
+                        checkCameraPermission();
+
+
                     } else {
                         Locations loc = DataManager.getInstance().getLocation(etBarcode.getText().toString().trim());
                         if (null != loc) {
-                            sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                            finish();
+                            if (taskType.startsWith("ins")) {
+                                if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                                    sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                    finish();
+                                } else {
+                                    Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
+
+                                }
+                            } else {
+                                sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                finish();
+                            }
 
                         } else {
                             Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
@@ -174,6 +209,71 @@ public class SelectLocationActivity extends AppCompatActivity {
         }
 
     };
+
+
+    private void checkCameraPermission() {
+
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
+            in.putExtra("taskType", "loc");
+            startActivity(in);
+        } else {
+            if (ActivityCompat.checkSelfPermission(SelectLocationActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(SelectLocationActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SelectLocationActivity.this);
+                    builder.setTitle("Need Storage Permission");
+                    builder.setMessage("This app needs storage permission.");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(SelectLocationActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
+                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                    // Redirect to Settings after showing Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SelectLocationActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            Toast.makeText(getBaseContext(), "Go to Permissions to Grant Camera permission", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    //just request the permission
+                    ActivityCompat.requestPermissions(SelectLocationActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                }
+
+            } else {
+                Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", "loc");
+                startActivity(in);
+            }
+        }
+    }
 
     private void sendMessage(String msg, int locID) {
         Log.d("sender", "Broadcasting message");
@@ -196,8 +296,19 @@ public class SelectLocationActivity extends AppCompatActivity {
                 try {
                     Locations loc = DataManager.getInstance().getLocation(message);
                     if (null != loc) {
-                        sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                        finish();
+                        if (taskType.startsWith("ins")) {
+                            if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                                sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                finish();
+                            } else {
+                                Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
+
+                            }
+                        } else {
+                            sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                            finish();
+                        }
 
                     } else {
                         Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();

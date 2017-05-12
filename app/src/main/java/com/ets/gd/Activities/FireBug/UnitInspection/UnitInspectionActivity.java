@@ -110,6 +110,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     }
 
     private void initObj() {
+
         sharedPreferencesManager = new SharedPreferencesManager(UnitInspectionActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
@@ -369,6 +370,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
     }
 
+
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
@@ -381,177 +384,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-        /*int viewID = buttonView.getId();
-        switch (viewID) {
-            case R.id.cbBracket: {
 
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Bracket");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Bracket")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Bracket");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Bracket")) {
-                        currentText = currentText.replace(",Bracket", "");
-                    } else if (currentText.contains("Bracket")) {
-                        currentText = currentText.replace("Bracket", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbNozzel: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Nozzel");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Nozzel")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Nozzel");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Nozzel")) {
-                        currentText = currentText = currentText.replace(",Nozzel", "");
-                    } else if (currentText.contains("Nozzel")) {
-                        currentText = currentText = currentText.replace("Nozzel", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-
-            case R.id.cbDamaged: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Damaged");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Damaged")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Damaged");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Damaged")) {
-                        currentText = currentText.replace(",Damaged", "");
-                    } else if (currentText.contains("Damaged")) {
-                        currentText = currentText.replace("Damaged", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbOperational: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Operational");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Operational")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Operational");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Operational")) {
-                        currentText = currentText.replace(",Operational", "");
-                    } else if (currentText.contains("Operational")) {
-                        currentText = currentText.replace("Operational", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbHose: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Hose");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Hose")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Hose");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Hose")) {
-                        currentText = currentText.replace(",Hose", "");
-                    } else if (currentText.contains("Hose")) {
-                        currentText = currentText.replace("Hose", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbRecharge: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Recharge");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Recharge")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Recharge");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Recharge")) {
-                        currentText = currentText.replace(",Recharge", "");
-                    } else if (currentText.contains("Recharge")) {
-                        currentText = currentText.replace("Recharge", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbAccessible: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Accessible");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Accessible")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Accessible");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Accessible")) {
-                        currentText = currentText.replace(",Accessible", "");
-                    } else if (currentText.contains("Accessible")) {
-                        currentText = currentText.replace("Accessible", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-
-            case R.id.cbTag: {
-                if (isChecked) {
-                    if (etStatusCode.getText().toString().trim().toLowerCase().equals("")) {
-                        etStatusCode.setText("Tag");
-                    } else {
-                        if (!etStatusCode.getText().toString().trim().contains("Tag")) {
-                            etStatusCode.setText(etStatusCode.getText().toString().trim() + "," + "Tag");
-                        }
-                    }
-                } else {
-                    String currentText = etStatusCode.getText().toString().trim();
-                    if (currentText.contains(",Tag")) {
-                        currentText = currentText.replace(",Tag", "");
-                    } else if (currentText.contains("Tag")) {
-                        currentText = currentText.replace("Tag", "");
-                    }
-                    etStatusCode.setText(currentText);
-                }
-            }
-            break;
-        }*/
     }
 }

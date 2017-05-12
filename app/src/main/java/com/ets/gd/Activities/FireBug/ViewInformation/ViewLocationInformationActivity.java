@@ -45,6 +45,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     SyncCustomer realmSyncGetResponseDTO;
     List<Site> allSites = new ArrayList<Site>();
+    TextView tvLableLocation;
     List<Building> allBuilding = new ArrayList<Building>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
@@ -71,6 +72,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
+        tvLableLocation = (TextView) findViewById(R.id.tvLableLocation);
         spBuilding = (Spinner) findViewById(R.id.spBuilding);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
@@ -175,6 +177,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID.setVisibility(View.VISIBLE);
         tvLocationID.setEnabled(false);
         spLocation.setVisibility(View.GONE);
+        tvLableLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(false);
         spBuilding.setEnabled(false);
         spSite.setEnabled(false);
@@ -207,6 +210,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spSite.setSelection(0);
         spBuilding.setSelection(0);
         spLocation.setVisibility(View.GONE);
+        tvLableLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(true);
         tvLocationID.setEnabled(true);
         spBuilding.setEnabled(true);

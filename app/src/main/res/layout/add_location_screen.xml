@@ -19,8 +19,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp">
 
+                <TextView
+                    android:id="@+id/tvLableCustomer"
+                    android:visibility="visible"
+                    android:textSize="12sp"
+                    android:layout_marginLeft="30dp"
+                    android:text="Customer"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
                 <Spinner
                     android:id="@+id/spCustomer"
+                    android:layout_below="@+id/tvLableCustomer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -35,10 +47,23 @@
                 android:layout_below="@+id/lCusID"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="18dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableLocation"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="12sp"
+                    android:text="Location ID"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
                     android:id="@+id/spLocation"
+                    android:layout_below="@+id/tvLableLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -55,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lCusID"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 android:theme="@style/TextLabel">
 
                 <EditText
@@ -73,11 +98,11 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/lLocationID"
-                android:layout_below="@+id/rlVendor"
+                android:layout_below="@+id/lCusID"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="90dp"
                 android:theme="@style/TextLabel">
 
                 <EditText
@@ -99,10 +124,23 @@
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/lLocationID"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+                android:layout_marginTop="5dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableSite"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:textSize="12sp"
+                    android:text="Site"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
                     android:id="@+id/spSite"
+                    android:layout_below="@+id/tvLableSite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -119,10 +157,23 @@
                 android:layout_width="wrap_content"
                 android:layout_below="@+id/lDescprition"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp">
+                android:layout_marginTop="18dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableBuilding"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Building"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
 
                 <Spinner
                     android:id="@+id/spBuilding"
+                    android:layout_below="@+id/tvLableBuilding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

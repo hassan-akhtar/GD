@@ -9,19 +9,20 @@
         android:id="@+id/nav_header_container"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@drawable/drawer_bg"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
-        <TextView
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/drawer_bg">
 
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="17sp"
+        <TextView
+            android:id="@+id/username"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="17sp"
+            android:text="John Doe"
             android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:text="John Doe"/>
+            android:textSize="24sp" />
 
     </RelativeLayout>
 
@@ -34,85 +35,84 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:background="@android:color/white"
         android:layout_height="140dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:background="@android:color/white">
 
         <LinearLayout
             android:id="@+id/llSync"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="24dp"
-                android:layout_marginLeft="2dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_sync_blue"/>
+                android:layout_marginLeft="2dp"
+                android:src="@drawable/ic_sync_blue" />
 
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_height="wrap_content"
-                android:text="Sync"/>
+                android:text="Sync"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/llDeviceInfo"
-            android:layout_below="@+id/llSync"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/llSync"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_device_info_new"/>
+                android:src="@drawable/ic_device_info_new" />
 
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_height="wrap_content"
-                android:text="Device Info"/>
+                android:text="Device Info"
+                android:textSize="14sp" />
 
         </LinearLayout>
 
 
-
         <LinearLayout
             android:id="@+id/llLogout"
-            android:layout_below="@+id/llDeviceInfo"
             android:layout_width="match_parent"
-            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/llDeviceInfo"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="10dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true">
+            android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_logout_new"/>
+                android:src="@drawable/ic_logout_new" />
 
             <TextView
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:textSize="14sp"
-                android:layout_height="wrap_content"
-                android:text="Exit"/>
+                android:text="Exit"
+                android:textSize="14sp" />
 
         </LinearLayout>
 

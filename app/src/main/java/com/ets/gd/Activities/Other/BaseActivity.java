@@ -56,6 +56,7 @@ public class BaseActivity extends AppCompatActivity
     View llDeviceInfo, llSync, llLogout;
     public static Fragment currentFragment;
     String title;
+    TextView username;
     public static boolean isSearching = false;
 
     @Override
@@ -88,6 +89,8 @@ public class BaseActivity extends AppCompatActivity
         llSync = drawer.findViewById(R.id.llSync);
         llDeviceInfo = drawer.findViewById(R.id.llDeviceInfo);
         llLogout = drawer.findViewById(R.id.llLogout);
+        username = (TextView) drawer.findViewById(R.id.username);
+        username .setText(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USER_ID));
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         drawerFragment.setDrawerListener(this);
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {

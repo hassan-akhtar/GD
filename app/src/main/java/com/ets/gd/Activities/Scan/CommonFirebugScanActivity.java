@@ -29,9 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
+import com.ets.gd.Activities.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Activities.FireBug.UnitInspection.UnitInspectionActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.Activities.Login.LoginActivity;
+import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
@@ -63,6 +66,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     View vLine;
     RecyclerView rlAssets;
     Asset asset;
+    int cusID, locID;
+    String message;
     String taskType, compName;
     LinearLayout llbtns, llunderText;
     private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
@@ -72,7 +77,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     Context mContext;
     FireBugEquipment fireBugEquipment;
     Locations locations;
-    boolean clearAssets = true, assetViewed = false, locViewed=false;
+    boolean clearAssets = true, assetViewed = false, locViewed = false;
     private List<Locations> currentCustomerLocationList = new ArrayList<Locations>();
     private List<FireBugEquipment> currentCustomerAssetList = new ArrayList<FireBugEquipment>();
 
@@ -135,8 +140,11 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
+
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBarcodeBroadcastReceiver,
                 new IntentFilter("barcode-scanned"));
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mToLocBroadcastReceiver,
+                new IntentFilter("moveToLoc"));
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
         mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
@@ -150,7 +158,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(assetViewed || locViewed){
+        if (assetViewed || locViewed) {
             hideScannedData();
         }
     }
@@ -249,7 +257,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
 
-                                    if(clearAssets){
+                                    if (clearAssets) {
                                         assetList.clear();
                                     }
                                     hideKeyboard();
@@ -265,7 +273,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
                             } else {
@@ -283,7 +291,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
-                                    if(clearAssets){
+                                    if (clearAssets) {
                                         assetList.clear();
                                     }
                                     etBarcode.setText("");
@@ -298,7 +306,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
                             } else {
@@ -319,13 +327,15 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                                     etBarcode.setText("");
                                     hideKeyboard();
                                     rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
+                                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
+                                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET,fireBugEquipment.getCode());
                                     assetList.add(fireBugEquipment);
                                     mAdapter.notifyDataSetChanged();
                                 } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
                             } else {
@@ -358,7 +368,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 case R.id.btnLoc: {
                     ViewLocationInformationActivity.barCodeID = tvBarcodeValue.getText().toString();
                     locations = DataManager.getInstance().getLocation(tvBarcodeValue.getText().toString());
-                            currentCustomerLocationList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+                    currentCustomerLocationList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
                     if (0 != currentCustomerLocationList.size() && currentCustomerLocationList.contains(locations)) {
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
                         in.putExtra("action", "viewLoc");
@@ -398,7 +408,8 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
 
                 case R.id.tvChangeLocation: {
-                    showToast("Change Loc");
+                    showChangeLocationDialog();
+
                     break;
                 }
 
@@ -423,14 +434,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("loc", String.valueOf(assetList.get(0).getLocation().getCode()));
                     LocationSelectionActivity.asset = assetList;
                     locationNames = new String[assetList.size()];
-                    for(int i =0;i<assetList.size();i++){
+                    for (int i = 0; i < assetList.size(); i++) {
                         locationNames[i] = assetList.get(i).getLocation().getCode();
                     }
 
                     Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
                     locationNames = new String[uniqueWords.size()];
-                    int j =0;
-                    for (String loc :uniqueWords){
+                    int j = 0;
+                    for (String loc : uniqueWords) {
                         locationNames[j] = loc;
                         j++;
                     }
@@ -442,6 +453,28 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         }
 
     };
+
+    private void showChangeLocationDialog() {
+        new AlertDialog.Builder(CommonFirebugScanActivity.this)
+                .setTitle("Change Location")
+                .setMessage("Are you sure you want to Change Location of " + String.valueOf(assetList.get(0).getCode())+" ?")
+                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent in = new Intent(CommonFirebugScanActivity.this,
+                                SelectLocationActivity.class);
+                        in.putExtra("compName", tvCompanyValue.getText().toString());
+                        in.putExtra("assetLoc", sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC));
+                        in.putExtra("type", "insp");
+                        startActivity(in);
+                    }
+                })
+                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nothing
+                    }
+                })
+                .show();
+    }
 
     private void checkCameraPermission() {
 
@@ -575,7 +608,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                         if (!assetList.contains(fireBugEquipment)) {
                             hideKeyboard();
-                            if(clearAssets){
+                            if (clearAssets) {
                                 assetList.clear();
                             }
                             etBarcode.setText("");
@@ -590,7 +623,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             hideKeyboard();
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
-                    } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
                     } else {
@@ -605,7 +638,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
                     if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                         if (!assetList.contains(fireBugEquipment)) {
-                            if(clearAssets){
+                            if (clearAssets) {
                                 assetList.clear();
                             }
                             hideKeyboard();
@@ -616,12 +649,12 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             tvCount.setText("" + assetList.size());
                             tvCountSupportText.setText("Asset Selected to TRANSFER");
                             mAdapter.notifyDataSetChanged();
-                            clearAssets =false;
+                            clearAssets = false;
                         } else {
                             hideKeyboard();
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
-                    } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
                     } else {
@@ -639,13 +672,16 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                             etBarcode.setText("");
                             hideKeyboard();
                             rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
+
+                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
+                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET,fireBugEquipment.getCode());
                             assetList.add(fireBugEquipment);
                             mAdapter.notifyDataSetChanged();
                         } else {
                             hideKeyboard();
                             Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                         }
-                    } else  if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
                     } else {
@@ -661,7 +697,40 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
         }
     };
+    private final BroadcastReceiver mToLocBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
 
+
+            if ( !"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE)) &&
+                    sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE).startsWith("ins") ) {
+                try {
+                    message = intent.getStringExtra("message");
+                locID = intent.getIntExtra("locID", 0);
+                    cusID = intent.getIntExtra("cusID", 0);
+                    DataManager.getInstance().updateAssetLocationID(assetList, String.valueOf(locID), "move", 0);
+                    Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
+
+                    if (null!=assetList ) {
+                        assetList.clear();
+                    }
+
+
+                    mAdapter.notifyDataSetChanged();
+
+                    fireBugEquipment = DataManager.getInstance().getEquipment(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET));
+                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
+                    assetList.add(fireBugEquipment);
+                    mAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    showToast("Something went wrong Please try again");
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+    };
 
     private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {
         @Override

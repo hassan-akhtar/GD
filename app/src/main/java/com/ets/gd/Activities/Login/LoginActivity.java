@@ -173,6 +173,7 @@ public class LoginActivity extends AppCompatActivity {
         String encryptedDeviceID = md5(deviceID);
         for (int i = 0; i < lstMusers.size(); i++) {
             if (username.equals(lstMusers.get(i).getUserName().trim()) && pass.equals(lstMusers.get(i).getPassword().trim())) {
+                sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USERNAME, lstMusers.get(i).getUserName());
                 doesUserExist = true;
 
                 break;
