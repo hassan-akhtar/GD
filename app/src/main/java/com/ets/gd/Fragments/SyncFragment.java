@@ -140,7 +140,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private void callSyncPostLocationService() {
 
         CommonActions.showProgressDialog(getActivity());
-        tvSyncInProgress.setText("Sync post in progress...");
+        tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncLocation(
                 syncPostAddLocationRequestDTO, this
         );
@@ -152,7 +152,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private void callSyncPostUnitInspectService() {
 
         CommonActions.showProgressDialog(getActivity());
-        tvSyncInProgress.setText("Sync post in progress...");
+        tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postInspectEquipment(
                 syncPostUnitInspectionRequestDTO, this
         );
@@ -166,7 +166,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
         // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
-        tvSyncInProgress.setText("Sync post in progress...");
+        tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncEquipment(
                 syncPostEquipmentRequestDTO, this
         );
@@ -199,7 +199,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
     private void callSyncGetService() {
-        tvSyncInProgress.setText("Sync get in progress...");
+        tvSyncInProgress.setText("Sync in progress...");
         CommonActions.showProgressDialog(getActivity());
         GSDServiceFactory.getService(getActivity()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, Settings.Secure.getString(getActivity().getContentResolver(), Settings.Secure.ANDROID_ID)), this);
     }
@@ -589,7 +589,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
     private void callSyncPostMoveService() {
         CommonActions.showProgressDialog(getActivity());
-        tvSyncInProgress.setText("Sync post in progress...");
+        tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postMoveTransfer(
                 moveTransferRequestDTO, this
         );
