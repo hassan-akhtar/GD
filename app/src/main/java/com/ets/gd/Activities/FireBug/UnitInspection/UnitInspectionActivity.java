@@ -113,8 +113,11 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     private void initObj() {
 
         sharedPreferencesManager = new SharedPreferencesManager(UnitInspectionActivity.this);
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
+                new IntentFilter("replace-complete"));
+
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
         loc = getIntent().getStringExtra("loc");
@@ -296,6 +299,20 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+            String replaceType = intent.getStringExtra("replaceType");
+            int newLocID = intent.getIntExtra("newLocID",0);
+
+            if (message.startsWith("rep")) {
+                saveInspectionAfterReplace(replaceType, newLocID);
+            }
+
+        }
+    };
+
+    private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
 
             if (message.startsWith("fin")) {
                 finish();
@@ -303,6 +320,47 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
         }
     };
+
+    void saveInspectionAfterReplace(String replaceType, int newLocID){
+        UnitinspectionResult inspectionResult = new UnitinspectionResult();
+        inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String timeStamp = sdf.format(new Date()).toString();
+        inspectionResult.setInspectionDate(timeStamp);
+        inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        boolean result = false;
+        if (spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")) {
+            result = true;
+        }
+        inspectionResult.setResult(result);
+
+        RealmList<InspectionStatusCodes> inspectionStatusCodes = new RealmList<InspectionStatusCodes>();
+
+        if (0 < cbGroup.getCheckedIds().size()) {
+
+            List<Object> lst = cbGroup.getCheckedIds();
+            lst.clear();
+            lst = cbGroup.getCheckedIds();
+
+            for (int i = 0; i < lst.size(); i++) {
+                int pos = Integer.parseInt(lst.get(i).toString());
+                StatusCode statusCode = new StatusCode();
+                statusCode = DataManager.getInstance().getStatusCodeID(statusCodesDescList.get(pos));
+                inspectionStatusCodes.add(new InspectionStatusCodes(statusCode.getID()));
+
+            }
+        }
+        inspectionResult.setNewLocationID(newLocID);
+        inspectionResult.setReplaceType(replaceType);
+        inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
+
+        DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
+        showToast("Inspection completed Successfully");
+        sendMessage("finish");
+        finish();
+    }
 
 
     private void sendMessage(String msg) {

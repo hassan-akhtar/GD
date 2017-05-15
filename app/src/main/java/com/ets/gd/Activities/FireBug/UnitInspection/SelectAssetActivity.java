@@ -121,6 +121,7 @@ public class SelectAssetActivity extends AppCompatActivity {
 //                in.putExtra("tagID",assetList.get(position).getCode());
 //                startActivity(in);
                 sendMessage(assetList.get(position).getCode()+" "+repairSelection);
+                ReplaceAssetActivity.newLocID=  assetList.get(position).getID();
                 finish();
             }
 
@@ -152,6 +153,7 @@ public class SelectAssetActivity extends AppCompatActivity {
 //                            in.putExtra("tagID",fireBugEquipment.getCode());
 //                            startActivity(in);
                             sendMessage(fireBugEquipment.getCode()+" "+repairSelection);
+                            ReplaceAssetActivity.newLocID=  fireBugEquipment.getID();
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
@@ -174,6 +176,7 @@ public class SelectAssetActivity extends AppCompatActivity {
 
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(message);
                 if (null != fireBugEquipment) {
+                    ReplaceAssetActivity.newLocID=  fireBugEquipment.getID();
                     sendMessage(fireBugEquipment.getCode()+" "+repairSelection);
                     finish();
 //                    Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);

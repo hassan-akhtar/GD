@@ -538,7 +538,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (responseDTO != null) {
                     if (null != syncGetResponseDTO) {
-                        CommonActions.DismissesDialog();
+
                         tvSyncInProgress.setText("Sync Complete!");
                         // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
 
@@ -556,7 +556,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                         itemList[itemList.length - 1] = "Update Db SUCCESS";
 
-
+                        CommonActions.DismissesDialog();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                       //  sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
                         setCurrentDateAndTime();

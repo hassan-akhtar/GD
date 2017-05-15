@@ -83,6 +83,7 @@ public class RepairAssetActivity extends AppCompatActivity {
                 }
 
                 case R.id.tvRepair: {
+                    ReplaceAssetActivity.replaceType = "Repairs";
                     allRepairs.clear();
                     customerRepairs.clear();
                     allRepairs = DataManager.getInstance().getAllRepairLocations();
@@ -120,7 +121,7 @@ public class RepairAssetActivity extends AppCompatActivity {
 
 
                 case R.id.tvSpare: {
-
+                    ReplaceAssetActivity.replaceType = "Spares";
                     allSpares.clear();
                     customerSpares.clear();
                     allSpares = DataManager.getInstance().getAllSpareLocations();

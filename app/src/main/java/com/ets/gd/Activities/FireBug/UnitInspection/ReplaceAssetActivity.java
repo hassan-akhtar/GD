@@ -26,6 +26,8 @@ public class ReplaceAssetActivity extends AppCompatActivity {
     String taskName, companyName;
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType, code;
+    public static String replaceType;
+    public static  int newLocID=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +100,7 @@ public class ReplaceAssetActivity extends AppCompatActivity {
 
                 case R.id.rlYes: {
                     Toast.makeText(getApplicationContext(), "Asset Successfully Replaced!", Toast.LENGTH_LONG).show();
-                    sendMessage("finish");
+                    sendMessage("replace",replaceType,newLocID  );
                     finish();
                     break;
                 }
@@ -121,10 +123,12 @@ public class ReplaceAssetActivity extends AppCompatActivity {
 
     };
 
-    private void sendMessage(String msg) {
+    private void sendMessage(String msg, String replaceType, int newLocationID) {
         Log.d("sender", "Broadcasting message");
-        Intent intent = new Intent("move-complete");
+        Intent intent = new Intent("replace-complete");
         intent.putExtra("message", msg);
+        intent.putExtra("replaceType", replaceType);
+        intent.putExtra("newLocID", newLocID);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 

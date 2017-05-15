@@ -12,15 +12,19 @@ public class UnitinspectionResult extends RealmObject {
     private String InspectionDate;
     private int UserId;
     private boolean  Result;
+    private int NewLocationID;
+    private String ReplaceType;
     private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
-    public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes) {
+    public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
         EquipmentID = equipmentID;
         InspectionType = inspectionType;
         InspectionDate = inspectionDate;
         UserId = userId;
         Result = result;
         InspectionStatusCodes = inspectionStatusCodes;
+        this.NewLocationID = NewLocationID;
+        this.ReplaceType = ReplaceType;
     }
 
     public UnitinspectionResult() {
@@ -32,6 +36,22 @@ public class UnitinspectionResult extends RealmObject {
 
     public void setInspectionStatusCodes(RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes) {
         InspectionStatusCodes = inspectionStatusCodes;
+    }
+
+    public int getNewLocationID() {
+        return NewLocationID;
+    }
+
+    public void setNewLocationID(int newLocationID) {
+        NewLocationID = newLocationID;
+    }
+
+    public String getReplaceType() {
+        return ReplaceType;
+    }
+
+    public void setReplaceType(String replaceType) {
+        ReplaceType = replaceType;
     }
 
     public int getEquipmentID() {
