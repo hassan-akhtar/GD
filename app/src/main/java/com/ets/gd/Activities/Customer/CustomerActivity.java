@@ -1,5 +1,6 @@
 package com.ets.gd.Activities.Customer;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -8,7 +9,10 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,10 +49,15 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
     private RecyclerView rvCustomers;
     private CustomerAdapter customerAdapter;
     TextView companiesCount;
+    ImageView ivCross;
+    EditText etSearch;
     private List<AllCustomers> customerList;
+    private List<AllCustomers> customerFilteredList = new ArrayList<AllCustomers>();
     CommonActions ca;
+    RelativeLayout rlHeader, rlSearchView;
     ImageView ivBack, ivTick;
     TextView tbTitleBottom;
+    boolean isSearching = false;
     SharedPreferencesManager sharedPreferencesManager;
     String compName;
 
@@ -64,11 +73,16 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
     private void initViews() {
         rvCustomers = (RecyclerView) findViewById(R.id.rvCustomers);
+        rlHeader = (RelativeLayout) findViewById(R.id.rlHeader);
+        ivCross = (ImageView) findViewById(R.id.ivCross);
+        etSearch = (EditText) findViewById(R.id.etSearch);
+        rlSearchView = (RelativeLayout) findViewById(R.id.rlSearchView);
         companiesCount = (TextView) findViewById(R.id.tvCompCount);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
-        ivTick.setVisibility(View.GONE);
+       // ivTick.setVisibility(View.GONE);
+        ivTick.setImageDrawable(getResources().getDrawable(R.drawable.green_search_glass));
     }
 
     private void initObj() {
@@ -82,23 +96,41 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
     private void initListeners() {
 
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        ivCross.setOnClickListener(mGlobal_OnClickListener);
+        ivTick.setOnClickListener(mGlobal_OnClickListener);
 
         rvCustomers.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(CustomerActivity.this, rvCustomers, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
 
-                if (!customerList.get(position).getCode().toLowerCase().equals(compName)) {
-                    Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
-                    sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID,customerList.get(position).getID());
-                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME,customerList.get(position).getCode());
-                    in.putExtra("compName",customerList.get(position).getCode());
-                    in.putExtra("cusID",customerList.get(position).getID());
-                    in.putExtra("type","transfer");
-                    startActivity(in);
-                    finish();
+                if (isSearching) {
+                    if (!customerFilteredList.get(position).getCode().toLowerCase().equals(compName)) {
+                        Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID, customerFilteredList.get(position).getID());
+                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, customerFilteredList.get(position).getCode());
+                        in.putExtra("compName", customerFilteredList.get(position).getCode());
+                        in.putExtra("cusID", customerFilteredList.get(position).getID());
+                        in.putExtra("type", "transfer");
+                        startActivity(in);
+                        finish();
+                    } else {
+                        Toast.makeText(CustomerActivity.this, "You can not transfer Asset to same company", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CustomerActivity.this, "Please select any other company", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(CustomerActivity.this,"You can not transfer Asset to same company",Toast.LENGTH_SHORT).show();
-                    Toast.makeText(CustomerActivity.this,"Please select any other company",Toast.LENGTH_LONG).show();
+                    if (!customerList.get(position).getCode().toLowerCase().equals(compName)) {
+                        Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
+                        sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID, customerList.get(position).getID());
+                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, customerList.get(position).getCode());
+                        in.putExtra("compName", customerList.get(position).getCode());
+                        in.putExtra("cusID", customerList.get(position).getID());
+                        in.putExtra("type", "transfer");
+                        startActivity(in);
+                        finish();
+                    } else {
+                        Toast.makeText(CustomerActivity.this, "You can not transfer Asset to same company", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CustomerActivity.this, "Please select any other company", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
 
@@ -107,8 +139,83 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
             }
         }));
+
+
+
+
+
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                if("".equals(s.toString())){
+                    isSearching=false;
+                    customerFilteredList.clear();
+                    companiesCount.setText("" + customerList.size());
+                    customerAdapter = new CustomerAdapter(CustomerActivity.this, customerList);
+                    rvCustomers.setAdapter(customerAdapter);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);
+                    rvCustomers.setLayoutManager(mLayoutManager);
+                    rvCustomers.setItemAnimator(new DefaultItemAnimator());
+                    customerAdapter.notifyDataSetChanged();
+                }else{
+                    isSearching = true;
+                    updateAdapterForSearchKey(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
+
+    public void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                etSearch.getWindowToken(), 0);
+    }
+
+    public void showKeyboard() {
+        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
+
+    public  void updateAdapterForSearchKey(String query){
+        query = query.toString().toLowerCase();
+        
+            customerFilteredList.clear();
+            for (int i = 0; i < customerList.size(); i++) {
+
+                final String name = customerList.get(i).getCode().toLowerCase();
+                if (name.startsWith(query)) {
+                    customerFilteredList.add(customerList.get(i));
+                }
+            }
+
+            if (0 == customerFilteredList.size()) {
+                companiesCount.setText("0");
+                customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
+                rvCustomers.setAdapter(customerAdapter);
+                customerAdapter.notifyDataSetChanged();  // data set changed
+            } else {
+                companiesCount.setText(""+customerFilteredList.size());
+                rvCustomers.setLayoutManager(new LinearLayoutManager(CustomerActivity.this));
+                customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
+                rvCustomers.setAdapter(customerAdapter);
+                customerAdapter.notifyDataSetChanged();  // data set changed
+            }
+        
+    }
+    
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
@@ -116,18 +223,43 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
                     finish();
                     break;
                 }
+
+                case R.id.ivTick: {
+                    showKeyboard();
+                    rlHeader.setVisibility(View.INVISIBLE);
+                    rlSearchView.setVisibility(View.VISIBLE);
+                    etSearch.setText("");
+                    break;
+                }
+
+
+                case R.id.ivCross: {
+                    hideKeyboard();
+                    customerFilteredList.clear();
+                    rlHeader.setVisibility(View.VISIBLE);
+                    rlSearchView.setVisibility(View.GONE);
+                    etSearch.setText("");
+                    companiesCount.setText("" + customerList.size());
+                    customerAdapter = new CustomerAdapter(CustomerActivity.this, customerList);
+                    rvCustomers.setAdapter(customerAdapter);
+                    RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);
+                    rvCustomers.setLayoutManager(mLayoutManager);
+                    rvCustomers.setItemAnimator(new DefaultItemAnimator());
+                    customerAdapter.notifyDataSetChanged();
+                    break;
+                }
+
             }
         }
 
     };
 
 
-
     void getCustomersCall() {
 
         customerList = DataManager.getInstance().getAllCustomerList();
-        companiesCount.setText(""+customerList.size());
-        customerAdapter = new CustomerAdapter(CustomerActivity.this,customerList);
+        companiesCount.setText("" + customerList.size());
+        customerAdapter = new CustomerAdapter(CustomerActivity.this, customerList);
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CustomerActivity.this);
         rvCustomers.setLayoutManager(mLayoutManager);

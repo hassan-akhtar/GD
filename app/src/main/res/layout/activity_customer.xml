@@ -7,13 +7,46 @@
     tools:context="com.ets.gd.Activities.Customer.CustomerActivity">
 
 
+
+    <RelativeLayout
+        android:id="@+id/rlSearchView"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+
+        <ImageView
+            android:id="@+id/ivCross"
+            android:layout_width="32dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/ic_cross_new" />
+
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/ivCross"
+            android:background="@drawable/et_bottom_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="20dp"
+            android:hint="Search"
+            android:maxLines="1"
+            android:paddingLeft="12dp" />
+
+    </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/rlHeader"
+        android:visibility="visible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <include
-            android:id="@+id/include"
+            android:id="@+id/topHeader"
             layout="@layout/activity_header_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
