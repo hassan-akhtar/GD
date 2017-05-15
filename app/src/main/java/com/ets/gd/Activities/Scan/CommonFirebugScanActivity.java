@@ -38,7 +38,11 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.LocationMoved;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Move;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -52,7 +56,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CommonFirebugScanActivity extends AppCompatActivity {
+public class CommonFirebugScanActivity extends AppCompatActivity implements BarcodeScan, LocationMoved {
 
 
     SharedPreferencesManager sharedPreferencesManager;
@@ -393,6 +397,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     in.putExtra("tag", "" + assetList.get(0).getCode());
                     if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
+                        in.putExtra("location", "" + assetList.get(0).getLocation().getCode());
                         in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
                         int DeviceTypeID = 0;
                         if (0 != assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
@@ -462,6 +467,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to Change Location of " + String.valueOf(assetList.get(0).getCode())+" ?")
                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                       setlistener();
                         Intent in = new Intent(CommonFirebugScanActivity.this,
                                 SelectLocationActivity.class);
                         in.putExtra("compName", tvCompanyValue.getText().toString());
@@ -478,9 +484,14 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void setlistener() {
+        SelectLocationActivity.locationMoved = this;
+    }
+
     private void checkCameraPermission() {
 
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            BarcodeScanActivity.barcodeScan = this;
             Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
             in.putExtra("taskType", taskType);
             startActivity(in);
@@ -535,6 +546,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 }
 
             } else {
+                BarcodeScanActivity.barcodeScan = this;
                 Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", taskType);
                 startActivity(in);
@@ -549,6 +561,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         if (requestCode == CAMERA_PERMISSION_CONSTANT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
+                BarcodeScanActivity.barcodeScan = this;
                 Intent in = new Intent(CommonFirebugScanActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", taskType);
                 startActivity(in);
@@ -591,7 +604,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            String message = intent.getStringExtra("message");
+         /*   String message = intent.getStringExtra("message");
             String task = intent.getStringExtra("taskType");
 
             if (!task.startsWith("loc")) {
@@ -695,7 +708,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     showToast(taskType + ": " + message);
                 }
             }
-
+*/
 
         }
     };
@@ -703,7 +716,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
 
-
+/*
             if ( !"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE)) &&
                     sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE).startsWith("ins") ) {
                 try {
@@ -711,7 +724,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                 locID = intent.getIntExtra("locID", 0);
                     cusID = intent.getIntExtra("cusID", 0);
                     DataManager.getInstance().updateAssetLocationID(assetList, String.valueOf(locID), "move", 0);
-                    Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Asset(s) Location Changed!", Toast.LENGTH_LONG).show();
 
                     if (null!=assetList ) {
                         assetList.clear();
@@ -728,7 +741,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
                     showToast("Something went wrong Please try again");
                     e.printStackTrace();
                 }
-            }
+            }*/
 
 
         }
@@ -757,5 +770,145 @@ public class CommonFirebugScanActivity extends AppCompatActivity {
 
     void showToast(String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void BarcodeScanned(Barcode barcode) {
+
+        String message = barcode.getMessage();
+        String task = barcode.getTask();
+
+        if (!task.startsWith("loc")) {
+            if (task.toLowerCase().startsWith("v")) {
+                tvBarcodeValue.setText(message);
+                etBarcode.setVisibility(View.INVISIBLE);
+                tvBarcodeTitle.setVisibility(View.VISIBLE);
+                tvBarcodeValue.setVisibility(View.VISIBLE);
+                btnCross.setVisibility(View.VISIBLE);
+                llunderText.setVisibility(View.GONE);
+                llbtns.setVisibility(View.VISIBLE);
+            } else if (task.toLowerCase().startsWith("m")) {
+                fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                    if (!assetList.contains(fireBugEquipment)) {
+                        hideKeyboard();
+                        if (clearAssets) {
+                            assetList.clear();
+                        }
+                        etBarcode.setText("");
+                        rlBottomSheet.setVisibility(View.VISIBLE);
+                        assetList.add(fireBugEquipment);
+                        tvTaskName.setText("MOVE ASSET");
+                        tvCount.setText("" + assetList.size());
+                        tvCountSupportText.setText("Asset Selected to Move");
+                        mAdapter.notifyDataSetChanged();
+                        clearAssets = false;
+                    } else {
+                        hideKeyboard();
+                        Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                    }
+                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
+                } else {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                }
+
+
+            } else if (task.toLowerCase().startsWith("t")) {
+                fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                    if (!assetList.contains(fireBugEquipment)) {
+                        if (clearAssets) {
+                            assetList.clear();
+                        }
+                        hideKeyboard();
+                        etBarcode.setText("");
+                        rlBottomSheet.setVisibility(View.VISIBLE);
+                        assetList.add(fireBugEquipment);
+                        tvTaskName.setText("TRANSFER ASSET");
+                        tvCount.setText("" + assetList.size());
+                        tvCountSupportText.setText("Asset Selected to TRANSFER");
+                        mAdapter.notifyDataSetChanged();
+                        clearAssets = false;
+                    } else {
+                        hideKeyboard();
+                        Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                    }
+                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
+                } else {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                }
+
+            } else if (task.toLowerCase().startsWith("ins")) {
+                fireBugEquipment = DataManager.getInstance().getEquipment(message);
+                currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                    if (!assetList.contains(fireBugEquipment)) {
+                        assetList.clear();
+                        etBarcode.setText("");
+                        hideKeyboard();
+                        rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
+
+                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
+                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET,fireBugEquipment.getCode());
+                        assetList.add(fireBugEquipment);
+                        mAdapter.notifyDataSetChanged();
+                    } else {
+                        hideKeyboard();
+                        Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
+                    }
+                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
+                } else {
+                    hideKeyboard();
+                    Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
+                }
+
+            } else {
+                showToast(taskType + ": " + message);
+            }
+        }
+
+
+    }
+
+    @Override
+    public void MoveLocation(Move move) {
+
+        if ( !"Not Found".equals(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE)) &&
+                sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE).startsWith("ins") ) {
+            try {
+                locID = move.getLocID();
+                cusID = move.getCuID();
+                DataManager.getInstance().updateAssetLocationID(assetList, String.valueOf(locID), "move", 0);
+                Toast.makeText(getApplicationContext(), "Asset(s) Location Changed!", Toast.LENGTH_LONG).show();
+
+                if (null!=assetList ) {
+                    assetList.clear();
+                }
+
+
+                mAdapter.notifyDataSetChanged();
+
+                fireBugEquipment = DataManager.getInstance().getEquipment(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET));
+                sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
+                assetList.add(fireBugEquipment);
+                mAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+                showToast("Something went wrong Please try again");
+                e.printStackTrace();
+            }
+        }
     }
 }

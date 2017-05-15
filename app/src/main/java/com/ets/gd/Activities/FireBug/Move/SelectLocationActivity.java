@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
@@ -27,9 +28,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
+import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.LocationMoved;
+import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Move;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -39,7 +45,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 
-public class SelectLocationActivity extends AppCompatActivity {
+public class SelectLocationActivity extends AppCompatActivity implements BarcodeScan{
 
 
     ImageView ivBack, ivChangeCompany, ivTick;
@@ -55,6 +61,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     private static final int REQUEST_PERMISSION_SETTING = 101;
     String location, taskType, assetLoc;
     int cusID;
+    public static LocationMoved locationMoved;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +155,8 @@ public class SelectLocationActivity extends AppCompatActivity {
 
                 if (taskType.startsWith("ins")) {
                     if (!assetLoc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
-                        sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
+                       // sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
+                        locationMoved.MoveLocation(new Move(locList.get(position).getID(),cusID));
                         finish();
                     } else {
                         Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
@@ -186,7 +194,8 @@ public class SelectLocationActivity extends AppCompatActivity {
                         if (null != loc) {
                             if (taskType.startsWith("ins")) {
                                 if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
-                                    sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                    //sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                    locationMoved.MoveLocation(new Move(loc.getID(),cusID));
                                     finish();
                                 } else {
                                     Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
@@ -214,6 +223,7 @@ public class SelectLocationActivity extends AppCompatActivity {
     private void checkCameraPermission() {
 
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            BarcodeScanActivity.barcodeScan = this;
             Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
             in.putExtra("taskType", "loc");
             startActivity(in);
@@ -268,6 +278,7 @@ public class SelectLocationActivity extends AppCompatActivity {
                 }
 
             } else {
+                BarcodeScanActivity.barcodeScan = this;
                 Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", "loc");
                 startActivity(in);
@@ -286,10 +297,49 @@ public class SelectLocationActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
+                BarcodeScanActivity.barcodeScan = this;
+                Intent in = new Intent(SelectLocationActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", "loc");
+                startActivity(in);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(SelectLocationActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(SelectLocationActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(SelectLocationActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN, true);
+                    Toast.makeText(getBaseContext(), "Unable to get Permission", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
     private final BroadcastReceiver mBarcodeBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
+           /* String message = intent.getStringExtra("message");
             String task = intent.getStringExtra("taskType");
             if (task.startsWith("loc")) {
 
@@ -317,8 +367,44 @@ public class SelectLocationActivity extends AppCompatActivity {
                     e.printStackTrace();
                     Toast.makeText(getApplicationContext(), "Invalid Int (barcode)", Toast.LENGTH_LONG).show();
                 }
-            }
+            }*/
 
         }
     };
+
+    @Override
+    public void BarcodeScanned(Barcode barcode) {
+
+        String message = barcode.getMessage();
+        String task = barcode.getTask();
+        if (task.startsWith("loc")) {
+
+            try {
+                Locations loc = DataManager.getInstance().getLocation(message);
+                if (null != loc) {
+                    if (taskType.startsWith("ins")) {
+                        if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                          //  sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                            locationMoved.MoveLocation(new Move(loc.getID(),cusID));
+                            finish();
+                        } else {
+                            Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
+
+                        }
+                    } else {
+                        sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                        finish();
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                Toast.makeText(getApplicationContext(), "Invalid Int (barcode)", Toast.LENGTH_LONG).show();
+            }
+        }
+
+    }
 }

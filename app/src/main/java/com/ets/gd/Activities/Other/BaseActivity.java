@@ -90,7 +90,7 @@ public class BaseActivity extends AppCompatActivity
         llDeviceInfo = drawer.findViewById(R.id.llDeviceInfo);
         llLogout = drawer.findViewById(R.id.llLogout);
         username = (TextView) drawer.findViewById(R.id.username);
-        username .setText(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USER_ID));
+        username .setText(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERNAME));
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         drawerFragment.setDrawerListener(this);
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {

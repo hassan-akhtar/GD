@@ -301,11 +301,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             showToast("Please enter Serial Number");
         } else if ("".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {
             showToast("Please select Manufacturer date");
-        } else if (0 == AssetInformationFragment.posVendor) {
-            showToast("Please select a Vendor");
-        } else if (0 == AssetInformationFragment.posAgent) {
-            showToast("Please select a Agent");
-        } else {
+        }  else {
             return true;
         }
 

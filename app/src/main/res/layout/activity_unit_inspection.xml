@@ -175,10 +175,30 @@
 
 
             <RelativeLayout
-                android:id="@+id/rlStatusCode"
+                android:id="@+id/rlInspectionResult"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/rlInspType"
+                android:layout_marginTop="28dp">
+
+
+                <Spinner
+                    android:id="@+id/spInspectionResult"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/rlStatusCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlInspectionResult"
                 android:layout_marginTop="28dp">
 
                 <TextView
@@ -225,26 +245,6 @@
                     </com.ets.gd.Adapters.CheckBoxGroupView>
 
                 </RelativeLayout>
-            </RelativeLayout>
-
-
-            <RelativeLayout
-                android:id="@+id/rlInspectionResult"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlStatusCode"
-                android:layout_marginTop="28dp">
-
-
-                <Spinner
-                    android:id="@+id/spInspectionResult"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="23dp"
-                    android:layout_marginRight="23dp"
-                    android:background="@drawable/sp_bg_new"
-                    android:paddingBottom="10dp" />
             </RelativeLayout>
 
 

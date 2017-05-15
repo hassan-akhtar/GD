@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Models.Barcode;
 import com.ets.gd.R;
 
 import org.greenrobot.eventbus.EventBus;
@@ -20,6 +23,7 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
     private ZBarScannerView mScannerView;
     private String barCode;
     private String taskType;
+    public static BarcodeScan barcodeScan;
 
 
     @Override
@@ -67,11 +71,13 @@ public class BarcodeScanActivity extends AppCompatActivity implements ZBarScanne
 
 
     private void sendMessage(String msg) {
-        Log.d("sender", "Broadcasting message");
+/*        Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("barcode-scanned");
         intent.putExtra("message", msg);
         intent.putExtra("taskType", taskType);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);*/
+
+        barcodeScan.BarcodeScanned(new Barcode(msg, taskType));
     }
 
 }

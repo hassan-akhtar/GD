@@ -9,6 +9,8 @@ public class MobileUser  extends RealmObject {
     @PrimaryKey
     private int ID;
     private String UserName;
+    private String FirstName;
+    private String LastName;
     private String Password;
     private String CustomerId;
     private String UserProfileId;
@@ -36,6 +38,22 @@ public class MobileUser  extends RealmObject {
 
     public void setPassword(String password) {
         Password = password;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 
     public String getCustomerId() {

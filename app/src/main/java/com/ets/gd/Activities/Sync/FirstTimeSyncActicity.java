@@ -140,6 +140,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
 
     @Override
     public void onFailure(ResponseDTO errorDTO) {
+        btnSync.setEnabled(true);
         CommonActions.DismissesDialog();
         if (404 == errorDTO.getCode())
             Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
