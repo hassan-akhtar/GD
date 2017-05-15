@@ -535,6 +535,21 @@ public class DataManager {
         return realm.where(Locations.class).equalTo("Customer.ID", compCode).findAll();
     }
 
+    // For getting asset all locations from DB
+    public List<FireBugEquipment> getAllCompanyAssets(int compCode) {
+        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", compCode).findAll();
+    }
+
+    // For getting asset all locations from DB
+    public List<Locations> getAllRepairLocations() {
+        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Repairs").findAll();
+    }
+
+    // For getting asset all locations from DB
+    public List<Locations> getAllSpareLocations() {
+        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Spares").findAll();
+    }
+
 
     // For getting asset all assets from DB
     public Customer getCustomerByID(int Code) {

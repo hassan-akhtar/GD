@@ -40,9 +40,9 @@ public class SelectAssetActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvUnderText, tvBarcodeTitle, tvBarcodeValue;
     Button btnScan, btnCross;
     RecyclerView rlLocs;
-    List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
+    public static List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
     Context mContext;
-    String compName;
+    String compName, repairSelection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,12 +83,13 @@ public class SelectAssetActivity extends AppCompatActivity {
                 new IntentFilter("barcode-scanned"));
         mContext = this;
         compName = getIntent().getStringExtra("compName");
+        repairSelection = getIntent().getStringExtra("repairSelection");
         tvCompanyValue.setText(compName);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
-        setupLocList();
+        //setupLocList();
         mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rlLocs.setLayoutManager(mLayoutManager);
@@ -100,7 +101,7 @@ public class SelectAssetActivity extends AppCompatActivity {
     private void setupLocList() {
 
         assetList.clear();
-        assetList = DataManager.getInstance().getAllAssets();
+        assetList = DataManager.getInstance().getAllCompanyAssets(DataManager.getInstance().getCustomerByCode(compName).getID());
     }
 
 
@@ -115,10 +116,11 @@ public class SelectAssetActivity extends AppCompatActivity {
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectAssetActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-                in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                in.putExtra("tagID",assetList.get(position).getCode());
-                startActivity(in);
+//                Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+//                in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+//                in.putExtra("tagID",assetList.get(position).getCode());
+//                startActivity(in);
+                sendMessage(assetList.get(position).getCode()+" "+repairSelection);
                 finish();
             }
 
@@ -145,10 +147,11 @@ public class SelectAssetActivity extends AppCompatActivity {
                     } else {
                         FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString().toString());
                         if (null != fireBugEquipment) {
-                            Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-                            in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                            in.putExtra("tagID",fireBugEquipment.getCode());
-                            startActivity(in);
+//                            Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+//                            in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+//                            in.putExtra("tagID",fireBugEquipment.getCode());
+//                            startActivity(in);
+                            sendMessage(fireBugEquipment.getCode()+" "+repairSelection);
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
@@ -171,11 +174,12 @@ public class SelectAssetActivity extends AppCompatActivity {
 
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(message);
                 if (null != fireBugEquipment) {
+                    sendMessage(fireBugEquipment.getCode()+" "+repairSelection);
                     finish();
-                    Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-                    in.putExtra("tagID",fireBugEquipment.getCode());
-                    startActivity(in);
+//                    Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
+//                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
+//                    in.putExtra("tagID",fireBugEquipment.getCode());
+//                    startActivity(in);
 
                 } else {
                     Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
@@ -184,4 +188,11 @@ public class SelectAssetActivity extends AppCompatActivity {
 
         }
     };
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("moveToLoc");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 }

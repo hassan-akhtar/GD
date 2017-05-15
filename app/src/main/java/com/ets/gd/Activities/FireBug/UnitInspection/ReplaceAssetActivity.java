@@ -109,7 +109,8 @@ public class ReplaceAssetActivity extends AppCompatActivity {
                 }
 
                 case R.id.btnSelectLoc: {
-                    Intent in = new Intent(ReplaceAssetActivity.this, SelectAssetActivity.class);
+                    Intent in = new Intent(ReplaceAssetActivity.this, RepairAssetActivity.class);
+                    in.putExtra("tagCode", code);
                     in.putExtra("compName", companyName);
                     startActivity(in);
                     break;

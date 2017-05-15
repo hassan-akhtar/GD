@@ -349,15 +349,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 posInspectionResult = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
 
-
                 if ("fail".equals(strSelectedState.toLowerCase())) {
                     isFail = true;
-                } else {
-                    isFail = false;
-                }
-
-
-             /*   if ("fail".equals(strSelectedState.toLowerCase())) {
                     tvReplace.setVisibility(View.VISIBLE);
                     lp.weight = 1;
                     tvReplace.setLayoutParams(lp);
@@ -365,13 +358,14 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     tvCancel.setLayoutParams(lp);
 
                 } else {
+                    isFail = false;
                     tvReplace.setVisibility(View.GONE);
                     lp.weight = 0;
                     tvReplace.setLayoutParams(lp);
                     lp.weight = 1.5f;
                     tvSave.setLayoutParams(lp);
                     tvCancel.setLayoutParams(lp);
-                }*/
+                }
                 if (0 == position) {
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);

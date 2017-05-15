@@ -15,6 +15,8 @@ public class Locations extends RealmObject {
     private boolean isAdded;
     private Site Site;
     private Building Building;
+    private LocationTypeVM locationTypeVM;
+
 
     public Locations(String code, String description, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.Site site, com.ets.gd.NetworkLayer.ResponseDTOs.Building building, boolean isAdded) {
         Code = code;
@@ -99,5 +101,13 @@ public class Locations extends RealmObject {
 
     public void setBuilding(com.ets.gd.NetworkLayer.ResponseDTOs.Building building) {
         Building = building;
+    }
+
+    public LocationTypeVM getLocationTypeVM() {
+        return locationTypeVM;
+    }
+
+    public void setLocationTypeVM(LocationTypeVM locationTypeVM) {
+        this.locationTypeVM = locationTypeVM;
     }
 }

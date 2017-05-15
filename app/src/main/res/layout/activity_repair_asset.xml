@@ -82,7 +82,7 @@
                 android:textSize="17sp"
                 android:textColor="@color/blueDark"
                 android:layout_toRightOf="@+id/tvText"
-                android:text="Repairs:"
+                android:text="Options(s):"
                 android:textStyle="bold" />
 
             <View
@@ -92,13 +92,13 @@
                 android:background="@color/greyLight"/>
 
             <TextView
-                android:id="@+id/tvDsiRepair"
+                android:id="@+id/tvRepair"
                 android:layout_width="match_parent"
                 android:padding="7dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/tvText"
-                android:text="DSI Repairs" />
+                android:text=" Repairs" />
 
             <View
                 android:layout_marginTop="5dp"
@@ -107,13 +107,13 @@
                 android:background="@color/greyLight"/>
 
             <TextView
-                android:id="@+id/tvGDRepair"
+                android:id="@+id/tvSpare"
                 android:padding="7dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/tvText"
-                android:text="GD Repairs" />
+                android:text=" Spares" />
 
 
             <View
