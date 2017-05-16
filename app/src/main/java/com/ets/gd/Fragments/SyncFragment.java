@@ -302,7 +302,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     equipment.setAgentID(fireBugEquipment.getAgentType().getID());
                 }
 
-                equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
+                if (null!=fireBugEquipment.getLocation()) {
+                    equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
+                } else {
+                }
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
 

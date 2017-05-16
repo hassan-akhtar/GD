@@ -202,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     void showToast(String msg) {
-        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
 

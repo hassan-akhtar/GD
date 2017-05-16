@@ -64,6 +64,8 @@ public class RepairAssetActivity extends AppCompatActivity {
         tvCompanyValue.setText("" + compName);
         tvTagID.setText("" + tagId);
         allCustomerAssets = DataManager.getInstance().getAllCompanyAssets(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+        allRepairs = DataManager.getInstance().getAllRepairLocations();
+        allSpares = DataManager.getInstance().getAllSpareLocations();
     }
 
 
@@ -84,9 +86,7 @@ public class RepairAssetActivity extends AppCompatActivity {
 
                 case R.id.tvRepair: {
                     ReplaceAssetActivity.replaceType = "Repairs";
-                    allRepairs.clear();
-                    customerRepairs.clear();
-                    allRepairs = DataManager.getInstance().getAllRepairLocations();
+
 
                     if (null!=allRepairs && 0!=allRepairs.size() && null!=allCustomerAssets && 0!=allCustomerAssets.size()) {
 
@@ -109,10 +109,10 @@ public class RepairAssetActivity extends AppCompatActivity {
                             startActivity(in);
                             finish();
                         } else {
-                            Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Repairs.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Repairs.",Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Repairs.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Repairs.",Toast.LENGTH_SHORT).show();
                     }
                     // sendMessage(tagId+" "+repairSelection);
 
@@ -122,10 +122,6 @@ public class RepairAssetActivity extends AppCompatActivity {
 
                 case R.id.tvSpare: {
                     ReplaceAssetActivity.replaceType = "Spares";
-                    allSpares.clear();
-                    customerSpares.clear();
-                    allSpares = DataManager.getInstance().getAllSpareLocations();
-
                     if (null!=allSpares && 0!=allSpares.size() && null!=allCustomerAssets && 0!=allCustomerAssets.size()) {
 
                         for (int i=0; i<allCustomerAssets.size();i++){
@@ -147,10 +143,10 @@ public class RepairAssetActivity extends AppCompatActivity {
                             startActivity(in);
                             finish();
                         } else {
-                            Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Spares.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Spares.",Toast.LENGTH_SHORT).show();
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Spares.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Spares.",Toast.LENGTH_SHORT).show();
                     }
                     // sendMessage(tagId+" "+repairSelection);
 

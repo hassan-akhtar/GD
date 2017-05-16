@@ -132,7 +132,11 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         if (1 < locationNames.length) {
             btnViewAllLocations.setVisibility(View.VISIBLE);
-            tvFromLoc.setText(loc + " in " + tvCompanyValue.getText().toString() + ",...");
+            if (loc.length()<17) {
+                tvFromLoc.setText(loc + " in " + tvCompanyValue.getText().toString() + ",...");
+            }else{
+                tvFromLoc.setText(loc.substring(0,15)+ "..." + " in " + tvCompanyValue.getText().toString() + ",...");
+            }
 
         } else {
             btnViewAllLocations.setVisibility(View.GONE);

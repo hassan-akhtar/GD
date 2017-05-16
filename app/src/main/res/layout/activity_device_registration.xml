@@ -57,16 +57,27 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/rlHeader">
 
+        <TextView
+            android:id="@+id/tvURL"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please Enter Company URL:"
+            android:textColor="@color/blueDark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
         <EditText
             android:id="@+id/etCustomerID"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:layout_marginEnd="64dp"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginEnd="44dp"
+            android:layout_marginStart="44dp"
+            android:layout_below="@+id/tvURL"
             android:background="@drawable/et_bottom_line"
             android:ems="10"
-            android:hint="Company URL"
+            android:hint="http://example.com"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/veryLightGrey" />
 
