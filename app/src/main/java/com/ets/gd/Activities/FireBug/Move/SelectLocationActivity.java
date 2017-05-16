@@ -161,7 +161,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                         finish();
                     } else {
                         Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
 
                     }
                 } else {

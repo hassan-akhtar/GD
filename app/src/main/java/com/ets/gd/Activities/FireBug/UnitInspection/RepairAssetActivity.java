@@ -55,6 +55,8 @@ public class RepairAssetActivity extends AppCompatActivity {
         tvTagID = (TextView) findViewById(R.id.tvTagID);
         ivChangeCompany.setVisibility(View.GONE);
         ivTick.setVisibility(View.GONE);
+
+
     }
 
     private void initObj() {
@@ -66,6 +68,34 @@ public class RepairAssetActivity extends AppCompatActivity {
         allCustomerAssets = DataManager.getInstance().getAllCompanyAssets(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
         allRepairs = DataManager.getInstance().getAllRepairLocations();
         allSpares = DataManager.getInstance().getAllSpareLocations();
+
+
+        if (null!=allCustomerAssets && 0!=allCustomerAssets.size() && null!=allRepairs && 0!=allRepairs.size() ) {
+            for (int i = 0; i < allCustomerAssets.size(); i++) {
+                for (int j = 0; j < allRepairs.size(); j++) {
+                    if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allRepairs.get(j).getCode().toLowerCase())) {
+                        customerRepairs.add(allCustomerAssets.get(i));
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        if (null!=allCustomerAssets && 0!=allCustomerAssets.size() && null!=allSpares && 0!=allSpares.size() ) {
+            for (int i = 0; i < allCustomerAssets.size(); i++) {
+                for (int j = 0; j < allSpares.size(); j++) {
+                    if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allSpares.get(j).getCode().toLowerCase())) {
+                        customerSpares.add(allCustomerAssets.get(i));
+                        break;
+                    }
+                }
+            }
+
+        }
+
+        tvRepair.setText("Repairs "+"("+customerRepairs.size()+")");
+        tvSpare.setText("Spares "+"("+customerSpares.size()+")");
     }
 
 
@@ -89,15 +119,6 @@ public class RepairAssetActivity extends AppCompatActivity {
 
 
                     if (null!=allRepairs && 0!=allRepairs.size() && null!=allCustomerAssets && 0!=allCustomerAssets.size()) {
-
-                        for (int i=0; i<allCustomerAssets.size();i++){
-                            for (int j=0; j<allRepairs.size();j++) {
-                                if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allRepairs.get(j).getCode().toLowerCase())) {
-                                    customerRepairs.add(allCustomerAssets.get(i));
-                                    break;
-                                }
-                            }
-                        }
 
                         if (null!=customerRepairs && 0!=customerRepairs.size()) {
                             repairSelection = "Repairs";
@@ -124,14 +145,6 @@ public class RepairAssetActivity extends AppCompatActivity {
                     ReplaceAssetActivity.replaceType = "Spares";
                     if (null!=allSpares && 0!=allSpares.size() && null!=allCustomerAssets && 0!=allCustomerAssets.size()) {
 
-                        for (int i=0; i<allCustomerAssets.size();i++){
-                            for (int j=0; j<allSpares.size();j++) {
-                                if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allSpares.get(j).getCode().toLowerCase())) {
-                                    customerSpares.add(allCustomerAssets.get(i));
-                                    break;
-                                }
-                            }
-                        }
 
                         if (null!=customerSpares && 0!=customerSpares.size()) {
                             repairSelection = "Spares";
