@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import com.ets.gd.Adapters.CheckBoxGroupView;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Interfaces.AssetReplaced;
+import com.ets.gd.Models.Replace;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
@@ -44,7 +46,7 @@ import java.util.TimeZone;
 
 import io.realm.RealmList;
 
-public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener {
+public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener, AssetReplaced {
 
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
@@ -111,13 +113,10 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     }
 
     private void initObj() {
-
+        ReplaceAssetActivity.assetReplaced = this;
         sharedPreferencesManager = new SharedPreferencesManager(UnitInspectionActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mReplaceCompleteBroadcastReceiver,
-                new IntentFilter("replace-complete"));
-
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
         loc = getIntent().getStringExtra("loc");
@@ -296,20 +295,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
     }
 
-    private final BroadcastReceiver mReplaceCompleteBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String message = intent.getStringExtra("message");
-            String replaceType = intent.getStringExtra("replaceType");
-            int newLocID = intent.getIntExtra("newLocID",0);
-            int newEqipID = intent.getIntExtra("newEquipmentID",0);
-
-            if (message.startsWith("rep")) {
-                saveInspectionAfterReplace(replaceType, newLocID,newEqipID);
-            }
-
-        }
-    };
 
     private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -323,7 +308,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
     };
 
-    void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID){
+    void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
         inspectionResult.setReplaced(true);
@@ -462,5 +447,17 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
 
+    }
+
+    @Override
+    public void AssetReplaced(Replace replace) {
+        String message = replace.getMessage();
+        String replaceType = replace.getReplaceType();
+        int newLocID = replace.getNewLocID();
+        int newEqipID = replace.getNewEqipID();
+
+        if (message.startsWith("rep")) {
+            saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
+        }
     }
 }

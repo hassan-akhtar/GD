@@ -156,7 +156,6 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                 if (taskType.startsWith("ins")) {
                     if (!assetLoc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
                        // sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
-                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, tvCompanyValue.getText().toString());
                         locationMoved.MoveLocation(new Move(locList.get(position).getID(),cusID));
                         finish();
                     } else {
@@ -196,7 +195,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                             if (taskType.startsWith("ins")) {
                                 if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
                                     //sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                                    sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, tvCompanyValue.getText().toString());
+
                                     locationMoved.MoveLocation(new Move(loc.getID(),cusID));
                                     finish();
                                 } else {
@@ -387,7 +386,6 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                     if (taskType.startsWith("ins")) {
                         if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
                           //  sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, tvCompanyValue.getText().toString());
                             locationMoved.MoveLocation(new Move(loc.getID(),cusID));
                             finish();
                         } else {

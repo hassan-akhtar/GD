@@ -104,93 +104,142 @@ public class InspectionDatesFragment extends Fragment {
             InspectionDates = fireBugEquipment.getInspectionDates();
             if (null != InspectionDates && 0!=InspectionDates.size() ) {
 
-                if(null!=InspectionDates.get(0).getDueDate() && !InspectionDates.get(0).getDueDate().contains("/") ){
-                    String[] separated = InspectionDates.get(0).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvDaily.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else   if(null!=InspectionDates.get(0).getDueDate() && InspectionDates.get(0).getDueDate().contains("/") ){
-                    tvDaily.setText(""+InspectionDates.get(0).getDueDate());
-                }else{
+                try {
+                    if(null!=InspectionDates.get(0).getDueDate()){
+                        String[] separated = InspectionDates.get(0).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvDaily.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else   if(null!=InspectionDates.get(0).getDueDate() && InspectionDates.get(0).getDueDate().contains("/") ){
+                        tvDaily.setText(""+InspectionDates.get(0).getDueDate());
+                    }else{
+                        tvDaily.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvDaily.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
-                if(null!=InspectionDates.get(1).getDueDate()){
-                    String[] separated = InspectionDates.get(1).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvWeekly.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(1).getDueDate()){
+                        String[] separated = InspectionDates.get(1).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvWeekly.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvWeekly.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvWeekly.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
-                if(null!=InspectionDates.get(2).getDueDate()){
-                    String[] separated = InspectionDates.get(2).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvMonthly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(2).getDueDate()){
+                        String[] separated = InspectionDates.get(2).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvMonthly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvMonthly.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvMonthly.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
 
-                if(null!=InspectionDates.get(3).getDueDate()){
-                    String[] separated = InspectionDates.get(3).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvQuarterly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(3).getDueDate()){
+                        String[] separated = InspectionDates.get(3).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvQuarterly.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvQuarterly.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvQuarterly.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
 
-                if(null!=InspectionDates.get(4).getDueDate()){
-                    String[] separated = InspectionDates.get(4).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvSemiAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(4).getDueDate()){
+                        String[] separated = InspectionDates.get(4).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvSemiAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvSemiAnnual.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvSemiAnnual.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
 
-                if(null!=InspectionDates.get(5).getDueDate()){
-                    String[] separated = InspectionDates.get(5).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(5).getDueDate()){
+                        String[] separated = InspectionDates.get(5).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvAnnual.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvAnnual.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvAnnual.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
-                if(null!=InspectionDates.get(6).getDueDate()){
-                    String[] separated = InspectionDates.get(6).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvFiveYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(6).getDueDate()){
+                        String[] separated = InspectionDates.get(6).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvFiveYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvFiveYears.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvFiveYears.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
 
-                if(null!=InspectionDates.get(7).getDueDate()){
-                    String[] separated = InspectionDates.get(7).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvSixYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(7).getDueDate()){
+                        String[] separated = InspectionDates.get(7).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvSixYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvSixYears.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvSixYears.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
 
-                if(null!=InspectionDates.get(8).getDueDate()){
-                    String[] separated = InspectionDates.get(8).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvTenYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(8).getDueDate()){
+                        String[] separated = InspectionDates.get(8).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvTenYears.setText("" + newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvTenYears.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvTenYears.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
 
-                if(null!=InspectionDates.get(9).getDueDate()){
-                    String[] separated = InspectionDates.get(9).getDueDate().split("T");
-                    String[] newFormat = separated[0].split("-");
-                    tvTwelveYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
-                }else{
+                try {
+                    if(null!=InspectionDates.get(9).getDueDate()){
+                        String[] separated = InspectionDates.get(9).getDueDate().split("T");
+                        String[] newFormat = separated[0].split("-");
+                        tvTwelveYears.setText(""+ newFormat[1]+"/"+newFormat[2]+"/"+newFormat[0]);
+                    }else{
+                        tvTwelveYears.setText("MM/DD/YYYY");
+                    }
+                } catch (Exception e) {
                     tvTwelveYears.setText("MM/DD/YYYY");
+                    e.printStackTrace();
                 }
-
 
 
             }

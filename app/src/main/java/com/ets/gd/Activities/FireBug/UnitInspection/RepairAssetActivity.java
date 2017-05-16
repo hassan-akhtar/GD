@@ -73,9 +73,11 @@ public class RepairAssetActivity extends AppCompatActivity {
         if (null!=allCustomerAssets && 0!=allCustomerAssets.size() && null!=allRepairs && 0!=allRepairs.size() ) {
             for (int i = 0; i < allCustomerAssets.size(); i++) {
                 for (int j = 0; j < allRepairs.size(); j++) {
-                    if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allRepairs.get(j).getCode().toLowerCase())) {
-                        customerRepairs.add(allCustomerAssets.get(i));
-                        break;
+                    if (null!=allCustomerAssets.get(i).getLocation()) {
+                        if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allRepairs.get(j).getCode().toLowerCase())) {
+                            customerRepairs.add(allCustomerAssets.get(i));
+                            break;
+                        }
                     }
                 }
             }
@@ -85,9 +87,11 @@ public class RepairAssetActivity extends AppCompatActivity {
         if (null!=allCustomerAssets && 0!=allCustomerAssets.size() && null!=allSpares && 0!=allSpares.size() ) {
             for (int i = 0; i < allCustomerAssets.size(); i++) {
                 for (int j = 0; j < allSpares.size(); j++) {
-                    if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allSpares.get(j).getCode().toLowerCase())) {
-                        customerSpares.add(allCustomerAssets.get(i));
-                        break;
+                    if (null!=allCustomerAssets.get(i).getLocation()) {
+                        if (allCustomerAssets.get(i).getLocation().getCode().toLowerCase().equals(allSpares.get(j).getCode().toLowerCase())) {
+                            customerSpares.add(allCustomerAssets.get(i));
+                            break;
+                        }
                     }
                 }
             }

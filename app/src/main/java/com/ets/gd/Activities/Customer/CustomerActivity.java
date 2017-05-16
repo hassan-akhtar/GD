@@ -120,6 +120,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
                     if (!customerList.get(position).getCode().toLowerCase().equals(compName)) {
                         Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
                         sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID, customerList.get(position).getID());
+                        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, customerList.get(position).getCode());
                         in.putExtra("compName", customerList.get(position).getCode());
                         in.putExtra("cusID", customerList.get(position).getID());
                         in.putExtra("type", "transfer");

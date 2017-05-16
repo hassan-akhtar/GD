@@ -215,26 +215,28 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
         spLocation.setEnabled(false);
-        for (int i = 0; i < locations.length; i++) {
-            if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
-                spLocation.setSelection(i);
-                tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
+        if (null!=fireBugEquipment.getLocation()) {
+            for (int i = 0; i < locations.length; i++) {
+                if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                    spLocation.setSelection(i);
+                    tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
 
-                for (int j = 0; j < sites.length; j++) {
-                    if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
-                        spSite.setSelection(j);
-                        break;
+                    for (int j = 0; j < sites.length; j++) {
+                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
+                            spSite.setSelection(j);
+                            break;
+                        }
                     }
-                }
 
-                for (int k = 0; k < buildings.length; k++) {
-                    if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
-                        spBuilding.setSelection(i);
-                        break;
+                    for (int k = 0; k < buildings.length; k++) {
+                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
+                            spBuilding.setSelection(i);
+                            break;
+                        }
                     }
-                }
 
-                break;
+                    break;
+                }
             }
         }
 

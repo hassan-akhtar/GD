@@ -15,6 +15,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Interfaces.AssetReplaced;
+import com.ets.gd.Models.Replace;
 import com.ets.gd.R;
 
 public class ReplaceAssetActivity extends AppCompatActivity {
@@ -28,6 +30,7 @@ public class ReplaceAssetActivity extends AppCompatActivity {
     private String taskType, code;
     public static String replaceType;
     public static  int newLocID=0, newEquipID=0;
+    public static AssetReplaced assetReplaced;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +103,8 @@ public class ReplaceAssetActivity extends AppCompatActivity {
 
                 case R.id.rlYes: {
                     Toast.makeText(getApplicationContext(), "Asset Successfully Replaced!", Toast.LENGTH_LONG).show();
-                    sendMessage("replace",replaceType,newLocID , newEquipID );
+                    //sendMessage("replace",replaceType,newLocID , newEquipID );
+                    assetReplaced.AssetReplaced(new Replace("replace",replaceType,newLocID , newEquipID ));
                     finish();
                     break;
                 }
