@@ -11,6 +11,7 @@ public class EquipmentNote extends RealmObject {
 
 
     private int ID;
+    private String EquipmentCode;
     private int EquipmentID;
     private String Note;
     private String ModifiedBy;
@@ -55,5 +56,13 @@ public class EquipmentNote extends RealmObject {
 
     public void setModifiedTime(String modifiedTime) {
         ModifiedTime = modifiedTime;
+    }
+
+    public String getEquipmentCode() {
+        return EquipmentCode;
+    }
+
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 }

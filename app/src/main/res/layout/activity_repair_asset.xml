@@ -82,7 +82,7 @@
                 android:textSize="17sp"
                 android:textColor="@color/blueDark"
                 android:layout_toRightOf="@+id/tvText"
-                android:text="Options(s):"
+                android:text="From:"
                 android:textStyle="bold" />
 
             <View

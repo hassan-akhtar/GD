@@ -166,7 +166,7 @@ public class DataManager {
 
     }
 
-    public void addUpdateAssetNote(final int equipmentID, final int customerID, final List<EquipmentNote> noteList) {
+    public void addUpdateAssetNote(final int equipmentID, final String  equipmentCode, final int customerID, final List<EquipmentNote> noteList) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -181,6 +181,7 @@ public class DataManager {
                     EquipmentNote equipmentNote = realm.createObject(EquipmentNote.class);
                     equipmentNote.setNote(noteList.get(i).getNote());
                     equipmentNote.setEquipmentID(equipmentID);
+                    equipmentNote.setEquipmentCode(equipmentCode);
                     equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
                     equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
                     // newItems.add(equipmentNote);
@@ -515,6 +516,13 @@ public class DataManager {
         return copied;
     }
 
+    public List<EquipmentNote> getAllNotesByCode(String EquipmentCode) {
+
+        RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentCode", EquipmentCode).findAll();
+        List<EquipmentNote> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
     public List<MyInspectionDates> getEquipmentInspectionDates(int EquipmentID) {
 
         RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", EquipmentID).findAll();
@@ -674,6 +682,10 @@ public class DataManager {
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
                 unitinspectionResult.setResult(inspectionResult.isResult());
+                unitinspectionResult.setNewLocationID(inspectionResult.getNewLocationID());
+                unitinspectionResult.setNewEquipmentID(inspectionResult.getNewEquipmentID());
+                unitinspectionResult.setReplaceType(inspectionResult.getReplaceType());
+                unitinspectionResult.setReplaced(inspectionResult.getReplaced());
 
                 RealmList<InspectionStatusCodes> inspectionStatusCodesList = new RealmList<InspectionStatusCodes>();
 

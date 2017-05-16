@@ -295,8 +295,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setModelID(fireBugEquipment.getModel().getID());
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
-                equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
-                equipment.setAgentID(fireBugEquipment.getAgentType().getID());
+                if (null!=fireBugEquipment.getVendorCode()) {
+                    equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
+                }
+                if (null!=fireBugEquipment.getAgentType()) {
+                    equipment.setAgentID(fireBugEquipment.getAgentType().getID());
+                }
+
                 equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
@@ -312,7 +317,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setInspectionDates(InspectionDates);
 
                 List<Note> lstFbEquipmentNotes = new ArrayList<Note>();
-                List<EquipmentNote> lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getID());
+                List<EquipmentNote> lstNotes = DataManager.getInstance().getAllNotesByCode(fireBugEquipment.getCode());
                 for (int k = 0; k < lstNotes.size(); k++) {
                     Note note = new Note();
                     note.setModifiedBy(lstNotes.get(k).getModifiedBy());
@@ -339,8 +344,14 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setModelID(fireBugEquipment.getModel().getID());
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
-                equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
-                equipment.setAgentID(fireBugEquipment.getAgentType().getID());
+
+                if (null!=fireBugEquipment.getVendorCode()) {
+                    equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
+                }
+                if (null!=fireBugEquipment.getAgentType()) {
+                    equipment.setAgentID(fireBugEquipment.getAgentType().getID());
+                }
+
                 // if (null==fireBugEquipment.getLocation().getID()) {
                 equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
                 //  }
@@ -358,7 +369,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setInspectionDates(InspectionDates);
 
                 List<Note> lstFbEquipmentNotes = new ArrayList<Note>();
-                List<EquipmentNote> lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getID());
+                List<EquipmentNote> lstNotes = DataManager.getInstance().getAllNotesByCode(fireBugEquipment.getCode());
                 for (int k = 0; k < lstNotes.size(); k++) {
                     Note note = new Note();
                     note.setModifiedBy(lstNotes.get(k).getModifiedBy());

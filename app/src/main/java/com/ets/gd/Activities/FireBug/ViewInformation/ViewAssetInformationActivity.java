@@ -240,7 +240,9 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                 if( null!=fireBugEquipment && 0!=fireBugEquipment.getID()){
                                     ID = fireBugEquipment.getID();
                                 }
-                                DataManager.getInstance().addUpdateAssetNote(ID, sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
+
+
+                                DataManager.getInstance().addUpdateAssetNote(ID,AssetInformationFragment.tvTagID.getText().toString(), sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
                                 if ("viewAsset".equals(actionType)) {
                                     showToast("Asset's Note(s) Updated");
                                 } else {

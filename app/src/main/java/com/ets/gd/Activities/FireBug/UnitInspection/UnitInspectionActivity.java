@@ -203,6 +203,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
                         inspectionResult.setEquipmentID(equipmentID);
+                        inspectionResult.setReplaced(false);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
                         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -301,9 +302,10 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             String message = intent.getStringExtra("message");
             String replaceType = intent.getStringExtra("replaceType");
             int newLocID = intent.getIntExtra("newLocID",0);
+            int newEqipID = intent.getIntExtra("newEquipmentID",0);
 
             if (message.startsWith("rep")) {
-                saveInspectionAfterReplace(replaceType, newLocID);
+                saveInspectionAfterReplace(replaceType, newLocID,newEqipID);
             }
 
         }
@@ -321,9 +323,10 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
     };
 
-    void saveInspectionAfterReplace(String replaceType, int newLocID){
+    void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID){
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setReplaced(true);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -353,6 +356,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             }
         }
         inspectionResult.setNewLocationID(newLocID);
+        inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
 
