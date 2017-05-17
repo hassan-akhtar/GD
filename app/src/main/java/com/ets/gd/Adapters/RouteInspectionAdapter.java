@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 
@@ -34,7 +35,11 @@ public class RouteInspectionAdapter extends RecyclerView.Adapter<RouteInspection
         holder.tvRouteTypeValue.setText(routesList.get(position).getRouteType());
         holder.tvLocCount.setText(""+routesList.get(position).getRouteLocations().size());
 
-        holder.tvAssetCount.setText(""+routesList.get(position).getRouteLocations().get(0).getRouteAssets().size());
+        int assetsSize = 0 ;
+        for (RouteLocation routeLocation:routesList.get(position).getRouteLocations() ){
+            assetsSize += routeLocation.getRouteAssets().size();
+        }
+        holder.tvAssetCount.setText(""+assetsSize);
     }
 
     @Override

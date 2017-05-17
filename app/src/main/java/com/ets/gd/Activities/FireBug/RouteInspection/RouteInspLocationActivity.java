@@ -1,5 +1,6 @@
 package com.ets.gd.Activities.FireBug.RouteInspection;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.Adapters.RouteInspLocAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
@@ -55,6 +57,7 @@ public class RouteInspLocationActivity extends AppCompatActivity {
         tvRouteName.setText(route.getCode());
         tvDesc.setText(route.getDescription());
         tvRouteType.setText(route.getRouteType());
+
         tvLocCount.setText(""+route.getRouteLocations().size());
         routeInspLocAdapter = new RouteInspLocAdapter(RouteInspLocationActivity.this,locationList);
         tvCompanyName.setText(compName);
@@ -75,7 +78,16 @@ public class RouteInspLocationActivity extends AppCompatActivity {
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspLocationActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                if (0!=locationList.get(position).getRouteAssets().size()) {
+                    RouteInspAssetActivity.routeLocation = locationList.get(position);
+                    Intent in = new Intent(RouteInspLocationActivity.this, RouteInspAssetActivity.class);
+                    in.putExtra("compName", tvCompanyName.getText().toString());
+                    in.putExtra("locCount", ""+locationList.size());
+                    in.putExtra("routeName", tvRouteName.getText().toString());
+                    startActivity(in);
+                } else {
+                    Toast.makeText(getApplicationContext(),"No Route Location Assets(s) Found.",Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override

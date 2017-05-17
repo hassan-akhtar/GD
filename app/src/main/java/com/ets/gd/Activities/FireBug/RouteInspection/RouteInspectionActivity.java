@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.Adapters.RouteInspectionAdapter;
 import com.ets.gd.DataManager.DataManager;
@@ -71,10 +72,14 @@ public class RouteInspectionActivity extends AppCompatActivity {
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspectionActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                RouteInspLocationActivity.route = routesList.get(position);
-                Intent in = new Intent(RouteInspectionActivity.this, RouteInspLocationActivity.class);
-                in.putExtra("compName", tvCompanyName.getText().toString());
-                startActivity(in);
+                if (0!=routesList.get(position).getRouteLocations().size()) {
+                    RouteInspLocationActivity.route = routesList.get(position);
+                    Intent in = new Intent(RouteInspectionActivity.this, RouteInspLocationActivity.class);
+                    in.putExtra("compName", tvCompanyName.getText().toString());
+                    startActivity(in);
+                } else {
+                    Toast.makeText(getApplicationContext(),"No Route Location(s) Found.",Toast.LENGTH_LONG).show();
+                }
 
             }
 
