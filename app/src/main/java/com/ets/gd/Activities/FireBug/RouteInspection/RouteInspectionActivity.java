@@ -2,21 +2,18 @@ package com.ets.gd.Activities.FireBug.RouteInspection;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.RouteInspectionAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ public class RouteInspectionActivity extends AppCompatActivity {
 
     TextView tbTitleTop, tbTitleBottom, tvRouteCount, tvCompanyName;
     ImageView ivBack, ivTick;
-    String compName;
+    String compName, taskType;
     List<Routes> routesList = new ArrayList<Routes>();
     RouteInspectionAdapter routeInspectionAdapter;
     RecyclerView rvRouteInspection;
@@ -49,9 +46,10 @@ public class RouteInspectionActivity extends AppCompatActivity {
         tvCompanyName = (TextView) findViewById(R.id.tvCompanyName);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         rvRouteInspection = (RecyclerView) findViewById(R.id.rvRouteInspection);
-        tbTitleBottom.setText("Route Inspection");
+        taskType = getIntent().getStringExtra("taskType");
         compName = getIntent().getStringExtra("compName");
         tvCompanyName.setText(compName);
+        tbTitleBottom.setText(taskType);
         ivTick.setVisibility(View.GONE);
     }
 

@@ -4,10 +4,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class RouteInspectionAdapter extends RecyclerView.Adapter<RouteInspection
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tvName.setText(routesList.get(position).getCode());
-        holder.tvDesc.setText(routesList.get(position).getDesc());
+        holder.tvDesc.setText(routesList.get(position).getDescription());
         holder.tvRouteTypeValue.setText(routesList.get(position).getRouteType());
         holder.tvLocCount.setText(""+routesList.get(position).getRouteLocations().size());
 

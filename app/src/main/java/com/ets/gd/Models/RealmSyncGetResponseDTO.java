@@ -10,6 +10,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
@@ -31,6 +32,8 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<AgentType> lstAgentTypes;
     RealmList<RegisteredDevice> lstDevices;
     RealmList<EquipmentNote> lstFbEquipmentNotes;
+    RealmList<Routes> lstRoutes;
+
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -46,6 +49,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public RealmList<Routes> getLstRoutes() {
+        return lstRoutes;
+    }
+
+    public void setLstRoutes(RealmList<Routes> lstRoutes) {
+        this.lstRoutes = lstRoutes;
     }
 
     public int getID() {

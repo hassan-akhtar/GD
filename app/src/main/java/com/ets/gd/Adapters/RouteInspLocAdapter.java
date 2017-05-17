@@ -8,9 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.ets.gd.Models.Location;
-import com.ets.gd.Models.RouteLocation;
-import com.ets.gd.Models.Routes;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -41,12 +40,12 @@ public class RouteInspLocAdapter extends RecyclerView.Adapter<RouteInspLocAdapte
         } else {
             holder.ivCount.setBackground(mContext.getResources().getDrawable(R.drawable.ic_loc_item));
         }
-        holder.tvName.setText(locList.get(position).getLocationID());
-        holder.tvDesc.setText(locList.get(position).getDescription() + ",");
+        holder.tvName.setText(DataManager.getInstance().getLocationByID(locList.get(position).getLocationID()).getCode());
+        holder.tvDesc.setText(DataManager.getInstance().getLocationByID(locList.get(position).getLocationID()).getDescription() + ",");
         int pos = position + 1;
         holder.tvNumber.setText("" + pos);
         holder.tvLocCount.setText("" + locList.get(position).getRouteAssets().size());
-        holder.tvPlace.setText(locList.get(position).getPlace());
+        holder.tvPlace.setText(DataManager.getInstance().getLocationByID(locList.get(position).getLocationID()).getSite().getCode());
 
     }
 

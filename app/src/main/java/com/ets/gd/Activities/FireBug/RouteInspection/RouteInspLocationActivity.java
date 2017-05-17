@@ -1,6 +1,5 @@
 package com.ets.gd.Activities.FireBug.RouteInspection;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,12 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ets.gd.Adapters.RouteInspLocAdapter;
-import com.ets.gd.Adapters.RouteInspectionAdapter;
-import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Models.Location;
-import com.ets.gd.Models.RouteLocation;
-import com.ets.gd.Models.Routes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -57,7 +53,7 @@ public class RouteInspLocationActivity extends AppCompatActivity {
         compName = getIntent().getStringExtra("compName");
         locationList = route.getRouteLocations();
         tvRouteName.setText(route.getCode());
-        tvDesc.setText(route.getDesc());
+        tvDesc.setText(route.getDescription());
         tvRouteType.setText(route.getRouteType());
         tvLocCount.setText(""+route.getRouteLocations().size());
         routeInspLocAdapter = new RouteInspLocAdapter(RouteInspLocationActivity.this,locationList);

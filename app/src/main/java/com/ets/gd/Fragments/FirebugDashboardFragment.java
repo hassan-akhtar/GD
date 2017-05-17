@@ -15,16 +15,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
-import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
-import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.RouteLocation;
-import com.ets.gd.Models.Routes;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
@@ -33,11 +29,6 @@ import com.github.clans.fab.FloatingActionMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.RealmList;
 
 
 public class FirebugDashboardFragment extends Fragment {
@@ -74,7 +65,6 @@ public class FirebugDashboardFragment extends Fragment {
     }
 
 
-
     private void initViews() {
         rvTasks = (RecyclerView) rootView.findViewById(R.id.lvTasks);
         tvCompanyValue = (TextView) rootView.findViewById(R.id.tvCompanyValue);
@@ -94,10 +84,10 @@ public class FirebugDashboardFragment extends Fragment {
 //                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
 //            ivChangeCompany.setVisibility(View.GONE);
 //            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
-      //  } else {
-            ivChangeCompany.setVisibility(View.VISIBLE);
-            adapter = new AssetsAdapter(fbTasks, fbTasksImages);
-      //  }
+        //  } else {
+        ivChangeCompany.setVisibility(View.VISIBLE);
+        adapter = new AssetsAdapter(fbTasks, fbTasksImages);
+        //  }
 
         BaseActivity.currentFragment = new FirebugDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -106,8 +96,6 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
-
-
 
     }
 
@@ -154,23 +142,26 @@ public class FirebugDashboardFragment extends Fragment {
 //                        startActivity(in);
 //                    }
 //                } else {
-                    if (fbTasks[position].toLowerCase().startsWith("ro")) {
-                        showToast("" + fbTasks[position]);
+                if (fbTasks[position].toLowerCase().startsWith("ro")) {
+                    // showToast("" + fbTasks[position]);
+                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
+                    in.putExtra("taskType", fbTasks[position]);
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
 
-                    } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
-                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                        in.putExtra("taskType", "Inspect Assets");
-                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                        startActivity(in);
+                } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
+                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                    in.putExtra("taskType", "Inspect Assets");
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
 
-                    } else {
-                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                        in.putExtra("taskType", fbTasks[position]);
-                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                        startActivity(in);
-                    }
-               // }
-
+                } else {
+                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                    in.putExtra("taskType", fbTasks[position]);
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                    startActivity(in);
+                }
+                // }
 
 
             }
@@ -207,7 +198,7 @@ public class FirebugDashboardFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().invalidateOptionsMenu() ;
+        getActivity().invalidateOptionsMenu();
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -222,7 +213,7 @@ public class FirebugDashboardFragment extends Fragment {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ViewAssetInformationActivity.class);
                     in.putExtra("action", "addAsset");
-                    in.putExtra("compName",  tvCompanyValue.getText().toString().trim());
+                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                     startActivity(in);
                     break;
                 }
@@ -241,5 +232,6 @@ public class FirebugDashboardFragment extends Fragment {
         }
 
     };
+
 
 }
