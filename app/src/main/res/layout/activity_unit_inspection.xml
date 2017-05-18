@@ -144,7 +144,7 @@
                     <ImageView
                         android:layout_width="28dp"
                         android:layout_height="28dp"
-                        android:src="@drawable/ic_info" />
+                        android:src="@drawable/ic_inspect_op" />
                 </RelativeLayout>
 
             </RelativeLayout>

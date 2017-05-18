@@ -82,7 +82,7 @@ public class RouteInspLocationActivity extends AppCompatActivity {
                     RouteInspAssetActivity.routeLocation = locationList.get(position);
                     Intent in = new Intent(RouteInspLocationActivity.this, RouteInspAssetActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
-                    in.putExtra("locCount", ""+locationList.get(position).getLocationOrder());
+                    in.putExtra("locCount", ""+locationList.size());
                     in.putExtra("routeName", tvRouteName.getText().toString());
                     startActivity(in);
                 } else {

@@ -398,7 +398,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                     if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
                         in.putExtra("location", "" + assetList.get(0).getLocation().getCode());
-                        in.putExtra("desp", "" + assetList.get(0).getLocation().getDescription());
+                        in.putExtra("desp", "" + assetList.get(0).getManufacturer().getCode());
                         int DeviceTypeID = 0;
                         if (0 != assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
                             DeviceTypeID = assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().get(0).getDeviceTypeID();
@@ -407,7 +407,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         in.putExtra("equipmentID", assetList.get(0).getID());
                     }
                     in.putExtra("compName", compName);
-                    in.putExtra("deviceType", "" + assetList.get(0).getDeviceType().getCode());
+                    in.putExtra("deviceType", "" + assetList.get(0).getModel().getCode());
 
                     startActivity(in);
                     break;

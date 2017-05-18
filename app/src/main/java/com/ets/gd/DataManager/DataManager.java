@@ -5,6 +5,7 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
@@ -678,6 +679,13 @@ public class DataManager {
     public List<AllCustomers> getAllCustomerList() {
         return realm.where(AllCustomers.class).findAll();
     }
+
+
+
+    public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
+        return realm.where(RouteInspection.class).equalTo("RouteID",RouteID).findAll();
+    }
+
 
 
     public FireBugEquipment getEquipment(String barcodeID) {

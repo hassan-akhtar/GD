@@ -32,6 +32,7 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Move;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
@@ -39,6 +40,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
+import com.squareup.okhttp.Route;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,17 +131,20 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-              /*  if (0!=locationList.get(position).getRouteAssets().size()) {
-                    RouteInspAssetActivity.routeLocation = locationList.get(position);
-                    Intent in = new Intent(RouteInspLocationActivity.this, RouteInspAssetActivity.class);
-                    in.putExtra("compName", tvCompanyName.getText().toString());
-                    in.putExtra("locCount", ""+locationList.size());
-                    in.putExtra("routeName", tvRouteName.getText().toString());
-                    startActivity(in);
-                } else {
-                    Toast.makeText(getApplicationContext(),"No Route Location Assets(s) Found.",Toast.LENGTH_LONG).show();
-                }*/
-                Toast.makeText(getApplicationContext(),"yoooo",Toast.LENGTH_LONG).show();
+                RouteAssetInspectionActivity.routeAsset = assetList.get(position);
+                Intent in = new Intent(RouteInspAssetActivity.this, RouteAssetInspectionActivity.class);
+                in.putExtra("compName", tvCompanyName.getText().toString());
+                in.putExtra("tag", "" + equipmentList.get(position).getCode());
+                in.putExtra("loc", tvLocName.getText().toString());
+                in.putExtra("routeName", tvRouteName.getText().toString());
+                in.putExtra("deviceTypeID", assetList.get(position).getDeviceTypeID());
+                in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
+                in.putExtra("equipmentID", equipmentList.get(position).getID());
+                in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
+                in.putExtra("AssetCount", tvAssetCount.getText().toString());
+                in.putExtra("LocCount", tvLocCount.getText().toString());
+                startActivity(in);
+
             }
 
             @Override
