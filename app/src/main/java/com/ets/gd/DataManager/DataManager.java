@@ -684,6 +684,10 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public FireBugEquipment getEquipmentByID(int ID) {
+        return realm.where(FireBugEquipment.class).equalTo("ID", ID).findFirst();
+    }
+
     public FireBugEquipment getEquipmentForCompany(String compCode, String assetCode) {
         List<FireBugEquipment> list = realm.where(SyncCustomer.class).equalTo("CustomerId", getCustomerByCode(compCode).getID()).findFirst().getLstFbEquipments();
 

@@ -180,11 +180,26 @@
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rlScanArea"
+        android:visibility="gone"
+        android:layout_marginTop="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlRouteHeader">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/scanning_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvRouteInspection"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/rlRouteHeader"
-        android:layout_marginTop="15dp"></android.support.v7.widget.RecyclerView>
+        android:layout_below="@+id/rlScanArea">
+    </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
