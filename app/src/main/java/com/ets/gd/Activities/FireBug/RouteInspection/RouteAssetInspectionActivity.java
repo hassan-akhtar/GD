@@ -237,6 +237,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                     if (checkValidation(isFail)) {
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
                         inspectionResult.setEquipmentID(equipmentID);
+                        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+                        RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
                         inspectionResult.setReplaced(false);
                         inspectionResult.setRouteID(RouteID);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
@@ -354,6 +356,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
+        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+        RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
         inspectionResult.setReplaced(true);
         inspectionResult.setRouteID(RouteID);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());

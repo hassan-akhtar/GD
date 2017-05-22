@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -48,6 +47,10 @@ public void onBindViewHolder(final MyViewHolder holder, int position) {
         holder.tvLocation.setText("Location: " + asset.getLocation().getCode());
         }
 
+            if (asset.isRouteUnitInspected()) {
+                holder.ivInspected.setVisibility(View.VISIBLE);
+            }
+
 
         if(null!=asset.getManufacturers() && null != asset.getModel()) {
         holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
@@ -79,7 +82,7 @@ public void removeAt(int position) {
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     private TextView tvName, tvTag, tvLocation;
-    private ImageView ivSelectableImage;
+    private ImageView ivSelectableImage,ivInspected;
 
     public MyViewHolder(View view) {
         super(view);
@@ -87,6 +90,7 @@ public class MyViewHolder extends RecyclerView.ViewHolder {
         tvTag = (TextView) view.findViewById(R.id.tvDesc);
         tvLocation = (TextView) view.findViewById(R.id.tvPlace);
         ivSelectableImage = (ImageView) view.findViewById(R.id.ivSelectableImage);
+        ivInspected  = (ImageView) view.findViewById(R.id.ivInspect);
     }
 }
 }

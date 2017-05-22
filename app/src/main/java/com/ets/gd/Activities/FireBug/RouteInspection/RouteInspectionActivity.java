@@ -56,7 +56,7 @@ public class RouteInspectionActivity extends AppCompatActivity {
 
     private void initObj() {
 
-        routesList = DataManager.getInstance().getAllInspectionRoutes();
+        routesList = DataManager.getInstance().getAllInspectionRoutes(DataManager.getInstance().getCustomerByCode(tvCompanyName.getText().toString()).getID());
         tvRouteCount.setText("" + routesList.size());
         routeInspectionAdapter = new RouteInspectionAdapter(routesList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteInspectionActivity.this);

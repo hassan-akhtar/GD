@@ -84,6 +84,13 @@ public class DataManager {
     }
 
 
+    public void updateAssetRouteInspectionStatus(int equipID) {
+        realm.beginTransaction();
+            FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", equipID).findFirst();
+            assett.setRouteUnitInspected(true);
+        realm.commitTransaction();
+    }
+
     // For adding an asset info in DB
     public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation, int cusID) {
         realm.beginTransaction();
@@ -164,7 +171,7 @@ public class DataManager {
 
     }
 
-    public void addUpdateAssetNote(final int equipmentID, final String  equipmentCode, final int customerID, final List<EquipmentNote> noteList) {
+    public void addUpdateAssetNote(final int equipmentID, final String equipmentCode, final int customerID, final List<EquipmentNote> noteList) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -586,11 +593,9 @@ public class DataManager {
     }
 
 
-
-
     // For getting asset all assets from DB
-    public List<Routes> getAllInspectionRoutes() {
-        RealmResults<Routes> results = realm.where(Routes.class).findAll();
+    public List<Routes> getAllInspectionRoutes(int customerID) {
+        RealmResults<Routes> results = realm.where(Routes.class).equalTo("CustomerID", customerID).findAll();
 
         List<Routes> copied = realm.copyFromRealm(results);
 
@@ -682,11 +687,9 @@ public class DataManager {
     }
 
 
-
     public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
-        return realm.where(RouteInspection.class).equalTo("RouteID",RouteID).findAll();
+        return realm.where(RouteInspection.class).equalTo("RouteID", RouteID).findAll();
     }
-
 
 
     public FireBugEquipment getEquipment(String barcodeID) {

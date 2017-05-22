@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-
     <LinearLayout
         android:id="@+id/llAssetName"
         android:layout_width="match_parent"
@@ -79,4 +78,14 @@
             android:layout_marginBottom="10dp" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivInspect"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:src="@drawable/ic_tick"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="15dp"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

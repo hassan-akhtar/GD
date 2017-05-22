@@ -48,7 +48,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     RecyclerView rvRouteInspection;
     List<RouteAsset> assetList = new ArrayList<>();
     FireBugEquipment fireBugEquipment;
-    RouteAssetAdapter routeAssetAdapter;
+    static RouteAssetAdapter routeAssetAdapter;
     SharedPreferencesManager sharedPreferencesManager;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -122,20 +122,26 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                RouteAssetInspectionActivity.routeAsset = assetList.get(position);
-                Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
-                in.putExtra("compName", tvCompanyName.getText().toString());
-                in.putExtra("tag", "" + equipmentList.get(position).getCode());
-                in.putExtra("loc", tvLocName.getText().toString());
-                in.putExtra("routeName", tvRouteName.getText().toString());
-                in.putExtra("deviceTypeID", assetList.get(position).getDeviceTypeID());
-                in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
-                in.putExtra("equipmentID", equipmentList.get(position).getID());
-                in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
-                in.putExtra("RouteID", assetList.get(position).getRouteID());
-                in.putExtra("AssetCount", tvAssetCount.getText().toString());
-                in.putExtra("LocCount", tvLocCount.getText().toString());
-                startActivity(in);
+                FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(position).getEquipmentID());
+
+                if (!fireBugEquipment.isRouteUnitInspected()) {
+                    RouteAssetInspectionActivity.routeAsset = assetList.get(position);
+                    Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
+                    in.putExtra("compName", tvCompanyName.getText().toString());
+                    in.putExtra("tag", "" + equipmentList.get(position).getCode());
+                    in.putExtra("loc", tvLocName.getText().toString());
+                    in.putExtra("routeName", tvRouteName.getText().toString());
+                    in.putExtra("deviceTypeID", assetList.get(position).getDeviceTypeID());
+                    in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
+                    in.putExtra("equipmentID", equipmentList.get(position).getID());
+                    in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
+                    in.putExtra("RouteID", assetList.get(position).getRouteID());
+                    in.putExtra("AssetCount", tvAssetCount.getText().toString());
+                    in.putExtra("LocCount", tvLocCount.getText().toString());
+                    startActivity(in);
+                } else {
+                    Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
+                }
 
             }
 
