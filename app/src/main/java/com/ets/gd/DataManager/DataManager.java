@@ -638,6 +638,7 @@ public class DataManager {
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
                 unitinspectionResult.setResult(inspectionResult.isResult());
+                unitinspectionResult.setRouteID(inspectionResult.getRouteID());
                 unitinspectionResult.setNewLocationID(inspectionResult.getNewLocationID());
                 unitinspectionResult.setNewEquipmentID(inspectionResult.getNewEquipmentID());
                 unitinspectionResult.setReplaceType(inspectionResult.getReplaceType());

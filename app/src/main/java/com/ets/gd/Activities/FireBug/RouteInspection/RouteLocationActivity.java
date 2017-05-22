@@ -20,7 +20,7 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteInspLocationActivity extends AppCompatActivity {
+public class RouteLocationActivity extends AppCompatActivity {
 
 
     TextView tbTitleTop, tbTitleBottom, tvCompanyName, tvRouteType, tvDesc, tvRouteName, tvLocCount;
@@ -59,13 +59,13 @@ public class RouteInspLocationActivity extends AppCompatActivity {
         tvRouteType.setText(route.getRouteType());
 
         tvLocCount.setText(""+route.getRouteLocations().size());
-        routeInspLocAdapter = new RouteInspLocAdapter(RouteInspLocationActivity.this,locationList);
+        routeInspLocAdapter = new RouteInspLocAdapter(RouteLocationActivity.this,locationList);
         tvCompanyName.setText(compName);
         ivTick.setVisibility(View.GONE);
     }
 
     private void initObj() {
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteInspLocationActivity.this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteLocationActivity.this);
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
         rvRouteInspection.setAdapter(routeInspLocAdapter);
@@ -75,12 +75,12 @@ public class RouteInspLocationActivity extends AppCompatActivity {
     private void initListeners() {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
 
-        rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspLocationActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
+        rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteLocationActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 if (0!=locationList.get(position).getRouteAssets().size()) {
-                    RouteInspAssetActivity.routeLocation = locationList.get(position);
-                    Intent in = new Intent(RouteInspLocationActivity.this, RouteInspAssetActivity.class);
+                    RouteAssetActivity.routeLocation = locationList.get(position);
+                    Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
                     in.putExtra("locCount", ""+locationList.size());
                     in.putExtra("routeName", tvRouteName.getText().toString());

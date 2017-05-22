@@ -8,14 +8,12 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,29 +21,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
 import com.ets.gd.Adapters.RouteAssetAdapter;
-import com.ets.gd.Adapters.RouteInspLocAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.Models.Move;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
-import com.squareup.okhttp.Route;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteInspAssetActivity extends AppCompatActivity implements BarcodeScan {
+public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan {
 
     public static RouteLocation routeLocation;
     TextView tbTitleTop, tbTitleBottom, tvCompanyName, tvAssetCount, tvLocCount, tvRouteName, tvLocName, tvBarcodeTitle, tvBarcodeValue, tvUnderText;
@@ -109,14 +100,14 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
     }
 
     private void initObj() {
-        sharedPreferencesManager = new SharedPreferencesManager(RouteInspAssetActivity.this);
+        sharedPreferencesManager = new SharedPreferencesManager(RouteAssetActivity.this);
         assetList.addAll(routeLocation.getRouteAssets());
 
         for (RouteAsset routeAsset : assetList) {
             FireBugEquipment eq = DataManager.getInstance().getEquipmentByID(routeAsset.getEquipmentID());
             equipmentList.add(eq);
         }
-        routeAssetAdapter = new RouteAssetAdapter(RouteInspAssetActivity.this, equipmentList);
+        routeAssetAdapter = new RouteAssetAdapter(RouteAssetActivity.this, equipmentList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
@@ -128,11 +119,11 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
         ivBack.setOnClickListener(mGlobal_OnClickListener);
 
 
-        rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
+        rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 RouteAssetInspectionActivity.routeAsset = assetList.get(position);
-                Intent in = new Intent(RouteInspAssetActivity.this, RouteAssetInspectionActivity.class);
+                Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
                 in.putExtra("compName", tvCompanyName.getText().toString());
                 in.putExtra("tag", "" + equipmentList.get(position).getCode());
                 in.putExtra("loc", tvLocName.getText().toString());
@@ -141,6 +132,7 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
                 in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
                 in.putExtra("equipmentID", equipmentList.get(position).getID());
                 in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
+                in.putExtra("RouteID", assetList.get(position).getRouteID());
                 in.putExtra("AssetCount", tvAssetCount.getText().toString());
                 in.putExtra("LocCount", tvLocCount.getText().toString());
                 startActivity(in);
@@ -195,21 +187,21 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
 
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
             BarcodeScanActivity.barcodeScan = this;
-            Intent in = new Intent(RouteInspAssetActivity.this, BarcodeScanActivity.class);
+            Intent in = new Intent(RouteAssetActivity.this, BarcodeScanActivity.class);
             in.putExtra("taskType", "Route Inspection");
             startActivity(in);
         } else {
-            if (ActivityCompat.checkSelfPermission(RouteInspAssetActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(RouteInspAssetActivity.this, Manifest.permission.CAMERA)) {
+            if (ActivityCompat.checkSelfPermission(RouteAssetActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(RouteAssetActivity.this, Manifest.permission.CAMERA)) {
                     //Show Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteInspAssetActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteAssetActivity.this);
                     builder.setTitle("Need Storage Permission");
                     builder.setMessage("This app needs storage permission.");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            ActivityCompat.requestPermissions(RouteInspAssetActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                            ActivityCompat.requestPermissions(RouteAssetActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -222,7 +214,7 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
                 } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
                     //Previously Permission Request was cancelled with 'Dont Ask Again',
                     // Redirect to Settings after showing Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteInspAssetActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteAssetActivity.this);
                     builder.setTitle("Camera Permission");
                     builder.setMessage("This app needs permission to use camera");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
@@ -245,12 +237,12 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
                     builder.show();
                 } else {
                     //just request the permission
-                    ActivityCompat.requestPermissions(RouteInspAssetActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                    ActivityCompat.requestPermissions(RouteAssetActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
                 }
 
             } else {
                 BarcodeScanActivity.barcodeScan = this;
-                Intent in = new Intent(RouteInspAssetActivity.this, BarcodeScanActivity.class);
+                Intent in = new Intent(RouteAssetActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", "Route Inspection");
                 startActivity(in);
             }
@@ -266,20 +258,20 @@ public class RouteInspAssetActivity extends AppCompatActivity implements Barcode
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
                 BarcodeScanActivity.barcodeScan = this;
-                Intent in = new Intent(RouteInspAssetActivity.this, BarcodeScanActivity.class);
+                Intent in = new Intent(RouteAssetActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", "Route Inspection");
                 startActivity(in);
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(RouteInspAssetActivity.this, Manifest.permission.CAMERA)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(RouteAssetActivity.this, Manifest.permission.CAMERA)) {
                     //Show Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteInspAssetActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(RouteAssetActivity.this);
                     builder.setTitle("Camera Permission");
                     builder.setMessage("This app needs permission to use camera");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            ActivityCompat.requestPermissions(RouteInspAssetActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                            ActivityCompat.requestPermissions(RouteAssetActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

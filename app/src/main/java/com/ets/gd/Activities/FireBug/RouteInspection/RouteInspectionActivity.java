@@ -73,8 +73,8 @@ public class RouteInspectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 if (0!=routesList.get(position).getRouteLocations().size()) {
-                    RouteInspLocationActivity.route = routesList.get(position);
-                    Intent in = new Intent(RouteInspectionActivity.this, RouteInspLocationActivity.class);
+                    RouteLocationActivity.route = routesList.get(position);
+                    Intent in = new Intent(RouteInspectionActivity.this, RouteLocationActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
                     startActivity(in);
                 } else {

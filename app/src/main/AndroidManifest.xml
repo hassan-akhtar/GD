@@ -67,7 +67,7 @@
             android:name=".Activities.FireBug.UnitInspection.RepairAssetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.RouteInspection.RouteInspLocationActivity"
+            android:name=".Activities.FireBug.RouteInspection.RouteLocationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Sync.DeviceRegistrationActivity"
@@ -75,7 +75,7 @@
         <activity
             android:name=".Activities.Sync.FirstTimeSyncActicity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.FireBug.RouteInspection.RouteInspAssetActivity" />
+        <activity android:name=".Activities.FireBug.RouteInspection.RouteAssetActivity" />
         <activity android:name=".Activities.FireBug.RouteInspection.RouteAssetInspectionActivity"></activity>
     </application>
 

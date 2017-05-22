@@ -59,7 +59,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
-    int posInspType, posInspectionResult, deviceTypeID, equipmentID;
+    int posInspType, posInspectionResult, deviceTypeID, equipmentID, RouteID;
     List<DeviceTypeStatusCodes> deviceTypeStatusCodes;
     List<String> statusCodesDescList = new ArrayList<String>();
     CheckBoxGroupView cbGroup;
@@ -125,6 +125,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
+        RouteID  = getIntent().getIntExtra("RouteID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
         equipmentID = getIntent().getIntExtra("equipmentID", 0);
         assetCount = getIntent().getStringExtra("AssetCount");
@@ -221,14 +222,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         etStatusCode.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
-       /* cbBracket.setOnCheckedChangeListener(this);
-        cbNozzel.setOnCheckedChangeListener(this);
-        cbDamaged.setOnCheckedChangeListener(this);
-        cbOperational.setOnCheckedChangeListener(this);
-        cbHose.setOnCheckedChangeListener(this);
-        cbRecharge.setOnCheckedChangeListener(this);
-        cbAccessible.setOnCheckedChangeListener(this);
-        cbTag.setOnCheckedChangeListener(this);*/
+
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -241,10 +235,10 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                 case R.id.tvSave: {
                     if (checkValidation(isFail)) {
-                        showToast("Work Pending");
-            /*            UnitinspectionResult inspectionResult = new UnitinspectionResult();
+                        UnitinspectionResult inspectionResult = new UnitinspectionResult();
                         inspectionResult.setEquipmentID(equipmentID);
                         inspectionResult.setReplaced(false);
+                        inspectionResult.setRouteID(RouteID);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
                         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -277,8 +271,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                         showToast("Inspection completed Successfully");
-                        sendMessage("finish");
-                        finish();*/
+                        //sendMessage("finish");
+                        finish();
                     }
                     break;
                 }
@@ -325,9 +319,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                }
                return false;
            }else{
-               if (0 == posInspType) {
-                   showToast("Please select Inspection Type");
-               } else if (0 == posInspectionResult) {
+                 if (0 == posInspectionResult) {
                    showToast("Please select Inspection Result");
                } else if (0 == cbGroup.getCheckedIds().size()) {
                    showToast("Please select status Code(s)");
@@ -337,9 +329,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                return false;
            }
         } else {
-            if (0 == posInspType) {
-                showToast("Please select Inspection Type");
-            } else if (0 == posInspectionResult) {
+            if (0 == posInspectionResult) {
                 showToast("Please select Inspection Result");
             } else {
                 return true;
@@ -365,6 +355,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
         inspectionResult.setReplaced(true);
+        inspectionResult.setRouteID(RouteID);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -400,7 +391,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
-        sendMessage("finish");
+        //sendMessage("finish");
         finish();
     }
 
@@ -510,8 +501,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         int newEqipID = replace.getNewEqipID();
 
         if (message.startsWith("rep")) {
-           // saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
-            showToast("Work Pending");
+            saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
+
         }
     }
 }
