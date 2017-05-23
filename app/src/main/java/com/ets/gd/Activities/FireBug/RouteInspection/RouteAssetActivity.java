@@ -50,6 +50,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     FireBugEquipment fireBugEquipment;
     static RouteAssetAdapter routeAssetAdapter;
     SharedPreferencesManager sharedPreferencesManager;
+    int cusID;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
 
@@ -90,6 +91,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         compName = getIntent().getStringExtra("compName");
         locCount = getIntent().getStringExtra("locCount");
         routeName = getIntent().getStringExtra("routeName");
+        cusID = getIntent().getIntExtra("cusID",0);
         tvCompanyName.setText(compName);
         tvAssetCount.setText("" + routeLocation.getRouteAssets().size());
         tvLocCount.setText("" + locCount);
@@ -125,6 +127,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(position).getEquipmentID());
 
                 if (!fireBugEquipment.isRouteUnitInspected()) {
+                    RouteAssetInspectionActivity.routeAsset = null;
                     RouteAssetInspectionActivity.routeAsset = assetList.get(position);
                     Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
@@ -133,6 +136,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     in.putExtra("routeName", tvRouteName.getText().toString());
                     in.putExtra("deviceTypeID", assetList.get(position).getDeviceTypeID());
                     in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
+                    in.putExtra("cusID", cusID);
                     in.putExtra("equipmentID", equipmentList.get(position).getID());
                     in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
                     in.putExtra("RouteID", assetList.get(position).getRouteID());

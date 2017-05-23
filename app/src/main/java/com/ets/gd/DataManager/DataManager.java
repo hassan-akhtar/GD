@@ -671,6 +671,12 @@ public class DataManager {
         return copied;
     }
 
+
+    public int getCustomerRouteInspectedAssetsCount(int cusID) {
+        int count = realm.where(FireBugEquipment.class).equalTo("isRouteUnitInspected",true).equalTo("Customer.ID",cusID).findAll().size();
+        return count;
+    }
+
     public StatusCode getStatusCodeID(String desc) {
         return realm.where(StatusCode.class).endsWith("Description", desc).findFirst();
     }

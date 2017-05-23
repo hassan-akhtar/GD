@@ -73,9 +73,11 @@ public class RouteInspectionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 if (0!=routesList.get(position).getRouteLocations().size()) {
+                    RouteLocationActivity.route = null;
                     RouteLocationActivity.route = routesList.get(position);
                     Intent in = new Intent(RouteInspectionActivity.this, RouteLocationActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
+                    in.putExtra("cusID", routesList.get(position).getCustomerID());
                     startActivity(in);
                 } else {
                     Toast.makeText(getApplicationContext(),"No Route Location(s) Found.",Toast.LENGTH_LONG).show();

@@ -69,6 +69,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     String[] routeInspectionTypes;
     List<RouteInspection> routeInspections;
     boolean isHydro = false;
+    int cusID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,7 +133,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         assetCount = getIntent().getStringExtra("AssetCount");
         locCount = getIntent().getStringExtra("LocCount");
         routeName = getIntent().getStringExtra("routeName");
-
+        cusID = getIntent().getIntExtra("cusID",0);
         tbTitleBottom.setText("Route Inspection");
         tvCompanyValue.setText("" + compName);
         tvLocCount.setText("" + locCount);
@@ -140,7 +142,9 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         tvLocName.setText("" + loc);
         tvAssetName.setText("" + tag);
         tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + loc);
-        tvInspectedAssets.setText("1 / "+assetCount);
+        int InspectedAssetsCount = DataManager.getInstance().getCustomerRouteInspectedAssetsCount(cusID);
+        InspectedAssetsCount = InspectedAssetsCount+1;
+        tvInspectedAssets.setText(InspectedAssetsCount+" / "+assetCount);
         deviceTypeStatusCodes = DataManager.getInstance().getDeviceStatusCodesList(deviceTypeID);
 
         routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(routeAsset.getRouteID());

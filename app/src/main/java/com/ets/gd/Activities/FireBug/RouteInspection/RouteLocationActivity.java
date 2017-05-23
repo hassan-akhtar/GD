@@ -28,6 +28,7 @@ public class RouteLocationActivity extends AppCompatActivity {
     String compName;
     public static Routes route;
     RecyclerView rvRouteInspection;
+    int cusID;
     RouteInspLocAdapter routeInspLocAdapter;
     List<RouteLocation> locationList = new ArrayList<>();
 
@@ -53,6 +54,7 @@ public class RouteLocationActivity extends AppCompatActivity {
         rvRouteInspection = (RecyclerView) findViewById(R.id.rvRouteInspection);
         tbTitleBottom.setText("Route Inspection");
         compName = getIntent().getStringExtra("compName");
+        cusID = getIntent().getIntExtra("cusID",0);
         locationList = route.getRouteLocations();
         tvRouteName.setText(route.getCode());
         tvDesc.setText(route.getDescription());
@@ -79,10 +81,12 @@ public class RouteLocationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 if (0!=locationList.get(position).getRouteAssets().size()) {
+                    RouteAssetActivity.routeLocation = null;
                     RouteAssetActivity.routeLocation = locationList.get(position);
                     Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
                     in.putExtra("locCount", ""+locationList.size());
+                    in.putExtra("cusID", cusID);
                     in.putExtra("routeName", tvRouteName.getText().toString());
                     startActivity(in);
                 } else {
