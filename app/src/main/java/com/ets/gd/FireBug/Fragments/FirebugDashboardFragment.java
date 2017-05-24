@@ -1,4 +1,4 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.FireBug.Fragments;
 
 
 import android.content.Context;
@@ -15,12 +15,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.RouteInspection.RouteInspectionActivity;
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
+import com.ets.gd.FireBug.Customer.CustomerFragment;
+import com.ets.gd.FireBug.RouteInspection.RouteInspectionActivity;
+import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
+import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;

@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.ViewInformation;
+package com.ets.gd.FireBug.ViewInformation;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -16,14 +16,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Fragments.AssetLocationFragment;
-import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
-import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
-import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;

@@ -1,4 +1,4 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.FireBug.ViewInformation;
 
 
 import android.graphics.Color;
@@ -9,17 +9,13 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;

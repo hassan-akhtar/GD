@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.ets.gd.FireBug.Customer.CustomerFragment;
+import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 

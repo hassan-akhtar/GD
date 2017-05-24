@@ -34,40 +34,40 @@
             android:name=".Activities.Scan.CommonFirebugScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.RouteInspection.RouteInspectionActivity"
+            android:name=".FireBug.RouteInspection.RouteInspectionActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Scan.BarcodeScanActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.ViewInformation.ViewAssetInformationActivity"
+            android:name=".FireBug.ViewInformation.ViewAssetInformationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity"
+            android:name=".FireBug.ViewInformation.ViewLocationInformationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.Move.LocationSelectionActivity"
+            android:name=".FireBug.Move.LocationSelectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.Move.SelectLocationActivity"
+            android:name=".FireBug.Move.SelectLocationActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Customer.CustomerActivity"
+            android:name=".FireBug.Customer.CustomerActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.UnitInspection.UnitInspectionActivity"
+            android:name=".FireBug.UnitInspection.UnitInspectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.UnitInspection.SelectAssetActivity"
+            android:name=".FireBug.UnitInspection.SelectAssetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.UnitInspection.ReplaceAssetActivity"
+            android:name=".FireBug.UnitInspection.ReplaceAssetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.UnitInspection.RepairAssetActivity"
+            android:name=".FireBug.UnitInspection.RepairAssetActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.FireBug.RouteInspection.RouteLocationActivity"
+            android:name=".FireBug.RouteInspection.RouteLocationActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".Activities.Sync.DeviceRegistrationActivity"
@@ -75,8 +75,8 @@
         <activity
             android:name=".Activities.Sync.FirstTimeSyncActicity"
             android:screenOrientation="portrait" />
-        <activity android:name=".Activities.FireBug.RouteInspection.RouteAssetActivity" />
-        <activity android:name=".Activities.FireBug.RouteInspection.RouteAssetInspectionActivity"></activity>
+        <activity android:name=".FireBug.RouteInspection.RouteAssetActivity" />
+        <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity"></activity>
     </application>
 
 </manifest>

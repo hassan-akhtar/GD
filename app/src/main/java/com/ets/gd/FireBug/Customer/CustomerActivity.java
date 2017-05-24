@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.Customer;
+package com.ets.gd.FireBug.Customer;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -13,32 +13,23 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.Move.LocationSelectionActivity;
-import com.ets.gd.Activities.FireBug.Move.SelectLocationActivity;
-import com.ets.gd.Activities.Other.BaseActivity;
+import com.ets.gd.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Fragments.CustomerFragment;
-import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Models.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;

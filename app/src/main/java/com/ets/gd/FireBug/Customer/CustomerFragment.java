@@ -1,4 +1,4 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.FireBug.Customer;
 
 
 import android.content.DialogInterface;
@@ -14,14 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Models.Customer;
+import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;

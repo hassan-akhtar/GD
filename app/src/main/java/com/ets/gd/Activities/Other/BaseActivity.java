@@ -20,21 +20,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Fragments.CustomerFragment;
+import com.ets.gd.FireBug.Customer.CustomerFragment;
 import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.DeviceInfoFragment;
-import com.ets.gd.Fragments.FirebugDashboardFragment;
+import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Fragments.InventoryDashboardFragment;
-import com.ets.gd.Fragments.SyncFragment;
-import com.ets.gd.Fragments.ToolhawkDashboardFragment;
+import com.ets.gd.Activities.Sync.SyncFragment;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 

@@ -4,7 +4,7 @@
     android:id="@+id/activity_customer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ets.gd.Activities.Customer.CustomerActivity">
+    tools:context=".FireBug.Customer.CustomerActivity">
 
 
 

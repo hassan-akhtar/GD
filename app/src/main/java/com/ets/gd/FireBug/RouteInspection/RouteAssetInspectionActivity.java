@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.UnitInspection;
+package com.ets.gd.FireBug.RouteInspection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -7,9 +7,9 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
-import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,13 +26,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.FireBug.UnitInspection.ReplaceAssetActivity;
 import com.ets.gd.Adapters.CheckBoxGroupView;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Interfaces.AssetReplaced;
 import com.ets.gd.Models.Replace;
-import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
+import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -46,27 +49,32 @@ import java.util.TimeZone;
 
 import io.realm.RealmList;
 
-public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener, AssetReplaced {
+public class RouteAssetInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener, AssetReplaced {
 
-    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
+
+    TextView tvAssetCount, tvLocCount, tvRouteName, tvLocName, tvInspectedAssets, tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
-    String compName, tag, loc, desp, deviceType, location;
+    String compName, tag, loc, desp, deviceType, location, assetCount, locCount, routeName;
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
-    int posInspType, posInspectionResult, deviceTypeID, equipmentID;
-    //CheckBox cbBracket, cbNozzel, cbDamaged, cbOperational, cbHose, cbRecharge, cbAccessible, cbTag;
+    int posInspType, posInspectionResult, deviceTypeID, equipmentID, RouteID;
     List<DeviceTypeStatusCodes> deviceTypeStatusCodes;
     List<String> statusCodesDescList = new ArrayList<String>();
     CheckBoxGroupView cbGroup;
     boolean isFail = false;
     SharedPreferencesManager sharedPreferencesManager;
+    public static RouteAsset routeAsset;
+    String[] routeInspectionTypes;
+    List<RouteInspection> routeInspections;
+    boolean isHydro = false;
+    int cusID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_unit_inspection);
+        setContentView(R.layout.activity_route_asset_inspection);
         initViews();
         initObj();
         initListeners();
@@ -74,14 +82,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
 
     private void initViews() {
-/*        cbBracket = (CheckBox) findViewById(R.id.cbBracket);
-        cbNozzel = (CheckBox) findViewById(R.id.cbNozzel);
-        cbDamaged = (CheckBox) findViewById(R.id.cbDamaged);
-        cbOperational = (CheckBox) findViewById(R.id.cbOperational);
-        cbHose = (CheckBox) findViewById(R.id.cbHose);
-        cbRecharge = (CheckBox) findViewById(R.id.cbRecharge);
-        cbAccessible = (CheckBox) findViewById(R.id.cbAccessible);
-        cbTag = (CheckBox) findViewById(R.id.cbTag);*/
         cbGroup = (CheckBoxGroupView) findViewById(R.id.cbGroup);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -89,6 +89,11 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvAssetName = (TextView) findViewById(R.id.tvAssetName);
         etStatusCode = (TextView) findViewById(R.id.etStatusCode);
+        tvInspectedAssets  = (TextView) findViewById(R.id.tvInspectedAssets);
+        tvAssetCount = (TextView) findViewById(R.id.tvAssetCount);
+        tvLocCount = (TextView) findViewById(R.id.tvLocCount);
+        tvRouteName = (TextView) findViewById(R.id.tvRouteName);
+        tvLocName = (TextView) findViewById(R.id.tvLocName);
         tvAssetOtherInfo = (TextView) findViewById(R.id.tvAssetOtherInfo);
         tvSave = (TextView) findViewById(R.id.tvSave);
         tvReplace = (TextView) findViewById(R.id.tvReplace);
@@ -99,11 +104,9 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         rlBottomsheet = (LinearLayout) findViewById(R.id.rlBottomsheet);
         rlCodes = (RelativeLayout) findViewById(R.id.rlCodes);
         spInspectionResult = (Spinner) findViewById(R.id.spInspectionResult);
-        tbTitleBottom.setText("Inspect Assets");
         ivTick.setVisibility(View.GONE);
         ivChangeCompany.setVisibility(View.GONE);
         tvReplace.setVisibility(View.GONE);
-
 
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             spInspType.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -113,8 +116,9 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     }
 
     private void initObj() {
+        setupBottomSheet();
         ReplaceAssetActivity.assetReplaced = this;
-        sharedPreferencesManager = new SharedPreferencesManager(UnitInspectionActivity.this);
+        sharedPreferencesManager = new SharedPreferencesManager(RouteAssetInspectionActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
         compName = getIntent().getStringExtra("compName");
@@ -123,23 +127,66 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
+        RouteID  = getIntent().getIntExtra("RouteID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
         equipmentID = getIntent().getIntExtra("equipmentID", 0);
+        assetCount = getIntent().getStringExtra("AssetCount");
+        locCount = getIntent().getStringExtra("LocCount");
+        routeName = getIntent().getStringExtra("routeName");
+        cusID = getIntent().getIntExtra("cusID",0);
+        tbTitleBottom.setText("Route Inspection");
         tvCompanyValue.setText("" + compName);
+        tvLocCount.setText("" + locCount);
+        tvRouteName.setText("" + routeName);
+        tvAssetCount.setText("" + assetCount);
+        tvLocName.setText("" + loc);
         tvAssetName.setText("" + tag);
-        tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + location);
-
+        tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + loc);
+        int InspectedAssetsCount = DataManager.getInstance().getCustomerRouteInspectedAssetsCount(cusID);
+        InspectedAssetsCount = InspectedAssetsCount+1;
+        tvInspectedAssets.setText(InspectedAssetsCount+" / "+assetCount);
         deviceTypeStatusCodes = DataManager.getInstance().getDeviceStatusCodesList(deviceTypeID);
-        ArrayAdapter<String> dataAdapterInspType = new ArrayAdapter<String>(UnitInspectionActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspTypes));
+
+        routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(routeAsset.getRouteID());
+
+        if(null!= routeInspections && !routeInspections.get(0).isHydro()){
+            isHydro = false;
+            routeInspectionTypes = new String[1];
+            routeInspectionTypes[0] = routeInspections.get(0).getInspectionType();
+            spInspType.setEnabled(false);
+        }else if(null!= routeInspections && routeInspections.get(0).isHydro()){
+            isHydro = true;
+            spInspType.setEnabled(true);
+            routeInspectionTypes = new String[routeInspections.size()];
+            for (int i = 0; i < routeInspections.size(); i++) {
+                routeInspectionTypes[i+1] = routeInspections.get(i).getInspectionType();
+            }
+            routeInspectionTypes[0] = "Please select Inspection Type";
+        }else{
+            Toast.makeText(getApplicationContext(),"No Inspection Type Found",Toast.LENGTH_LONG).show();
+        }
+
+        ArrayAdapter<String> dataAdapterInspType = new ArrayAdapter<String>(RouteAssetInspectionActivity.this, android.R.layout.simple_spinner_item, routeInspectionTypes);
         dataAdapterInspType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspType.setAdapter(dataAdapterInspType);
 
-        ArrayAdapter<String> dataAdapterInspectionResult = new ArrayAdapter<String>(UnitInspectionActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspResults));
+        ArrayAdapter<String> dataAdapterInspectionResult = new ArrayAdapter<String>(RouteAssetInspectionActivity.this, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.inspResults));
         dataAdapterInspectionResult.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spInspectionResult.setAdapter(dataAdapterInspectionResult);
 
         setupStatusCodes();
 
+    }
+
+    private void setupBottomSheet() {
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.gravity = Gravity.CENTER_VERTICAL;
+        tvReplace.setVisibility(View.GONE);
+        lp.weight = 0;
+        tvReplace.setLayoutParams(lp);
+        lp.weight = 1.5f;
+        tvSave.setLayoutParams(lp);
+        tvCancel.setLayoutParams(lp);
     }
 
     private void setupStatusCodes() {
@@ -179,14 +226,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         etStatusCode.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
-       /* cbBracket.setOnCheckedChangeListener(this);
-        cbNozzel.setOnCheckedChangeListener(this);
-        cbDamaged.setOnCheckedChangeListener(this);
-        cbOperational.setOnCheckedChangeListener(this);
-        cbHose.setOnCheckedChangeListener(this);
-        cbRecharge.setOnCheckedChangeListener(this);
-        cbAccessible.setOnCheckedChangeListener(this);
-        cbTag.setOnCheckedChangeListener(this);*/
+
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -199,10 +239,12 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                 case R.id.tvSave: {
                     if (checkValidation(isFail)) {
-
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
                         inspectionResult.setEquipmentID(equipmentID);
+                        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+                        RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
                         inspectionResult.setReplaced(false);
+                        inspectionResult.setRouteID(RouteID);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
                         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -235,7 +277,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                         showToast("Inspection completed Successfully");
-                        sendMessage("finish");
+                        //sendMessage("finish");
                         finish();
                     }
                     break;
@@ -252,7 +294,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
                 case R.id.tvReplace: {
                     if (checkValidation(isFail)) {
-                        Intent in = new Intent(UnitInspectionActivity.this, ReplaceAssetActivity.class);
+                        Intent in = new Intent(RouteAssetInspectionActivity.this, ReplaceAssetActivity.class);
                         in.putExtra("taskType", "Inspect Assets");
                         in.putExtra("compName", compName);
                         in.putExtra("code", tag);
@@ -273,20 +315,27 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
     private boolean checkValidation(boolean isFail) {
         if (isFail) {
-            if (0 == posInspType) {
-                showToast("Please select Inspection Type");
-            } else if (0 == posInspectionResult) {
-                showToast("Please select Inspection Result");
-            } else if (0 == cbGroup.getCheckedIds().size()) {
-                showToast("Please select status Code(s)");
-            } else {
-                return true;
-            }
-            return false;
+           if(!isHydro){
+               if (0 == posInspectionResult) {
+                   showToast("Please select Inspection Result");
+               } else if (0 == cbGroup.getCheckedIds().size()) {
+                   showToast("Please select status Code(s)");
+               } else {
+                   return true;
+               }
+               return false;
+           }else{
+                 if (0 == posInspectionResult) {
+                   showToast("Please select Inspection Result");
+               } else if (0 == cbGroup.getCheckedIds().size()) {
+                   showToast("Please select status Code(s)");
+               } else {
+                   return true;
+               }
+               return false;
+           }
         } else {
-            if (0 == posInspType) {
-                showToast("Please select Inspection Type");
-            } else if (0 == posInspectionResult) {
+            if (0 == posInspectionResult) {
                 showToast("Please select Inspection Result");
             } else {
                 return true;
@@ -311,7 +360,10 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
+        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+        RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
         inspectionResult.setReplaced(true);
+        inspectionResult.setRouteID(RouteID);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -347,7 +399,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
-        sendMessage("finish");
+        //sendMessage("finish");
         finish();
     }
 
@@ -458,6 +510,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
         if (message.startsWith("rep")) {
             saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
+
         }
     }
 }
+

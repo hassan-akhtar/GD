@@ -1,8 +1,7 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.Activities.Sync;
 
 
 import android.content.DialogInterface;
-import android.nfc.FormatException;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.Fragment;
@@ -44,8 +43,6 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;

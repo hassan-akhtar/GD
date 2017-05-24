@@ -1,4 +1,4 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.FireBug.ViewInformation;
 
 
 import android.app.DialogFragment;
@@ -21,21 +21,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
-import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.RealmList;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 

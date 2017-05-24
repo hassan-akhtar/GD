@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.ViewInformation;
+package com.ets.gd.FireBug.ViewInformation;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -14,14 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Fragments.AddNoteFragment;
-import com.ets.gd.Fragments.AssetInformationFragment;
-import com.ets.gd.Fragments.AssetLocationFragment;
-import com.ets.gd.Fragments.InspectionDatesFragment;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -32,8 +27,6 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.realm.Realm;
 
 public class ViewAssetInformationActivity extends AppCompatActivity {
     ImageView ivBack, ivChangeCompany, ivTick;

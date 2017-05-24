@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.Move;
+package com.ets.gd.FireBug.Move;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,11 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.Customer.CustomerActivity;
+import com.ets.gd.FireBug.Customer.CustomerActivity;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.AssetList;
-import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentList;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;

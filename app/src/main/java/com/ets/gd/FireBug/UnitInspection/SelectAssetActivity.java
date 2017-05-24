@@ -1,11 +1,9 @@
-package com.ets.gd.Activities.FireBug.UnitInspection;
+package com.ets.gd.FireBug.UnitInspection;
 
 import android.Manifest;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,18 +25,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Activities.Scan.BarcodeScanActivity;
-import com.ets.gd.Activities.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Interfaces.AssetReplaced;
 import com.ets.gd.Interfaces.BarcodeScan;
-import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.Models.Location;
-import com.ets.gd.Models.Replace;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;

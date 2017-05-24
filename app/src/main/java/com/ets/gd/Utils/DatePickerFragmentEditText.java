@@ -9,9 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.ets.gd.Fragments.InspectionDatesFragment;
+import com.ets.gd.FireBug.ViewInformation.InspectionDatesFragment;
 
 import java.util.Calendar;
 import java.util.Date;

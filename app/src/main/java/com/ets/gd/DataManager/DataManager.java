@@ -1,6 +1,6 @@
 package com.ets.gd.DataManager;
 
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
+import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;

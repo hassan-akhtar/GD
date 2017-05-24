@@ -1,12 +1,10 @@
 package com.ets.gd.Activities.Login;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,17 +14,10 @@ import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
-import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
-import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
-import com.ets.gd.NetworkLayer.Service.GSDServiceFactory;
-import com.ets.gd.NetworkLayer.Service.MyCallBack;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;

@@ -4,7 +4,7 @@
     android:id="@+id/activity_select_location"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ets.gd.Activities.FireBug.UnitInspection.SelectAssetActivity">
+    tools:context=".FireBug.UnitInspection.SelectAssetActivity">
 
 
     <RelativeLayout

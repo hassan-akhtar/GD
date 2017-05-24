@@ -1,4 +1,4 @@
-package com.ets.gd.Fragments;
+package com.ets.gd.FireBug.ViewInformation;
 
 
 import android.content.DialogInterface;
@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Adapters.NoteAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;

@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.UnitInspection;
+package com.ets.gd.FireBug.UnitInspection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

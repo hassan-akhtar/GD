@@ -4,7 +4,7 @@
     android:id="@+id/activity_view_location_information"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.FireBug.ViewInformation.ViewLocationInformationActivity">
+    tools:context=".FireBug.ViewInformation.ViewLocationInformationActivity">
 
     <RelativeLayout
         android:layout_width="wrap_content"

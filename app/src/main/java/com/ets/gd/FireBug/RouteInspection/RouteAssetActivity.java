@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.FireBug.RouteInspection;
+package com.ets.gd.FireBug.RouteInspection;
 
 import android.Manifest;
 import android.content.DialogInterface;
