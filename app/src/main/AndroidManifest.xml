@@ -79,7 +79,8 @@
         <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity" />
         <activity android:name=".ToolHawk.EquipmentInfo.EquipmentInfoActivity" />
         <activity android:name=".ToolHawk.Activities.CommonToolhawkScanActivity" />
-        <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity"></activity>
+        <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity" />
+        <activity android:name=".ToolHawk.EquipmentInfo.ToolhawkLocationActivity"></activity>
     </application>
 
 </manifest>

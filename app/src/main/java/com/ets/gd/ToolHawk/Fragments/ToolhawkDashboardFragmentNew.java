@@ -18,6 +18,8 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
+import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
+import com.ets.gd.ToolHawk.EquipmentInfo.ToolhawkLocationActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -112,13 +114,16 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
             switch (v.getId()) {
                 case R.id.itemAddAsset: {
                     fab.close(true);
-                    showToast("Add item");
+                    Intent in = new Intent(getActivity(), EquipmentInfoActivity.class);
+                    in.putExtra("taskType", "add");
+                    startActivity(in);
                     break;
                 }
 
                 case R.id.itemAddLocation: {
                     fab.close(true);
-                    showToast("Add Location");
+                    Intent in = new Intent(getActivity(), ToolhawkLocationActivity.class);
+                    startActivity(in);
                     break;
                 }
 

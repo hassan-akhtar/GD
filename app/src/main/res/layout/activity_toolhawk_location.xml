@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_view_location_information"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FireBug.ViewInformation.ViewLocationInformationActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/activity_header_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlHeader">
+
+            <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/letLocationID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/lCusID"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="7dp"
+                    android:theme="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/tvLocationID"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:hint="Location ID"
+                        android:maxLines="1"
+                        android:paddingLeft="12dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lLocationID"
+                    android:layout_below="@+id/lCusID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="61dp"
+                    android:theme="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/tvDescprition"
+                        android:layout_width="match_parent"
+                        android:enabled="false"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:hint="@string/txt_description"
+                        android:maxLines="1"
+                        android:paddingLeft="12dp" />
+
+                </android.support.design.widget.TextInputLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/lDescprition"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@+id/lLocationID"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp">
+
+
+                    <TextView
+                        android:id="@+id/tvLableSite"
+                        android:visibility="visible"
+                        android:layout_marginLeft="30dp"
+                        android:textSize="12sp"
+                        android:text="Site"
+                        android:textColor="@color/blueDark"
+                        android:layout_marginBottom="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <Spinner
+                        android:id="@+id/spSite"
+                        android:layout_below="@+id/tvLableSite"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="23dp"
+                        android:layout_marginRight="23dp"
+                        android:background="@drawable/sp_bg_new"
+                        android:paddingBottom="10dp" />
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:id="@+id/rl"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@+id/lDescprition"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp">
+
+
+                    <TextView
+                        android:id="@+id/tvLableBuilding"
+                        android:visibility="visible"
+                        android:layout_marginLeft="30dp"
+                        android:text="Building"
+                        android:textSize="12sp"
+                        android:textColor="@color/blueDark"
+                        android:layout_marginBottom="3dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent" />
+
+                    <Spinner
+                        android:id="@+id/spBuilding"
+                        android:layout_below="@+id/tvLableBuilding"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="23dp"
+                        android:layout_marginRight="23dp"
+                        android:background="@drawable/sp_bg_new"
+                        android:paddingBottom="10dp" />
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+        </ScrollView>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

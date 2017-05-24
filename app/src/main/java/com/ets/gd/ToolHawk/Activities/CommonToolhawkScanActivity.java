@@ -97,7 +97,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                 }
                 case R.id.btnScan: {
                     Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
-                    in.putExtra("taskType", tbTitleBottom.getText().toString());
+                    in.putExtra("taskType", "view");
                     startActivity(in);
                     break;
                 }
