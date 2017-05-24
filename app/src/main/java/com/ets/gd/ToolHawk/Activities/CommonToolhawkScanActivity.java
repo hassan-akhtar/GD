@@ -14,7 +14,7 @@ import com.ets.gd.R;
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
 
-    TextView tvBarcodeValue, tbTitleTop, tbTitleBottom,tvBarcodeTitle;
+    TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle;
     Button btnCross, btnNewCount, btnExistingCount, btnScan;
     LinearLayout llbtns;
     EditText etBarcode;
@@ -50,7 +50,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
         ivTick = (ImageView) findViewById(R.id.ivTick);
 
         taskType = getIntent().getStringExtra("taskType");
-        tbTitleBottom.setText(""+taskType);
+        tbTitleBottom.setText("" + taskType);
     }
 
     private void initObj() {
@@ -76,7 +76,11 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnCross: {
-
+                    tvBarcodeTitle.setVisibility(View.GONE);
+                    tvBarcodeValue.setVisibility(View.GONE);
+                    tvBarcodeValue.setText("");
+                    etBarcode.setText("");
+                    btnCross.setVisibility(View.GONE);
                     break;
                 }
 
@@ -94,7 +98,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                 }
 
                 case R.id.ivBack: {
-
+                    finish();
                     break;
                 }
 
