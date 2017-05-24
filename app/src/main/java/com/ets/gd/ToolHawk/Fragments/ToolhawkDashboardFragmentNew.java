@@ -16,8 +16,8 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
-import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -83,7 +83,12 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     in.putExtra("taskType", thTasks[position]);
                     startActivity(in);
 
-                }  else {
+                } else if (thTasks[position].toLowerCase().startsWith("mo") || thTasks[position].toLowerCase().startsWith("tra") || thTasks[position].toLowerCase().startsWith("ch")) {
+                    Intent in = new Intent(getActivity(), CommonToolhawkDepartmentActivity.class);
+                    in.putExtra("taskType", thTasks[position]);
+                    startActivity(in);
+
+                } else {
                     showToast("" + thTasks[position]);
                 }
 

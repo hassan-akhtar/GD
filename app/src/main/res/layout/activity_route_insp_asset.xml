@@ -20,7 +20,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlSecond"
+        android:id="@+id/rlConstruction"
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_below="@+id/rlHeader"
@@ -74,7 +74,7 @@
         android:id="@+id/rlRouteHeader"
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:layout_below="@+id/rlSecond"
+        android:layout_below="@+id/rlConstruction"
         android:background="@color/colorPrimary">
 
 

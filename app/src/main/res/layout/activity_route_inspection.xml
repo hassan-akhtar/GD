@@ -20,7 +20,7 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rlSecond"
+        android:id="@+id/rlConstruction"
         android:background="@color/greyBg"
         android:layout_below="@+id/rlHeader"
         android:layout_width="match_parent"
@@ -65,7 +65,7 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvRouteInspection"
-        android:layout_below="@+id/rlSecond"
+        android:layout_below="@+id/rlConstruction"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 

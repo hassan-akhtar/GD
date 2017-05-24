@@ -50,6 +50,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
         ivTick = (ImageView) findViewById(R.id.ivTick);
 
         taskType = getIntent().getStringExtra("taskType");
+        tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
     }
 

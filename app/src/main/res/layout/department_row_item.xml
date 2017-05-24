@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/rlConstruction"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/rlFirst"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="match_parent"
+            android:text="Construction"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/blueDark"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_below="@+id/tvTitle"
+            android:id="@+id/tvConstructionDescp"
+            android:layout_width="wrap_content"
+            android:text="Description:"
+            android:textSize="15sp"
+            android:textColor="@color/greyDark"
+            android:layout_height="wrap_content" />
+
+
+        <TextView
+            android:layout_below="@+id/tvTitle"
+            android:layout_toRightOf="@+id/tvConstructionDescp"
+            android:id="@+id/tvDesc"
+            android:layout_marginLeft="3dp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:text="Construction Department"
+            android:textSize="15sp"
+            android:textColor="@color/greyDark"
+            android:layout_height="wrap_content" />
+
+
+        <View
+            android:id="@+id/SecondLine"
+            android:layout_below="@+id/tvConstructionDescp"
+            android:background="@color/colorPrimary"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"/>
+
+    </RelativeLayout>
+</RelativeLayout>
