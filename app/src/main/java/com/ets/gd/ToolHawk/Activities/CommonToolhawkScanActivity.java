@@ -1,5 +1,6 @@
 package com.ets.gd.ToolHawk.Activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
@@ -94,7 +96,9 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                     break;
                 }
                 case R.id.btnScan: {
-
+                    Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
+                    in.putExtra("taskType", tbTitleBottom.getText().toString());
+                    startActivity(in);
                     break;
                 }
 

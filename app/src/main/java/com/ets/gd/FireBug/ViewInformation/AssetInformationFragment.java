@@ -67,12 +67,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     }
 
     private void initViews() {
-        spDeviceType = (Spinner) rootView.findViewById(R.id.spDeviceType);
+        spDeviceType = (Spinner) rootView.findViewById(R.id.spDepartment);
         spManufacturer = (Spinner) rootView.findViewById(R.id.spManufacturer);
         spVendor = (Spinner) rootView.findViewById(R.id.spVendor);
         spAgent = (Spinner) rootView.findViewById(R.id.spAgent);
         spModel = (Spinner) rootView.findViewById(R.id.spModel);
-        tvLableDeviceType = (TextView) rootView.findViewById(R.id.tvLableDeviceType);
+        tvLableDeviceType = (TextView) rootView.findViewById(R.id.tvLableDepartment);
         tvLableManufacturer = (TextView) rootView.findViewById(R.id.tvLableManufacturer);
         tvLableModel = (TextView) rootView.findViewById(R.id.tvLableModel);
         tvLableVendor = (TextView) rootView.findViewById(R.id.tvLableVendor);
@@ -80,7 +80,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         ltvTagID = (TextInputLayout) rootView.findViewById(R.id.ltvTagID);
         lSrNo = (TextInputLayout) rootView.findViewById(R.id.lSrNo);
         lMfgDate = (TextInputLayout) rootView.findViewById(R.id.lMfgDate);
-        tvTagID = (EditText) rootView.findViewById(R.id.tvTagID);
+        tvTagID = (EditText) rootView.findViewById(R.id.tvEquipmentCode);
         tvMfgDate = (EditText) rootView.findViewById(R.id.tvMfgDate);
         tvSrNo = (EditText) rootView.findViewById(R.id.tvSrNo);
 
@@ -347,7 +347,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
         int viewID = parent.getId();
         switch (viewID) {
-            case R.id.spDeviceType: {
+            case R.id.spDepartment: {
                 posDeviceType = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {

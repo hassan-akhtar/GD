@@ -25,7 +25,7 @@
                 android:theme="@style/TextLabel">
 
                 <EditText
-                    android:id="@+id/tvTagID"
+                    android:id="@+id/tvEquipmentCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
@@ -45,7 +45,7 @@
                 android:layout_marginTop="2dp">
 
                 <TextView
-                    android:id="@+id/tvLableDeviceType"
+                    android:id="@+id/tvLableDepartment"
                     android:visibility="visible"
                     android:layout_marginLeft="30dp"
                     android:text="Device Type"
@@ -56,8 +56,8 @@
                     android:layout_height="match_parent" />
 
                 <Spinner
-                    android:id="@+id/spDeviceType"
-                    android:layout_below="@+id/tvLableDeviceType"
+                    android:id="@+id/spDepartment"
+                    android:layout_below="@+id/tvLableDepartment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

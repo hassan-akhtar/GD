@@ -49,7 +49,7 @@ public class RepairAssetActivity extends AppCompatActivity {
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         tvRepair = (TextView) findViewById(R.id.tvRepair);
         tvSpare = (TextView) findViewById(R.id.tvSpare);
-        tvTagID = (TextView) findViewById(R.id.tvTagID);
+        tvTagID = (TextView) findViewById(R.id.tvEquipmentCode);
         ivChangeCompany.setVisibility(View.GONE);
         ivTick.setVisibility(View.GONE);
 

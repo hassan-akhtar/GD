@@ -50,7 +50,7 @@
             android:text="Select where do you want to MOVE failed Asset" />
 
         <TextView
-            android:id="@+id/tvTagID"
+            android:id="@+id/tvEquipmentCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/greyDark"
