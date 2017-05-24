@@ -5,6 +5,9 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
@@ -510,6 +513,22 @@ public class DataManager {
 
     }
 
+
+    // For getting asset all assets from DB
+    public InspectionDue getInspectionDue() {
+            return realm.where(InspectionDue.class).findFirst();
+    }
+
+
+    public InspectionOverDue getInspectionOverDue() {
+        return realm.where(InspectionOverDue.class).findFirst();
+    }
+
+
+    public MaintenanceDue getDashboardStatsToolhawk() {
+        return realm.where(MaintenanceDue.class).findFirst();
+    }
+
     // For getting asset all assets from DB
     public List<Asset> getAllAssets(int count) {
         return realm.where(Asset.class).findAllSorted("manufacturers").subList(0, count);
@@ -608,6 +627,7 @@ public class DataManager {
             public void execute(Realm realm) {
                 RealmSyncGetResponseDTO realmSyncGetResponseDTO = new RealmSyncGetResponseDTO();
                 realmSyncGetResponseDTO.setID(0);
+                realmSyncGetResponseDTO.setMobileDashboard(obj.getMobileDashboard());
                 realmSyncGetResponseDTO.setLstCustomerData(obj.getLstCustomerData());
                 realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
                 realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());

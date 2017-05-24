@@ -320,7 +320,9 @@ public class BaseActivity extends AppCompatActivity
                     BaseActivity.refreshMainViewByNew(new CustomerFragment());
                 } else {
                     BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                    EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
+                    if (null!=DataManager.getInstance().getParentCompany()) {
+                        EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
+                    }
 
                 }
                 break;

@@ -2,6 +2,7 @@ package com.ets.gd.Models;
 
 import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DashboardStats;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -33,7 +34,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<RegisteredDevice> lstDevices;
     RealmList<EquipmentNote> lstFbEquipmentNotes;
     RealmList<Routes> lstRoutes;
-
+    DashboardStats mobileDashboard;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -49,6 +50,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public DashboardStats getMobileDashboard() {
+        return mobileDashboard;
+    }
+
+    public void setMobileDashboard(DashboardStats mobileDashboard) {
+        this.mobileDashboard = mobileDashboard;
     }
 
     public RealmList<Routes> getLstRoutes() {
