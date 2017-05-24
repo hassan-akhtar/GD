@@ -34,6 +34,7 @@ import com.ets.gd.Fragments.InventoryDashboardFragment;
 import com.ets.gd.Activities.Sync.SyncFragment;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
@@ -88,7 +89,7 @@ public class BaseActivity extends AppCompatActivity
         llDeviceInfo = drawer.findViewById(R.id.llDeviceInfo);
         llLogout = drawer.findViewById(R.id.llLogout);
         username = (TextView) drawer.findViewById(R.id.username);
-        username .setText(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERNAME));
+        username.setText(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERNAME));
         drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
         drawerFragment.setDrawerListener(this);
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.SYNC_STATE)) {
@@ -179,6 +180,14 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new ToolhawkDashboardFragment()).commit();
+            tbTitleTop.setText("Toolhawk");
+            tbTitleBottom.setText("Menu");
+        } else if (fragment instanceof ToolhawkDashboardFragmentNew) {
+            //searchMenuItem.setVisible(false);
+            fragmentManager
+                    .beginTransaction()
+                    .replace(R.id.container_body,
+                            new ToolhawkDashboardFragmentNew()).commit();
             tbTitleTop.setText("Toolhawk");
             tbTitleBottom.setText("Menu");
         } else if (fragment instanceof InventoryDashboardFragment) {
@@ -318,7 +327,7 @@ public class BaseActivity extends AppCompatActivity
                     BaseActivity.refreshMainViewByNew(new CustomerFragment());
                 } else {
                     BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                    if (null!=DataManager.getInstance().getParentCompany()) {
+                    if (null != DataManager.getInstance().getParentCompany()) {
                         EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
                     }
 

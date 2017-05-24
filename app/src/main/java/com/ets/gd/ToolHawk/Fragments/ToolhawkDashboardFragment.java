@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.R;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ToolhawkDashboardFragment extends Fragment {
 
     View rootView;

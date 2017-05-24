@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white">
+
+    <TextView
+        android:id="@+id/tvBarcodeTitle"
+        android:textColor="@color/veryLightGrey"
+        android:textStyle="bold"
+        android:text="Bar Code ID:"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="10dp"
+        android:textSize="10sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvBarcodeValue"
+        android:text="00382"
+        android:layout_marginLeft="12dp"
+        android:textStyle="bold"
+        android:layout_below="@+id/tvBarcodeTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/btnCross"
+        android:layout_toLeftOf="@+id/btnScan"
+        android:layout_width="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_cross"
+        android:layout_height="20dp" />
+
+
+
+    <LinearLayout
+        android:id="@+id/llunderText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etBarcode"
+        android:layout_marginLeft="8dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/ic_info" />
+
+        <TextView
+            android:id="@+id/tvUnderText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textSize="12sp"
+            android:text=" Scan/Enter ID of Asset"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llbtns"
+        android:visibility="gone"
+        android:background="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/llunderText"
+        android:layout_marginLeft="45dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnNewCount"
+            android:drawableLeft="@drawable/ic_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:drawablePadding="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/white"
+            android:text=" New Count"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+        <View
+            android:id="@+id/vLine"
+            android:layout_width="1px"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/btnExistingCount"
+            android:drawableLeft="@drawable/ic_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:drawablePadding="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignRight="@+id/vLine"
+            android:background="@android:color/white"
+            android:text=" Existing Count"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="84dp"
+        android:layout_height="80dp"
+        android:layout_alignParentRight="true"
+        android:background="@color/colorPrimary"
+        android:drawableTop="@drawable/rsz_ic_scan"
+        android:paddingTop="30dp" />
+
+    <EditText
+        android:id="@+id/etBarcode"
+        android:visibility="visible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter Barcode ID"
+        android:inputType="textPhonetic"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/llunderText"
+        android:layout_alignStart="@+id/llunderText" />
+</RelativeLayout>

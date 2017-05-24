@@ -17,7 +17,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -287,7 +287,8 @@ public class DashboardFragment extends Fragment {
                 }
 
                 case R.id.ivForwardArrowTh: {
-                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
+                   // BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
+                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                     break;
                 }
 

@@ -1,4 +1,4 @@
-package com.ets.gd.Activities.Scan;
+package com.ets.gd.FireBug.Scan;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;

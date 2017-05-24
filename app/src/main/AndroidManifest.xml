@@ -31,13 +31,13 @@
                 android:resource="@xml/customer_searchable" />
         </activity>
         <activity
-            android:name=".Activities.Scan.CommonFirebugScanActivity"
+            android:name=".FireBug.Scan.CommonFirebugScanActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".FireBug.RouteInspection.RouteInspectionActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Activities.Scan.BarcodeScanActivity"
+            android:name=".FireBug.Scan.BarcodeScanActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".FireBug.ViewInformation.ViewAssetInformationActivity"
@@ -76,7 +76,10 @@
             android:name=".Activities.Sync.FirstTimeSyncActicity"
             android:screenOrientation="portrait" />
         <activity android:name=".FireBug.RouteInspection.RouteAssetActivity" />
-        <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity"></activity>
+        <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity" />
+        <activity android:name=".ToolHawk.EquipmentInfo.EquipmentInfoActivity" />
+        <activity android:name=".ToolHawk.Activities.CommonToolhawkScanActivity" />
+        <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity"></activity>
     </application>
 
 </manifest>

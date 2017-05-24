@@ -5,7 +5,7 @@ android:background="@android:color/white"
     android:id="@+id/activity_view_information"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.ets.gd.Activities.Scan.CommonFirebugScanActivity">
+    tools:context=".FireBug.Scan.CommonFirebugScanActivity">
 
 
     <RelativeLayout
@@ -38,7 +38,7 @@ android:background="@android:color/white"
 
         <include
             android:id="@+id/include"
-            layout="@layout/scanning_area"
+            layout="@layout/scanning_area_firebug"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
