@@ -288,8 +288,8 @@ public class DashboardFragment extends Fragment {
                 }
 
                 case R.id.ivForwardArrowTh: {
-                    //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
-                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
+                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
+                    //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                     break;
                 }
 
