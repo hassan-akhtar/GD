@@ -157,11 +157,12 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         }else if(null!= routeInspections && routeInspections.get(0).isHydro()){
             isHydro = true;
             spInspType.setEnabled(true);
-            routeInspectionTypes = new String[routeInspections.size()];
+            routeInspectionTypes = new String[routeInspections.size()+1];
             for (int i = 0; i < routeInspections.size(); i++) {
                 routeInspectionTypes[i+1] = routeInspections.get(i).getInspectionType();
             }
             routeInspectionTypes[0] = "Please select Inspection Type";
+            spInspType.setSelection(0);
         }else{
             Toast.makeText(getApplicationContext(),"No Inspection Type Found",Toast.LENGTH_LONG).show();
         }

@@ -9,18 +9,18 @@ import io.realm.RealmObject;
 
 public class RouteInspection extends RealmObject{
 
-    private int IDl;
+    private int ID;
     private String InspectionType;
     private int RouteID;
     private boolean IsHydro;
 
 
-    public int getIDl() {
-        return IDl;
+    public int getID() {
+        return ID;
     }
 
-    public void setIDl(int IDl) {
-        this.IDl = IDl;
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getInspectionType() {

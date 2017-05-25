@@ -94,6 +94,9 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+
+
+
     // For adding an asset info in DB
     public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation, int cusID) {
         realm.beginTransaction();
@@ -620,6 +623,8 @@ public class DataManager {
 
         return copied;
     }
+
+
 
     public void saveSyncGetResponse(final SyncGetResponseDTO obj) {
         realm.executeTransaction(new Realm.Transaction() {

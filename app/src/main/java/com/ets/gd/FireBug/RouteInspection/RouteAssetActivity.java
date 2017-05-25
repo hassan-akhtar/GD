@@ -54,7 +54,6 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +90,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         compName = getIntent().getStringExtra("compName");
         locCount = getIntent().getStringExtra("locCount");
         routeName = getIntent().getStringExtra("routeName");
-        cusID = getIntent().getIntExtra("cusID",0);
+        cusID = getIntent().getIntExtra("cusID", 0);
         tvCompanyName.setText(compName);
         tvAssetCount.setText("" + routeLocation.getRouteAssets().size());
         tvLocCount.setText("" + locCount);
@@ -114,6 +113,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
         rvRouteInspection.setAdapter(routeAssetAdapter);
+
     }
 
     private void initListeners() {
@@ -124,9 +124,10 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(position).getEquipmentID());
 
-                if (!fireBugEquipment.isRouteUnitInspected()) {
+                if (!fireBugEquipment.isRouteUnitInspected() ) {
                     RouteAssetInspectionActivity.routeAsset = null;
                     RouteAssetInspectionActivity.routeAsset = assetList.get(position);
                     Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
