@@ -81,7 +81,7 @@
         <activity android:name=".ToolHawk.Activities.CommonToolhawkScanActivity" />
         <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity" />
         <activity android:name=".ToolHawk.EquipmentInfo.ToolhawkLocationActivity" />
-        <activity android:name=".ToolHawk.MaintenanceActivity"></activity>
+        <activity android:name=".ToolHawk.Maintenance.MaintenanceActivity"></activity>
     </application>
 
 </manifest>

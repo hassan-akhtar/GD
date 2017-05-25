@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
-import com.ets.gd.ToolHawk.MaintenanceActivity;
+import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
 
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
