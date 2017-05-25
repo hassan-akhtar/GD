@@ -9,17 +9,20 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
+import com.ets.gd.ToolHawk.MaintenanceActivity;
 
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
 
-    TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle;
+    TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText;
     Button btnCross, btnNewCount, btnExistingCount, btnScan;
     LinearLayout llbtns;
     EditText etBarcode;
+    ImageView ivInfo;
     String taskType;
     ImageView ivBack, ivTick;
 
@@ -46,11 +49,12 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
         llbtns = (LinearLayout) findViewById(R.id.llbtns);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
+        tvUnderText = (TextView) findViewById(R.id.tvUnderText);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
-
+        ivInfo = (ImageView) findViewById(R.id.ivInfo);
         taskType = getIntent().getStringExtra("taskType");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
@@ -81,24 +85,37 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                 case R.id.btnCross: {
                     tvBarcodeTitle.setVisibility(View.GONE);
                     tvBarcodeValue.setVisibility(View.GONE);
+                    ivInfo.setVisibility(View.VISIBLE);
+                    tvUnderText.setVisibility(View.VISIBLE);
+                    llbtns.setVisibility(View.GONE);
                     tvBarcodeValue.setText("");
+                    etBarcode.setVisibility(View.VISIBLE);
                     etBarcode.setText("");
                     btnCross.setVisibility(View.GONE);
                     break;
                 }
 
                 case R.id.btnNewCount: {
-
+                    showToast("New");
                     break;
                 }
                 case R.id.btnExistingCount: {
-
+                    showToast("Existing");
                     break;
                 }
                 case R.id.btnScan: {
-                    Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
-                    in.putExtra("taskType", "view");
-                    startActivity(in);
+                    if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq")) {
+                        Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
+                        in.putExtra("taskType", "view");
+                        startActivity(in);
+                    } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
+                        showViewForQuickCount();
+
+                    } else {
+                        Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
+                        in.putExtra("assetID", "200020");
+                        startActivity(in);
+                    }
                     break;
                 }
 
@@ -116,6 +133,21 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
 
     };
 
+    private void showViewForQuickCount() {
+        llbtns.setVisibility(View.VISIBLE);
+        tvBarcodeTitle.setVisibility(View.VISIBLE);
+        tvBarcodeValue.setVisibility(View.VISIBLE);
+        tvBarcodeValue.setText("Asset1");
+        etBarcode.setVisibility(View.GONE);
+        ivInfo.setVisibility(View.GONE);
+        tvUnderText.setVisibility(View.GONE);
+        etBarcode.setText("");
+        btnCross.setVisibility(View.VISIBLE);
+    }
+
+    void showToast(String msg){
+        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+    }
 
     private boolean checkValidation() {
         return false;

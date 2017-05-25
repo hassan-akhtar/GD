@@ -80,7 +80,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (thTasks[position].toLowerCase().startsWith("eq") || thTasks[position].toLowerCase().startsWith("qu")) {
+                if (thTasks[position].toLowerCase().startsWith("eq") || thTasks[position].toLowerCase().startsWith("qu") || thTasks[position].toLowerCase().startsWith("ma")) {
                     Intent in = new Intent(getActivity(), CommonToolhawkScanActivity.class);
                     in.putExtra("taskType", thTasks[position]);
                     startActivity(in);

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ets.gd.ToolHawk.MaintenanceActivity">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_header_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlAssetInfo"
+        android:layout_below="@+id/rlHeader"
+        android:layout_width="match_parent"
+        android:background="@color/colorPrimary"
+        android:layout_height="45dp">
+
+        <TextView
+            android:id="@+id/textAsset"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:text="Asset ID:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"/>
+
+        <TextView
+            android:id="@+id/tvAssetID"
+            android:layout_toRightOf="@+id/textAsset"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:text="1111111"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="7dp"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
