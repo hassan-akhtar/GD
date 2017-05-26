@@ -9,7 +9,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,10 +47,10 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
     private void initViews() {
 
-        spSite = (Spinner) findViewById(R.id.spSite);
+        spSite = (Spinner) findViewById(R.id.spDep);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
-        spBuilding = (Spinner) findViewById(R.id.spBuilding);
+        spBuilding = (Spinner) findViewById(R.id.spLoc);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
 
@@ -196,7 +195,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         int viewID = parent.getId();
         switch (viewID) {
 
-            case R.id.spSite: {
+            case R.id.spDep: {
                 posSite = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                     if (0 == position) {
@@ -208,7 +207,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             }
             break;
 
-            case R.id.spBuilding: {
+            case R.id.spLoc: {
                 posBuilding = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                     if (0 == position) {

@@ -63,13 +63,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     private void initViews() {
 
         spLocation = (Spinner) findViewById(R.id.spLocation);
-        spSite = (Spinner) findViewById(R.id.spSite);
+        spSite = (Spinner) findViewById(R.id.spDep);
         spCustomer = (Spinner) findViewById(R.id.spCustomer);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         tvLableLocation = (TextView) findViewById(R.id.tvLableLocation);
-        spBuilding = (Spinner) findViewById(R.id.spBuilding);
+        spBuilding = (Spinner) findViewById(R.id.spLoc);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         barCodeID = getIntent().getStringExtra("barCode");
@@ -396,7 +396,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             }
             break;
 
-            case R.id.spSite: {
+            case R.id.spDep: {
                 posSite = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (!"viewLoc".equals(actionType)) {
@@ -409,7 +409,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             }
             break;
 
-            case R.id.spBuilding: {
+            case R.id.spLoc: {
                 posBuilding = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (!"viewLoc".equals(actionType)) {

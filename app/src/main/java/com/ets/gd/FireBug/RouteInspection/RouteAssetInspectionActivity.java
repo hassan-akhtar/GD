@@ -95,7 +95,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         tvRouteName = (TextView) findViewById(R.id.tvRouteName);
         tvLocName = (TextView) findViewById(R.id.tvLocName);
         tvAssetOtherInfo = (TextView) findViewById(R.id.tvAssetOtherInfo);
-        tvSave = (TextView) findViewById(R.id.tvSave);
+        tvSave = (TextView) findViewById(R.id.tvTransfer);
         tvReplace = (TextView) findViewById(R.id.tvReplace);
         tvCancel = (TextView) findViewById(R.id.tvCancel);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
@@ -238,7 +238,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                     break;
                 }
 
-                case R.id.tvSave: {
+                case R.id.tvTransfer: {
                     if (checkValidation(isFail)) {
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
                         inspectionResult.setEquipmentID(equipmentID);

@@ -22,6 +22,7 @@ import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
 import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
 import com.ets.gd.ToolHawk.Move.MoveActivity;
+import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +71,6 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
         rvDepartments.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(CommonToolhawkDepartmentActivity.this, rvDepartments, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                showToast(""+depList.get(position).getTitle());
 
                 if(tbTitleBottom.getText().toString().toLowerCase().startsWith("mov")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, MoveActivity.class);

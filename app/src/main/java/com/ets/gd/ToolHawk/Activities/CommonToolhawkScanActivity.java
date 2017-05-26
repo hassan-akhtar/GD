@@ -15,6 +15,7 @@ import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
 import com.ets.gd.ToolHawk.QuickCount.QuickCountActivity;
+import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
@@ -115,6 +116,13 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                         startActivity(in);
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
                         showViewForQuickCount();
+
+                    } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("tra")) {
+                        Intent in = new Intent(CommonToolhawkScanActivity.this, TransferActivity.class);
+                        in.putExtra("taskName", tbTitleBottom.getText().toString());
+                        in.putExtra("eqName", "Asset1234");
+                        in.putExtra("departmentName", "Construction");
+                        startActivity(in);
 
                     } else {
                         Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);

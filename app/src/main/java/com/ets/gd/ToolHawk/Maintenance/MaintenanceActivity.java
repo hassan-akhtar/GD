@@ -1,7 +1,5 @@
 package com.ets.gd.ToolHawk.Maintenance;
 
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -43,7 +41,7 @@ public class MaintenanceActivity extends AppCompatActivity {
         tvAssetID = (TextView) findViewById(R.id.tvAssetID);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
-        tvSave = (TextView) findViewById(R.id.tvSave);
+        tvSave = (TextView) findViewById(R.id.tvTransfer);
         tvCancel = (TextView) findViewById(R.id.tvCancel);
         spCategory = (Spinner) findViewById(R.id.spCategory);
         spAction = (Spinner) findViewById(R.id.spAction);
@@ -101,7 +99,7 @@ public class MaintenanceActivity extends AppCompatActivity {
                     break;
                 }
 
-                case R.id.tvSave: {
+                case R.id.tvTransfer: {
                     finish();
                     break;
                 }

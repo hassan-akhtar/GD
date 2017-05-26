@@ -65,8 +65,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initViews() {
         spCustomer = (Spinner) rootView.findViewById(R.id.spCustomer);
-        spSite = (Spinner) rootView.findViewById(R.id.spSite);
-        spBuilding = (Spinner) rootView.findViewById(R.id.spBuilding);
+        spSite = (Spinner) rootView.findViewById(R.id.spDep);
+        spBuilding = (Spinner) rootView.findViewById(R.id.spLoc);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
         letLocationID = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
