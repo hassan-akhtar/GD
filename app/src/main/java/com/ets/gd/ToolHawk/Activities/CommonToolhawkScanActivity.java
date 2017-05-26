@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
+import com.ets.gd.ToolHawk.QuickCount.QuickCountActivity;
 
 public class CommonToolhawkScanActivity extends AppCompatActivity {
 
@@ -96,11 +97,15 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
                 }
 
                 case R.id.btnNewCount: {
-                    showToast("New");
+                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                    in.putExtra("taskType", "new");
+                    startActivity(in);
                     break;
                 }
                 case R.id.btnExistingCount: {
-                    showToast("Existing");
+                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                    in.putExtra("taskType", "existing");
+                    startActivity(in);
                     break;
                 }
                 case R.id.btnScan: {
@@ -145,8 +150,8 @@ public class CommonToolhawkScanActivity extends AppCompatActivity {
         btnCross.setVisibility(View.VISIBLE);
     }
 
-    void showToast(String msg){
-        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     private boolean checkValidation() {

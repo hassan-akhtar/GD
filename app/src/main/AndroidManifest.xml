@@ -82,7 +82,8 @@
         <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity" />
         <activity android:name=".ToolHawk.EquipmentInfo.ToolhawkLocationActivity" />
         <activity android:name=".ToolHawk.Maintenance.MaintenanceActivity" />
-        <activity android:name=".ToolHawk.Move.MoveActivity"></activity>
+        <activity android:name=".ToolHawk.Move.MoveActivity" />
+        <activity android:name=".ToolHawk.QuickCount.QuickCountActivity"></activity>
     </application>
 
 </manifest>
