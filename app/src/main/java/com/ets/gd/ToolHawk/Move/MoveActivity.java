@@ -1,5 +1,6 @@
 package com.ets.gd.ToolHawk.Move;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
+import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 
 public class MoveActivity extends AppCompatActivity {
 
@@ -66,6 +69,7 @@ public class MoveActivity extends AppCompatActivity {
 
     private void setupView() {
         ivTick.setVisibility(View.GONE);
+
     }
 
 
@@ -83,17 +87,30 @@ public class MoveActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlJob: {
-                    showToast("JOb Number");
+                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                    in.putExtra("taskType", taskName);
+                    in.putExtra("department", departmentName);
+                    in.putExtra("scanType", "Job Number");
+                    startActivity(in);
+
                     break;
                 }
 
                 case R.id.rlLocation: {
-                    showToast("Loc");
+                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                    in.putExtra("taskType", taskName);
+                    in.putExtra("department", departmentName);
+                    in.putExtra("scanType", "Location");
+                    startActivity(in);
                     break;
                 }
 
                 case R.id.rlAssets: {
-                    showToast("Asset");
+                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                    in.putExtra("taskType", taskName);
+                    in.putExtra("department", departmentName);
+                    in.putExtra("scanType", "Asset");
+                    startActivity(in);
                     break;
                 }
             }

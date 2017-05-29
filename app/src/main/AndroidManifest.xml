@@ -84,7 +84,9 @@
         <activity android:name=".ToolHawk.Maintenance.MaintenanceActivity" />
         <activity android:name=".ToolHawk.Move.MoveActivity" />
         <activity android:name=".ToolHawk.QuickCount.QuickCountActivity" />
-        <activity android:name=".ToolHawk.Transfer.TransferActivity"></activity>
+        <activity android:name=".ToolHawk.Transfer.TransferActivity" />
+        <activity android:name=".ToolHawk.Activities.ToolhawkScanActivityWithList" />
+        <activity android:name=".ToolHawk.Move.MoveAssetActivity"></activity>
     </application>
 
 </manifest>
