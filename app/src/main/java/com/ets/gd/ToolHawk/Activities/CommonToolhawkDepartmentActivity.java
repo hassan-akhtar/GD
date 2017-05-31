@@ -21,6 +21,7 @@ import com.ets.gd.Models.Department;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
 import com.ets.gd.ToolHawk.CheckOut.CheckoutToActivity;
+import com.ets.gd.ToolHawk.CheckOut.UserActivity;
 import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
 import com.ets.gd.ToolHawk.Move.MoveActivity;
 import com.ets.gd.ToolHawk.Transfer.TransferActivity;
@@ -81,6 +82,12 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
 
                 }else if(tbTitleBottom.getText().toString().toLowerCase().startsWith("check out")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, CheckoutToActivity.class);
+                    in.putExtra("taskName", tbTitleBottom.getText().toString());
+                    in.putExtra("departmentName", depList.get(position).getTitle());
+                    startActivity(in);
+
+                }else if(tbTitleBottom.getText().toString().toLowerCase().startsWith("check in")){
+                    Intent in = new Intent(CommonToolhawkDepartmentActivity.this, UserActivity.class);
                     in.putExtra("taskName", tbTitleBottom.getText().toString());
                     in.putExtra("departmentName", depList.get(position).getTitle());
                     startActivity(in);

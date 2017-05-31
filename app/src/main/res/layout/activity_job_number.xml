@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@android:color/white"
     android:layout_height="match_parent"
-    tools:context="com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList">
+    tools:context="com.ets.gd.ToolHawk.CheckOut.JobNumberActivity">
 
 
     <RelativeLayout
@@ -86,7 +85,7 @@
 
     <RelativeLayout
         android:layout_below="@+id/rlScanArea"
-        android:layout_marginTop="5dp"
+        android:layout_margin="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -98,3 +97,4 @@
 
     </RelativeLayout>
 </RelativeLayout>
+

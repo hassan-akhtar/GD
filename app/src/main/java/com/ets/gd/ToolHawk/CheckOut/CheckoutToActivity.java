@@ -82,23 +82,19 @@ public class CheckoutToActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlJob: {
-                    showToast("job");
-//                    Intent in = new Intent(CheckoutToActivity.this, ToolhawkScanActivityWithList.class);
-//                    in.putExtra("taskType", taskName);
-//                    in.putExtra("department", departmentName);
-//                    in.putExtra("scanType", "Job Number");
-//                    startActivity(in);
+                    Intent in = new Intent(CheckoutToActivity.this, JobNumberActivity.class);
+                    in.putExtra("taskType", taskName);
+                    in.putExtra("department", departmentName);
+                    startActivity(in);
 
                     break;
                 }
 
                 case R.id.rlUser: {
-                    showToast("user");
-//                    Intent in = new Intent(CheckoutToActivity.this, ToolhawkScanActivityWithList.class);
-//                    in.putExtra("taskType", taskName);
-//                    in.putExtra("department", departmentName);
-//                    in.putExtra("scanType", "Location");
-//                    startActivity(in);
+                    Intent in = new Intent(CheckoutToActivity.this, UserActivity.class);
+                    in.putExtra("taskType", taskName);
+                    in.putExtra("department", departmentName);
+                    startActivity(in);
                     break;
                 }
 
