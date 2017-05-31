@@ -88,8 +88,8 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
 
                 }else if(tbTitleBottom.getText().toString().toLowerCase().startsWith("check in")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, UserActivity.class);
-                    in.putExtra("taskName", tbTitleBottom.getText().toString());
-                    in.putExtra("departmentName", depList.get(position).getTitle());
+                    in.putExtra("taskType", tbTitleBottom.getText().toString());
+                    in.putExtra("department", depList.get(position).getTitle());
                     startActivity(in);
 
                 }

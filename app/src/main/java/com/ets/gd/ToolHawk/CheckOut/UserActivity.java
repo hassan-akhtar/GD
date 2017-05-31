@@ -69,8 +69,8 @@ public class UserActivity extends AppCompatActivity {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
-        taskType = getIntent().getStringExtra("taskName");
-        department = getIntent().getStringExtra("departmentName");
+        taskType = getIntent().getStringExtra("taskType");
+        department = getIntent().getStringExtra("department");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
         tvScanType.setText("Select User from List or Enter / Scan User ID ");
@@ -130,6 +130,7 @@ public class UserActivity extends AppCompatActivity {
                     Intent in = new Intent(UserActivity.this, JobNumberActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("department", department);
+                    in.putExtra("returningUser", "John Doe");
                     startActivity(in);
                     break;
                 }

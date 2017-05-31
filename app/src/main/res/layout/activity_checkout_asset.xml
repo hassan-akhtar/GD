@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context="com.ets.gd.ToolHawk.Move.MoveAssetActivity">
-
+    android:layout_height="match_parent"
+    tools:context="com.ets.gd.ToolHawk.CheckOut.CheckoutAssetActivity">
 
     <RelativeLayout
         android:id="@+id/rlHeader"
@@ -23,7 +21,7 @@
     <RelativeLayout
         android:id="@+id/rlAssetInfo"
         android:layout_width="match_parent"
-        android:layout_height="55dp"
+        android:layout_height="70dp"
         android:layout_below="@+id/rlHeader"
         android:background="@color/colorPrimary">
 
@@ -70,15 +68,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="Move to Job Number:"
+                        android:text="Returning User:"
                         android:textColor="@android:color/white" />
 
                     <TextView
-                        android:id="@+id/tvMoveCode"
+                        android:id="@+id/tvReturningUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="7dp"
-                        android:text="SHV111"
+                        android:text="John Doe"
+                        android:textColor="@android:color/white"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/llJobNumber"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/tvJobNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Job Number:"
+                        android:textColor="@android:color/white" />
+
+                    <TextView
+                        android:id="@+id/tvJobNumberCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="7dp"
+                        android:text="SVHV0001"
                         android:textColor="@android:color/white"
                         android:textStyle="bold" />
                 </LinearLayout>
@@ -104,4 +127,41 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
+
+    <RelativeLayout
+        android:layout_below="@+id/rlScanArea"
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="105dp"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlCheckInOut"
+        android:visibility="gone"
+        android:layout_below="@+id/rlScanArea"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="105dp"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/check_in_out_final_view"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlBottomSheetMove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include layout="@layout/move_bottom_action_layout" />
+    </RelativeLayout>
 </RelativeLayout>

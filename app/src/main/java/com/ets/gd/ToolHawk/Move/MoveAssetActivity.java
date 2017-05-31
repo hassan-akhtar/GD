@@ -44,7 +44,7 @@ public class MoveAssetActivity extends AppCompatActivity {
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvDepartment = (TextView) findViewById(R.id.tvDepartment);
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
-        tvMoveType = (TextView) findViewById(R.id.tvMoveType);
+        tvMoveType = (TextView) findViewById(R.id.tvReturningUser);
         tvMoveCode = (TextView) findViewById(R.id.tvMoveCode);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.ets.gd.ToolHawk.CheckOut.UserActivity">
 
 
@@ -52,7 +53,7 @@
     <RelativeLayout
         android:id="@+id/rlScanType"
         android:layout_width="match_parent"
-        android:background="@color/greyBg"
+        android:background="@android:color/white"
         android:layout_below="@+id/rlAssetInfo"
         android:layout_height="35dp">
 

@@ -89,7 +89,8 @@
         <activity android:name=".ToolHawk.Move.MoveAssetActivity" />
         <activity android:name=".ToolHawk.CheckOut.CheckoutToActivity" />
         <activity android:name=".ToolHawk.CheckOut.UserActivity" />
-        <activity android:name=".ToolHawk.CheckOut.JobNumberActivity"></activity>
+        <activity android:name=".ToolHawk.CheckOut.JobNumberActivity" />
+        <activity android:name=".ToolHawk.CheckOut.CheckoutAssetActivity"></activity>
     </application>
 
 </manifest>
