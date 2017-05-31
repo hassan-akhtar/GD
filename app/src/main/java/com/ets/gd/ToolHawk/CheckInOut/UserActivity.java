@@ -1,4 +1,4 @@
-package com.ets.gd.ToolHawk.CheckOut;
+package com.ets.gd.ToolHawk.CheckInOut;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Models.JobNumber;
 import com.ets.gd.Models.User;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
-import com.ets.gd.ToolHawk.Adapters.JobNumberAdapter;
 import com.ets.gd.ToolHawk.Adapters.UserAdapter;
-import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.ets.gd.ToolHawk.CheckOut;
+package com.ets.gd.ToolHawk.CheckInOut;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -97,7 +97,7 @@ public class CheckoutAssetActivity extends AppCompatActivity {
         }
 
         tvCountSupportText.setText("Asset Selected To "+tbTitleBottom.getText().toString());
-        tvTaskName.setText(""+tbTitleBottom.getText().toString().toUpperCase());
+        tvTaskName.setText(" "+tbTitleBottom.getText().toString().toUpperCase());
 
 
 

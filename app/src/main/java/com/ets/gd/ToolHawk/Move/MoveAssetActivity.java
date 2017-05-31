@@ -2,11 +2,14 @@ package com.ets.gd.ToolHawk.Move;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,9 +22,13 @@ public class MoveAssetActivity extends AppCompatActivity {
     Button btnCross, btnScan;
     LinearLayout llbtns;
     EditText etBarcode;
+    TextView tvCount, tvCountSupportText, tvTaskName;
+    RelativeLayout rlForwardArrow, rlMove;
     ImageView ivInfo;
     String taskType, scanType, department, moveCode;
     ImageView ivBack, ivTick;
+    boolean isfinalMove = false;
+    RecyclerView rvList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,29 +55,50 @@ public class MoveAssetActivity extends AppCompatActivity {
         tvMoveCode = (TextView) findViewById(R.id.tvMoveCode);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
+        rvList = (RecyclerView) findViewById(R.id.rvList);
+
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
+        tvTaskName = (TextView) findViewById(R.id.tvTaskName);
+        rlForwardArrow = (RelativeLayout) findViewById(R.id.rlForwardArrow);
+        rlMove = (RelativeLayout) findViewById(R.id.rlMove);
+
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
         taskType = getIntent().getStringExtra("taskType");
         scanType = getIntent().getStringExtra("scanType");
         department = getIntent().getStringExtra("department");
-        moveCode= getIntent().getStringExtra("moveCode");
+        moveCode = getIntent().getStringExtra("moveCode");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
         tvDepartment.setText("" + department);
         tvUnderText.setText("Scan or Enter " + scanType + " ID");
-        tvMoveType.setText("Move to "+scanType);
+        tvMoveType.setText("Move to " + scanType);
         tvMoveCode.setText("" + moveCode);
+
+
+        tvCount.setText("1");
+        tvCountSupportText.setText("Asset Selected To " + tbTitleBottom.getText().toString());
+        tvTaskName.setText(" " + tbTitleBottom.getText().toString().toUpperCase());
+
     }
 
     private void initObj() {
+        hideKeyboard();
     }
 
+
+    public void hideKeyboard() {
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
+    }
     private void initListeners() {
         btnCross.setOnClickListener(mGlobal_OnClickListener);
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
-        ivTick.setOnClickListener(mGlobal_OnClickListener);
+        rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
     }
 
     private void setupView() {
@@ -94,8 +122,14 @@ public class MoveAssetActivity extends AppCompatActivity {
                     break;
                 }
 
-                case R.id.ivTick: {
-
+                case R.id.rlForwardArrow: {
+                    if (!isfinalMove) {
+                        rvList.setVisibility(View.GONE);
+                        rlMove.setVisibility(View.VISIBLE);
+                        isfinalMove =true;
+                    } else {
+                        showToast("yoo");
+                    }
                     break;
                 }
             }

@@ -29,18 +29,18 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/textDepartment"
@@ -62,8 +62,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tvReturningUser"
@@ -102,6 +102,197 @@
             layout="@layout/scanning_area_toolhawk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlScanArea"
+        android:layout_margin="12dp">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvList"
+            android:layout_marginBottom="105dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/rlMove"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlScanArea">
+
+        <RelativeLayout
+            android:id="@+id/ivSide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp">
+
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="210dp"
+                android:src="@drawable/move_pic" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="9dp"
+            android:layout_toRightOf="@+id/ivSide">
+
+            <LinearLayout
+                android:id="@+id/llFrom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvFromLoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:text="L00416"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnViewAllLocations"
+                android:layout_toRightOf="@+id/llFrom"
+                android:padding="7dp"
+                android:layout_marginTop="3dp"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                android:text="View All"
+                android:background="@drawable/btn_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp" />
+
+            <View
+                android:layout_below="@+id/llFrom"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/veryLightGrey"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlAssets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_toRightOf="@+id/ivSide"
+            android:layout_below="@+id/rlFrom">
+
+            <LinearLayout
+                android:id="@+id/llAssets"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMovingAsset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Moving 1 asset"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/tvAssetsNames"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-2dp"
+                    android:text="Ansul, An350"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/btnViewAllAssets"
+                android:layout_toRightOf="@+id/llAssets"
+                android:padding="7dp"
+                android:visibility="gone"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="10dp"
+                android:text="View All"
+                android:background="@drawable/btn_selector"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp" />
+
+            <View
+                android:layout_below="@+id/llAssets"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:background="@color/veryLightGrey"
+                android:layout_width="match_parent"
+                android:layout_height="1px" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlToLoc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:layout_toRightOf="@+id/ivSide"
+            android:layout_below="@+id/rlAssets">
+
+            <LinearLayout
+                android:id="@+id/llToLoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvToLoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-5dp"
+                    android:text="XXXXXXX"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rlBottomSheetMove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <include layout="@layout/move_bottom_action_layout" />
     </RelativeLayout>
 
 </RelativeLayout>

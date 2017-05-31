@@ -1,4 +1,4 @@
-package com.ets.gd.ToolHawk.CheckOut;
+package com.ets.gd.ToolHawk.CheckInOut;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
-import com.ets.gd.ToolHawk.Move.MoveActivity;
 
 public class CheckoutToActivity extends AppCompatActivity {
 

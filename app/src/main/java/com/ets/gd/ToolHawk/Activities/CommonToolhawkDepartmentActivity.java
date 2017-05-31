@@ -7,24 +7,17 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.RouteInspection.RouteInspectionActivity;
-import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Department;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
-import com.ets.gd.ToolHawk.CheckOut.CheckoutToActivity;
-import com.ets.gd.ToolHawk.CheckOut.UserActivity;
-import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
+import com.ets.gd.ToolHawk.CheckInOut.CheckoutToActivity;
+import com.ets.gd.ToolHawk.CheckInOut.UserActivity;
 import com.ets.gd.ToolHawk.Move.MoveActivity;
-import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 
 import java.util.ArrayList;
 import java.util.List;

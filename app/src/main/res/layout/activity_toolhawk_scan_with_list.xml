@@ -53,7 +53,6 @@
     <RelativeLayout
         android:id="@+id/rlScanType"
         android:layout_width="match_parent"
-        android:background="@color/greyBg"
         android:layout_below="@+id/rlAssetInfo"
         android:layout_height="35dp">
 
