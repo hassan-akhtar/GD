@@ -19,10 +19,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DashboardStats;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
@@ -43,6 +46,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
+    ToolhawkEquipment toolhawkEquipment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,9 +132,22 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 }
                 case R.id.btnScan: {
                     if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq")) {
-                        Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
-                        in.putExtra("taskType", "view");
-                        startActivity(in);
+
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
+                            if(null!=toolhawkEquipment){
+                                Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
+                                in.putExtra("taskType", "view");
+                                in.putExtra("barcodeID", etBarcode.getText().toString());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            }else{
+                                showToast("No Equipment Found!");
+                            }
+                        }
+
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
                         showViewForQuickCount();
 
@@ -293,6 +310,21 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
 
     @Override
     public void BarcodeScanned(Barcode barcode) {
+        String message = barcode.getMessage();
+        String task = barcode.getTask();
 
+        toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(message);
+
+        if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq")) {
+            if(null!=toolhawkEquipment){
+                Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
+                in.putExtra("taskType", "view");
+                in.putExtra("barcodeID", message);
+                startActivity(in);
+                etBarcode.setText("");
+            }else{
+                showToast("No Equipment Found!");
+            }
+        }
     }
 }

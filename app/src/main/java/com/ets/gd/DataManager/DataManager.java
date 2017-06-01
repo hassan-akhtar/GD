@@ -2,6 +2,7 @@ package com.ets.gd.DataManager;
 
 import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.Department;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
@@ -29,6 +30,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
 import java.util.List;
@@ -498,6 +500,21 @@ public class DataManager {
     }
 
 
+    public void addToolHawkEquipment(ToolhawkEquipment equipment) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(equipment);
+        realm.commitTransaction();
+    }
+
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.Department getDepartmentByCode(String code) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).equalTo("Code", code).findFirst();
+    }
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCode(String code) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+    }
+
     // For getting asset all assets from DB
     public Customer getCustomerByCode(String Code) {
         if (null != realm.where(Customer.class).equalTo("Code", Code).findFirst()) {
@@ -726,6 +743,22 @@ public class DataManager {
     public FireBugEquipment getEquipment(String barcodeID) {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
+
+    public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
+        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
+    }
+
+
+    public List<com.ets.gd.NetworkLayer.ResponseDTOs.Department> getAllDepartments() {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).findAll();
+    }
+
+    public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllETSLocations() {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll();
+    }
+
+
+
 
     public FireBugEquipment getEquipmentByID(int ID) {
         return realm.where(FireBugEquipment.class).equalTo("ID", ID).findFirst();

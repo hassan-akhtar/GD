@@ -12,6 +12,8 @@ public class SyncCustomer extends RealmObject {
     private boolean IsServiceCompany;
     RealmList<MobileUser> lstMusers;
     RealmList<FireBugEquipment> lstFbEquipments;
+    RealmList<Department> lstDepartments;
+    RealmList<ETSLocations> lstETSLocations;
     RealmList<ToolhawkEquipment> lstTHEquipments;
     RealmList<ETSBuilding> lstETSBuildings;
     RealmList<Locations> lstLocations;

@@ -14,7 +14,7 @@ public class ToolhawkEquipment extends RealmObject {
     private int ID;
     @PrimaryKey
     private String Code;
-    private String  SerialNumber;
+    private String SerialNumber;
     private String CurrentState;
     private boolean IsContainer;
     private String PurchaseDate;
@@ -34,6 +34,25 @@ public class ToolhawkEquipment extends RealmObject {
     private JobNumber JobNumber;
     private LocationJobNumber LocationJobNumber;
     private Parent Parent;
+    private boolean isAdded;
+    private boolean isUpdated;
+
+    public ToolhawkEquipment(int ID, String code, String unitCost, com.ets.gd.NetworkLayer.ResponseDTOs.Department department, com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation ETSLocation, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isAdded, boolean isUpdated) {
+        this.ID = ID;
+        Code = code;
+        UnitCost = unitCost;
+        Department = department;
+        this.ETSLocation = ETSLocation;
+        Manufacturer = manufacturer;
+        Model = model;
+        this.isAdded = isAdded;
+        this.isUpdated = isUpdated;
+    }
+
+
+    public ToolhawkEquipment() {
+
+    }
 
     public int getID() {
         return ID;
@@ -43,8 +62,24 @@ public class ToolhawkEquipment extends RealmObject {
         this.ID = ID;
     }
 
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
+    }
+
     public String getCode() {
         return Code;
+    }
+
+    public boolean isUpdated() {
+        return isUpdated;
+    }
+
+    public void setUpdated(boolean updated) {
+        isUpdated = updated;
     }
 
     public void setCode(String code) {
