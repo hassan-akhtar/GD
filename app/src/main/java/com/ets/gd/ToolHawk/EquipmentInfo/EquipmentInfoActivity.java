@@ -1,10 +1,13 @@
 package com.ets.gd.ToolHawk.EquipmentInfo;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -173,6 +176,46 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         spLocation.setOnItemSelectedListener(this);
         spManufacturer.setOnItemSelectedListener(this);
         spModel.setOnItemSelectedListener(this);
+
+        spDepartment.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
+
+        spLocation.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
+
+
+        spManufacturer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
+        spModel.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
     }
 
     private void setupView() {
@@ -192,6 +235,16 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
+
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                tvEquipmentCode.getWindowToken(), 0);
+        InputMethodManager imm2 = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm2.hideSoftInputFromWindow(
+                tvUnitCost.getWindowToken(), 0);
+
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -219,24 +272,30 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                     toolhawkEquipment.isAdded(),
                                     true
                             );
-
+                            DataManager.getInstance().addToolHawkEquipment(equipment);
                             showToast("Asset Updated!");
                         } else {
-                            equipment = new ToolhawkEquipment(
-                                    0,
-                                    tvEquipmentCode.getText().toString(),
-                                    tvUnitCost.getText().toString(),
-                                    DataManager.getInstance().getDepartmentByCode(spDepartment.getItemAtPosition(posDepartment).toString()),
-                                    DataManager.getInstance().getETSLocationByCode(spLocation.getItemAtPosition(posLoc).toString()),
-                                    DataManager.getInstance().getAssetManufacturer(spManufacturer.getItemAtPosition(posManufacturer).toString()),
-                                    DataManager.getInstance().getAssetModel(spModel.getItemAtPosition(posModel).toString()),
-                                    true,
-                                    false
-                            );
-                            showToast("Asset Added!");
-                            finish();
+                            ToolhawkEquipment eq = DataManager.getInstance().getToolhawkEquipment(tvEquipmentCode.getText().toString());
+                            if (null==eq) {
+                                equipment = new ToolhawkEquipment(
+                                        0,
+                                        tvEquipmentCode.getText().toString(),
+                                        tvUnitCost.getText().toString(),
+                                        DataManager.getInstance().getDepartmentByCode(spDepartment.getItemAtPosition(posDepartment).toString()),
+                                        DataManager.getInstance().getETSLocationByCode(spLocation.getItemAtPosition(posLoc).toString()),
+                                        DataManager.getInstance().getAssetManufacturer(spManufacturer.getItemAtPosition(posManufacturer).toString()),
+                                        DataManager.getInstance().getAssetModel(spModel.getItemAtPosition(posModel).toString()),
+                                        true,
+                                        false
+                                );
+                                DataManager.getInstance().addToolHawkEquipment(equipment);
+                                showToast("Asset Added!");
+                                finish();
+                            }else{
+                                showToast("Asset with Equipment ID "+ tvEquipmentCode.getText().toString()+" Already Exist!");
+                            }
                         }
-                        DataManager.getInstance().addToolHawkEquipment(equipment);
+
 
                     }
                     break;

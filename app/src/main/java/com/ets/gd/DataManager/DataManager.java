@@ -6,6 +6,8 @@ import com.ets.gd.Models.Department;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
@@ -344,6 +346,10 @@ public class DataManager {
         return realm.where(Site.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public ETSBuilding getETSBuilding(String barcodeID) {
+        return realm.where(ETSBuilding.class).equalTo("Code", barcodeID).findFirst();
+    }
+
     public Building getLocationBuilding(String barcodeID) {
         return realm.where(Building.class).equalTo("Code", barcodeID).findFirst();
     }
@@ -438,6 +444,9 @@ public class DataManager {
         return realm.where(Building.class).findAll();
     }
 
+    public List<ETSBuilding> getAllETSBuildings() {
+        return realm.where(ETSBuilding.class).findAll();
+    }
 
     public List<FireBugEquipment> getAllUpdateAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
@@ -506,6 +515,11 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+    public void addETSLocation(ETSLocation etslOcation) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(etslOcation);
+        realm.commitTransaction();
+    }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Department getDepartmentByCode(String code) {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).equalTo("Code", code).findFirst();

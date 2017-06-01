@@ -1,19 +1,28 @@
 package com.ets.gd.ToolHawk.EquipmentInfo;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -24,14 +33,17 @@ import java.util.List;
 public class ToolhawkLocationActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
     ImageView ivBack, ivTick;
-    Spinner spSite, spBuilding;
+    TextView tbTitleBottom, tbTitleTop;
+    Spinner spSite, spBuilding, spCustomer;
     public static EditText tvDescprition, tvLocationID;
-    public static int posLoc = 0, posSite = 0, posBuilding = 0;
+    public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     List<Site> allSites = new ArrayList<Site>();
-    List<Building> allBuilding = new ArrayList<Building>();
+    List<ETSBuilding> allBuilding = new ArrayList<ETSBuilding>();
+    List<AllCustomers> allCustomers = new ArrayList<AllCustomers>();
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
     String[] buildings;
+    String[] customers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,11 +60,16 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     private void initViews() {
 
         spSite = (Spinner) findViewById(R.id.spDep);
+        tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
+        tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         spBuilding = (Spinner) findViewById(R.id.spLoc);
+        spCustomer = (Spinner) findViewById(R.id.spCustomer);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
+        tbTitleTop.setText("Toolhawk");
+        tbTitleBottom.setText("ETS Location");
 
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             spSite.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -63,10 +80,12 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     private void initObj() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         sharedPreferencesManager = new SharedPreferencesManager(ToolhawkLocationActivity.this);
-        /*
+
 
         allSites = DataManager.getInstance().getAllSites();
-        allBuilding = DataManager.getInstance().getAllBuildings();
+        allBuilding = DataManager.getInstance().getAllETSBuildings();
+        allCustomers = DataManager.getInstance().getAllCustomerList();
+
         int sizeSite = allSites.size() + 1;
         sites = new String[sizeSite];
 
@@ -74,6 +93,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             sites[i + 1] = allSites.get(i).getCode();
         }
         sites[0] = "Please select a site";
+
         ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_spinner_item, sites);
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
@@ -89,9 +109,20 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBuilding.setAdapter(dataAdapterBuilding);
 
-*/
 
-            setViewForAddLoc();
+        int customerSize = allCustomers.size() + 1;
+        customers = new String[customerSize];
+
+        for (int i = 0; i < allCustomers.size(); i++) {
+            customers[i + 1] = allCustomers.get(i).getCode();
+        }
+        customers[0] = "Please select a company";
+
+        ArrayAdapter<String> dataAdapterCus = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_spinner_item, customers);
+        dataAdapterCus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spCustomer.setAdapter(dataAdapterCus);
+
+        setViewForAddLoc();
 
 
     }
@@ -114,16 +145,49 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
     public void hideKeyboard() {
-        getWindow().setSoftInputMode(
-                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
-        );
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                tvLocationID.getWindowToken(), 0);
+        InputMethodManager imm2 = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm2.hideSoftInputFromWindow(
+                tvDescprition.getWindowToken(), 0);
     }
 
     private void initListeners() {
         spSite.setOnItemSelectedListener(this);
         spBuilding.setOnItemSelectedListener(this);
+        spCustomer.setOnItemSelectedListener(this);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
+
+
+        spSite.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
+        spBuilding.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
+
+
+        spCustomer.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
 
     }
 
@@ -136,6 +200,30 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                 }
 
                 case R.id.ivTick: {
+                    if (checkValidation()) {
+                        ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCode(tvLocationID.getText().toString());
+
+                        if (null==etsLoc) {
+                            ETSLocation etsLocation = new ETSLocation(
+                                    0,
+                                    tvLocationID.getText().toString(),
+                                    tvDescprition.getText().toString(),
+                                    DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()).getID(),
+                                    DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()).getID(),
+                                    DataManager.getInstance().getETSBuilding(spBuilding.getItemAtPosition(posBuilding).toString()).getID(),
+                                    true
+                            );
+                            DataManager.getInstance().addETSLocation(etsLocation);
+                            showToast("ETS Location Added!");
+                            finish();
+                        } else {
+                            showToast("ETS with Location ID "+ tvLocationID.getText().toString()+" Already Exist!");
+                        }
+                    }
+                    break;
+                }
+
+
  /*                   List<Locations> locationsList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString()).getID());
                     Locations location = DataManager.getInstance().getLocation(tvLocationID.getText().toString());
                     boolean exists = false;
@@ -164,8 +252,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                         }
                     }
 */
-                    break;
-                }
+
             }
         }
 
@@ -174,10 +261,14 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     private boolean checkValidation() {
         if ("".equals(tvLocationID.getText().toString().trim())) {
             showToast("Please enter a location");
+        } else if ("".equals(tvDescprition.getText().toString().trim())) {
+            showToast("Please enter a Description");
         } else if (0 == posSite) {
             showToast("Please select a site");
         } else if (0 == posBuilding) {
             showToast("Please select a building");
+        } else if (0 == posCustomer) {
+            showToast("Please select a Company");
         } else {
             return true;
         }
@@ -198,10 +289,9 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             case R.id.spDep: {
                 posSite = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                    if (0 == position) {
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    }
-
+                if (0 == position) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                }
 
 
             }
@@ -210,15 +300,24 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             case R.id.spLoc: {
                 posBuilding = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                    if (0 == position) {
-                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    }
+                if (0 == position) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                }
 
 
             }
             break;
 
+            case R.id.spCustomer: {
+                posCustomer = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                if (0 == position) {
+                    ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                }
 
+
+            }
+            break;
         }
     }
 

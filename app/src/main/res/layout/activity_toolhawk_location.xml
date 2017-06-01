@@ -115,18 +115,50 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/rl"
+                android:id="@+id/rl"
+                android:layout_width="wrap_content"
+                android:layout_below="@+id/lDescprition"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableLocation"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Building"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
                     android:layout_width="wrap_content"
-                    android:layout_below="@+id/lDescprition"
+                    android:layout_height="match_parent" />
+
+                <Spinner
+                    android:id="@+id/spLoc"
+                    android:layout_below="@+id/tvLableLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rlCustomer"
+                    android:layout_width="wrap_content"
+                    android:layout_below="@+id/rl"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp">
 
 
                     <TextView
-                        android:id="@+id/tvLableLocation"
+                        android:id="@+id/tvLableCustomer"
                         android:visibility="visible"
                         android:layout_marginLeft="30dp"
-                        android:text="Building"
+                        android:text="Company"
                         android:textSize="12sp"
                         android:textColor="@color/blueDark"
                         android:layout_marginBottom="3dp"
@@ -134,8 +166,8 @@
                         android:layout_height="match_parent" />
 
                     <Spinner
-                        android:id="@+id/spLoc"
-                        android:layout_below="@+id/tvLableLocation"
+                        android:id="@+id/spCustomer"
+                        android:layout_below="@+id/tvLableCustomer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"

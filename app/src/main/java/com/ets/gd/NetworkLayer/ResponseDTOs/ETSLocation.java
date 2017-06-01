@@ -20,10 +20,33 @@ public class ETSLocation extends RealmObject {
     private int BuildingID;
     private int LocationTypeID;
     private boolean isActive;
+    private boolean isAdded;
 
 
+    public ETSLocation(int ID, String code, String description, int customerID, int siteID, int buildingID,boolean isAdded) {
+        this.ID = ID;
+        Code = code;
+        Description = description;
+        CustomerID = customerID;
+        SiteID = siteID;
+        BuildingID = buildingID;
+        this.isAdded = isAdded;
+    }
+
+
+    public ETSLocation() {
+
+    }
     public int getID() {
         return ID;
+    }
+
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
     }
 
     public void setID(int ID) {
