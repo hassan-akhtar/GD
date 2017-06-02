@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ets.gd.Models.ToolhawkAsset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -16,11 +17,11 @@ import java.util.List;
 
 public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.MyViewHolder> {
 
-    private List<ToolhawkAsset> assetList = new ArrayList<ToolhawkAsset>();
+    private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public QuickCountAdapter(Context context, List<ToolhawkAsset> assetList) {
+    public QuickCountAdapter(Context context, List<ToolhawkEquipment> assetList) {
         this.assetList = assetList;
         this.mContext = context;
     }
@@ -37,15 +38,19 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
-        ToolhawkAsset asset = assetList.get(position);
-        holder.tvName.setText("" + asset.getName());
-        holder.tvAssetCode.setText("" + asset.getCode());
-        holder.tvLocCode.setText("" + asset.getLoc());
-        if (asset.isParent()) {
-            holder.tvParent.setText("YES");
-        } else {
-            holder.tvParent.setText("NO");
+        ToolhawkEquipment asset = assetList.get(position);
+        holder.tvName.setText("" + asset.getCode());
+        holder.tvAssetCode.setText("" + asset.getID());
+        if (null!=asset.getETSLocation()) {
+            holder.tvLocCode.setText("" + asset.getETSLocation().getCode());
+        }else {
+            holder.tvLocCode.setText("N/A" );
         }
+       // if (asset.isParent()) {
+        //    holder.tvParent.setText("YES");
+       // } else {
+            holder.tvParent.setText("NO");
+       // }
 
     }
 

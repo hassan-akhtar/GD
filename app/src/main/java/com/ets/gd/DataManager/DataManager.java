@@ -6,6 +6,7 @@ import com.ets.gd.Models.Department;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
@@ -525,8 +526,17 @@ public class DataManager {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).equalTo("Code", code).findFirst();
     }
 
+    public com.ets.gd.NetworkLayer.ResponseDTOs.Department getDepartmentCodeByEquipmentCode(String code) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment.class).equalTo("Code", code).findFirst().getDepartment();
+    }
+
+
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCode(String code) {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+    }
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocationsByCode(String code) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code).findFirst();
     }
 
     // For getting asset all assets from DB
@@ -687,6 +697,13 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+    public void saveResultTransferToolhawk(TransferToolhawk obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
 
     public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
 
@@ -760,6 +777,10 @@ public class DataManager {
 
     public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
+    }
+
+    public List<ToolhawkEquipment> getAllToolhawkEquipmentForLocation(String code) {
+        return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll();
     }
 
 

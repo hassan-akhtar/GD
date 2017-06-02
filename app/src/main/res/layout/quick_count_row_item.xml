@@ -25,7 +25,7 @@
             android:id="@+id/txtAssetCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Asset:"
+            android:text="Asset ID:"
             android:textColor="@color/greyDark"
             android:textSize="15sp"/>
 

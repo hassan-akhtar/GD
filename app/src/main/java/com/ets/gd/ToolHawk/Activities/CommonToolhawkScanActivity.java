@@ -25,6 +25,8 @@ import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DashboardStats;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
@@ -33,7 +35,10 @@ import com.ets.gd.ToolHawk.QuickCount.QuickCountActivity;
 import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
-public class CommonToolhawkScanActivity extends AppCompatActivity implements BarcodeScan{
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommonToolhawkScanActivity extends AppCompatActivity implements BarcodeScan {
 
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText;
@@ -80,6 +85,10 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
         taskType = getIntent().getStringExtra("taskType");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
+
+        if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
+            tvUnderText.setText("Scan/Enter ID of Location");
+        }
     }
 
     private void initObj() {
@@ -119,15 +128,56 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 }
 
                 case R.id.btnNewCount: {
-                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
-                    in.putExtra("taskType", "new");
-                    startActivity(in);
+                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString());
+
+                    if (null != etsLocation) {
+                        List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
+                        if (null!=assetList && 0!=assetList.size()) {
+                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                            in.putExtra("taskType", "new");
+                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                            startActivity(in);
+                            tvBarcodeTitle.setVisibility(View.GONE);
+                            tvBarcodeValue.setVisibility(View.GONE);
+                            ivInfo.setVisibility(View.VISIBLE);
+                            tvUnderText.setVisibility(View.VISIBLE);
+                            llbtns.setVisibility(View.GONE);
+                            tvBarcodeValue.setText("");
+                            etBarcode.setVisibility(View.VISIBLE);
+                            etBarcode.setText("");
+                            btnCross.setVisibility(View.GONE);
+                        }else {
+                            showToast("No Equipment(s) Found in "+etsLocation.getCode());
+                        }
+                    } else {
+                        showToast("No ETS Location Found!");
+                    }
                     break;
                 }
                 case R.id.btnExistingCount: {
-                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
-                    in.putExtra("taskType", "existing");
-                    startActivity(in);
+                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString());
+                    if (null != etsLocation) {
+                        List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
+                        if (null!=assetList && 0!=assetList.size()) {
+                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                            in.putExtra("taskType", "existing");
+                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                            startActivity(in);
+                            tvBarcodeTitle.setVisibility(View.GONE);
+                            tvBarcodeValue.setVisibility(View.GONE);
+                            ivInfo.setVisibility(View.VISIBLE);
+                            tvUnderText.setVisibility(View.VISIBLE);
+                            llbtns.setVisibility(View.GONE);
+                            tvBarcodeValue.setText("");
+                            etBarcode.setVisibility(View.VISIBLE);
+                            etBarcode.setText("");
+                            btnCross.setVisibility(View.GONE);
+                        }else {
+                            showToast("No Equipment(s) Found in "+etsLocation.getCode());
+                        }
+                    } else {
+                        showToast("No ETS Location Found!");
+                    }
                     break;
                 }
                 case R.id.btnScan: {
@@ -137,13 +187,13 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                             checkCameraPermission();
                         } else {
                             toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
-                            if(null!=toolhawkEquipment){
+                            if (null != toolhawkEquipment) {
                                 Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
                                 in.putExtra("taskType", "view");
                                 in.putExtra("barcodeID", etBarcode.getText().toString());
                                 startActivity(in);
                                 etBarcode.setText("");
-                            }else{
+                            } else {
                                 showToast("No Equipment Found!");
                             }
                         }
@@ -152,11 +202,22 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                         showViewForQuickCount();
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("tra")) {
-                        Intent in = new Intent(CommonToolhawkScanActivity.this, TransferActivity.class);
-                        in.putExtra("taskName", tbTitleBottom.getText().toString());
-                        in.putExtra("eqName", "Asset1234");
-                        in.putExtra("departmentName", "Construction");
-                        startActivity(in);
+
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
+                            if (null != toolhawkEquipment) {
+                                Intent in = new Intent(CommonToolhawkScanActivity.this, TransferActivity.class);
+                                in.putExtra("taskName", tbTitleBottom.getText().toString());
+                                in.putExtra("eqName", etBarcode.getText().toString());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Equipment Found!");
+                            }
+                        }
+
 
                     } else {
                         Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
@@ -184,7 +245,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
         llbtns.setVisibility(View.VISIBLE);
         tvBarcodeTitle.setVisibility(View.VISIBLE);
         tvBarcodeValue.setVisibility(View.VISIBLE);
-        tvBarcodeValue.setText("Asset1");
+        tvBarcodeValue.setText(etBarcode.getText().toString());
         etBarcode.setVisibility(View.GONE);
         ivInfo.setVisibility(View.GONE);
         tvUnderText.setVisibility(View.GONE);
@@ -264,7 +325,6 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -316,15 +376,52 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
         toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(message);
 
         if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq")) {
-            if(null!=toolhawkEquipment){
+            if (null != toolhawkEquipment) {
                 Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
                 in.putExtra("taskType", "view");
                 in.putExtra("barcodeID", message);
                 startActivity(in);
                 etBarcode.setText("");
-            }else{
+            } else {
                 showToast("No Equipment Found!");
             }
+        } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("tra")) {
+            if (null != toolhawkEquipment) {
+                Intent in = new Intent(CommonToolhawkScanActivity.this, TransferActivity.class);
+                in.putExtra("taskName", tbTitleBottom.getText().toString());
+                in.putExtra("eqName", message);
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Equipment Found!");
+            }
+
+        } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qui")) {
+            ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(message);
+
+            if (null != etsLocation) {
+                List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
+                if (null!=assetList && 0!=assetList.size()) {
+                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                    in.putExtra("taskType", "new");
+                    in.putExtra("locationCode", message);
+                    startActivity(in);
+                    tvBarcodeTitle.setVisibility(View.GONE);
+                    tvBarcodeValue.setVisibility(View.GONE);
+                    ivInfo.setVisibility(View.VISIBLE);
+                    tvUnderText.setVisibility(View.VISIBLE);
+                    llbtns.setVisibility(View.GONE);
+                    tvBarcodeValue.setText("");
+                    etBarcode.setVisibility(View.VISIBLE);
+                    etBarcode.setText("");
+                    btnCross.setVisibility(View.GONE);
+                }else {
+                    showToast("No Equipment(s) Found in "+etsLocation.getCode());
+                }
+            } else {
+                showToast("No ETS Location Found!");
+            }
+
         }
     }
 }

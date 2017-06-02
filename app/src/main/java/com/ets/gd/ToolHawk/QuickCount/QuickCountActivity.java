@@ -15,9 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Models.Department;
 import com.ets.gd.Models.ToolhawkAsset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
@@ -31,7 +34,8 @@ public class QuickCountActivity extends AppCompatActivity {
 
 
     TextView tbTitleTop, tbTitleBottom, tvAssetOtherInfo, tvLocName, tvBarcodeTitle, tvUnderText, tvBarcodeValue;
-    String taskType;
+    TextView tvUnExpected, tvExpected, tvFound;
+    String taskType, locationCode;
     Button btnCross, btnScan;
     LinearLayout llbtns;
     EditText etBarcode;
@@ -39,7 +43,8 @@ public class QuickCountActivity extends AppCompatActivity {
     ImageView ivBack, ivTick;
     RecyclerView rvQuickCount;
     QuickCountAdapter mAdapter;
-    private List<ToolhawkAsset> assetList = new ArrayList<ToolhawkAsset>();
+    private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
+    ETSLocations etsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +56,7 @@ public class QuickCountActivity extends AppCompatActivity {
         initListeners();
         setupView();
         hideKeyboard();
-        setupDummyAssetList();
+        setupAssetList();
 
     }
 
@@ -60,6 +65,9 @@ public class QuickCountActivity extends AppCompatActivity {
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tvAssetOtherInfo = (TextView) findViewById(R.id.tvAssetOtherInfo);
+        tvUnExpected = (TextView) findViewById(R.id.tvUnExpected);
+        tvExpected = (TextView) findViewById(R.id.tvExpected);
+        tvFound = (TextView) findViewById(R.id.tvFound);
         tvLocName = (TextView) findViewById(R.id.tvLocName);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -74,9 +82,16 @@ public class QuickCountActivity extends AppCompatActivity {
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
 
         taskType = getIntent().getStringExtra("taskType");
+        locationCode = getIntent().getStringExtra("locationCode");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Quick Count");
 
+        etsLocation = DataManager.getInstance().getETSLocationsByCode(locationCode);
+
+        if (null != etsLocation) {
+            tvLocName.setText("" + etsLocation.getCode());
+            tvAssetOtherInfo.setText("" + etsLocation.getDescription());
+        }
 
     }
 
@@ -91,7 +106,7 @@ public class QuickCountActivity extends AppCompatActivity {
         rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(QuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                showToast(""+assetList.get(position).getName());
+                showToast("" + assetList.get(position).getCode());
             }
 
             @Override
@@ -115,8 +130,8 @@ public class QuickCountActivity extends AppCompatActivity {
     }
 
 
-    private void setupDummyAssetList() {
-        ToolhawkAsset asset = new ToolhawkAsset();
+    private void setupAssetList() {
+/*        ToolhawkAsset asset = new ToolhawkAsset();
         asset.setName("Pick Up");
         asset.setCode("112233");
         asset.setLoc("Yard");
@@ -133,9 +148,11 @@ public class QuickCountActivity extends AppCompatActivity {
         asset.setCode("112233");
         asset.setLoc("Yard");
         asset.setParent(true);
-        assetList.add(asset);
+        assetList.add(asset);*/
 
-        mAdapter = new QuickCountAdapter(QuickCountActivity.this,assetList);
+        assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(locationCode);
+        tvExpected.setText("" + assetList.size());
+        mAdapter = new QuickCountAdapter(QuickCountActivity.this, assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(QuickCountActivity.this);
         rvQuickCount.setLayoutManager(mLayoutManager);
         rvQuickCount.setItemAnimator(new DefaultItemAnimator());
