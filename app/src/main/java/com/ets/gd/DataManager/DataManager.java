@@ -11,6 +11,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
@@ -679,6 +680,8 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
                 realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
                 realmSyncGetResponseDTO.setLstModels(obj.getLstModels());
+                realmSyncGetResponseDTO.setLstCategory(obj.getLstCategory());
+                realmSyncGetResponseDTO.setLstJobNumber(obj.getLstJobNumber());
                 realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
                 realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
@@ -765,6 +768,10 @@ public class DataManager {
         return realm.where(AllCustomers.class).findAll();
     }
 
+    public List<JobNumber> getAllJobNumberList() {
+        return realm.where(JobNumber.class).findAll();
+    }
+
 
     public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
         return realm.where(RouteInspection.class).equalTo("RouteID", RouteID).findAll();
@@ -783,6 +790,9 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll();
     }
 
+    public List<ToolhawkEquipment> getAllToolhawkEquipment() {
+        return realm.where(ToolhawkEquipment.class).findAll();
+    }
 
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.Department> getAllDepartments() {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).findAll();

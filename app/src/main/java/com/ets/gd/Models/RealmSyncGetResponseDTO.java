@@ -1,19 +1,7 @@
 package com.ets.gd.Models;
 
-import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
-import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DashboardStats;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
-import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
-import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
-import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
-import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
-import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
-import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.*;
+import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -33,6 +21,8 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<AgentType> lstAgentTypes;
     RealmList<RegisteredDevice> lstDevices;
     RealmList<EquipmentNote> lstFbEquipmentNotes;
+    RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber> lstJobNumber;
+    RealmList<Category> lstCategory;
     RealmList<Routes> lstRoutes;
     DashboardStats mobileDashboard;
 
@@ -42,6 +32,22 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<JobNumber> getLstJobNumber() {
+        return lstJobNumber;
+    }
+
+    public void setLstJobNumber(RealmList<JobNumber> lstJobNumber) {
+        this.lstJobNumber = lstJobNumber;
+    }
+
+    public RealmList<Category> getLstCategory() {
+        return lstCategory;
+    }
+
+    public void setLstCategory(RealmList<Category> lstCategory) {
+        this.lstCategory = lstCategory;
     }
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {

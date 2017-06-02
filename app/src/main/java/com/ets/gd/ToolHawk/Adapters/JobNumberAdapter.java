@@ -37,9 +37,9 @@ public class JobNumberAdapter extends RecyclerView.Adapter<JobNumberAdapter.MyVi
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
-        JobNumber jobNumber = jobNumberList.get(position);
-        holder.tvTitle.setText(""+jobNumber.getCode());
-        holder.tvDesc.setText(""+jobNumber.getName());
+            JobNumber jobNumber = jobNumberList.get(position);
+            holder.tvTitle.setText("" + jobNumber.getCode());
+            holder.tvDesc.setText("" + jobNumber.getName());
 
     }
 
@@ -47,6 +47,7 @@ public class JobNumberAdapter extends RecyclerView.Adapter<JobNumberAdapter.MyVi
     @Override
     public int getItemCount() {
             return jobNumberList.size();
+
 
     }
 

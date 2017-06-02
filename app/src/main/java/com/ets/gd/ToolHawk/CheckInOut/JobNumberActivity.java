@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.ets.gd.Models.JobNumber;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.JobNumberAdapter;
+import com.ets.gd.ToolHawk.Adapters.MoveAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
