@@ -1,8 +1,11 @@
 package com.ets.gd.ToolHawk.Transfer;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -143,6 +146,7 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
                             DataManager.getInstance().getETSLocationsByCode(spLoc.getItemAtPosition(posLoc).toString()).getID());
                     DataManager.getInstance().saveResultTransferToolhawk(toolhawkEquipment);
                     showToast("Transfer Complete!");
+                    sendMessage("finish");
                     finish();
                     break;
                 }
@@ -157,6 +161,13 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
 
     };
 
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();

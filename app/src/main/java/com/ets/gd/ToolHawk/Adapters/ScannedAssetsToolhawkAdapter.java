@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -21,13 +22,13 @@ import java.util.List;
  */
 public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAssetsToolhawkAdapter.MyViewHolder> {
 
-    private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
+    private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     String type = "";
     TextDrawable drawable;
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public ScannedAssetsToolhawkAdapter(Context context, List<FireBugEquipment> assetList) {
+    public ScannedAssetsToolhawkAdapter(Context context, List<ToolhawkEquipment> assetList) {
         this.assetList = assetList;
         this.mContext = context;
     }
@@ -44,7 +45,7 @@ public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAs
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
-            FireBugEquipment asset = assetList.get(position);
+        ToolhawkEquipment asset = assetList.get(position);
 
             holder.tvTag.setText("Desc: " + asset.getCode());
 
@@ -53,6 +54,13 @@ public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAs
             }else  {
                 holder.tvName.setText("N/A");
             }
+
+
+        if(null!=asset.getETSLocation()) {
+            holder.tvName.setText("Location: " +asset.getETSLocation().getCode());
+        }else  {
+            holder.tvLocation.setText("Location: " +"N/A");
+        }
 
             if(null!=asset.getCode()) {
                 drawable = TextDrawable.builder()

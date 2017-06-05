@@ -123,6 +123,7 @@
 
     <RelativeLayout
         android:id="@+id/rlMove"
+        android:layout_marginTop="7dp"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -253,7 +254,7 @@
             android:id="@+id/rlToLoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="20dp"
             android:layout_toRightOf="@+id/ivSide"
             android:layout_below="@+id/rlAssets">
 
@@ -288,6 +289,7 @@
 
     <RelativeLayout
         android:id="@+id/rlBottomSheetMove"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true">
