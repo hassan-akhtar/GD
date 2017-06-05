@@ -61,6 +61,12 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
 
     }
 
+    public void removeAt(int position) {
+        assetList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, assetList.size());
+    }
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tvName, tvAssetCode, tvLocCode, tvParent;

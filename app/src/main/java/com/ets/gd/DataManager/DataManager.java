@@ -95,12 +95,10 @@ public class DataManager {
 
     public void updateAssetRouteInspectionStatus(int equipID) {
         realm.beginTransaction();
-            FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", equipID).findFirst();
-            assett.setRouteUnitInspected(true);
+        FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", equipID).findFirst();
+        assett.setRouteUnitInspected(true);
         realm.commitTransaction();
     }
-
-
 
 
     // For adding an asset info in DB
@@ -561,7 +559,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public InspectionDue getInspectionDue() {
-            return realm.where(InspectionDue.class).findFirst();
+        return realm.where(InspectionDue.class).findFirst();
     }
 
 
@@ -667,7 +665,6 @@ public class DataManager {
     }
 
 
-
     public void saveSyncGetResponse(final SyncGetResponseDTO obj) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -749,7 +746,7 @@ public class DataManager {
 
 
     public int getCustomerRouteInspectedAssetsCount(int cusID) {
-        int count = realm.where(FireBugEquipment.class).equalTo("isRouteUnitInspected",true).equalTo("Customer.ID",cusID).findAll().size();
+        int count = realm.where(FireBugEquipment.class).equalTo("isRouteUnitInspected", true).equalTo("Customer.ID", cusID).findAll().size();
         return count;
     }
 
@@ -774,7 +771,7 @@ public class DataManager {
 
 
     public JobNumber getJobNumber(String code) {
-        return realm.where(JobNumber.class).equalTo("Code",code).findFirst();
+        return realm.where(JobNumber.class).equalTo("Code", code).findFirst();
     }
 
     public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
@@ -791,7 +788,11 @@ public class DataManager {
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipmentForLocation(String code) {
-        return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll();
+        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll();
+
+        List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
+        return copied;
+
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipment() {
@@ -807,7 +808,7 @@ public class DataManager {
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocations(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code",code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code).findFirst();
     }
 
 

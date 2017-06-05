@@ -205,7 +205,11 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                         }
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
-                        showViewForQuickCount();
+                        if (!"".equals(etBarcode.getText().toString().trim())) {
+                            showViewForQuickCount();
+                        }else {
+                            showToast("Please enter a Location!");
+                        }
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("tra")) {
 
