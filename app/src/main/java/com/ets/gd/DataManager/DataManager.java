@@ -773,6 +773,10 @@ public class DataManager {
     }
 
 
+    public JobNumber getJobNumber(String code) {
+        return realm.where(JobNumber.class).equalTo("Code",code).findFirst();
+    }
+
     public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
         return realm.where(RouteInspection.class).equalTo("RouteID", RouteID).findAll();
     }
@@ -802,7 +806,9 @@ public class DataManager {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll();
     }
 
-
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocations(String code) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code",code).findFirst();
+    }
 
 
     public FireBugEquipment getEquipmentByID(int ID) {

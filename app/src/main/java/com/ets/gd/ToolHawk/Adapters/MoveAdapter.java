@@ -59,11 +59,19 @@ public class MoveAdapter extends RecyclerView.Adapter<MoveAdapter.MyViewHolder> 
         if (type.toLowerCase().startsWith("job")) {
             JobNumber jobNumber = jobNumberList.get(position);
             holder.tvTitle.setText("" + jobNumber.getCode());
-            holder.tvDesc.setText("" + jobNumber.getDescription());
+            if (null!=jobNumber.getDescription()) {
+                holder.tvDesc.setText("" + jobNumber.getDescription());
+            } else {
+                holder.tvDesc.setText("N/A");
+            }
         } else if (type.toLowerCase().startsWith("loc")) {
             ETSLocations etsLocations = etsLocationsList.get(position);
             holder.tvTitle.setText("" + etsLocations.getCode());
-            holder.tvDesc.setText("" + etsLocations.getDescription());
+            if (null!=etsLocations.getDescription()) {
+                holder.tvDesc.setText("" + etsLocations.getDescription());
+            } else {
+                holder.tvDesc.setText("N/A");
+            }
         } else if (type.toLowerCase().startsWith("asset")) {
             ToolhawkEquipment toolhawkEquipment = equipmentList.get(position);
             holder.tvTitle.setText("" + toolhawkEquipment.getCode());
