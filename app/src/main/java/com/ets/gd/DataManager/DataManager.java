@@ -9,6 +9,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
@@ -452,6 +453,13 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
     }
 
+    public List<ToolhawkEquipment> getAllUpdateToolhawkAssets() {
+        return realm.where(ToolhawkEquipment.class).equalTo("isUpdated", true).findAll();
+    }
+
+    public List<ToolhawkEquipment> getAllAddToolhawkAssets() {
+        return realm.where(ToolhawkEquipment.class).equalTo("isAdded", true).findAll();
+    }
 
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
@@ -531,7 +539,20 @@ public class DataManager {
 
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCode(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+
+        if (null != realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst()) {
+            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+        } else {
+            realm.beginTransaction();
+            ETSLocations loc = realm.where(ETSLocations.class).equalTo("Code", code).findFirst();
+            ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
+            newLoc.setCode(loc.getCode());
+            newLoc.setDescription(loc.getDescription());
+            newLoc.setSiteID(loc.getSite().getID());
+            newLoc.setBuildingID(loc.getBuilding().getID());
+            realm.commitTransaction();
+            return newLoc;
+        }
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocationsByCode(String code) {

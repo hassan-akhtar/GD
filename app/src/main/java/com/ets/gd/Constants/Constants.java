@@ -12,7 +12,7 @@ public class Constants {
 
     public static final String URL_BASE = BASE_URL_UAT;
 
-    //  Callback Keys
+    //  Callback Keys Firebug
     public static final int RESPONSE_LOGIN = 0;
     public static final int RESPONSE_CUSTOMERS = 1;
     public static final int RESPONSE_SYNC_GET = 2;
@@ -21,21 +21,21 @@ public class Constants {
     public static final int RESPONSE_SYNC_POST_MOVE_TRANSFER = 5;
     public static final int RESPONSE_SYNC_POST_INSPECT_EQUIPMENT = 6;
 
-    // Urls
+    //  Callback Keys Toolhawk
+    public static final int RESPONSE_SYNC_POST_TOOLHAWK_EQUIPMENT = 7;
+    public static final int RESPONSE_SYNC_POST_ETS_LOCATION = 8;
+
+    // Urls Firebug
     public static final String URL_LOGIN = "/Services/Services/Mobile/Login";
-    public static final String URL_SYNC_GET= "/Services/Services/Mobile/GetCustomerData";
-    public static final String URL_SYNC_POST_EQUIPMENT= "/Services/Services/Mobile/CreateEquipment";
-    public static final String URL_SYNC_POST_ADD_LOCATION= "/Services/Services/Mobile/CreateFbLocations";
-    public static final String URL_SYNC_POST_MOVE_TRANSFER= "/Services/Services/Mobile/MoveOrTransferEquipments";
-    public static final String URL_SYNC_POST_INSPECT_EQUIPMENT= "/Services/Services/Mobile/InspectEquipments";
+    public static final String URL_SYNC_GET = "/Services/Services/Mobile/GetCustomerData";
+    public static final String URL_SYNC_POST_EQUIPMENT = "/Services/Services/Mobile/CreateEquipment";
+    public static final String URL_SYNC_POST_ADD_LOCATION = "/Services/Services/Mobile/CreateFbLocations";
+    public static final String URL_SYNC_POST_MOVE_TRANSFER = "/Services/Services/Mobile/MoveOrTransferEquipments";
+    public static final String URL_SYNC_POST_INSPECT_EQUIPMENT = "/Services/Services/Mobile/InspectEquipments";
 
-
-
-
-
-
-
-
+    // Urls Toolhawk
+    public static final String URL_SYNC_POST_TOOLHAWK_EQUIPMENT = "/Services/Services/Mobile/CreateToolHawkEquipment";
+    public static final String URL_SYNC_POST_ETS_LOCATION = "/Services/Services/Mobile/CreateETSLocation";
 
 
 }

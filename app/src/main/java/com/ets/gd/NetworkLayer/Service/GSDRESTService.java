@@ -3,8 +3,10 @@ package com.ets.gd.NetworkLayer.Service;
 
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
@@ -62,5 +64,18 @@ public interface GSDRESTService {
     public void postInspectEquipment(@Body SyncPostUnitInspectionRequestDTO syncPostUnitInspectionRequestDTO,
                                  Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
+
+
+    // Sync post data request equipment
+    @POST(Constants.URL_SYNC_POST_TOOLHAWK_EQUIPMENT)
+    public void postSyncToolhawkEquipment(@Body SyncPostToolhawkEquipment syncPostToolhawkEquipment,
+                                  Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_ETS_LOCATION)
+    public void postSyncETSLocation(@Body SyncPostAddETSLocationRequestDTO syncPostAddLocationRequestDTO,
+                                 Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 }
 

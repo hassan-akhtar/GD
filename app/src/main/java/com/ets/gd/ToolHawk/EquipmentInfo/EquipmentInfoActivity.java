@@ -1,9 +1,12 @@
 package com.ets.gd.ToolHawk.EquipmentInfo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -274,6 +277,8 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                             );
                             DataManager.getInstance().addToolHawkEquipment(equipment);
                             showToast("Asset Updated!");
+                            sendMessage("finish");
+                            finish();
                         } else {
                             ToolhawkEquipment eq = DataManager.getInstance().getToolhawkEquipment(tvEquipmentCode.getText().toString());
                             if (null==eq) {
@@ -305,6 +310,13 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
     };
 
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
     private boolean checkValidation() {
         if ("".equals(tvEquipmentCode.getText().toString().trim())) {
             showToast("Please enter Equipment ID");
