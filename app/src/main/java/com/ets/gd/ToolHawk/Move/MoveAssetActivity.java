@@ -41,6 +41,7 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Move;
+import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
@@ -78,6 +79,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
     private static final int REQUEST_PERMISSION_SETTING = 101;
     String[] assetNames;
     String[] locationNames, locations;
+    private List<ToolhawkMove> equipmentToMoveList = new ArrayList<ToolhawkMove>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -347,6 +349,31 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                 .setMessage("Are you sure you want to move " + equipmentList.size() + " asset(s) to" + moveCode + " ?")
                                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+
+                                        for(int i=0;i<equipmentList.size();i++){
+                                            ToolhawkMove toolhawkMove = new ToolhawkMove();
+                                            toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
+                                            toolhawkMove.setMoveType(scanType);
+                                            if (null!=DataManager.getInstance().getToolhawkEquipment(moveCode)) {
+                                                toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
+                                            } else {
+                                                toolhawkMove.setToEquipmentID(0);
+                                            }
+                                            if (null!=DataManager.getInstance().getETSLocationByCode(moveCode)) {
+                                                toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
+                                            } else {
+                                                toolhawkMove.setToLocationID(0);
+                                            }
+                                            if (null!=DataManager.getInstance().getJobNumber(moveCode)) {
+                                                toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
+                                            } else {
+                                                toolhawkMove.setToJobNumberID(0);
+                                            }
+                                            toolhawkMove.setUserID(0);
+                                            equipmentToMoveList.add(toolhawkMove);
+                                        }
+
+                                        DataManager.getInstance().saveSyncToolhawkMoveData(equipmentToMoveList);
                                         showToast("Move Complete!");
                                         sendMessage("finish");
                                         finish();

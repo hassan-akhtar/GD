@@ -47,9 +47,13 @@ public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAs
         myViewHolder = holder;
         ToolhawkEquipment asset = assetList.get(position);
 
-            holder.tvTag.setText("Desc: " + asset.getCode());
+        if (null!=asset.getDepartment()) {
+            holder.tvTag.setText("Dep: " + asset.getDepartment().getCode());
+        } else {
+            holder.tvTag.setText("Dep: N/A");
+        }
 
-            if(null!=asset.getCode()) {
+        if(null!=asset.getCode()) {
                 holder.tvName.setText(asset.getCode());
             }else  {
                 holder.tvName.setText("N/A");
@@ -57,7 +61,7 @@ public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAs
 
 
         if(null!=asset.getETSLocation()) {
-            holder.tvName.setText("Location: " +asset.getETSLocation().getCode());
+            holder.tvLocation.setText("Location: " +asset.getETSLocation().getCode());
         }else  {
             holder.tvLocation.setText("Location: " +"N/A");
         }

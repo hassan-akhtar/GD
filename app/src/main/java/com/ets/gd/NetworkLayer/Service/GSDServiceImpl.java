@@ -11,6 +11,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
@@ -240,6 +241,28 @@ public class GSDServiceImpl implements GSDService {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
                 syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
                 syncPostEquipmentResponseDTO.setCallBackId(syncToolhawkTransferDTO.getCallBackId());
+                callback.onSuccess(syncPostEquipmentResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void postSyncToolhawkMove(final SyncPostToolhawkMoveDTO syncPostToolhawkMoveDTO, final MyCallBack callback) {
+        adapter.postSyncToolhawkMove(syncPostToolhawkMoveDTO.getMoveDTOList(), new Callback<List<SyncPostEquipment>>() {
+            @Override
+            public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
+                syncPostEquipmentResponseDTO.setCallBackId(syncPostToolhawkMoveDTO.getCallBackId());
                 callback.onSuccess(syncPostEquipmentResponseDTO);
             }
 

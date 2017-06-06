@@ -7,8 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ets.gd.Models.Department;
-import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -39,8 +38,8 @@ public class DepartmentAdapter extends RecyclerView.Adapter<DepartmentAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
         Department department = depList.get(position);
-        holder.tvTitle.setText(""+department.getTitle());
-        holder.tvDesc.setText(""+department.getDesc());
+        holder.tvTitle.setText(""+department.getCode());
+        holder.tvDesc.setText(""+department.getDescription());
 
     }
 

@@ -15,8 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Models.Department;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
 import com.ets.gd.ToolHawk.CheckInOut.CheckoutToActivity;
@@ -76,19 +77,19 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
                 if(tbTitleBottom.getText().toString().toLowerCase().startsWith("mov")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, MoveActivity.class);
                     in.putExtra("taskName", tbTitleBottom.getText().toString());
-                    in.putExtra("departmentName", depList.get(position).getTitle());
+                    in.putExtra("departmentName", depList.get(position).getCode());
                     startActivity(in);
 
                 }else if(tbTitleBottom.getText().toString().toLowerCase().startsWith("check out")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, CheckoutToActivity.class);
                     in.putExtra("taskName", tbTitleBottom.getText().toString());
-                    in.putExtra("departmentName", depList.get(position).getTitle());
+                    in.putExtra("departmentName", depList.get(position).getCode());
                     startActivity(in);
 
                 }else if(tbTitleBottom.getText().toString().toLowerCase().startsWith("check in")){
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, UserActivity.class);
                     in.putExtra("taskType", tbTitleBottom.getText().toString());
-                    in.putExtra("department", depList.get(position).getTitle());
+                    in.putExtra("department", depList.get(position).getCode());
                     startActivity(in);
 
                 }
@@ -107,14 +108,8 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
 
 
     private void setupDummyDepList() {
-        Department dep = new Department();
-        dep.setTitle("Construction");
-        dep.setDesc("Construction Department");
-        depList.add(dep);
-        dep = new Department();
-        dep.setTitle("Warehouse");
-        dep.setDesc("Warehouse Department");
-        depList.add(dep);
+
+        depList = DataManager.getInstance().getAllDepartments();
 
         mAdapter = new DepartmentAdapter(CommonToolhawkDepartmentActivity.this,depList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CommonToolhawkDepartmentActivity.this);

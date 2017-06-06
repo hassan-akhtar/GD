@@ -5,6 +5,7 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
@@ -376,6 +377,7 @@ public class DataManager {
     public List<ETSLocation> getAllAddedETSLocations() {
         return realm.where(ETSLocation.class).equalTo("isAdded", true).findAll();
     }
+
     public List<Locations> getOldLocations() {
         return realm.where(Locations.class).equalTo("isAdded", false).findAll();
     }
@@ -546,22 +548,26 @@ public class DataManager {
         if (null != realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst()) {
             return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
         } else {
-            realm.beginTransaction();
+
             ETSLocations loc = realm.where(ETSLocations.class).equalTo("Code", code).findFirst();
-            ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
-            newLoc.setCode(loc.getCode());
-            newLoc.setDescription(loc.getDescription());
-            newLoc.setSiteID(loc.getSite().getID());
-            newLoc.setBuildingID(loc.getBuilding().getID());
-            realm.commitTransaction();
-            return newLoc;
+            if (null != loc) {
+                realm.beginTransaction();
+                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
+                newLoc.setCode(loc.getCode());
+                newLoc.setDescription(loc.getDescription());
+                newLoc.setSiteID(loc.getSite().getID());
+                newLoc.setBuildingID(loc.getBuilding().getID());
+                realm.commitTransaction();
+                return newLoc;
+            } else {
+                return null;
+            }
         }
     }
 
 
-
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCodeOnly(String code) {
-            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
 
     }
 
@@ -736,6 +742,17 @@ public class DataManager {
     }
 
 
+    public void saveSyncToolhawkMoveData(List<ToolhawkMove> equipmentToMoveList) {
+
+        for (int i = 0; i < equipmentToMoveList.size(); i++) {
+            realm.beginTransaction();
+            realm.copyToRealm(equipmentToMoveList.get(i));
+            realm.commitTransaction();
+        }
+
+    }
+
+
     public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -779,6 +796,12 @@ public class DataManager {
     public List<ToolhawkTransferDTO> getAllToolhawkTransferDTO() {
         RealmResults<ToolhawkTransferDTO> results = realm.where(ToolhawkTransferDTO.class).findAll();
         List<ToolhawkTransferDTO> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public List<ToolhawkMove> getAllToolhawkMoveDTO() {
+        RealmResults<ToolhawkMove> results = realm.where(ToolhawkMove.class).findAll();
+        List<ToolhawkMove> copied = realm.copyFromRealm(results);
         return copied;
     }
 
