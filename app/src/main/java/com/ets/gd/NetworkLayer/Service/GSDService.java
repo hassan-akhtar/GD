@@ -9,12 +9,10 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncToolhawkTransferDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 
 import java.util.List;
-
-import retrofit.Callback;
-import retrofit.http.Body;
 
 public interface GSDService {
 
@@ -34,4 +32,5 @@ public interface GSDService {
 
     void postSyncETSLocation(SyncPostAddETSLocationRequestDTO syncPostAddETSLocationRequestDTO, MyCallBack callback);
 
+    void postSyncToolhawkTransfer(SyncToolhawkTransferDTO syncToolhawkTransferDTO, MyCallBack callback);
 }

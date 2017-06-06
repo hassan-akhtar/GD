@@ -2,10 +2,10 @@ package com.ets.gd.DataManager;
 
 import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.Department;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
@@ -728,7 +728,7 @@ public class DataManager {
         realm.commitTransaction();
     }
 
-    public void saveResultTransferToolhawk(TransferToolhawk obj) {
+    public void saveResultTransferToolhawk(ToolhawkTransferDTO obj) {
 
         realm.beginTransaction();
         realm.copyToRealm(obj);
@@ -772,6 +772,13 @@ public class DataManager {
     public List<UnitinspectionResult> getAllUnitInspectedAssets() {
         RealmResults<UnitinspectionResult> results = realm.where(UnitinspectionResult.class).findAll();
         List<UnitinspectionResult> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
+    public List<ToolhawkTransferDTO> getAllToolhawkTransferDTO() {
+        RealmResults<ToolhawkTransferDTO> results = realm.where(ToolhawkTransferDTO.class).findAll();
+        List<ToolhawkTransferDTO> copied = realm.copyFromRealm(results);
         return copied;
     }
 

@@ -11,19 +11,16 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
-import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawkEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -38,7 +35,7 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
     Spinner spDep, spLoc;
     List<Department> depList = new ArrayList<Department>();
     List<ETSLocations> locList = new ArrayList<ETSLocations>();
-    TransferToolhawk toolhawkEquipment;
+    ToolhawkTransferDTO toolhawkEquipment;
     ToolhawkEquipment theq;
     Department dep;
     int posDepartment, posLoc;
@@ -142,7 +139,7 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
 
                 case R.id.tvTransfer: {
 
-                    toolhawkEquipment = new TransferToolhawk(theq.getID(),DataManager.getInstance().getDepartmentByCode(spDep.getItemAtPosition(posDepartment).toString()).getID(),
+                    toolhawkEquipment = new ToolhawkTransferDTO(theq.getID(),DataManager.getInstance().getDepartmentByCode(spDep.getItemAtPosition(posDepartment).toString()).getID(),
                             DataManager.getInstance().getETSLocationsByCode(spLoc.getItemAtPosition(posLoc).toString()).getID());
                     DataManager.getInstance().saveResultTransferToolhawk(toolhawkEquipment);
                     showToast("Transfer Complete!");

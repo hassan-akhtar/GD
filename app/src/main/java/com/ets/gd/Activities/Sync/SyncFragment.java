@@ -25,7 +25,10 @@ import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.THEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransfer;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
@@ -73,6 +76,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     List<AddLocation> lstAddLocation = new ArrayList<AddLocation>();
     SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
     boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false, sendUnitInspcall = false, sendToolHawkEquipmentCall = false, sendETSLocationCall = false;
+    boolean sendTransferToolhawkCall = false;
     MoveTransferRequestDTO moveTransferRequestDTO;
     List<MoveTransfer> lstMoveEquipment = new ArrayList<MoveTransfer>();
     List<FireBugEquipment> lstAllAssets = new ArrayList<FireBugEquipment>();
@@ -85,6 +89,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
     List<ETSLocation> etsLocationsList = new ArrayList<ETSLocation>();
     List<ETSLoc> lstAddETSLocation = new ArrayList<ETSLoc>();
     SyncPostAddETSLocationRequestDTO syncPostAddETSLocationRequestDTO;
+    SyncToolhawkTransferDTO syncToolhawkTransferDTO;
+    List<TransferToolhawk> lstTHTansfer = new ArrayList<TransferToolhawk>();
+    List<ToolhawkTransferDTO> lstTHTansferDto = new ArrayList<ToolhawkTransferDTO>();
 
 
     public SyncFragment() {
@@ -133,6 +140,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         setupPostInspectAssetData();
         setupPostAddUpdateToolhawkEquipmentData();
         setupPostETSLocationData();
+        setupPostTHTransferData();
 
 
         if (sendEquipmentCall) {
@@ -147,6 +155,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
             callSyncPostToolhawkEqupmentService();
         } else if (sendETSLocationCall) {
             callSyncPostETSLocationService();
+        } else if (sendTransferToolhawkCall) {
+            callSyncPostTHTransferService();
         } else {
             // tvSyncInProgress.setText("No data found for syncing");
             // showToast("No data found for syncing");
@@ -197,6 +207,22 @@ public class SyncFragment extends Fragment implements MyCallBack {
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncEquipment(
                 syncPostEquipmentRequestDTO, this
+        );
+        //} else {
+        //     tvSyncInProgress.setText("No data found for syncing");
+        //      showToast("No data found for syncing");
+        //  }
+    }
+
+
+    void callSyncPostTHTransferService() {
+
+        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
+        CommonActions.showProgressDialog(getActivity());
+        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
+        tvSyncInProgress.setText("Sync in progress...");
+        GSDServiceFactory.getService(getActivity()).postSyncToolhawkTransfer(
+                syncToolhawkTransferDTO, this
         );
         //} else {
         //     tvSyncInProgress.setText("No data found for syncing");
@@ -297,6 +323,28 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         if (0 != lstInspectionResult.size()) {
             sendUnitInspcall = true;
+        }
+    }
+
+
+    private void setupPostTHTransferData() {
+        lstTHTansferDto = DataManager.getInstance().getAllToolhawkTransferDTO();
+
+
+        for (ToolhawkTransferDTO dto : lstTHTansferDto){
+
+            TransferToolhawk transferToolhawk = new TransferToolhawk();
+            transferToolhawk.setEquipmentID(dto.getEquipmentID());
+            transferToolhawk.setDepartmentID(dto.getDepartmentID());
+            transferToolhawk.setLocationID(dto.getLocationID());
+            lstTHTansfer.add(transferToolhawk);
+        }
+
+        syncToolhawkTransferDTO = new SyncToolhawkTransferDTO(Constants.RESPONSE_SYNC_POST_TOOLHAWK_TRANSFER,
+                lstTHTansfer);
+
+        if (0 != lstTHTansfer.size()) {
+            sendTransferToolhawkCall = true;
         }
     }
 
@@ -708,6 +756,36 @@ public class SyncFragment extends Fragment implements MyCallBack {
             break;
 
             case Constants.RESPONSE_SYNC_POST_ETS_LOCATION: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+
+                    if (sendTransferToolhawkCall) {
+                        callSyncPostTHTransferService();
+                    } else {
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+                    }
+
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
+
+
+            case Constants.RESPONSE_SYNC_POST_TOOLHAWK_TRANSFER: {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();

@@ -10,13 +10,13 @@ import java.util.List;
 public class TransferToolhawkEquipment {
 
     private String userId;
-    private List<TransferToolhawk> lstEquipment;
+    private List<ToolhawkTransferDTO> lstEquipment;
 
 
     public TransferToolhawkEquipment( ) {
     }
 
-    public TransferToolhawkEquipment(String userId, List<TransferToolhawk> lstEquipment) {
+    public TransferToolhawkEquipment(String userId, List<ToolhawkTransferDTO> lstEquipment) {
         this.userId = userId;
         this.lstEquipment = lstEquipment;
     }
@@ -29,11 +29,11 @@ public class TransferToolhawkEquipment {
         this.userId = userId;
     }
 
-    public List<TransferToolhawk> getLstEquipment() {
+    public List<ToolhawkTransferDTO> getLstEquipment() {
         return lstEquipment;
     }
 
-    public void setLstEquipment(List<TransferToolhawk> lstEquipment) {
+    public void setLstEquipment(List<ToolhawkTransferDTO> lstEquipment) {
         this.lstEquipment = lstEquipment;
     }
 }

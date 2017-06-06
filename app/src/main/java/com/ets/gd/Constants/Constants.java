@@ -24,6 +24,8 @@ public class Constants {
     //  Callback Keys Toolhawk
     public static final int RESPONSE_SYNC_POST_TOOLHAWK_EQUIPMENT = 7;
     public static final int RESPONSE_SYNC_POST_ETS_LOCATION = 8;
+    public static final int RESPONSE_SYNC_POST_TOOLHAWK_TRANSFER = 9;
+    public static final int RESPONSE_SYNC_POST_TOOLHAWK_MOVE = 10;
 
     // Urls Firebug
     public static final String URL_LOGIN = "/Services/Services/Mobile/Login";
@@ -36,6 +38,8 @@ public class Constants {
     // Urls Toolhawk
     public static final String URL_SYNC_POST_TOOLHAWK_EQUIPMENT = "/Services/Services/Mobile/CreateToolHawkEquipment";
     public static final String URL_SYNC_POST_ETS_LOCATION = "/Services/Services/Mobile/CreateETSLocation";
+    public static final String URL_SYNC_POST_TOOLHAWK_TRANSFER = "/Services/Services/Mobile/TransferToolHawkEquipment";
+    public static final String URL_SYNC_POST_TOOLHAWK_MOVE = "/Services/Services/Mobile/MoveToolHawkEquipment";
 
 
 }

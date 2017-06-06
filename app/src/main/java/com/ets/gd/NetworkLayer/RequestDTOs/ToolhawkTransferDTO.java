@@ -1,19 +1,22 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
+import io.realm.RealmObject;
+
 /**
- * Created by hakhtar on 6/6/2017.
+ * Created by hakhtar on 6/2/2017.
  * General Data
  */
 
-public class TransferToolhawk {
+public class ToolhawkTransferDTO extends RealmObject{
+
     private int EquipmentID;
     private int DepartmentID;
     private int LocationID;
 
 
-    public TransferToolhawk() {
+    public ToolhawkTransferDTO() {
     }
-    public TransferToolhawk(int equipmentID, int departmentID, int locationID) {
+    public ToolhawkTransferDTO(int equipmentID, int departmentID, int locationID) {
         EquipmentID = equipmentID;
         DepartmentID = departmentID;
         LocationID = locationID;
@@ -43,4 +46,3 @@ public class TransferToolhawk {
         LocationID = locationID;
     }
 }
-
