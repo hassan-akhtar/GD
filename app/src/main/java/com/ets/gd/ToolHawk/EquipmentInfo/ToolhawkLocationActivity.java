@@ -201,7 +201,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
                 case R.id.ivTick: {
                     if (checkValidation()) {
-                        ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCode(tvLocationID.getText().toString());
+                        ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCodeOnly(tvLocationID.getText().toString());
 
                         if (null==etsLoc) {
                             ETSLocation etsLocation = new ETSLocation(

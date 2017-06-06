@@ -373,6 +373,9 @@ public class DataManager {
         return realm.where(Locations.class).equalTo("isAdded", true).findAll();
     }
 
+    public List<ETSLocation> getAllAddedETSLocations() {
+        return realm.where(ETSLocation.class).equalTo("isAdded", true).findAll();
+    }
     public List<Locations> getOldLocations() {
         return realm.where(Locations.class).equalTo("isAdded", false).findAll();
     }
@@ -553,6 +556,13 @@ public class DataManager {
             realm.commitTransaction();
             return newLoc;
         }
+    }
+
+
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCodeOnly(String code) {
+            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocationsByCode(String code) {

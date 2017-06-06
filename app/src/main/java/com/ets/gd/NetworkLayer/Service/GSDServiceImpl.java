@@ -56,7 +56,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void loginRequest(final LoginDTO loginDTO, final MyCallBack callback) {
-        adapter.loginRequest(loginDTO.getUsername(), loginDTO.getPassword(),loginDTO.getGrantType(), new Callback<LoginResponseDTO>() {
+        adapter.loginRequest(loginDTO.getUsername(), loginDTO.getPassword(), loginDTO.getGrantType(), new Callback<LoginResponseDTO>() {
             @Override
             public void success(LoginResponseDTO loginResponseDTO, Response response) {
                 loginResponseDTO.setCallBackId(loginDTO.getCallBackId());
@@ -69,9 +69,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -80,7 +80,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void getSyncData(final SyncGetDTO syncGetDTO, final MyCallBack callback) {
-        adapter.getSyncData( syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
+        adapter.getSyncData(syncGetDTO.getDeviceId(), new Callback<SyncGetResponseDTO>() {
             @Override
             public void success(SyncGetResponseDTO syncGetResponseDTO, Response response) {
                 syncGetResponseDTO.setCallBackId(syncGetDTO.getCallBackId());
@@ -90,9 +90,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -103,7 +103,7 @@ public class GSDServiceImpl implements GSDService {
         adapter.postSyncEquipment(syncPostEquipmentRequestDTO, new Callback<List<SyncPostEquipment>>() {
             @Override
             public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
-               SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
                 syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
                 syncPostEquipmentResponseDTO.setCallBackId(syncPostEquipmentRequestDTO.getCallBackId());
                 callback.onSuccess(syncPostEquipmentResponseDTO);
@@ -112,9 +112,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -134,9 +134,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -156,9 +156,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -178,9 +178,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -200,9 +200,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });
@@ -210,7 +210,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void postSyncETSLocation(final SyncPostAddETSLocationRequestDTO syncPostAddETSLocationRequestDTO, final MyCallBack callback) {
-        adapter.postSyncETSLocation(syncPostAddETSLocationRequestDTO, new Callback<List<SyncPostEquipment>>() {
+        adapter.postSyncETSLocation(syncPostAddETSLocationRequestDTO.getLstAddLocation(), new Callback<List<SyncPostEquipment>>() {
             @Override
             public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
@@ -222,9 +222,9 @@ public class GSDServiceImpl implements GSDService {
             @Override
             public void failure(RetrofitError error) {
                 if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),error.getResponse().getStatus()));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
                 } else {
-                    callback.onFailure(new ResponseDTO(error.getMessage(),1));
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
                 }
             }
         });

@@ -12,9 +12,9 @@ import java.util.List;
 public class SyncPostAddETSLocationRequestDTO extends BaseDTO {
 
     private String userId;
-    private List<ETSLocation> lstAddLocation;
+    private List<ETSLoc> lstAddLocation;
 
-    public SyncPostAddETSLocationRequestDTO(int callBackId, String userId, List<ETSLocation> lstAddLocation) {
+    public SyncPostAddETSLocationRequestDTO(int callBackId, String userId, List<ETSLoc> lstAddLocation) {
         super(callBackId);
         this.userId = userId;
         this.lstAddLocation = lstAddLocation;
@@ -28,11 +28,11 @@ public class SyncPostAddETSLocationRequestDTO extends BaseDTO {
         this.userId = userId;
     }
 
-    public List<ETSLocation> getLstAddLocation() {
+    public List<ETSLoc> getLstAddLocation() {
         return lstAddLocation;
     }
 
-    public void setLstAddLocation(List<ETSLocation> lstAddLocation) {
+    public void setLstAddLocation(List<ETSLoc> lstAddLocation) {
         this.lstAddLocation = lstAddLocation;
     }
 }
