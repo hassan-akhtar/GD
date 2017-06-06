@@ -338,7 +338,7 @@ public class BaseActivity extends AppCompatActivity
             case 2:
                 tbTitleTop.setText("Toolhawk");
                 tbTitleBottom.setText("Dashboard");
-                refreshMainViewByNew(new ToolhawkDashboardFragment());
+                refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                 break;
 
 
