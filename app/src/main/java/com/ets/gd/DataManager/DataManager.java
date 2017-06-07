@@ -460,7 +460,9 @@ public class DataManager {
     }
 
     public List<Building> getAllSiteBuildings(int SiteID ) {
-        return realm.where(Building.class).equalTo("SiteID",SiteID).findAll();
+        RealmResults<Building>results = realm.where(Building.class).equalTo("SiteID",SiteID).findAll();
+        List<Building> copied = realm.copyFromRealm(results);
+        return copied;
     }
 
     public List<ETSBuilding> getAllETSBuildings() {

@@ -446,10 +446,12 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spBuilding.setAdapter(dataAdapterBuilding);
 
-                        for (int j = 0; j < buildings.length; j++) {
-                            if (DataManager.getInstance().getBuilding(DataManager.getInstance().getLocation(tvLocationID.getText().toString()).getBuilding().getID()).getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
-                                spBuilding.setSelection(j);
-                                break;
+                        if ("viewLoc".equals(actionType)) {
+                            for (int j = 0; j < buildings.length; j++) {
+                                if (DataManager.getInstance().getBuilding(DataManager.getInstance().getLocation(tvLocationID.getText().toString()).getBuilding().getID()).getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
+                                    spBuilding.setSelection(j);
+                                    break;
+                                }
                             }
                         }
                     }

@@ -69,7 +69,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         taskType = getIntent().getStringExtra("taskType");
         barcodeID = getIntent().getStringExtra("barcodeID");
         tbTitleTop.setText("Toolhawk");
-        tbTitleBottom.setText("Equipment Info");
+
 
 
     }
@@ -223,11 +223,13 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
     private void setupView() {
         if (taskType.startsWith("vie")) {
+            tbTitleBottom.setText("Equipment Info");
             tvEquipmentCode.setEnabled(false);
             tvEquipmentCode.setText("" + toolhawkEquipment.getCode());
             tvUnitCost.setText("" + toolhawkEquipment.getUnitCost());
 
         } else {
+            tbTitleBottom.setText("Add Equipment");
             tvEquipmentCode.setEnabled(true);
         }
 

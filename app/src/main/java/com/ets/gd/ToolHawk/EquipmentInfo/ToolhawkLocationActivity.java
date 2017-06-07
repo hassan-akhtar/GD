@@ -69,7 +69,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tbTitleTop.setText("Toolhawk");
-        tbTitleBottom.setText("ETS Location");
+        tbTitleBottom.setText("Add Location");
 
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             spSite.setBackgroundColor(Color.parseColor("#ffffff"));
