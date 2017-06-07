@@ -446,8 +446,21 @@ public class DataManager {
         return realm.where(Site.class).findAll();
     }
 
+    public Site getSite(String code) {
+        return realm.where(Site.class).equalTo("Code",code).findFirst();
+    }
+
+
     public List<Building> getAllBuildings() {
         return realm.where(Building.class).findAll();
+    }
+
+    public Building getBuilding(int ID) {
+        return realm.where(Building.class).equalTo("ID",ID).findFirst();
+    }
+
+    public List<Building> getAllSiteBuildings(int SiteID ) {
+        return realm.where(Building.class).equalTo("SiteID",SiteID).findAll();
     }
 
     public List<ETSBuilding> getAllETSBuildings() {
@@ -843,6 +856,7 @@ public class DataManager {
     public FireBugEquipment getEquipment(String barcodeID) {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
+
 
     public List<FireBugEquipment> getFirebugLocEquipments(String locCode) {
         return realm.where(FireBugEquipment.class).equalTo("Location.Code", locCode).findAll();

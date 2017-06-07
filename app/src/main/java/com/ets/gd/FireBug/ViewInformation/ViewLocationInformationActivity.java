@@ -140,7 +140,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
 
         allSites = DataManager.getInstance().getAllSites();
-        allBuilding = DataManager.getInstance().getAllBuildings();
+
         int sizeSite = allSites.size() + 1;
         sites = new String[sizeSite];
 
@@ -152,12 +152,12 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-        int sizeBuilding = allBuilding.size() + 1;
-        buildings = new String[sizeBuilding];
+        // int sizeBuilding = allBuilding.size() + 1;
+        buildings = new String[1];
 
-        for (int i = 0; i < allBuilding.size(); i++) {
-            buildings[i + 1] = allBuilding.get(i).getCode();
-        }
+//        for (int i = 0; i < allBuilding.size(); i++) {
+//            buildings[i + 1] = allBuilding.get(i).getCode();
+//        }
         buildings[0] = "Please select a building";
         ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -247,13 +247,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
                 case R.id.btnViewAllAssets: {
                     String locCode = tvLocationID.getText().toString();
-                    if (null!=DataManager.getInstance().getFirebugLocEquipments(locCode) && 0!=DataManager.getInstance().getFirebugLocEquipments(locCode).size()) {
+                    if (null != DataManager.getInstance().getFirebugLocEquipments(locCode) && 0 != DataManager.getInstance().getFirebugLocEquipments(locCode).size()) {
                         Intent in = new Intent(ViewLocationInformationActivity.this, ViewAllAssetsActivity.class);
                         in.putExtra("compName", compName);
                         in.putExtra("locCode", locCode);
                         startActivity(in);
                     } else {
-                        showToast(""+locCode+" has no Asset(s)!");
+                        showToast("" + locCode + " has no Asset(s)!");
                     }
                     break;
                 }
@@ -262,12 +262,12 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 case R.id.ivTick: {
                     List<Locations> locationsList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString()).getID());
                     Locations location = DataManager.getInstance().getLocation(tvLocationID.getText().toString());
-                   boolean exists = false;
+                    boolean exists = false;
                     if (checkValidation()) {
 
-                        if (null!=location) {
-                            for(Locations loc : locationsList){
-                                if(loc.getCode().equals(location.getCode())){
+                        if (null != location) {
+                            for (Locations loc : locationsList) {
+                                if (loc.getCode().equals(location.getCode())) {
                                     exists = true;
                                     break;
                                 }
@@ -280,14 +280,14 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 //                                            tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
 //                                            spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
 //                            );
-                        Locations locations = new Locations(tvLocationID.getText().toString(),
-                                tvDescprition.getText().toString(),
-                                DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()),
-                                // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
-                                //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
-                                DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()),
-                                DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()), true);
-                        DataManager.getInstance().addNewLocation(locations);
+                            Locations locations = new Locations(tvLocationID.getText().toString(),
+                                    tvDescprition.getText().toString(),
+                                    DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()),
+                                    // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
+                                    //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
+                                    DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()),
+                                    DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()), true);
+                            DataManager.getInstance().addNewLocation(locations);
 //                        MyLocation myLocation = new MyLocation(
 //                                tvLocationID.getText().toString(),
 //                                tvDescprition.getText().toString(),
@@ -296,8 +296,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 //                                DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()).getID());
 //
 //                        DataManager.getInstance().addNewLocation(myLocation);
-                        Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
-                        finish();
+                            Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
+                            finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Location Already Added!", Toast.LENGTH_LONG).show();
                         }
@@ -429,6 +429,32 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     }
 
                 }
+                if (0 != position) {
+                    allBuilding.clear();
+                    if (null != DataManager.getInstance().getSite(strSelectedState)) {
+                        allBuilding = DataManager.getInstance().getAllSiteBuildings(DataManager.getInstance().getSite(strSelectedState).getID());
+                    }
+                    if (null != allBuilding) {
+                        int sizeBuilding = allBuilding.size() + 1;
+                        buildings = new String[sizeBuilding];
+
+                        for (int i = 0; i < allBuilding.size(); i++) {
+                            buildings[i + 1] = allBuilding.get(i).getCode();
+                        }
+                        buildings[0] = "Please select a building";
+                        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
+                        dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spBuilding.setAdapter(dataAdapterBuilding);
+
+                        for (int j = 0; j < buildings.length; j++) {
+                            if (DataManager.getInstance().getBuilding(DataManager.getInstance().getLocation(tvLocationID.getText().toString()).getBuilding().getID()).getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
+                                spBuilding.setSelection(j);
+                                break;
+                            }
+                        }
+                    }
+                }
+
 
             }
             break;

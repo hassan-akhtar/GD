@@ -17,12 +17,16 @@ import android.widget.TextView;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.RealmList;
 
@@ -46,6 +50,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     String[] customers;
     Customer customer;
     public static String customerName ;
+    List<Building> allBuilding = new ArrayList<Building>();
 
     public AssetLocationFragment() {
     }
@@ -186,12 +191,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-        int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
-        buildings = new String[sizeBuilding];
+       // int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
+        buildings = new String[1];
 
-        for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
+/*        for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
             buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
-        }
+        }*/
         buildings[0] = "Please select a building";
         ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -267,6 +272,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         switch (viewID) {
             case R.id.spLocation: {
                 posLoc = position;
+                int selectedSiteID=0;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
                     for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size() + 1; i++) {
@@ -276,9 +282,29 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                             for (int k = 0; k < sites.length; k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
                                     spSite.setSelection(k);
+                                    selectedSiteID=DataManager.getInstance().getLocation(strSelectedState).getSite().getID();
                                     break;
                                 }
                             }
+
+
+                                allBuilding.clear();
+                                if (0!=selectedSiteID) {
+                                    allBuilding = DataManager.getInstance().getAllSiteBuildings(selectedSiteID);
+                                }
+                                if (null!=allBuilding) {
+                                    int sizeBuilding = allBuilding.size() + 1;
+                                    buildings = new String[sizeBuilding];
+
+                                    for (int l = 0; l < allBuilding.size(); l++) {
+                                        buildings[l + 1] = allBuilding.get(l).getCode();
+                                    }
+                                    buildings[0] = "Please select a building";
+                                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
+                                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    spBuilding.setAdapter(dataAdapterBuilding);
+                                }
+
 
                             for (int j = 0; j < buildings.length; j++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
