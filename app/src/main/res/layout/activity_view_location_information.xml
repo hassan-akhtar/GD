@@ -6,6 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".FireBug.ViewInformation.ViewLocationInformationActivity">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -24,6 +27,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/rlLoc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rlHeader">
@@ -33,5 +37,17 @@
                 layout="@layout/add_location_screen" />
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnViewAllAssets"
+            android:layout_below="@+id/rlLoc"
+            android:layout_width="150dp"
+            android:layout_marginTop="15dp"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/btn_selector"
+            android:text="View All Assets"/>
     </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

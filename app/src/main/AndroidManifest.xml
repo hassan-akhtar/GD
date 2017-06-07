@@ -90,7 +90,8 @@
         <activity android:name=".ToolHawk.CheckInOut.CheckoutToActivity" />
         <activity android:name=".ToolHawk.CheckInOut.UserActivity" />
         <activity android:name=".ToolHawk.CheckInOut.JobNumberActivity" />
-        <activity android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity"></activity>
+        <activity android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity" />
+        <activity android:name=".FireBug.ViewInformation.ViewAllAssetsActivity"></activity>
     </application>
 
 </manifest>

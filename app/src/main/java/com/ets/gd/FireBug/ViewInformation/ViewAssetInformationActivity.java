@@ -103,8 +103,10 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
         if ("viewAsset".equals(actionType)) {
             isAssetAdded = true;
+            tbTitleBottom.setText("View Asset");
         } else {
             isAssetAdded = false;
+            tbTitleBottom.setText("Add Asset");
         }
 
         if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {

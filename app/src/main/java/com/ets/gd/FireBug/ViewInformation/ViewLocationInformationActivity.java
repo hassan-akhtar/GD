@@ -1,5 +1,6 @@
 package com.ets.gd.FireBug.ViewInformation;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.design.widget.TextInputLayout;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -35,19 +37,20 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     public static EditText tvDescprition, tvLocationID;
     Locations location;
     Customer customer;
-    String customerName;
+    String customerName, compName;
     private TextInputLayout lLocationID, lDescprition;
     public static String actionType, barCodeID;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     SyncCustomer realmSyncGetResponseDTO;
     List<Site> allSites = new ArrayList<Site>();
-    TextView tvLableLocation;
+    TextView tvLableLocation, tbTitleBottom;
     List<Building> allBuilding = new ArrayList<Building>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
     String[] buildings;
     String[] customers;
+    Button btnViewAllAssets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,11 +72,14 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         lLocationID = (TextInputLayout) findViewById(R.id.lLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         tvLableLocation = (TextView) findViewById(R.id.tvLableLocation);
+        tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         spBuilding = (Spinner) findViewById(R.id.spLoc);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
+        btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
         barCodeID = getIntent().getStringExtra("barCode");
         customerName = getIntent().getStringExtra("customerName");
+        compName = getIntent().getStringExtra("compName");
         if (null != barCodeID) {
             location = DataManager.getInstance().getLocation(barCodeID);
             customer = location.getCustomer();
@@ -177,9 +183,10 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition.setEnabled(false);
         spBuilding.setEnabled(false);
         spSite.setEnabled(false);
-
+        tbTitleBottom.setText("View Location");
         tvLocationID.setText(location.getCode());
         tvDescprition.setText(location.getDescription());
+        btnViewAllAssets.setVisibility(View.VISIBLE);
 
 
         for (int i = 0; i < sites.length; i++) {
@@ -201,6 +208,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     void setViewForAddLoc() {
         tvLocationID.setVisibility(View.VISIBLE);
+        tbTitleBottom.setText("Add Location");
         tvLocationID.setText("");
         tvDescprition.setText("");
         spSite.setSelection(0);
@@ -212,6 +220,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spBuilding.setEnabled(true);
         spSite.setEnabled(true);
         spCustomer.setEnabled(true);
+        btnViewAllAssets.setVisibility(View.GONE);
         //spCustomer.setSelection(0);
 
 
@@ -222,6 +231,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spSite.setOnItemSelectedListener(this);
         spCustomer.setOnItemSelectedListener(this);
         spBuilding.setOnItemSelectedListener(this);
+        btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
 
@@ -234,6 +244,20 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     finish();
                     break;
                 }
+
+                case R.id.btnViewAllAssets: {
+                    String locCode = tvLocationID.getText().toString();
+                    if (null!=DataManager.getInstance().getFirebugLocEquipments(locCode) && 0!=DataManager.getInstance().getFirebugLocEquipments(locCode).size()) {
+                        Intent in = new Intent(ViewLocationInformationActivity.this, ViewAllAssetsActivity.class);
+                        in.putExtra("compName", compName);
+                        in.putExtra("locCode", locCode);
+                        startActivity(in);
+                    } else {
+                        showToast(""+locCode+" has no Asset(s)!");
+                    }
+                    break;
+                }
+
 
                 case R.id.ivTick: {
                     List<Locations> locationsList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString()).getID());

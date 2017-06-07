@@ -844,6 +844,10 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public List<FireBugEquipment> getFirebugLocEquipments(String locCode) {
+        return realm.where(FireBugEquipment.class).equalTo("Location.Code", locCode).findAll();
+    }
+
     public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
     }

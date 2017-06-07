@@ -375,6 +375,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                     if (0 != currentCustomerLocationList.size() && currentCustomerLocationList.contains(locations)) {
                         Intent in = new Intent(CommonFirebugScanActivity.this, ViewLocationInformationActivity.class);
                         in.putExtra("action", "viewLoc");
+                        in.putExtra("compName", tvCompanyValue.getText().toString());
                         in.putExtra("barCode", tvBarcodeValue.getText().toString());
                         startActivity(in);
                         locViewed = true;
