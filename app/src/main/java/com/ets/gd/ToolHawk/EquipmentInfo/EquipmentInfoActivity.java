@@ -138,46 +138,72 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
         if (taskType.startsWith("vie")) {
 
-            if (null != locList) {
-                int sizeLocations = locList.size() + 1;
-                String[] locations = new String[sizeLocations];
-                locations[0] = "Please select a location";
-                for (int i = 0; i < locList.size(); i++) {
-                    locations[i + 1] = locList.get(i).getCode();
-                }
 
-                ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
-                dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spLocation.setAdapter(dataAdapterVendor);
+            if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("loc")) {
+                if (null != locList) {
+                    int sizeLocations = locList.size() + 1;
+                    String[] locations = new String[sizeLocations];
+                    locations[0] = "Please select a location";
+                    for (int i = 0; i < locList.size(); i++) {
+                        locations[i + 1] = locList.get(i).getCode();
+                    }
+
+                    ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                    dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spLocation.setAdapter(dataAdapterVendor);
 
 
-                for (int i = 0; i < locList.size() + 1; i++) {
-                    if (null != toolhawkEquipment.getETSLocation()) {
-                        if (toolhawkEquipment.getETSLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
-                            spLocation.setSelection(i);
-                            posLoc = i;
-                            break;
+                    for (int i = 0; i < locList.size() + 1; i++) {
+                        if (null != toolhawkEquipment.getETSLocation()) {
+                            if (toolhawkEquipment.getETSLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
+                                spLocation.setSelection(i);
+                                posLoc = i;
+                                break;
+                            }
                         }
                     }
                 }
-            }
-        } else {
-            String[] locations = new String[1];
-            locations[0] = "Please select a location";
-            ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
-            dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spLocation.setAdapter(dataAdapterVendor);
+            } else if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("job")) {
+
+                if (null != toolhawkEquipment.getEquipmentLocationInfo().getLocation()) {
+                    String[] locations = new String[1];
+                    locations[0] = toolhawkEquipment.getEquipmentLocationInfo().getLocation();
+                    ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                    dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spLocation.setAdapter(dataAdapterVendor);
+                    spLocation.setSelection(0);
+                }
+            } else if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("eq")) {
+                if (null != toolhawkEquipment.getEquipmentLocationInfo().getLocation()) {
+                    String[] locations = new String[1];
+                    locations[0] = toolhawkEquipment.getEquipmentLocationInfo().getLocation();
+                    ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                    dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spLocation.setAdapter(dataAdapterVendor);
+                    spLocation.setSelection(0);
+                }
+            } else {
+
         }
+    } else
+
+    {
+        String[] locations = new String[1];
+        locations[0] = "Please select a location";
+        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+        dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spLocation.setAdapter(dataAdapterVendor);
+    }
 
 
-        String[] models = new String[1];
-        models[0] = "Please select a model";
-        ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, models);
+    String[] models = new String[1];
+    models[0]="Please select a model";
+    ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, models);
         dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spModel.setAdapter(dataAdapterModel);
 
 
-    }
+}
 
 
     private void initListeners() {
@@ -233,7 +259,11 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             spDepartment.setEnabled(false);
             spLocation.setEnabled(false);
             tvEquipmentCode.setText("" + toolhawkEquipment.getCode());
-            tvUnitCost.setText("" + toolhawkEquipment.getUnitCost());
+            if (null!=toolhawkEquipment.getUnitCost()) {
+                tvUnitCost.setText("" + toolhawkEquipment.getUnitCost());
+            }else{
+                tvUnitCost.setText("");
+            }
 
         } else {
             tbTitleBottom.setText("Add Equipment");
@@ -332,9 +362,10 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
     private boolean checkValidation() {
         if ("".equals(tvEquipmentCode.getText().toString().trim())) {
             showToast("Please enter Equipment ID");
-        } else if (0 == posDepartment) {
+        } else if (taskType.toLowerCase().startsWith("add") && 0 == posDepartment) {
             showToast("Please select a Department");
-        } else if (0 == posLoc) {
+        } else if (taskType.toLowerCase().startsWith("add") &&
+                0 == posLoc) {
             showToast("Please select a Location");
         } else if (0 == posManufacturer) {
             showToast("Please select a Manufacturer");
@@ -346,6 +377,8 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
         return false;
     }
+
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -362,21 +395,23 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                         e.printStackTrace();
                     }
                 } else {
-                    locList.clear();
-                    if (null != DataManager.getInstance().getDepartmentByCode(strSelectedState)) {
-                        locList = DataManager.getInstance().getAllDepETSLocations(DataManager.getInstance().getDepartmentByCode(strSelectedState).getID());
-                    }
-                    if (null != locList) {
-                        int sizeLocations = locList.size() + 1;
-                        String[] locations = new String[sizeLocations];
-                        locations[0] = "Please select a location";
-                        for (int i = 0; i < locList.size(); i++) {
-                            locations[i + 1] = locList.get(i).getCode();
+                    if (taskType.toLowerCase().startsWith("add")) {
+                        locList.clear();
+                        if (null != DataManager.getInstance().getDepartmentByCode(strSelectedState)) {
+                            locList = DataManager.getInstance().getAllDepETSLocations(DataManager.getInstance().getDepartmentByCode(strSelectedState).getID());
                         }
+                        if (null != locList) {
+                            int sizeLocations = locList.size() + 1;
+                            String[] locations = new String[sizeLocations];
+                            locations[0] = "Please select a location";
+                            for (int i = 0; i < locList.size(); i++) {
+                                locations[i + 1] = locList.get(i).getCode();
+                            }
 
-                        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
-                        dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spLocation.setAdapter(dataAdapterVendor);
+                            ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                            dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spLocation.setAdapter(dataAdapterVendor);
+                        }
                     }
                 }
 

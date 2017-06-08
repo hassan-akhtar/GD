@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
@@ -50,7 +51,7 @@ public class MoveActivity extends AppCompatActivity {
         ivTick = (ImageView) findViewById(R.id.ivTick);
 
         rlJob = (RelativeLayout) findViewById(R.id.rlJob);
-        rlLocation  = (RelativeLayout) findViewById(R.id.rlLocation);
+        rlLocation = (RelativeLayout) findViewById(R.id.rlLocation);
         rlAssets = (RelativeLayout) findViewById(R.id.rlAssets);
 
         taskName = getIntent().getStringExtra("taskName");
@@ -93,30 +94,53 @@ public class MoveActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlJob: {
-                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
-                    in.putExtra("taskType", taskName);
-                    in.putExtra("department", departmentName);
-                    in.putExtra("scanType", "Job Number");
-                    startActivity(in);
+
+                    if (0 != DataManager.getInstance().getAllJobNumberList().size()) {
+                        Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                        in.putExtra("taskType", taskName);
+                        in.putExtra("department", departmentName);
+                        in.putExtra("scanType", "Job Number");
+                        startActivity(in);
+                    }else{
+                        showToast("No Job number Found in "+departmentName);
+                    }
 
                     break;
                 }
 
                 case R.id.rlLocation: {
-                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
-                    in.putExtra("taskType", taskName);
-                    in.putExtra("department", departmentName);
-                    in.putExtra("scanType", "Location");
-                    startActivity(in);
+
+                    int cusID = 0;
+                    if (null != DataManager.getInstance().getDepartmentByCode(departmentName)) {
+                        cusID = DataManager.getInstance().getDepartmentByCode(departmentName).getCustomerID();
+                    }
+                    if (0!=DataManager.getInstance().getAllCustomerETSLocations(cusID).size()) {
+                        Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                        in.putExtra("taskType", taskName);
+                        in.putExtra("department", departmentName);
+                        in.putExtra("scanType", "Location");
+                        startActivity(in);
+                    } else {
+                        showToast("No Location(s) Found in "+departmentName);
+                    }
                     break;
                 }
 
                 case R.id.rlAssets: {
-                    Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
-                    in.putExtra("taskType", taskName);
-                    in.putExtra("department", departmentName);
-                    in.putExtra("scanType", "Asset");
-                    startActivity(in);
+
+                    int cusID = 0;
+                    if (null != DataManager.getInstance().getDepartmentByCode(departmentName)) {
+                        cusID = DataManager.getInstance().getDepartmentByCode(departmentName).getID();
+                    }
+                    if (0!=DataManager.getInstance().getAllDepToolhawkEquipment(cusID).size()) {
+                        Intent in = new Intent(MoveActivity.this, ToolhawkScanActivityWithList.class);
+                        in.putExtra("taskType", taskName);
+                        in.putExtra("department", departmentName);
+                        in.putExtra("scanType", "Asset");
+                        startActivity(in);
+                    } else {
+                        showToast("No Asset(s) Found in "+departmentName);
+                    }
                     break;
                 }
             }
@@ -125,8 +149,8 @@ public class MoveActivity extends AppCompatActivity {
     };
 
 
-    void showToast(String msg){
-        Toast.makeText(getApplicationContext(),msg,Toast.LENGTH_LONG).show();
+    void showToast(String msg) {
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     private final BroadcastReceiver mMoveCompleteBroadcastReceiver = new BroadcastReceiver() {

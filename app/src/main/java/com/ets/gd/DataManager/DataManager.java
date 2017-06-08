@@ -448,11 +448,11 @@ public class DataManager {
     }
 
     public Site getSite(String code) {
-        return realm.where(Site.class).equalTo("Code",code).findFirst();
+        return realm.where(Site.class).equalTo("Code", code).findFirst();
     }
 
     public Site getSiteByID(int ID) {
-        return realm.where(Site.class).equalTo("ID",ID).findFirst();
+        return realm.where(Site.class).equalTo("ID", ID).findFirst();
     }
 
     public List<Building> getAllBuildings() {
@@ -460,17 +460,17 @@ public class DataManager {
     }
 
     public Building getBuilding(int ID) {
-        return realm.where(Building.class).equalTo("ID",ID).findFirst();
+        return realm.where(Building.class).equalTo("ID", ID).findFirst();
     }
 
-    public List<Building> getAllSiteBuildings(int SiteID ) {
-        RealmResults<Building>results = realm.where(Building.class).equalTo("SiteID",SiteID).findAll().sort("Code");
+    public List<Building> getAllSiteBuildings(int SiteID) {
+        RealmResults<Building> results = realm.where(Building.class).equalTo("SiteID", SiteID).findAll().sort("Code");
         List<Building> copied = realm.copyFromRealm(results);
         return copied;
     }
 
-    public List<FirebugBuilding> getAllFirebugSiteBuildings(int SiteID ) {
-        RealmResults<FirebugBuilding>results = realm.where(FirebugBuilding.class).equalTo("site.ID",SiteID).findAll().sort("Code");
+    public List<FirebugBuilding> getAllFirebugSiteBuildings(int SiteID) {
+        RealmResults<FirebugBuilding> results = realm.where(FirebugBuilding.class).equalTo("site.ID", SiteID).findAll().sort("Code");
         List<FirebugBuilding> copied = realm.copyFromRealm(results);
         return copied;
     }
@@ -857,6 +857,9 @@ public class DataManager {
         return realm.where(JobNumber.class).findAll().sort("Code");
     }
 
+    public List<JobNumber> getAllDepJobNumberList(int ID) {
+        return realm.where(JobNumber.class).equalTo("DepartmentID", ID).findAll().sort("Code");
+    }
 
     public JobNumber getJobNumber(String code) {
         return realm.where(JobNumber.class).equalTo("Code", code).findFirst();
@@ -892,20 +895,29 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).findAll().sort("Code");
     }
 
+    public List<ToolhawkEquipment> getAllDepToolhawkEquipment(int depID) {
+        return realm.where(ToolhawkEquipment.class).equalTo("Department.ID", depID).findAll().sort("Code");
+    }
+
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.Department> getAllDepartments() {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).findAll().sort("Code");
     }
 
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllETSLocations() {
-        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations>  results= realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll().sort("Code");
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll().sort("Code");
+        List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllCustomerETSLocations(int ID) {
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Customer.ID", ID).findAll().sort("Code");
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
         return copied;
     }
 
 
-
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllDepETSLocations(int depID) {
-        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations>  results= realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.DepartmentID",depID).findAll().sort("Code");
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.DepartmentID", depID).findAll().sort("Code");
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
         return copied;
     }

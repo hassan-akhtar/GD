@@ -14,6 +14,7 @@ public class ETSLocations extends RealmObject {
     @PrimaryKey
     private String Code;
     private String Description;
+    private int DepartmentID;
     private String Floor;
     private String Room;
     private Customer Customer;
@@ -40,6 +41,14 @@ public class ETSLocations extends RealmObject {
 
     public String getDescription() {
         return Description;
+    }
+
+    public int getDepartmentID() {
+        return DepartmentID;
+    }
+
+    public void setDepartmentID(int departmentID) {
+        DepartmentID = departmentID;
     }
 
     public void setDescription(String description) {

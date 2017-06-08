@@ -63,7 +63,9 @@ public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAs
         if(null!=asset.getETSLocation()) {
             holder.tvLocation.setText("Location: " +asset.getETSLocation().getCode());
         }else  {
-            holder.tvLocation.setText("Location: " +"N/A");
+            if(null!=asset.getEquipmentLocationInfo()) {
+                holder.tvLocation.setText("Location: " +asset.getEquipmentLocationInfo().getLocation());
+            }
         }
 
             if(null!=asset.getCode()) {

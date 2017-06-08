@@ -11,6 +11,7 @@ import io.realm.annotations.PrimaryKey;
 public class JobNumber extends RealmObject {
     @PrimaryKey
     private int ID;
+    private int DepartmentID;
     private String Code;
     private String Description;
     private boolean Active;
@@ -29,6 +30,14 @@ public class JobNumber extends RealmObject {
 
     public void setCode(String code) {
         Code = code;
+    }
+
+    public int getDepartmentID() {
+        return DepartmentID;
+    }
+
+    public void setDepartmentID(int departmentID) {
+        DepartmentID = departmentID;
     }
 
     public String getDescription() {

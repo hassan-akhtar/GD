@@ -174,17 +174,27 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
     }
 
     private void setupList() {
+        int depID = 0;
+        if(null!=DataManager.getInstance().getDepartmentByCode(department)){
+            depID = DataManager.getInstance().getDepartmentByCode(department).getID();
+        }
+
+        int cusID = 0;
+        if (null != DataManager.getInstance().getDepartmentByCode(department)) {
+            cusID = DataManager.getInstance().getDepartmentByCode(department).getCustomerID();
+        }
 
         if (scanType.toLowerCase().startsWith("job")) {
+
             jobNumberList = DataManager.getInstance().getAllJobNumberList();
             mAdapter = new MoveAdapter(ToolhawkScanActivityWithList.this, jobNumberList, "job Number");
 
         } else if (scanType.toLowerCase().startsWith("loc")) {
-            etsLocationsList = DataManager.getInstance().getAllETSLocations();
+            etsLocationsList = DataManager.getInstance().getAllCustomerETSLocations(cusID);
             mAdapter = new MoveAdapter(etsLocationsList, "loc", ToolhawkScanActivityWithList.this);
 
         } else if (scanType.toLowerCase().startsWith("asset")) {
-            equipmentList = DataManager.getInstance().getAllToolhawkEquipment();
+            equipmentList = DataManager.getInstance().getAllDepToolhawkEquipment(depID);
             mAdapter = new MoveAdapter(ToolhawkScanActivityWithList.this, "asset", equipmentList);
 
         }
@@ -200,6 +210,18 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
+
+                    int depID = 0;
+                    if(null!=DataManager.getInstance().getDepartmentByCode(department)){
+                        depID = DataManager.getInstance().getDepartmentByCode(department).getID();
+                    }
+
+                    int cusID = 0;
+                    if (null != DataManager.getInstance().getDepartmentByCode(department)) {
+                        cusID = DataManager.getInstance().getDepartmentByCode(department).getCustomerID();
+                    }
+
+
                     if ("".equals(etBarcode.getText().toString().trim())) {
                         checkCameraPermission();
                     } else {
@@ -222,12 +244,16 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
                             etsLocation= DataManager.getInstance().getETSLocations(etBarcode.getText().toString());
 
                             if(null!=etsLocation){
-                                Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
-                                in.putExtra("taskType", taskType);
-                                in.putExtra("department", department);
-                                in.putExtra("scanType", scanType);
-                                in.putExtra("moveCode", etsLocation.getCode());
-                                startActivity(in);
+                                if (etsLocationsList.contains(etsLocation)) {
+                                    Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
+                                    in.putExtra("taskType", taskType);
+                                    in.putExtra("department", department);
+                                    in.putExtra("scanType", scanType);
+                                    in.putExtra("moveCode", etsLocation.getCode());
+                                    startActivity(in);
+                                } else {
+                                    showToast("This Location is not found in "+department);
+                                }
                             }else{
                                 showToast("Location not found!");
                             }
@@ -235,12 +261,16 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
                         } else if (scanType.toLowerCase().startsWith("asset")) {
                             toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
                             if(null!=toolhawkEquipment){
-                                Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
-                                in.putExtra("taskType", taskType);
-                                in.putExtra("department", department);
-                                in.putExtra("scanType", scanType);
-                                in.putExtra("moveCode", toolhawkEquipment.getCode());
-                                startActivity(in);
+                                if (equipmentList.contains(toolhawkEquipment)) {
+                                    Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
+                                    in.putExtra("taskType", taskType);
+                                    in.putExtra("department", department);
+                                    in.putExtra("scanType", scanType);
+                                    in.putExtra("moveCode", toolhawkEquipment.getCode());
+                                    startActivity(in);
+                                } else {
+                                    showToast("This Asset is not found in "+department);
+                                }
                             }else{
                                 showToast("Asset not found!");
                             }
@@ -418,12 +448,16 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
             etsLocation= DataManager.getInstance().getETSLocations(message);
 
             if(null!=etsLocation){
+                if(etsLocationsList.contains(etsLocation)){
                 Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
                 in.putExtra("taskType", taskType);
                 in.putExtra("department", department);
                 in.putExtra("scanType", scanType);
                 in.putExtra("moveCode", etsLocation.getCode());
                 startActivity(in);
+            } else {
+                showToast("This Location is not found in "+department);
+            }
             }else{
                 showToast("Location not found!");
             }
@@ -431,12 +465,16 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
         } else if (scanType.toLowerCase().startsWith("asset")) {
             toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(message);
             if(null!=toolhawkEquipment){
+               if(equipmentList.contains(toolhawkEquipment)){
                 Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
                 in.putExtra("taskType", taskType);
                 in.putExtra("department", department);
                 in.putExtra("scanType", scanType);
                 in.putExtra("moveCode", toolhawkEquipment.getCode());
                 startActivity(in);
+            } else {
+                showToast("This Asset is not found in "+department);
+            }
             }else{
                 showToast("Asset not found!");
             }

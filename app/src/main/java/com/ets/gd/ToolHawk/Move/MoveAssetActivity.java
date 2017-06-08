@@ -308,15 +308,15 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
                         for (ToolhawkEquipment eq : equipmentList) {
 
-                            if (null != eq.getETSLocation() && null != eq.getETSLocation().getCode()) {
+                            if (null != eq.getEquipmentLocationInfo() && null != eq.getEquipmentLocationInfo().getLocation()) {
                                 locSize = locSize + 1;
                             }
                         }
 
                         locations = new String[locSize];
                         for (int i = 0; i < locSize; i++) {
-                            if (null != equipmentList.get(i).getETSLocation()) {
-                                locations[i] = equipmentList.get(i).getETSLocation().getCode();
+                            if (null != equipmentList.get(i).getEquipmentLocationInfo()) {
+                                locations[i] = equipmentList.get(i).getEquipmentLocationInfo().getLocation();
                             }
                         }
 
@@ -369,19 +369,22 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                         for (int i = 0; i < equipmentList.size(); i++) {
                                             ToolhawkMove toolhawkMove = new ToolhawkMove();
                                             toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
-                                            toolhawkMove.setMoveType(scanType);
+
                                             if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
                                                 toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
+                                                toolhawkMove.setMoveType("Equipment");
                                             } else {
                                                 toolhawkMove.setToEquipmentID(0);
                                             }
                                             if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
                                                 toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
+                                                toolhawkMove.setMoveType("Location");
                                             } else {
                                                 toolhawkMove.setToLocationID(0);
                                             }
                                             if (null != DataManager.getInstance().getJobNumber(moveCode)) {
                                                 toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
+                                                toolhawkMove.setMoveType("JobNumber");
                                             } else {
                                                 toolhawkMove.setToJobNumberID(0);
                                             }
@@ -595,6 +598,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
         if (null != toolhawkEquipment) {
             if (!equipmentList.contains(toolhawkEquipment)) {
+                if (!toolhawkEquipment.getCode().equals(moveCode)) {
                 if (department.equals(toolhawkEquipment.getDepartment().getCode())) {
                     equipmentList.add(DataManager.getInstance().getToolhawkEquipment(message));
                     tvCount.setText("" + equipmentList.size());
@@ -602,6 +606,9 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                     mAdapter.notifyDataSetChanged();
                 } else {
                     showToast("This Asset is not in " + department);
+                }}else{
+                    showToast("Can not Move to same Asset!" );
+                    showToast("Please select any other asset!" );
                 }
             } else {
                 showToast("Asset Already Added!!");

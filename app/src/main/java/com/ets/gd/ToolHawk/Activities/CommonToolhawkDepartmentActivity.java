@@ -94,6 +94,7 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 hideKeyboard();
 
+
                 if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mov")) {
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, MoveActivity.class);
                     in.putExtra("taskName", tbTitleBottom.getText().toString());
@@ -125,6 +126,17 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
                     startActivity(in);
 
                 }
+
+                depFilteredList.clear();
+                rlHeader.setVisibility(View.VISIBLE);
+                rlSearchView.setVisibility(View.GONE);
+                etSearch.setText("");
+                mAdapter = new DepartmentAdapter(CommonToolhawkDepartmentActivity.this, depList);
+                rvDepartments.setAdapter(mAdapter);
+                RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(CommonToolhawkDepartmentActivity.this);
+                rvDepartments.setLayoutManager(mLayoutManager);
+                rvDepartments.setItemAnimator(new DefaultItemAnimator());
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
