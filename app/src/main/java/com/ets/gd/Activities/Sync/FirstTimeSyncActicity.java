@@ -145,7 +145,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
         if (404 == errorDTO.getCode())
             Toast.makeText(getApplicationContext(), R.string.error_404_msg, Toast.LENGTH_LONG).show();
         else if (1 == errorDTO.getCode())
-            Toast.makeText(getApplicationContext(), "Please enter correct company URL", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
         else if (400 == errorDTO.getCode()) {
             new AlertDialog.Builder(FirstTimeSyncActicity.this)
                     .setTitle(R.string.txt_login)
