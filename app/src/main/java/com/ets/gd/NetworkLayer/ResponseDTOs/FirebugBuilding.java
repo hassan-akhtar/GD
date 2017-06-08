@@ -4,17 +4,15 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by hakhtar on 4/13/2017.
+ * Created by hakhtar on 6/7/2017.
  * General Data
  */
 
-public class Building extends RealmObject{
-
+public class FirebugBuilding  extends RealmObject{
     @PrimaryKey
     private int ID;
     private String Code;
-    private int SiteID;
-    private int DepartmentID;
+    private Site site;
     private String Description;
     private String Address1;
     private String Address2;
@@ -26,23 +24,15 @@ public class Building extends RealmObject{
     private String ModifiedBy;
     private String ModifiedTime;
 
-    public Building(String code) {
+    public FirebugBuilding(String code) {
         Code = code;
     }
 
-    public Building( ) {
+    public FirebugBuilding( ) {
     }
 
     public int getID() {
         return ID;
-    }
-
-    public int getDepartmentID() {
-        return DepartmentID;
-    }
-
-    public void setDepartmentID(int departmentID) {
-        DepartmentID = departmentID;
     }
 
     public void setID(int ID) {
@@ -57,12 +47,12 @@ public class Building extends RealmObject{
         Code = code;
     }
 
-    public int getSiteID() {
-        return SiteID;
+    public Site getSite() {
+        return site;
     }
 
-    public void setSiteID(int siteID) {
-        SiteID = siteID;
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     public String getDescription() {
@@ -145,3 +135,4 @@ public class Building extends RealmObject{
         ModifiedTime = modifiedTime;
     }
 }
+

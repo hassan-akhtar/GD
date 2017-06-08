@@ -20,6 +20,7 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
@@ -50,7 +51,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     String[] customers;
     Customer customer;
     public static String customerName ;
-    List<Building> allBuilding = new ArrayList<Building>();
+    List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
 
     public AssetLocationFragment() {
     }
@@ -290,7 +291,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
                                 allBuilding.clear();
                                 if (0!=selectedSiteID) {
-                                    allBuilding = DataManager.getInstance().getAllSiteBuildings(selectedSiteID);
+                                    allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(selectedSiteID);
                                 }
                                 if (null!=allBuilding) {
                                     int sizeBuilding = allBuilding.size() + 1;

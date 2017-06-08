@@ -237,11 +237,33 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                         if (null != toolhawkEquipment) {
                             if (!equipmentList.contains(toolhawkEquipment)) {
 
-                                equipmentList.add(DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString()));
-                                tvCount.setText("" + equipmentList.size());
-                                rlBottomSheetMove.setVisibility(View.VISIBLE);
-                                mAdapter.notifyDataSetChanged();
-                                etBarcode.setText("");
+
+                                if (!scanType.toLowerCase().startsWith("asse")) {
+                                    if (department.equals(toolhawkEquipment.getDepartment().getCode())) {
+                                        equipmentList.add(DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString()));
+                                        tvCount.setText("" + equipmentList.size());
+                                        rlBottomSheetMove.setVisibility(View.VISIBLE);
+                                        mAdapter.notifyDataSetChanged();
+                                        etBarcode.setText("");
+                                    } else {
+                                        showToast("This Asset is not in " + department);
+                                    }
+                                } else {
+                                    if (!toolhawkEquipment.getCode().equals(moveCode)) {
+                                        if (department.equals(toolhawkEquipment.getDepartment().getCode()) ) {
+                                            equipmentList.add(DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString()));
+                                            tvCount.setText("" + equipmentList.size());
+                                            rlBottomSheetMove.setVisibility(View.VISIBLE);
+                                            mAdapter.notifyDataSetChanged();
+                                            etBarcode.setText("");
+                                        } else {
+                                            showToast("This Asset is not in " + department);
+                                        }
+                                    } else {
+                                        showToast("Can not Move to same Asset!" );
+                                        showToast("Please select any other asset!" );
+                                    }
+                                }
                             } else {
                                 showToast("Asset Already Added!!");
                             }
@@ -350,21 +372,21 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 
-                                        for(int i=0;i<equipmentList.size();i++){
+                                        for (int i = 0; i < equipmentList.size(); i++) {
                                             ToolhawkMove toolhawkMove = new ToolhawkMove();
                                             toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
                                             toolhawkMove.setMoveType(scanType);
-                                            if (null!=DataManager.getInstance().getToolhawkEquipment(moveCode)) {
+                                            if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
                                                 toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
                                             } else {
                                                 toolhawkMove.setToEquipmentID(0);
                                             }
-                                            if (null!=DataManager.getInstance().getETSLocationByCode(moveCode)) {
+                                            if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
                                                 toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
                                             } else {
                                                 toolhawkMove.setToLocationID(0);
                                             }
-                                            if (null!=DataManager.getInstance().getJobNumber(moveCode)) {
+                                            if (null != DataManager.getInstance().getJobNumber(moveCode)) {
                                                 toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
                                             } else {
                                                 toolhawkMove.setToJobNumberID(0);
@@ -579,10 +601,14 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
         if (null != toolhawkEquipment) {
             if (!equipmentList.contains(toolhawkEquipment)) {
-                equipmentList.add(DataManager.getInstance().getToolhawkEquipment(message));
-                tvCount.setText("" + equipmentList.size());
-                rlBottomSheetMove.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
+                if (department.equals(toolhawkEquipment.getDepartment().getCode())) {
+                    equipmentList.add(DataManager.getInstance().getToolhawkEquipment(message));
+                    tvCount.setText("" + equipmentList.size());
+                    rlBottomSheetMove.setVisibility(View.VISIBLE);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    showToast("This Asset is not in " + department);
+                }
             } else {
                 showToast("Asset Already Added!!");
             }

@@ -161,7 +161,7 @@
 
 
                 <TextView
-                    android:id="@+id/tvLableLocation"
+                    android:id="@+id/tvLableBuilding"
                     android:visibility="visible"
                     android:layout_marginLeft="30dp"
                     android:text="Building"
@@ -173,7 +173,7 @@
 
                 <Spinner
                     android:id="@+id/spLoc"
-                    android:layout_below="@+id/tvLableLocation"
+                    android:layout_below="@+id/tvLableBuilding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"

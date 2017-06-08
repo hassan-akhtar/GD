@@ -245,20 +245,20 @@
                                     android:id="@+id/tvAssetOtherInfo"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_below="@+id/tvLocName"
+                                    android:layout_below="@+id/tvLocNameInspect"
                                     android:text="Dry Cream, EXT, L00419" />
 
                                 <TextView
-                                    android:id="@+id/tvLocName"
+                                    android:id="@+id/tvLocNameInspect"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentStart="true"
-                                    android:layout_below="@+id/tvInspectTitle"
                                     android:text="0038"
                                     android:textColor="@color/greyDark"
                                     android:textSize="17sp"
-                                    android:textStyle="bold" />
+                                    android:textStyle="bold"
+                                    android:layout_below="@+id/tvInspectTitle"
+                                    android:layout_alignParentLeft="true"
+                                    android:layout_alignParentStart="true" />
 
                             </RelativeLayout>
 

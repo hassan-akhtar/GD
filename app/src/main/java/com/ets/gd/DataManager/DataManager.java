@@ -11,6 +11,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
@@ -371,15 +372,15 @@ public class DataManager {
 
 
     public List<Locations> getAllAddedLocations() {
-        return realm.where(Locations.class).equalTo("isAdded", true).findAll();
+        return realm.where(Locations.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
     public List<ETSLocation> getAllAddedETSLocations() {
-        return realm.where(ETSLocation.class).equalTo("isAdded", true).findAll();
+        return realm.where(ETSLocation.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
     public List<Locations> getOldLocations() {
-        return realm.where(Locations.class).equalTo("isAdded", false).findAll();
+        return realm.where(Locations.class).equalTo("isAdded", false).findAll().sort("Code");
     }
 
 
@@ -434,16 +435,16 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<FireBugEquipment> getAllAssets() {
-        return realm.where(FireBugEquipment.class).findAll();
+        return realm.where(FireBugEquipment.class).findAll().sort("Code");
     }
 
     public List<FireBugEquipment> getAllAddAssets() {
-        return realm.where(FireBugEquipment.class).equalTo("isAdded", true).findAll();
+        return realm.where(FireBugEquipment.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
 
     public List<Site> getAllSites() {
-        return realm.where(Site.class).findAll();
+        return realm.where(Site.class).findAll().sort("Code");
     }
 
     public Site getSite(String code) {
@@ -452,7 +453,7 @@ public class DataManager {
 
 
     public List<Building> getAllBuildings() {
-        return realm.where(Building.class).findAll();
+        return realm.where(Building.class).findAll().sort("Code");
     }
 
     public Building getBuilding(int ID) {
@@ -460,25 +461,32 @@ public class DataManager {
     }
 
     public List<Building> getAllSiteBuildings(int SiteID ) {
-        RealmResults<Building>results = realm.where(Building.class).equalTo("SiteID",SiteID).findAll();
+        RealmResults<Building>results = realm.where(Building.class).equalTo("SiteID",SiteID).findAll().sort("Code");
         List<Building> copied = realm.copyFromRealm(results);
         return copied;
     }
 
+    public List<FirebugBuilding> getAllFirebugSiteBuildings(int SiteID ) {
+        RealmResults<FirebugBuilding>results = realm.where(FirebugBuilding.class).equalTo("site.ID",SiteID).findAll().sort("Code");
+        List<FirebugBuilding> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
     public List<ETSBuilding> getAllETSBuildings() {
-        return realm.where(ETSBuilding.class).findAll();
+        return realm.where(ETSBuilding.class).findAll().sort("Code");
     }
 
     public List<FireBugEquipment> getAllUpdateAssets() {
-        return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll();
+        return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll().sort("Code");
     }
 
     public List<ToolhawkEquipment> getAllUpdateToolhawkAssets() {
-        return realm.where(ToolhawkEquipment.class).equalTo("isUpdated", true).findAll();
+        return realm.where(ToolhawkEquipment.class).equalTo("isUpdated", true).findAll().sort("Code");
     }
 
     public List<ToolhawkEquipment> getAllAddToolhawkAssets() {
-        return realm.where(ToolhawkEquipment.class).equalTo("isAdded", true).findAll();
+        return realm.where(ToolhawkEquipment.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
     // For getting asset all assets from DB
@@ -525,7 +533,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Model> getModelFromManufacturerID(int id) {
-        return realm.where(Model.class).equalTo("Manufacturer", id).findAll();
+        return realm.where(Model.class).equalTo("Manufacturer", id).findAll().sort("Code");
     }
 
 
@@ -662,22 +670,22 @@ public class DataManager {
 
     // For getting asset all locations from DB
     public List<Locations> getAllCompanyLocations(int compCode) {
-        return realm.where(Locations.class).equalTo("Customer.ID", compCode).findAll();
+        return realm.where(Locations.class).equalTo("Customer.ID", compCode).findAll().sort("Code");
     }
 
     // For getting asset all locations from DB
     public List<FireBugEquipment> getAllCompanyAssets(int compCode) {
-        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", compCode).findAll();
+        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", compCode).findAll().sort("Code");
     }
 
     // For getting asset all locations from DB
     public List<Locations> getAllRepairLocations() {
-        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Repairs").findAll();
+        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Repairs").findAll().sort("Code");
     }
 
     // For getting asset all locations from DB
     public List<Locations> getAllSpareLocations() {
-        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Spares").findAll();
+        return realm.where(Locations.class).equalTo("locationTypeVM.Code", "Spares").findAll().sort("Code");
     }
 
 
@@ -730,6 +738,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
                 realmSyncGetResponseDTO.setLstModels(obj.getLstModels());
                 realmSyncGetResponseDTO.setLstCategory(obj.getLstCategory());
+                realmSyncGetResponseDTO.setLstFireBugBuilding(obj.getLstFireBugBuilding());
                 realmSyncGetResponseDTO.setLstJobNumber(obj.getLstJobNumber());
                 realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
@@ -838,11 +847,11 @@ public class DataManager {
     }
 
     public List<AllCustomers> getAllCustomerList() {
-        return realm.where(AllCustomers.class).findAll();
+        return realm.where(AllCustomers.class).findAll().sort("Code");
     }
 
     public List<JobNumber> getAllJobNumberList() {
-        return realm.where(JobNumber.class).findAll();
+        return realm.where(JobNumber.class).findAll().sort("Code");
     }
 
 
@@ -861,7 +870,7 @@ public class DataManager {
 
 
     public List<FireBugEquipment> getFirebugLocEquipments(String locCode) {
-        return realm.where(FireBugEquipment.class).equalTo("Location.Code", locCode).findAll();
+        return realm.where(FireBugEquipment.class).equalTo("Location.Code", locCode).findAll().sort("Code");
     }
 
     public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
@@ -869,7 +878,7 @@ public class DataManager {
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipmentForLocation(String code) {
-        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll();
+        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll().sort("Code");
 
         List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
         return copied;
@@ -877,15 +886,25 @@ public class DataManager {
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipment() {
-        return realm.where(ToolhawkEquipment.class).findAll();
+        return realm.where(ToolhawkEquipment.class).findAll().sort("Code");
     }
 
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.Department> getAllDepartments() {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).findAll();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).findAll().sort("Code");
     }
 
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllETSLocations() {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll();
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations>  results= realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll().sort("Code");
+        List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
+
+    public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllDepETSLocations(int depID) {
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations>  results= realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.DepartmentID",depID).findAll().sort("Code");
+        List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
+        return copied;
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocations(String code) {
@@ -908,7 +927,7 @@ public class DataManager {
     }
 
     public List<FireBugEquipment> getCompanyEquipments(int ID) {
-        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", ID).findAll();
+        return realm.where(FireBugEquipment.class).equalTo("Customer.ID", ID).findAll().sort("Code");
     }
 
     public SyncCustomer getSyncGetResponseDTO(int ID) {

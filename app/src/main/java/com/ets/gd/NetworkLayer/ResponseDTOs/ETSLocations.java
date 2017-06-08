@@ -1,6 +1,7 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by hakhtar on 6/1/2017.
@@ -10,6 +11,7 @@ import io.realm.RealmObject;
 public class ETSLocations extends RealmObject {
 
     private int ID;
+    @PrimaryKey
     private String Code;
     private String Description;
     private String Floor;

@@ -18,6 +18,7 @@ public class SyncCustomer extends RealmObject {
     RealmList<ETSBuilding> lstETSBuildings;
     RealmList<Locations> lstLocations;
 
+
     public int getCustomerId() {
         return CustomerId;
     }

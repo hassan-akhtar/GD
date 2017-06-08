@@ -32,17 +32,10 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.Models.Department;
-import com.ets.gd.Models.ToolhawkAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
-import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
 import com.ets.gd.ToolHawk.Adapters.QuickCountAdapter;
-import com.ets.gd.ToolHawk.Move.MoveActivity;
-import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -91,7 +84,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         tvUnExpected = (TextView) findViewById(R.id.tvUnExpected);
         tvExpected = (TextView) findViewById(R.id.tvExpected);
         tvFound = (TextView) findViewById(R.id.tvFound);
-        tvLocName = (TextView) findViewById(R.id.tvLocName);
+        tvLocName = (TextView) findViewById(R.id.tvLocNameInspect);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);

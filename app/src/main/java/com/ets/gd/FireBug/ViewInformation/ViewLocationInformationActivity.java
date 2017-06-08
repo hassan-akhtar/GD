@@ -21,6 +21,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
@@ -44,7 +45,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     SyncCustomer realmSyncGetResponseDTO;
     List<Site> allSites = new ArrayList<Site>();
     TextView tvLableLocation, tbTitleBottom;
-    List<Building> allBuilding = new ArrayList<Building>();
+    List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
     String[] sites;
@@ -432,7 +433,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 if (0 != position) {
                     allBuilding.clear();
                     if (null != DataManager.getInstance().getSite(strSelectedState)) {
-                        allBuilding = DataManager.getInstance().getAllSiteBuildings(DataManager.getInstance().getSite(strSelectedState).getID());
+
+                        allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(DataManager.getInstance().getSite(strSelectedState).getID());
                     }
                     if (null != allBuilding) {
                         int sizeBuilding = allBuilding.size() + 1;

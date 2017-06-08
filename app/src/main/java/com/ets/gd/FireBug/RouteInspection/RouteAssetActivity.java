@@ -72,7 +72,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         tvAssetCount = (TextView) findViewById(R.id.tvAssetCount);
         tvLocCount = (TextView) findViewById(R.id.tvLocCount);
         tvRouteName = (TextView) findViewById(R.id.tvRouteName);
-        tvLocName = (TextView) findViewById(R.id.tvLocName);
+        tvLocName = (TextView) findViewById(R.id.tvLocNameInspect);
         tvCompanyName = (TextView) findViewById(R.id.tvCompanyValue);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         rvRouteInspection = (RecyclerView) findViewById(R.id.rvRouteInspection);

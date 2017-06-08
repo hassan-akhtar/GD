@@ -42,11 +42,11 @@
                 android:id="@+id/tvAssetOtherInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvLocName"
+                android:layout_below="@+id/tvLocNameInspect"
                 android:text="Yard, Annex yard" />
 
             <TextView
-                android:id="@+id/tvLocName"
+                android:id="@+id/tvLocNameInspect"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

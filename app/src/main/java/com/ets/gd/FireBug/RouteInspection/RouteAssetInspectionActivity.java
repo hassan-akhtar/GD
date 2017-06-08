@@ -87,7 +87,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
-        tvAssetName = (TextView) findViewById(R.id.tvLocName);
+        tvAssetName = (TextView) findViewById(R.id.tvLocNameInspect);
         etStatusCode = (TextView) findViewById(R.id.etStatusCode);
         tvInspectedAssets  = (TextView) findViewById(R.id.tvInspectedAssets);
         tvAssetCount = (TextView) findViewById(R.id.tvAssetCount);

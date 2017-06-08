@@ -87,7 +87,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
-        tvAssetName = (TextView) findViewById(R.id.tvLocName);
+        tvAssetName = (TextView) findViewById(R.id.tvLocNameInspect);
         etStatusCode = (TextView) findViewById(R.id.etStatusCode);
         tvAssetOtherInfo = (TextView) findViewById(R.id.tvAssetOtherInfo);
         tvSave = (TextView) findViewById(R.id.tvTransfer);

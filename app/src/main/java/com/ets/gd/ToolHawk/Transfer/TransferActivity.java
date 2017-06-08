@@ -24,7 +24,9 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TransferActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener {
 
@@ -83,7 +85,7 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(TransferActivity.this);
         depList = DataManager.getInstance().getAllDepartments();
-        locList = DataManager.getInstance().getAllETSLocations();
+
 
         if (null != depList) {
             int sizeDepartment = depList.size() + 1;
@@ -100,19 +102,12 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
 
         }
 
-
-        if (null != locList) {
-            int sizeLocations = locList.size() + 1;
-            String[] locations = new String[sizeLocations];
+            String[] locations = new String[1];
             locations[0] = "Please select a location";
-            for (int i = 0; i < locList.size(); i++) {
-                locations[i + 1] = locList.get(i).getCode();
-            }
-
             ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(TransferActivity.this, android.R.layout.simple_spinner_item, locations);
             dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spLoc.setAdapter(dataAdapterVendor);
-        }
+
 
     }
 
@@ -189,7 +184,21 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
                         e.printStackTrace();
                     }
                 } else {
-                    //  tvLableDeviceType.setVisibility(View.VISIBLE);
+                    if (null!=DataManager.getInstance().getDepartmentByCode(strSelectedState)) {
+                        locList = DataManager.getInstance().getAllDepETSLocations(DataManager.getInstance().getDepartmentByCode(strSelectedState).getID());
+                    }
+                    if (null != locList) {
+                        int sizeLocations = locList.size() + 1;
+                        String[] locations = new String[sizeLocations];
+                        locations[0] = "Please select a location";
+                        for (int i = 0; i < locList.size(); i++) {
+                            locations[i + 1] = locList.get(i).getCode();
+                        }
+
+                        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(TransferActivity.this, android.R.layout.simple_spinner_item, locations);
+                        dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spLoc.setAdapter(dataAdapterVendor);
+                    }
                 }
 
             }
