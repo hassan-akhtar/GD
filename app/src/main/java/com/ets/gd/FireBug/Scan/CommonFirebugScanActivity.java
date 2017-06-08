@@ -117,7 +117,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
         btnAsset = (Button) findViewById(R.id.btnAsset);
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
-        llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         rlAssets = (RecyclerView) findViewById(R.id.lvAssets);
         llunderText = (LinearLayout) findViewById(R.id.llunderText);
         ivChangeCompany.setVisibility(View.GONE);

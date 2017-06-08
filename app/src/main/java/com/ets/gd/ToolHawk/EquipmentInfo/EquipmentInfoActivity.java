@@ -25,6 +25,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +70,6 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         taskType = getIntent().getStringExtra("taskType");
         barcodeID = getIntent().getStringExtra("barcodeID");
         tbTitleTop.setText("Toolhawk");
-
 
 
     }
@@ -136,19 +136,21 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         }
 
 
-        if (null != locList) {
-            int sizeLocations = locList.size() + 1;
-            String[] locations = new String[sizeLocations];
-            locations[0] = "Please select a location";
-            for (int i = 0; i < locList.size(); i++) {
-                locations[i + 1] = locList.get(i).getCode();
-            }
+        if (taskType.startsWith("vie")) {
 
-            ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
-            dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spLocation.setAdapter(dataAdapterVendor);
+            if (null != locList) {
+                int sizeLocations = locList.size() + 1;
+                String[] locations = new String[sizeLocations];
+                locations[0] = "Please select a location";
+                for (int i = 0; i < locList.size(); i++) {
+                    locations[i + 1] = locList.get(i).getCode();
+                }
 
-            if (taskType.startsWith("vie")) {
+                ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spLocation.setAdapter(dataAdapterVendor);
+
+
                 for (int i = 0; i < locList.size() + 1; i++) {
                     if (null != toolhawkEquipment.getETSLocation()) {
                         if (toolhawkEquipment.getETSLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
@@ -159,6 +161,12 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                     }
                 }
             }
+        } else {
+            String[] locations = new String[1];
+            locations[0] = "Please select a location";
+            ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+            dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spLocation.setAdapter(dataAdapterVendor);
         }
 
 
@@ -189,7 +197,6 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         });
 
 
-
         spLocation.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -197,8 +204,6 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                 return false;
             }
         });
-
-
 
 
         spManufacturer.setOnTouchListener(new View.OnTouchListener() {
@@ -225,11 +230,15 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         if (taskType.startsWith("vie")) {
             tbTitleBottom.setText("Equipment Info");
             tvEquipmentCode.setEnabled(false);
+            spDepartment.setEnabled(false);
+            spLocation.setEnabled(false);
             tvEquipmentCode.setText("" + toolhawkEquipment.getCode());
             tvUnitCost.setText("" + toolhawkEquipment.getUnitCost());
 
         } else {
             tbTitleBottom.setText("Add Equipment");
+            spDepartment.setEnabled(true);
+            spLocation.setEnabled(true);
             tvEquipmentCode.setEnabled(true);
         }
 
@@ -283,7 +292,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                             finish();
                         } else {
                             ToolhawkEquipment eq = DataManager.getInstance().getToolhawkEquipment(tvEquipmentCode.getText().toString());
-                            if (null==eq) {
+                            if (null == eq) {
                                 equipment = new ToolhawkEquipment(
                                         0,
                                         tvEquipmentCode.getText().toString(),
@@ -298,8 +307,8 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 DataManager.getInstance().addToolHawkEquipment(equipment);
                                 showToast("Asset Added!");
                                 finish();
-                            }else{
-                                showToast("Asset with Equipment ID "+ tvEquipmentCode.getText().toString()+" Already Exist!");
+                            } else {
+                                showToast("Asset with Equipment ID " + tvEquipmentCode.getText().toString() + " Already Exist!");
                             }
                         }
 
@@ -319,6 +328,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         intent.putExtra("message", msg);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     private boolean checkValidation() {
         if ("".equals(tvEquipmentCode.getText().toString().trim())) {
             showToast("Please enter Equipment ID");
@@ -352,7 +362,22 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                         e.printStackTrace();
                     }
                 } else {
-                    //  tvLableDeviceType.setVisibility(View.VISIBLE);
+                    locList.clear();
+                    if (null != DataManager.getInstance().getDepartmentByCode(strSelectedState)) {
+                        locList = DataManager.getInstance().getAllDepETSLocations(DataManager.getInstance().getDepartmentByCode(strSelectedState).getID());
+                    }
+                    if (null != locList) {
+                        int sizeLocations = locList.size() + 1;
+                        String[] locations = new String[sizeLocations];
+                        locations[0] = "Please select a location";
+                        for (int i = 0; i < locList.size(); i++) {
+                            locations[i + 1] = locList.get(i).getCode();
+                        }
+
+                        ArrayAdapter<String> dataAdapterVendor = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, locations);
+                        dataAdapterVendor.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spLocation.setAdapter(dataAdapterVendor);
+                    }
                 }
 
             }
@@ -401,7 +426,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
                     if (!"addAsset".equals(getIntent().getStringExtra("taskType"))) {
                         for (int i = 0; i < modelsList.size() + 1; i++) {
-                            if (null!=toolhawkEquipment && null!=toolhawkEquipment.getModel()) {
+                            if (null != toolhawkEquipment && null != toolhawkEquipment.getModel()) {
                                 if (toolhawkEquipment.getModel().getCode().toLowerCase().equals(spModel.getItemAtPosition(i).toString().toLowerCase())) {
                                     spModel.setSelection(i);
                                     break;

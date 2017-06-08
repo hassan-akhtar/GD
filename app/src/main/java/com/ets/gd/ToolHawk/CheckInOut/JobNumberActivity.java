@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.ets.gd.Models.JobNumber;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.JobNumberAdapter;
-import com.ets.gd.ToolHawk.Adapters.MoveAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +59,7 @@ public class JobNumberActivity extends AppCompatActivity {
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
-        llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvDepartment = (TextView) findViewById(R.id.tvDepartment);

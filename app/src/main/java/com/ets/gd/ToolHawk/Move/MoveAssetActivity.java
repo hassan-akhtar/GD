@@ -31,21 +31,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.Login.LoginActivity;
-import com.ets.gd.Activities.Other.BaseActivity;
-import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.Models.Move;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -97,7 +91,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
-        llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvDepartment = (TextView) findViewById(R.id.tvDepartment);
@@ -368,7 +362,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
                         new AlertDialog.Builder(MoveAssetActivity.this)
                                 .setTitle("Move")
-                                .setMessage("Are you sure you want to move " + equipmentList.size() + " asset(s) to" + moveCode + " ?")
+                                .setMessage("Are you sure you want to move " + equipmentList.size() + " asset(s) to " + moveCode + " ?")
                                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
 

@@ -91,7 +91,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         btnCross = (Button) findViewById(R.id.btnCross);
         rvQuickCount = (RecyclerView) findViewById(R.id.rvQuickCount);
         btnScan = (Button) findViewById(R.id.btnScan);
-        llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);

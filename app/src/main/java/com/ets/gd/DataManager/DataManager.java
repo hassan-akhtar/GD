@@ -451,6 +451,9 @@ public class DataManager {
         return realm.where(Site.class).equalTo("Code",code).findFirst();
     }
 
+    public Site getSiteByID(int ID) {
+        return realm.where(Site.class).equalTo("ID",ID).findFirst();
+    }
 
     public List<Building> getAllBuildings() {
         return realm.where(Building.class).findAll().sort("Code");

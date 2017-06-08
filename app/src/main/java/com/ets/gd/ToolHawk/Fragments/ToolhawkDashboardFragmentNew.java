@@ -30,8 +30,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
     View rootView;
     private static FloatingActionMenu fab;
     private static FloatingActionButton fabItemAddItem, itemAddLocation;
-    String[] thTasks = {"Equipment Info", "Quick Count", "Move Assets", "Transfer Assets", "Check Out", "Check In", "Maintenance"};
-    int[] thTasksImages = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};
+    String[] thTasks = {"Equipment Info", "Quick Count", "Move Assets", "Check Out", "Check In", "Maintenance"}; //, "Transfer Assets"
+    int[] thTasksImages = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};//, R.drawable.ic_transfer
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;
@@ -123,6 +123,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                 case R.id.itemAddLocation: {
                     fab.close(true);
                     Intent in = new Intent(getActivity(), ToolhawkLocationActivity.class);
+                    in.putExtra("taskType", "add");
                     startActivity(in);
                     break;
                 }

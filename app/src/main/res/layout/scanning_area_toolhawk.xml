@@ -64,7 +64,7 @@
 
 
     <LinearLayout
-        android:id="@+id/llbtns"
+        android:id="@+id/llbtnsQuickCount"
         android:visibility="gone"
         android:background="@android:color/white"
         android:layout_width="wrap_content"
@@ -101,6 +101,48 @@
             android:layout_alignRight="@+id/vLine"
             android:background="@android:color/white"
             android:text=" Existing Count"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llbtnsEq"
+        android:visibility="gone"
+        android:background="@android:color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBarcodeValue"
+        android:layout_marginLeft="30dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnLocation"
+            android:drawableLeft="@drawable/ic_location"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:drawablePadding="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@android:color/white"
+            android:text=" Location"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
+
+        <View
+            android:id="@+id/vLine1"
+            android:layout_width="1px"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/btnAsset"
+            android:drawableLeft="@drawable/ic_asset"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:drawablePadding="5dp"
+            android:layout_marginLeft="15dp"
+            android:layout_alignRight="@+id/vLine"
+            android:background="@android:color/white"
+            android:text=" Asset"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
     </LinearLayout>
 

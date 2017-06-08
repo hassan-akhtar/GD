@@ -29,7 +29,6 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
-import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
@@ -38,12 +37,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.MoveAdapter;
-import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
-import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
-import com.ets.gd.ToolHawk.Move.MoveActivity;
 import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
-import com.ets.gd.ToolHawk.QuickCount.QuickCountActivity;
-import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -90,7 +84,7 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
-        llbtns = (LinearLayout) findViewById(R.id.llbtns);
+        llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvDepartment = (TextView) findViewById(R.id.tvDepartment);

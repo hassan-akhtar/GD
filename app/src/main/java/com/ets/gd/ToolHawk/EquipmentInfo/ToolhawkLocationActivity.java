@@ -23,6 +23,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -44,6 +45,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     String[] sites;
     String[] buildings;
     String[] customers;
+    String taskType, barcodeID;
+    ETSLocations etsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +71,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         spCustomer = (Spinner) findViewById(R.id.spCustomer);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
+        taskType = getIntent().getStringExtra("taskType");
+        barcodeID = getIntent().getStringExtra("barcodeID");
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Add Location");
 
@@ -122,7 +127,13 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         dataAdapterCus.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCustomer.setAdapter(dataAdapterCus);
 
-        setViewForAddLoc();
+
+        if(taskType.toLowerCase().startsWith("add")){
+            setViewForAddLoc();
+        }else{
+            setViewForViewLoc();
+        }
+
 
 
     }
@@ -143,6 +154,55 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
     }
 
+    void setViewForViewLoc() {
+        etsLocation = DataManager.getInstance().getETSLocationsByCode(barcodeID);
+        if (null != etsLocation) {
+            tvLocationID.setText(""+etsLocation.getCode());
+            tvDescprition.setText(""+etsLocation.getDescription());
+        }
+        ivTick.setVisibility(View.GONE);
+        tvLocationID.setVisibility(View.VISIBLE);
+
+
+        tvDescprition.setEnabled(false);
+        tvLocationID.setEnabled(false);
+        spBuilding.setEnabled(false);
+        spSite.setEnabled(false);
+        spCustomer.setEnabled(false);
+
+
+        for (int i = 0; i < allSites.size() + 1; i++) {
+            if (null != DataManager.getInstance().getSiteByID(etsLocation.getSite().getID())) {
+                if (DataManager.getInstance().getSiteByID(etsLocation.getSite().getID()).getCode().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
+                    spSite.setSelection(i);
+                    posSite = i;
+                    break;
+                }
+            }
+        }
+
+        for (int i = 0; i < allBuilding.size() + 1; i++) {
+            if (null != DataManager.getInstance().getBuilding(etsLocation.getBuilding().getID())) {
+                if (DataManager.getInstance().getBuilding(etsLocation.getBuilding().getID()).getCode().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
+                    spBuilding.setSelection(i);
+                    posBuilding = i;
+                    break;
+                }
+            }
+        }
+
+
+        for (int i = 0; i < allCustomers.size() + 1; i++) {
+            if (null != DataManager.getInstance().getCustomerByID(etsLocation.getCustomer().getID())) {
+                if (DataManager.getInstance().getCustomerByID(etsLocation.getCustomer().getID()).getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+                    spCustomer.setSelection(i);
+                    posCustomer = i;
+                    break;
+                }
+            }
+        }
+
+    }
 
     public void hideKeyboard() {
         InputMethodManager imm = (InputMethodManager)
@@ -203,7 +263,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                     if (checkValidation()) {
                         ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCodeOnly(tvLocationID.getText().toString());
 
-                        if (null==etsLoc) {
+                        if (null == etsLoc) {
                             ETSLocation etsLocation = new ETSLocation(
                                     0,
                                     tvLocationID.getText().toString(),
@@ -217,7 +277,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                             showToast("ETS Location Added!");
                             finish();
                         } else {
-                            showToast("ETS with Location ID "+ tvLocationID.getText().toString()+" Already Exist!");
+                            showToast("ETS with Location ID " + tvLocationID.getText().toString() + " Already Exist!");
                         }
                     }
                     break;
