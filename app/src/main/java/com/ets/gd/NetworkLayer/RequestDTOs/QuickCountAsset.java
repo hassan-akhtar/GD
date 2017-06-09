@@ -8,6 +8,7 @@ public class QuickCountAsset extends RealmObject {
     private  int AssetID;
     private  boolean isFound;
     private  int QuickCountID;
+    private boolean UnExpected;
     private  String AssetCode;
 
 
@@ -21,6 +22,14 @@ public class QuickCountAsset extends RealmObject {
 
     public QuickCountAsset() {
 
+    }
+
+    public boolean isUnExpected() {
+        return UnExpected;
+    }
+
+    public void setUnExpected(boolean unExpected) {
+        UnExpected = unExpected;
     }
 
     public int getID() {

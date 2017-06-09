@@ -172,19 +172,84 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                     if (null != etsLocation) {
                         List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
                         if (null != assetList && 0 != assetList.size()) {
-                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
-                            in.putExtra("taskType", "new");
-                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
-                            startActivity(in);
-                            tvBarcodeTitle.setVisibility(View.GONE);
-                            tvBarcodeValue.setVisibility(View.GONE);
-                            ivInfo.setVisibility(View.VISIBLE);
-                            tvUnderText.setVisibility(View.VISIBLE);
-                            llbtns.setVisibility(View.GONE);
-                            tvBarcodeValue.setText("");
-                            etBarcode.setVisibility(View.VISIBLE);
-                            etBarcode.setText("");
-                            btnCross.setVisibility(View.GONE);
+                            if (null == DataManager.getInstance().getQuickCount(etsLocation.getCode())) {
+                                Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                                in.putExtra("taskType", "new");
+                                in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                startActivity(in);
+                                tvBarcodeTitle.setVisibility(View.GONE);
+                                tvBarcodeValue.setVisibility(View.GONE);
+                                ivInfo.setVisibility(View.VISIBLE);
+                                tvUnderText.setVisibility(View.VISIBLE);
+                                llbtns.setVisibility(View.GONE);
+                                tvBarcodeValue.setText("");
+                                etBarcode.setVisibility(View.VISIBLE);
+                                etBarcode.setText("");
+                                btnCross.setVisibility(View.GONE);
+                            } else {
+                                if (!DataManager.getInstance().getQuickCount(etsLocation.getCode()).isComplete()) {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonToolhawkScanActivity.this);
+                                    builder.setTitle("Quick Count");
+                                    builder.setMessage("This location has an Existing count, Do you want to create new?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                                            in.putExtra("taskType", "new");
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            startActivity(in);
+                                            tvBarcodeTitle.setVisibility(View.GONE);
+                                            tvBarcodeValue.setVisibility(View.GONE);
+                                            ivInfo.setVisibility(View.VISIBLE);
+                                            tvUnderText.setVisibility(View.VISIBLE);
+                                            llbtns.setVisibility(View.GONE);
+                                            tvBarcodeValue.setText("");
+                                            etBarcode.setVisibility(View.VISIBLE);
+                                            etBarcode.setText("");
+                                            btnCross.setVisibility(View.GONE);
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    builder.show();
+                                } else {
+
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonToolhawkScanActivity.this);
+                                    builder.setTitle("Quick Count");
+                                    builder.setMessage("This location Quick Count is Complete, Do you want to create new?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                                            in.putExtra("taskType", "new");
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            startActivity(in);
+                                            tvBarcodeTitle.setVisibility(View.GONE);
+                                            tvBarcodeValue.setVisibility(View.GONE);
+                                            ivInfo.setVisibility(View.VISIBLE);
+                                            tvUnderText.setVisibility(View.VISIBLE);
+                                            llbtns.setVisibility(View.GONE);
+                                            tvBarcodeValue.setText("");
+                                            etBarcode.setVisibility(View.VISIBLE);
+                                            etBarcode.setText("");
+                                            btnCross.setVisibility(View.GONE);
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    builder.show();
+                                }
+                            }
                         } else {
                             showToast("No Equipment(s) Found in " + etsLocation.getCode());
                         }
@@ -198,19 +263,56 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                     if (null != etsLocation) {
                         List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
                         if (null != assetList && 0 != assetList.size()) {
-                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
-                            in.putExtra("taskType", "existing");
-                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
-                            startActivity(in);
-                            tvBarcodeTitle.setVisibility(View.GONE);
-                            tvBarcodeValue.setVisibility(View.GONE);
-                            ivInfo.setVisibility(View.VISIBLE);
-                            tvUnderText.setVisibility(View.VISIBLE);
-                            llbtns.setVisibility(View.GONE);
-                            tvBarcodeValue.setText("");
-                            etBarcode.setVisibility(View.VISIBLE);
-                            etBarcode.setText("");
-                            btnCross.setVisibility(View.GONE);
+                            if (null != DataManager.getInstance().getQuickCount(etsLocation.getCode())) {
+                                if (!DataManager.getInstance().getQuickCount(etsLocation.getCode()).isComplete()) {
+                                    Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                                    in.putExtra("taskType", "existing");
+                                    in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                    startActivity(in);
+                                    tvBarcodeTitle.setVisibility(View.GONE);
+                                    tvBarcodeValue.setVisibility(View.GONE);
+                                    ivInfo.setVisibility(View.VISIBLE);
+                                    tvUnderText.setVisibility(View.VISIBLE);
+                                    llbtns.setVisibility(View.GONE);
+                                    tvBarcodeValue.setText("");
+                                    etBarcode.setVisibility(View.VISIBLE);
+                                    etBarcode.setText("");
+                                    btnCross.setVisibility(View.GONE);
+                                } else {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(CommonToolhawkScanActivity.this);
+                                    builder.setTitle("Quick Count");
+                                    builder.setMessage("This location Quick Count is Complete, Do you want to create new?");
+                                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                            Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
+                                            in.putExtra("taskType", "new");
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            startActivity(in);
+                                            tvBarcodeTitle.setVisibility(View.GONE);
+                                            tvBarcodeValue.setVisibility(View.GONE);
+                                            ivInfo.setVisibility(View.VISIBLE);
+                                            tvUnderText.setVisibility(View.VISIBLE);
+                                            llbtns.setVisibility(View.GONE);
+                                            tvBarcodeValue.setText("");
+                                            etBarcode.setVisibility(View.VISIBLE);
+                                            etBarcode.setText("");
+                                            btnCross.setVisibility(View.GONE);
+                                        }
+                                    });
+                                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                                    builder.show();
+                                }
+
+                            } else {
+                                showToast(etsLocation.getCode() + " is not an Existing Count!");
+                            }
                         } else {
                             showToast("No Equipment(s) Found in " + etsLocation.getCode());
                         }
@@ -220,7 +322,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                     break;
                 }
                 case R.id.btnScan: {
-                    if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq") ) {
+                    if (tbTitleBottom.getText().toString().toLowerCase().startsWith("eq")) {
 
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
@@ -230,7 +332,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("qu")) {
                         if ("".equals(etBarcode.getText().toString().trim())) {
-                           checkCameraPermission();
+                            checkCameraPermission();
                         } else {
                             showViewForQuickCount();
                         }
@@ -287,7 +389,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
         btnCross.setVisibility(View.VISIBLE);
     }
 
-    void hideEnteredData(){
+    void hideEnteredData() {
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         ivInfo.setVisibility(View.VISIBLE);

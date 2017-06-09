@@ -2,6 +2,7 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -14,22 +15,24 @@ public class QuickCount extends RealmObject {
 
     private  int ID;
     private  String AssetCode;
-    private  int IsComplete;
+    private  boolean IsComplete;
     private  String Status;
+    private boolean isChanged;
     private  String AssetType;
-    private List<QuickCountAsset> QuickCountAssets;
+    private RealmList<QuickCountAsset> QuickCountAssets;
 
-    QuickCount(){
+    public QuickCount(){
 
     }
 
-    public QuickCount(int ID, String assetCode, int isComplete, String status, String assetType, List<QuickCountAsset> quickCountAssets) {
+    public QuickCount(int ID, String assetCode, boolean isComplete, String status, String assetType, RealmList<QuickCountAsset> quickCountAssets,boolean isChanged) {
         this.ID = ID;
         AssetCode = assetCode;
         IsComplete = isComplete;
         Status = status;
         AssetType = assetType;
         QuickCountAssets = quickCountAssets;
+        this.isChanged = isChanged;
     }
 
 
@@ -45,16 +48,24 @@ public class QuickCount extends RealmObject {
         return AssetCode;
     }
 
+    public boolean isChanged() {
+        return isChanged;
+    }
+
+    public void setChanged(boolean changed) {
+        isChanged = changed;
+    }
+
     public void setAssetCode(String assetCode) {
         AssetCode = assetCode;
     }
 
-    public int getIsComplete() {
+    public boolean isComplete() {
         return IsComplete;
     }
 
-    public void setIsComplete(int isComplete) {
-        IsComplete = isComplete;
+    public void setComplete(boolean complete) {
+        IsComplete = complete;
     }
 
     public String getStatus() {
@@ -73,11 +84,11 @@ public class QuickCount extends RealmObject {
         AssetType = assetType;
     }
 
-    public List<QuickCountAsset> getQuickCountAssets() {
+    public RealmList<QuickCountAsset> getQuickCountAssets() {
         return QuickCountAssets;
     }
 
-    public void setQuickCountAssets(List<QuickCountAsset> quickCountAssets) {
+    public void setQuickCountAssets(RealmList<QuickCountAsset> quickCountAssets) {
         QuickCountAssets = quickCountAssets;
     }
 }

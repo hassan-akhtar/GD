@@ -5,6 +5,8 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCountAsset;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
@@ -451,6 +453,10 @@ public class DataManager {
         return realm.where(Site.class).equalTo("Code", code).findFirst();
     }
 
+    public QuickCount getQuickCount(String code) {
+        return realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst();
+    }
+
     public Site getSiteByID(int ID) {
         return realm.where(Site.class).equalTo("ID", ID).findFirst();
     }
@@ -769,6 +775,14 @@ public class DataManager {
     }
 
 
+    public void saveQuickCountResult(QuickCount obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
+
     public void saveSyncToolhawkMoveData(List<ToolhawkMove> equipmentToMoveList) {
 
         for (int i = 0; i < equipmentToMoveList.size(); i++) {
@@ -883,12 +897,27 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
+
+    public ToolhawkEquipment getToolhawkEquipmentByID(int ID) {
+        return realm.where(ToolhawkEquipment.class).equalTo("ID", ID).findFirst();
+    }
+
     public List<ToolhawkEquipment> getAllToolhawkEquipmentForLocation(String code) {
         RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll().sort("Code");
 
         List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
         return copied;
 
+    }
+
+    public QuickCount getQuickCountAssetList(String code) {
+        return realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst();
+    }
+
+    public List<QuickCount> getAllChangesQuickCountAssetList() {
+        RealmResults<QuickCount>  realmResults = realm.where(QuickCount.class).equalTo("isChanged", true).findAll();
+        List<QuickCount> copied = realm.copyFromRealm(realmResults);
+        return  copied;
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipment() {

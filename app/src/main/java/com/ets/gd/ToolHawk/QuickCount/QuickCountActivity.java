@@ -32,6 +32,8 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCountAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
@@ -40,6 +42,8 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 public class QuickCountActivity extends AppCompatActivity implements BarcodeScan {
 
@@ -63,6 +67,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     private List<ToolhawkEquipment> assetUnExpectedList = new ArrayList<ToolhawkEquipment>();
     ETSLocations etsLocation;
     ToolhawkEquipment toolhawkEquipment;
+    private List<QuickCountAsset> QuickCountAssets = new ArrayList<QuickCountAsset>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +79,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         initListeners();
         setupView();
         hideKeyboard();
-        setupAssetList();
+
 
     }
 
@@ -111,6 +116,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
             tvAssetOtherInfo.setText("" + etsLocation.getDescription());
         }
 
+        if (taskType.toLowerCase().startsWith("new")) {
+            setupAssetListForNewCount();
+        } else {
+            setupAssetListForExistingCount();
+        }
+
     }
 
     private void initObj() {
@@ -121,6 +132,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     private void initListeners() {
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        ivTick.setOnClickListener(mGlobal_OnClickListener);
 
         rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(QuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
             @Override
@@ -136,7 +148,6 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     }
 
     private void setupView() {
-        ivTick.setVisibility(View.GONE);
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         ivInfo.setVisibility(View.VISIBLE);
@@ -149,25 +160,38 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     }
 
 
-    private void setupAssetList() {
-/*        ToolhawkAsset asset = new ToolhawkAsset();
-        asset.setName("Pick Up");
-        asset.setCode("112233");
-        asset.setLoc("Yard");
-        asset.setParent(true);
-        assetList.add(asset);
-        asset = new ToolhawkAsset();
-        asset.setName("Step Van");
-        asset.setCode("334455");
-        asset.setLoc("Annex");
-        asset.setParent(false);
-        assetList.add(asset);
-        asset = new ToolhawkAsset();
-        asset.setName("Pick Up");
-        asset.setCode("112233");
-        asset.setLoc("Yard");
-        asset.setParent(true);
-        assetList.add(asset);*/
+    private void setupAssetListForExistingCount() {
+        assetFoundList.clear();
+        assetUnExpectedList.clear();
+
+        if (null != DataManager.getInstance().getQuickCountAssetList(locationCode)) {
+            QuickCountAssets = DataManager.getInstance().getQuickCountAssetList(locationCode).getQuickCountAssets();
+        }
+
+        for (int i = 0; i < QuickCountAssets.size(); i++) {
+
+            if (null != DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID())) {
+                if (!QuickCountAssets.get(i).isFound()) {
+                    assetList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
+                } else {
+                    assetFoundList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
+                }
+            }
+        }
+
+        tvExpected.setText("" + QuickCountAssets.size());
+        int foundSize = QuickCountAssets.size() - assetList.size();
+        tvFound.setText("" + foundSize);
+        mAdapter = new QuickCountAdapter(QuickCountActivity.this, assetList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(QuickCountActivity.this);
+        rvQuickCount.setLayoutManager(mLayoutManager);
+        rvQuickCount.setItemAnimator(new DefaultItemAnimator());
+        rvQuickCount.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+    }
+
+
+    private void setupAssetListForNewCount() {
         assetFoundList.clear();
         assetUnExpectedList.clear();
         assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(locationCode);
@@ -294,6 +318,11 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     break;
                 }
 
+                case R.id.ivTick: {
+                    finish();
+                    break;
+                }
+
                 case R.id.btnScan: {
                     boolean isfound = false;
                     if ("".equals(etBarcode.getText().toString().trim())) {
@@ -305,53 +334,86 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                             for (int i = 0; i < assetList.size(); i++) {
                                 assetPos = i;
                                 if (toolhawkEquipment.getCode().equals(assetList.get(i).getCode())) {
-                                    if (!assetFoundList.contains(toolhawkEquipment)) {
-                                        isfound = true;
-                                        assetFoundList.add(toolhawkEquipment);
-                                    } else {
-                                        showToast("Already added to Found Asset(a)!");
-                                    }
+                                    isfound = true;
+
                                     break;
                                 }
 
                             }
-                            if (isfound) {
-                                mAdapter.removeAt(assetPos);
-                                showToast("Asset Found!");
-                                assetsFound = assetsFound + 1;
-                                tvFound.setText("" + assetsFound);
-                                isfound = false;
-                                if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
-                                    showToast("Quick Count Complete!");
-                                    sendMessage("finish");
-                                    finish();
-                                }
+                            if (!assetFoundList.contains(toolhawkEquipment)) {
+                                if (isfound) {
+                                    mAdapter.removeAt(assetPos);
+                                    showToast("Asset Found!");
+                                    assetsFound = assetsFound + 1;
+                                    assetFoundList.add(toolhawkEquipment);
+                                    tvFound.setText("" + assetsFound);
+                                    etBarcode.setText("");
+                                    isfound = false;
+                                    if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
+                                        QuickCount myQuickCount = new QuickCount();
+                                        RealmList<QuickCountAsset> myQuickCountAssets = new RealmList<QuickCountAsset>();
+                                        if (taskType.toLowerCase().startsWith("ad")) {
+                                            myQuickCount.setID(0);
+                                        } else {
+                                            myQuickCount.setID(etsLocation.getID());
+                                        }
+                                        myQuickCount.setAssetCode(etsLocation.getCode());
+                                        myQuickCount.setChanged(true);
+                                        myQuickCount.setComplete(true);
+                                        myQuickCount.setStatus(taskType.toUpperCase());
 
-                            } else {
-                                new AlertDialog.Builder(QuickCountActivity.this)
-                                        .setTitle("Quick Count")
-                                        .setMessage(toolhawkEquipment.getCode() + " doesn't belong to" + tvLocName.getText().toString() + ", do you want to Continue?")
-                                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                if (!assetUnExpectedList.contains(toolhawkEquipment)) {
-                                                    unexpectedAssets = unexpectedAssets + 1;
-                                                    tvUnExpected.setText("" + unexpectedAssets);
-                                                    assetUnExpectedList.add(toolhawkEquipment);
+                                        for (int i = 0; i < assetFoundList.size(); i++) {
+                                            QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                                            myQuickAssetCount.setFound(true);
+                                            myQuickAssetCount.setAssetID(assetFoundList.get(i).getID());
+                                            myQuickAssetCount.setAssetCode(assetFoundList.get(i).getCode());
+                                            myQuickCountAssets.add(myQuickAssetCount);
+                                        }
+
+                                        for (int i = 0; i < assetUnExpectedList.size(); i++) {
+                                            QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                                            myQuickAssetCount.setFound(true);
+                                            myQuickAssetCount.setAssetID(assetUnExpectedList.get(i).getID());
+                                            myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
+                                            myQuickCountAssets.add(myQuickAssetCount);
+                                        }
+                                        myQuickCount.setQuickCountAssets(myQuickCountAssets);
+                                        DataManager.getInstance().saveQuickCountResult(myQuickCount);
+
+                                        showToast("Quick Count Complete!");
+                                        sendMessage("finish");
+                                        finish();
+                                    }
+
+                                } else {
+                                    new AlertDialog.Builder(QuickCountActivity.this)
+                                            .setTitle("Quick Count")
+                                            .setMessage(toolhawkEquipment.getCode() + " doesn't belong to" + tvLocName.getText().toString() + ", do you want to Continue?")
+                                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    if (!assetUnExpectedList.contains(toolhawkEquipment)) {
+                                                        unexpectedAssets = unexpectedAssets + 1;
+                                                        tvUnExpected.setText("" + unexpectedAssets);
+                                                        assetUnExpectedList.add(toolhawkEquipment);
+                                                        etBarcode.setText("");
+                                                        hideKeyboard();
+                                                    } else {
+                                                        showToast("Already added to Unexpected Asset(s)!");
+                                                    }
+                                                }
+                                            })
+                                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                                public void onClick(DialogInterface dialog, int which) {
                                                     etBarcode.setText("");
                                                     hideKeyboard();
-                                                } else {
-                                                    showToast("Already added to Unexpected Asset(a)!");
                                                 }
-                                            }
-                                        })
-                                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                etBarcode.setText("");
-                                                hideKeyboard();
-                                            }
-                                        })
-                                        .show();
+                                            })
+                                            .show();
 
+                                }
+                            } else {
+                                showToast("Already added to Found Asset(s)!");
+                                etBarcode.setText("");
                             }
                         } else {
                             showToast("No equipment found!");
@@ -401,37 +463,80 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                 }
 
             }
-            if (isfound) {
-                mAdapter.removeAt(assetPos);
-                showToast("Asset Found!");
-                assetsFound = assetsFound + 1;
-                tvFound.setText("" + assetsFound);
-                isfound = false;
+            if (!assetFoundList.contains(toolhawkEquipment)) {
+                if (isfound) {
+                    mAdapter.removeAt(assetPos);
+                    showToast("Asset Found!");
+                    assetsFound = assetsFound + 1;
+                    assetFoundList.add(toolhawkEquipment);
+                    tvFound.setText("" + assetsFound);
+                    etBarcode.setText("");
+                    isfound = false;
+                    if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
+                        QuickCount myQuickCount = new QuickCount();
+                        RealmList<QuickCountAsset> myQuickCountAssets = new RealmList<QuickCountAsset>();
+                        if (taskType.toLowerCase().startsWith("ad")) {
+                            myQuickCount.setID(0);
+                        } else {
+                            myQuickCount.setID(etsLocation.getID());
+                        }
+                        myQuickCount.setAssetCode(etsLocation.getCode());
+                        myQuickCount.setChanged(true);
+                        myQuickCount.setComplete(true);
+                        myQuickCount.setStatus(taskType.toUpperCase());
 
-                if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
-                    showToast("Quick Count Complete!");
-                    finish();
+                        for (int i = 0; i < assetFoundList.size(); i++) {
+                            QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                            myQuickAssetCount.setFound(true);
+                            myQuickAssetCount.setAssetID(assetFoundList.get(i).getID());
+                            myQuickAssetCount.setAssetCode(assetFoundList.get(i).getCode());
+                            myQuickCountAssets.add(myQuickAssetCount);
+                        }
+
+                        for (int i = 0; i < assetUnExpectedList.size(); i++) {
+                            QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                            myQuickAssetCount.setFound(true);
+                            myQuickAssetCount.setAssetID(assetUnExpectedList.get(i).getID());
+                            myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
+                            myQuickCountAssets.add(myQuickAssetCount);
+                        }
+
+                        myQuickCount.setQuickCountAssets(myQuickCountAssets);
+                        DataManager.getInstance().saveQuickCountResult(myQuickCount);
+
+                        showToast("Quick Count Complete!");
+                        sendMessage("finish");
+                        finish();
+                    }
+
+                } else {
+                    new AlertDialog.Builder(QuickCountActivity.this)
+                            .setTitle("Quick Count")
+                            .setMessage(toolhawkEquipment.getCode() + " doesn't belong to " + tvLocName.getText().toString() + ", do you want to Continue?")
+                            .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (!assetUnExpectedList.contains(toolhawkEquipment)) {
+                                        unexpectedAssets = unexpectedAssets + 1;
+                                        assetUnExpectedList.add(toolhawkEquipment);
+                                        tvUnExpected.setText("" + unexpectedAssets);
+                                    } else {
+                                        showToast("Already added to Unexpected Asset(s)!");
+                                    }
+
+                                }
+                            })
+                            .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // do nothing
+                                }
+                            })
+                            .show();
+
                 }
-
-            } else {
-                new AlertDialog.Builder(QuickCountActivity.this)
-                        .setTitle("Quick Count")
-                        .setMessage(toolhawkEquipment.getCode() + " doesn't belong to " + tvLocName.getText().toString() + ", do you want to Continue?")
-                        .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                unexpectedAssets = unexpectedAssets + 1;
-                                tvUnExpected.setText("" + unexpectedAssets);
-
-                            }
-                        })
-                        .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // do nothing
-                            }
-                        })
-                        .show();
-
-            }
+            }else {
+                    showToast("Already added to Found Asset(s)!");
+                etBarcode.setText("");
+                }
         } else {
             showToast("No equipment found!");
         }

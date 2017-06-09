@@ -1,5 +1,9 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
+
+import java.util.List;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -17,6 +21,7 @@ public class SyncCustomer extends RealmObject {
     RealmList<ToolhawkEquipment> lstTHEquipments;
     RealmList<ETSBuilding> lstETSBuildings;
     RealmList<Locations> lstLocations;
+    RealmList<QuickCount> lstQuickCount;
 
 
     public int getCustomerId() {
@@ -49,6 +54,30 @@ public class SyncCustomer extends RealmObject {
 
     public void setLstLocations(RealmList<Locations> lstLocations) {
         this.lstLocations = lstLocations;
+    }
+
+    public RealmList<Department> getLstDepartments() {
+        return lstDepartments;
+    }
+
+    public void setLstDepartments(RealmList<Department> lstDepartments) {
+        this.lstDepartments = lstDepartments;
+    }
+
+    public RealmList<ETSLocations> getLstETSLocations() {
+        return lstETSLocations;
+    }
+
+    public void setLstETSLocations(RealmList<ETSLocations> lstETSLocations) {
+        this.lstETSLocations = lstETSLocations;
+    }
+
+    public RealmList<QuickCount> getLstQuickCount() {
+        return lstQuickCount;
+    }
+
+    public void setLstQuickCount(RealmList<QuickCount> lstQuickCount) {
+        this.lstQuickCount = lstQuickCount;
     }
 
     public boolean isServiceCompany() {

@@ -94,7 +94,7 @@ public interface GSDRESTService {
 
     // Sync post data request location
     @POST(Constants.URL_SYNC_POST_QUICK_COUNT)
-    public void postSyncQuickCount(@Body List<QuickCount> quickCounts,
+    public void postSyncQuickCount(@Body List<QuickCount> lstQuickCount,
                                      Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 
