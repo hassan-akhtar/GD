@@ -61,13 +61,14 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
-    int assetsFound = 0, unexpectedAssets = 0;
     private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetFoundList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetUnExpectedList = new ArrayList<ToolhawkEquipment>();
     ETSLocations etsLocation;
     ToolhawkEquipment toolhawkEquipment;
     private List<QuickCountAsset> QuickCountAssets = new ArrayList<QuickCountAsset>();
+    QuickCount orgQuickCount;
+    boolean newAfterSaveComplete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
         taskType = getIntent().getStringExtra("taskType");
         locationCode = getIntent().getStringExtra("locationCode");
+        newAfterSaveComplete = getIntent().getBooleanExtra("newAfterSaveComplete", false);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Quick Count");
 
@@ -126,6 +128,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(QuickCountActivity.this);
+            orgQuickCount = DataManager.getInstance().getQuickCount(etsLocation.getCode());
     }
 
 
@@ -171,17 +174,27 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         for (int i = 0; i < QuickCountAssets.size(); i++) {
 
             if (null != DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID())) {
-                if (!QuickCountAssets.get(i).isFound()) {
-                    assetList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
-                } else {
+                if (QuickCountAssets.get(i).isFound() && !QuickCountAssets.get(i).isUnExpected()) {
                     assetFoundList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
+                } else {
+                    assetUnExpectedList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
+                }
+            }
+        }
+        List<ToolhawkEquipment> list = DataManager.getInstance().getLocationEquipment(etsLocation.getCode());
+        if (null != list) {
+
+            for (int j = 0; j < list.size(); j++) {
+                if (!assetFoundList.contains(list.get(j)) && !assetUnExpectedList.contains(list.get(j))) {
+                    assetList.add(list.get(j));
                 }
             }
         }
 
-        tvExpected.setText("" + QuickCountAssets.size());
-        int foundSize = QuickCountAssets.size() - assetList.size();
-        tvFound.setText("" + foundSize);
+        int expectedCount = assetList.size() + assetFoundList.size();
+        tvExpected.setText("" + expectedCount);
+        tvFound.setText("" + assetFoundList.size());
+        tvUnExpected.setText("" + assetUnExpectedList.size());
         mAdapter = new QuickCountAdapter(QuickCountActivity.this, assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(QuickCountActivity.this);
         rvQuickCount.setLayoutManager(mLayoutManager);
@@ -319,6 +332,43 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                 }
 
                 case R.id.ivTick: {
+                    QuickCount myQuickCount = new QuickCount();
+                    RealmList<QuickCountAsset> myQuickCountAssets = new RealmList<QuickCountAsset>();
+                    if (!taskType.toLowerCase().startsWith("new") || newAfterSaveComplete) {
+                        myQuickCount.setID(orgQuickCount.getID());
+                    } else {
+                        myQuickCount.setID(0);
+                    }
+                    myQuickCount.setAssetCode(etsLocation.getCode());
+                    myQuickCount.setChanged(true);
+                    myQuickCount.setComplete(false);
+                    myQuickCount.setStatus(taskType.toUpperCase());
+
+                    for (int i = 0; i < assetFoundList.size(); i++) {
+                        QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                        myQuickAssetCount.setFound(true);
+                        myQuickAssetCount.setUnExpected(false);
+                        myQuickAssetCount.setAssetID(assetFoundList.get(i).getID());
+                        myQuickAssetCount.setAssetCode(assetFoundList.get(i).getCode());
+                        myQuickCountAssets.add(myQuickAssetCount);
+                    }
+
+                    for (int i = 0; i < assetUnExpectedList.size(); i++) {
+                        QuickCountAsset myQuickAssetCount = new QuickCountAsset();
+                        myQuickAssetCount.setFound(false);
+                        myQuickAssetCount.setUnExpected(true);
+                        myQuickAssetCount.setAssetID(assetUnExpectedList.get(i).getID());
+                        myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
+                        myQuickCountAssets.add(myQuickAssetCount);
+                    }
+                    myQuickCount.setQuickCountAssets(myQuickCountAssets);
+                    if (newAfterSaveComplete) {
+                        DataManager.getInstance().deleteQuickCountResult(orgQuickCount.getAssetCode());
+                    }
+                    DataManager.getInstance().saveQuickCountResult(myQuickCount);
+
+                    showToast("Quick Count Saved!");
+                    sendMessage("finish");
                     finish();
                     break;
                 }
@@ -344,18 +394,17 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                 if (isfound) {
                                     mAdapter.removeAt(assetPos);
                                     showToast("Asset Found!");
-                                    assetsFound = assetsFound + 1;
                                     assetFoundList.add(toolhawkEquipment);
-                                    tvFound.setText("" + assetsFound);
+                                    tvFound.setText("" + assetFoundList.size());
                                     etBarcode.setText("");
                                     isfound = false;
                                     if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
                                         QuickCount myQuickCount = new QuickCount();
                                         RealmList<QuickCountAsset> myQuickCountAssets = new RealmList<QuickCountAsset>();
-                                        if (taskType.toLowerCase().startsWith("ad")) {
-                                            myQuickCount.setID(0);
+                                        if (!taskType.toLowerCase().startsWith("new") || newAfterSaveComplete) {
+                                            myQuickCount.setID(orgQuickCount.getID());
                                         } else {
-                                            myQuickCount.setID(etsLocation.getID());
+                                            myQuickCount.setID(0);
                                         }
                                         myQuickCount.setAssetCode(etsLocation.getCode());
                                         myQuickCount.setChanged(true);
@@ -378,6 +427,9 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                             myQuickCountAssets.add(myQuickAssetCount);
                                         }
                                         myQuickCount.setQuickCountAssets(myQuickCountAssets);
+                                        if (newAfterSaveComplete) {
+                                            DataManager.getInstance().deleteQuickCountResult(orgQuickCount.getAssetCode());
+                                        }
                                         DataManager.getInstance().saveQuickCountResult(myQuickCount);
 
                                         showToast("Quick Count Complete!");
@@ -392,9 +444,9 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                             .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     if (!assetUnExpectedList.contains(toolhawkEquipment)) {
-                                                        unexpectedAssets = unexpectedAssets + 1;
-                                                        tvUnExpected.setText("" + unexpectedAssets);
                                                         assetUnExpectedList.add(toolhawkEquipment);
+                                                        tvUnExpected.setText("" + assetUnExpectedList.size());
+
                                                         etBarcode.setText("");
                                                         hideKeyboard();
                                                     } else {
@@ -467,18 +519,17 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                 if (isfound) {
                     mAdapter.removeAt(assetPos);
                     showToast("Asset Found!");
-                    assetsFound = assetsFound + 1;
                     assetFoundList.add(toolhawkEquipment);
-                    tvFound.setText("" + assetsFound);
+                    tvFound.setText("" + assetFoundList.size());
                     etBarcode.setText("");
                     isfound = false;
                     if (tvExpected.getText().toString().equals(tvFound.getText().toString())) {
                         QuickCount myQuickCount = new QuickCount();
                         RealmList<QuickCountAsset> myQuickCountAssets = new RealmList<QuickCountAsset>();
-                        if (taskType.toLowerCase().startsWith("ad")) {
+                        if (taskType.toLowerCase().startsWith("ne")) {
                             myQuickCount.setID(0);
                         } else {
-                            myQuickCount.setID(etsLocation.getID());
+                            myQuickCount.setID(orgQuickCount.getID());
                         }
                         myQuickCount.setAssetCode(etsLocation.getCode());
                         myQuickCount.setChanged(true);
@@ -488,6 +539,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                         for (int i = 0; i < assetFoundList.size(); i++) {
                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
                             myQuickAssetCount.setFound(true);
+                            myQuickAssetCount.setUnExpected(false);
                             myQuickAssetCount.setAssetID(assetFoundList.get(i).getID());
                             myQuickAssetCount.setAssetCode(assetFoundList.get(i).getCode());
                             myQuickCountAssets.add(myQuickAssetCount);
@@ -495,7 +547,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
                         for (int i = 0; i < assetUnExpectedList.size(); i++) {
                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
-                            myQuickAssetCount.setFound(true);
+                            myQuickAssetCount.setFound(false);
+                            myQuickAssetCount.setUnExpected(true);
                             myQuickAssetCount.setAssetID(assetUnExpectedList.get(i).getID());
                             myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
                             myQuickCountAssets.add(myQuickAssetCount);
@@ -516,9 +569,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                             .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     if (!assetUnExpectedList.contains(toolhawkEquipment)) {
-                                        unexpectedAssets = unexpectedAssets + 1;
                                         assetUnExpectedList.add(toolhawkEquipment);
-                                        tvUnExpected.setText("" + unexpectedAssets);
+                                        tvUnExpected.setText("" + assetUnExpectedList.size());
                                     } else {
                                         showToast("Already added to Unexpected Asset(s)!");
                                     }
@@ -533,10 +585,10 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                             .show();
 
                 }
-            }else {
-                    showToast("Already added to Found Asset(s)!");
+            } else {
+                showToast("Already added to Found Asset(s)!");
                 etBarcode.setText("");
-                }
+            }
         } else {
             showToast("No equipment found!");
         }

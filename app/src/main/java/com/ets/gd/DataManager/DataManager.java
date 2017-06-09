@@ -359,7 +359,9 @@ public class DataManager {
         return realm.where(Building.class).equalTo("Code", barcodeID).findFirst();
     }
 
-
+    public List<ToolhawkEquipment> getLocationEquipment(String locCOde) {
+        return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", locCOde).findAll();
+    }
     public void addNewLocation(Locations location) {
         realm.beginTransaction();
         realm.copyToRealm(location);
@@ -782,6 +784,11 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+    public void deleteQuickCountResult(String code) {
+        realm.beginTransaction();
+        realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst().deleteFromRealm();
+        realm.commitTransaction();
+    }
 
     public void saveSyncToolhawkMoveData(List<ToolhawkMove> equipmentToMoveList) {
 

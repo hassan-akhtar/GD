@@ -197,6 +197,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                             dialog.cancel();
                                             Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                             in.putExtra("taskType", "new");
+                                            in.putExtra("newAfterSaveComplete", true);
                                             in.putExtra("locationCode", tvBarcodeValue.getText().toString());
                                             startActivity(in);
                                             tvBarcodeTitle.setVisibility(View.GONE);
@@ -228,6 +229,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                             dialog.cancel();
                                             Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                             in.putExtra("taskType", "new");
+                                            in.putExtra("newAfterSaveComplete", true);
                                             in.putExtra("locationCode", tvBarcodeValue.getText().toString());
                                             startActivity(in);
                                             tvBarcodeTitle.setVisibility(View.GONE);
