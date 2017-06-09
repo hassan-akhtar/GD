@@ -3,10 +3,12 @@ package com.ets.gd.NetworkLayer.Service;
 
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostQuickCountRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
@@ -39,4 +41,6 @@ public interface GSDService {
     void postSyncToolhawkTransfer(SyncToolhawkTransferDTO syncToolhawkTransferDTO, MyCallBack callback);
 
     void postSyncToolhawkMove(SyncPostToolhawkMoveDTO syncPostToolhawkMoveDTO, MyCallBack callback);
+
+    void postSyncQuickCount(SyncPostQuickCountRequestDTO syncPostQuickCountRequestDTO, MyCallBack callback);
 }

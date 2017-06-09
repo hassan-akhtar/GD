@@ -4,6 +4,7 @@ package com.ets.gd.NetworkLayer.Service;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
@@ -90,6 +91,11 @@ public interface GSDRESTService {
     @POST(Constants.URL_SYNC_POST_TOOLHAWK_MOVE)
     public void postSyncToolhawkMove(@Body List<ToolhawkMoveDTO> moveDTOList,
                                          Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_QUICK_COUNT)
+    public void postSyncQuickCount(@Body List<QuickCount> quickCounts,
+                                     Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 
 }
