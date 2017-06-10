@@ -20,11 +20,14 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.NetworkLayer.RequestDTOs.AddLocation;
+import com.ets.gd.NetworkLayer.RequestDTOs.BaseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
 import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentMaintenanceDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostQuickCountRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
@@ -81,7 +84,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     List<AddLocation> lstAddLocation = new ArrayList<AddLocation>();
     SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
     boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false, sendUnitInspcall = false, sendToolHawkEquipmentCall = false, sendETSLocationCall = false;
-    boolean sendTransferToolhawkCall = false, sendMoveToolhawkCall = false, sendQuickCountCall = false;
+    boolean sendTransferToolhawkCall = false, sendMoveToolhawkCall = false, sendQuickCountCall = false, sendMaintenanceCall = false;
     MoveTransferRequestDTO moveTransferRequestDTO;
     List<MoveTransfer> lstMoveEquipment = new ArrayList<MoveTransfer>();
     List<FireBugEquipment> lstAllAssets = new ArrayList<FireBugEquipment>();
@@ -102,6 +105,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SyncPostToolhawkMoveDTO syncPostToolhawkMoveDTO;
     SyncPostQuickCountRequestDTO syncPostQuickCountRequestDTO;
     private List<QuickCount> lstQuickCount;
+    SyncPostEquipmentMaintenanceDTO syncPostEquipmentMaintenanceDTO;
+    List<EquipmentMaintenance> equipmentMaintenanceList;
 
 
     public SyncFragment() {
@@ -153,6 +158,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         setupPostTHTransferData();
         setupPostTHMoveData();
         setupQuickCountData();
+        setupMaintenanceData();
 
 
         if (sendEquipmentCall) {
@@ -171,9 +177,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
             callSyncPostTHTransferService();
         } else if (sendMoveToolhawkCall) {
             callSyncPostTHMoveService();
-        } else if(sendQuickCountCall){
+        } else if (sendQuickCountCall) {
             callSyncPostQuickCountService();
-        }else {
+        } else if (sendMaintenanceCall) {
+            callSyncPostMaintenanceService();
+        } else {
             // tvSyncInProgress.setText("No data found for syncing");
             // showToast("No data found for syncing");
             DataManager.getInstance().deleteRealm();
@@ -190,6 +198,18 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         if (0 != lstQuickCount.size()) {
             sendQuickCountCall = true;
+        }
+    }
+
+    private void setupMaintenanceData() {
+
+        equipmentMaintenanceList = DataManager.getInstance().getAllEquipmentMaintenanceList();
+
+        syncPostEquipmentMaintenanceDTO = new SyncPostEquipmentMaintenanceDTO(Constants.RESPONSE_SYNC_POST_MAINTENANCE,
+                equipmentMaintenanceList);
+
+        if (0 != equipmentMaintenanceList.size()) {
+            sendMaintenanceCall = true;
         }
     }
 
@@ -275,7 +295,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
     }
 
 
-
     void callSyncPostQuickCountService() {
 
         //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
@@ -284,6 +303,22 @@ public class SyncFragment extends Fragment implements MyCallBack {
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncQuickCount(
                 syncPostQuickCountRequestDTO, this
+        );
+        //} else {
+        //     tvSyncInProgress.setText("No data found for syncing");
+        //      showToast("No data found for syncing");
+        //  }
+    }
+
+
+    void callSyncPostMaintenanceService() {
+
+        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
+        CommonActions.showProgressDialog(getActivity());
+        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
+        tvSyncInProgress.setText("Sync in progress...");
+        GSDServiceFactory.getService(getActivity()).postSyncMaintenace(
+                syncPostEquipmentMaintenanceDTO, this
         );
         //} else {
         //     tvSyncInProgress.setText("No data found for syncing");
@@ -707,9 +742,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -748,9 +785,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -787,9 +826,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -823,9 +864,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -857,9 +900,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -890,9 +935,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -921,9 +968,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
-                    }  else if(sendQuickCountCall){
+                    } else if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
-                    }else {
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -944,6 +993,34 @@ public class SyncFragment extends Fragment implements MyCallBack {
             }
             break;
 
+
+            case Constants.RESPONSE_SYNC_POST_TOOLHAWK_MOVE: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    if (sendQuickCountCall) {
+                        callSyncPostQuickCountService();
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+                    }
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
 
 
             case Constants.RESPONSE_SYNC_POST_QUICK_COUNT: {
@@ -951,31 +1028,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-                    DataManager.getInstance().deleteRealm();
-                    callSyncGetService();
-                } else {
-                    CommonActions.DismissesDialog();
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(R.string.txt_login)
-                            .setMessage("Something went wrong!")
-                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
 
-                                }
-                            })
-                            .show();
-                }
-            }
-            break;
-
-            case Constants.RESPONSE_SYNC_POST_TOOLHAWK_MOVE: {
-                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
-                if (null != syncPostEquipmentResponseDTO) {
-                    CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-                    if(sendQuickCountCall){
-                        callSyncPostQuickCountService();
-                    }else {
+                    if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
                     }
@@ -994,7 +1050,28 @@ public class SyncFragment extends Fragment implements MyCallBack {
             }
             break;
 
+            case Constants.RESPONSE_SYNC_POST_MAINTENANCE: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    DataManager.getInstance().deleteRealm();
+                    callSyncGetService();
 
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
 
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;

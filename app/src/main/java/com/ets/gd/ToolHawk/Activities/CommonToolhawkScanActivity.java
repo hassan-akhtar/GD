@@ -357,10 +357,15 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                         }
 
 
-                    } else {
-                        Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
-                        in.putExtra("assetID", "200020");
-                        startActivity(in);
+                    } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("ma")) {
+                        toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
+                        if (null!=toolhawkEquipment) {
+                            Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
+                            in.putExtra("assetID", etBarcode.getText().toString());
+                            startActivity(in);
+                        }else{
+                            showToast("No Equipment Found!");
+                        }
                     }
                     break;
                 }
@@ -589,6 +594,15 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 showToast("No ETS Location Found!");
             }
 
+        }else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("ma")) {
+            toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(message);
+            if (null!=toolhawkEquipment) {
+                Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
+                in.putExtra("assetID", message);
+                startActivity(in);
+            }else{
+                showToast("No Equipment Found!");
+            }
         }
     }
 }

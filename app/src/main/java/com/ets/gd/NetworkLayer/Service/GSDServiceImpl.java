@@ -9,6 +9,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentMaintenanceDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostQuickCountRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
@@ -286,6 +287,28 @@ public class GSDServiceImpl implements GSDService {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
                 syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
                 syncPostEquipmentResponseDTO.setCallBackId(syncPostQuickCountRequestDTO.getCallBackId());
+                callback.onSuccess(syncPostEquipmentResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void postSyncMaintenace(final SyncPostEquipmentMaintenanceDTO syncPostEquipmentMaintenanceDTO, final MyCallBack callback) {
+        adapter.postSyncMaintenace(syncPostEquipmentMaintenanceDTO.getEquipmentMaintenanceList(), new Callback<List<SyncPostEquipment>>() {
+            @Override
+            public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
+                syncPostEquipmentResponseDTO.setCallBackId(syncPostEquipmentMaintenanceDTO.getCallBackId());
                 callback.onSuccess(syncPostEquipmentResponseDTO);
             }
 

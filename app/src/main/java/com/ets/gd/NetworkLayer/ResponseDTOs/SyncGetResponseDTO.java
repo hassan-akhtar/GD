@@ -22,6 +22,8 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<Routes> lstRoutes;
     DashboardStats  mobileDashboard;
     RealmList<FirebugBuilding> lstFireBugBuilding;
+    RealmList<Action> lstMaintenanceAction;
+
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
         return lstFbEquipmentNotes;
@@ -37,6 +39,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<Action> getLstMaintenanceAction() {
+        return lstMaintenanceAction;
+    }
+
+    public void setLstMaintenanceAction(RealmList<Action> lstMaintenanceAction) {
+        this.lstMaintenanceAction = lstMaintenanceAction;
     }
 
     public RealmList<FirebugBuilding> getLstFireBugBuilding() {

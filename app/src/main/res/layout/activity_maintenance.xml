@@ -162,13 +162,14 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight=".8"
-                        android:text="Price    " />
+                        android:text="Unit Cost" />
 
                     <EditText
                         android:id="@+id/etPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
+                        android:inputType="numberDecimal"
                         android:textSize="15sp"
                         android:layout_weight="1.2"
                         android:background="@drawable/et_bottom_line"
@@ -192,7 +193,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="20dp"
                         android:layout_weight=".5"
-                        android:text="Maintenance Date" />
+                        android:text="Maintenance Date   " />
 
                     <EditText
                         android:id="@+id/etMaintDate"

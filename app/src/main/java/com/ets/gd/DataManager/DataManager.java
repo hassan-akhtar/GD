@@ -5,11 +5,14 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCountAsset;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
@@ -442,6 +445,25 @@ public class DataManager {
         return realm.where(FireBugEquipment.class).findAll().sort("Code");
     }
 
+    // For getting asset all assets from DB
+    public List<Action> getAllActions() {
+        return realm.where(Action.class).findAll().sort("Code");
+    }
+
+    // For getting asset all assets from DB
+    public List<Category> getAllCategory() {
+        return realm.where(Category.class).findAll().sort("Code");
+    }
+
+
+    public Category getCategory(String code) {
+        return realm.where(Category.class).equalTo("Code",code).findFirst();
+    }
+
+
+    public Action getAction(String code) {
+        return realm.where(Action.class).equalTo("Code",code).findFirst();
+    }
     public List<FireBugEquipment> getAllAddAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isAdded", true).findAll().sort("Code");
     }
@@ -752,6 +774,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstFireBugBuilding(obj.getLstFireBugBuilding());
                 realmSyncGetResponseDTO.setLstJobNumber(obj.getLstJobNumber());
                 realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
+                realmSyncGetResponseDTO.setLstMaintenanceAction(obj.getLstMaintenanceAction());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
                 realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
                 realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
@@ -924,6 +947,12 @@ public class DataManager {
     public List<QuickCount> getAllChangesQuickCountAssetList() {
         RealmResults<QuickCount>  realmResults = realm.where(QuickCount.class).equalTo("isChanged", true).findAll();
         List<QuickCount> copied = realm.copyFromRealm(realmResults);
+        return  copied;
+    }
+
+    public List<EquipmentMaintenance> getAllEquipmentMaintenanceList() {
+        RealmResults<EquipmentMaintenance>  realmResults = realm.where(EquipmentMaintenance.class).findAll();
+        List<EquipmentMaintenance> copied = realm.copyFromRealm(realmResults);
         return  copied;
     }
 
