@@ -228,6 +228,8 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
                         } else {
                             equipmentMaintenance.setUpdateLastServiceDate(false);
                         }
+
+                        DataManager.getInstance().saveResultMaintenance(equipmentMaintenance);
                         showToast("Equipment Maintenance Complete!");
                         sendMessage("finish");
                         finish();

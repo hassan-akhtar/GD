@@ -25,11 +25,11 @@ public class CheckoutAssetActivity extends AppCompatActivity {
     LinearLayout llbtns;
     EditText etBarcode;
     ImageView ivInfo;
-    LinearLayout llJobNumber;
+    LinearLayout llJobNumber, llUser;
     RecyclerView rvList;
     String taskType, department, returningUser, JobNumber;
     ImageView ivBack, ivTick;
-    boolean isfinalCheckout = false;
+    boolean isfinalCheckout = false, isUser= false;
 
 
     @Override
@@ -60,6 +60,7 @@ public class CheckoutAssetActivity extends AppCompatActivity {
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         llJobNumber = (LinearLayout) findViewById(R.id.llJobNumber);
+        llUser = (LinearLayout) findViewById(R.id.llUser);
         rvList = (RecyclerView) findViewById(R.id.rvList);
         rlListArea = (RelativeLayout) findViewById(R.id.rlScanArea);
 
@@ -81,6 +82,7 @@ public class CheckoutAssetActivity extends AppCompatActivity {
         department = getIntent().getStringExtra("department");
         returningUser = getIntent().getStringExtra("returningUser");
         JobNumber = getIntent().getStringExtra("JobNumber");
+        isUser = getIntent().getBooleanExtra("isUser",false);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
         tvDepartment.setText("" + department);
@@ -105,6 +107,11 @@ public class CheckoutAssetActivity extends AppCompatActivity {
             llJobNumber.setVisibility(View.GONE);
         } else {
             llJobNumber.setVisibility(View.VISIBLE);
+        }
+
+
+        if (!isUser) {
+            llUser.setVisibility(View.GONE);
         }
     }
 

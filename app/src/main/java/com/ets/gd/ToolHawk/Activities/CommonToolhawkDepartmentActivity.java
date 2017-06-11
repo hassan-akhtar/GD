@@ -119,9 +119,9 @@ public class CommonToolhawkDepartmentActivity extends AppCompatActivity {
                     Intent in = new Intent(CommonToolhawkDepartmentActivity.this, UserActivity.class);
                     in.putExtra("taskType", tbTitleBottom.getText().toString());
                     if (!isSearching) {
-                        in.putExtra("departmentName", depList.get(position).getCode());
+                        in.putExtra("department", depList.get(position).getCode());
                     } else {
-                        in.putExtra("departmentName", depFilteredList.get(position).getCode());
+                        in.putExtra("department", depFilteredList.get(position).getCode());
                     }
                     startActivity(in);
 

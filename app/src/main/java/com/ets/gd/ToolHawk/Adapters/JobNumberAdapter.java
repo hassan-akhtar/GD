@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ets.gd.Models.JobNumber;
+import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -39,7 +39,12 @@ public class JobNumberAdapter extends RecyclerView.Adapter<JobNumberAdapter.MyVi
         myViewHolder = holder;
             JobNumber jobNumber = jobNumberList.get(position);
             holder.tvTitle.setText("" + jobNumber.getCode());
-            holder.tvDesc.setText("" + jobNumber.getName());
+        if (null!=jobNumber.getDescription()) {
+            holder.tvDesc.setText("" + jobNumber.getDescription());
+        }else{
+            holder.tvDesc.setText("N/A");
+        }
+
 
     }
 

@@ -83,6 +83,7 @@ public class CheckoutToActivity extends AppCompatActivity {
                     Intent in = new Intent(CheckoutToActivity.this, JobNumberActivity.class);
                     in.putExtra("taskType", taskName);
                     in.putExtra("department", departmentName);
+                    in.putExtra("isUser", false);
                     startActivity(in);
 
                     break;

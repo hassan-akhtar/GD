@@ -1,6 +1,14 @@
 package com.ets.gd.ToolHawk.CheckInOut;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,14 +23,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
+import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.User;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 import com.ets.gd.ToolHawk.Adapters.UserAdapter;
+import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity {
+public class UserActivity extends AppCompatActivity implements BarcodeScan{
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText, tvDepartment, tvScanType;
     Button btnCross, btnScan;
@@ -33,7 +50,11 @@ public class UserActivity extends AppCompatActivity {
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     UserAdapter mAdapter;
-    private List<User> userList = new ArrayList<User>();
+    private List<MobileUser> userList = new ArrayList<MobileUser>();
+    MobileUser mobileUser;
+    private static final int CAMERA_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +65,7 @@ public class UserActivity extends AppCompatActivity {
         initObj();
         initListeners();
         setupView();
-        setupDummyUsers();
+        setupUsers();
         hideKeyboard();
 
     }
@@ -75,6 +96,7 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(UserActivity.this);
     }
 
     private void initListeners() {
@@ -82,6 +104,24 @@ public class UserActivity extends AppCompatActivity {
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
+
+        rvList.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(UserActivity.this, rvList, new FragmentDrawer.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Intent in = new Intent(UserActivity.this, JobNumberActivity.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("department", department);
+                in.putExtra("isUser", true);
+                in.putExtra("returningUser", userList.get(position).getUserName());
+                startActivity(in);
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     private void setupView() {
@@ -98,18 +138,9 @@ public class UserActivity extends AppCompatActivity {
         );
     }
 
-    private void setupDummyUsers() {
+    private void setupUsers() {
 
-
-        User user = new User();
-        user.setCode("1000001");
-        user.setName("John Doe");
-        userList.add(user);
-        user = new User();
-        user.setCode("1000002");
-        user.setName("Chris Doug");
-        userList.add(user);
-
+        userList = DataManager.getInstance().getAllMobileUserList();
         mAdapter = new UserAdapter(UserActivity.this, userList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(UserActivity.this);
         rvList.setLayoutManager(mLayoutManager);
@@ -123,11 +154,24 @@ public class UserActivity extends AppCompatActivity {
         public void onClick(final View v) {
             switch (v.getId()) {
                 case R.id.btnScan: {
-                    Intent in = new Intent(UserActivity.this, JobNumberActivity.class);
-                    in.putExtra("taskType", taskType);
-                    in.putExtra("department", department);
-                    in.putExtra("returningUser", "John Doe");
-                    startActivity(in);
+
+                    if ("".equals(etBarcode.getText().toString().trim())) {
+                        checkCameraPermission();
+                    } else {
+                    mobileUser = DataManager.getInstance().getMobileUser(etBarcode.getText().toString());
+                        if (null!=mobileUser) {
+                            Intent in = new Intent(UserActivity.this, JobNumberActivity.class);
+                            in.putExtra("taskType", taskType);
+                            in.putExtra("department", department);
+                            in.putExtra("isUser", true);
+                            in.putExtra("returningUser", mobileUser.getUserName());
+                            startActivity(in);
+                        } else {
+                            showToast("No user found!");
+                        }
+                    }
+
+
                     break;
                 }
 
@@ -145,13 +189,134 @@ public class UserActivity extends AppCompatActivity {
 
     };
 
+    private void checkCameraPermission() {
 
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            BarcodeScanActivity.barcodeScan = this;
+            Intent in = new Intent(UserActivity.this, BarcodeScanActivity.class);
+            in.putExtra("taskType", taskType);
+            startActivity(in);
+        } else {
+            if (ActivityCompat.checkSelfPermission(UserActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(UserActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                    builder.setTitle("Need Storage Permission");
+                    builder.setMessage("This app needs storage permission.");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(UserActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
+                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                    // Redirect to Settings after showing Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            Toast.makeText(getBaseContext(), "Go to Permissions to Grant Camera permission", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    //just request the permission
+                    ActivityCompat.requestPermissions(UserActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                }
+
+            } else {
+                BarcodeScanActivity.barcodeScan = this;
+                Intent in = new Intent(UserActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", taskType);
+                startActivity(in);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
+                BarcodeScanActivity.barcodeScan = this;
+                Intent in = new Intent(UserActivity.this, BarcodeScanActivity.class);
+                in.putExtra("taskType", taskType);
+                startActivity(in);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(UserActivity.this, Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(UserActivity.this);
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(UserActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN, true);
+                    Toast.makeText(getBaseContext(), "Unable to get Permission", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     private boolean checkValidation() {
         return false;
+    }
+
+    @Override
+    public void BarcodeScanned(Barcode barcode) {
+        String message = barcode.getMessage();
+        String task = barcode.getTask();
+
+        mobileUser = DataManager.getInstance().getMobileUser(message);
+        if (null!=mobileUser) {
+            Intent in = new Intent(UserActivity.this, JobNumberActivity.class);
+            in.putExtra("taskType", taskType);
+            in.putExtra("department", department);
+            in.putExtra("isUser", true);
+            in.putExtra("returningUser", mobileUser.getUserName());
+            startActivity(in);
+        } else {
+            showToast("No user found!");
+        }
     }
 }
 

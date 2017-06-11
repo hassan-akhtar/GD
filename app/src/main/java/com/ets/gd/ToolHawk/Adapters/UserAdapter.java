@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.ets.gd.Models.User;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -15,11 +16,11 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> {
 
-    private List<User> userList = new ArrayList<User>();
+    private List<MobileUser> userList = new ArrayList<MobileUser>();
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public UserAdapter(Context context, List<User> assetList) {
+    public UserAdapter(Context context, List<MobileUser> assetList) {
         this.userList = assetList;
         this.mContext = context;
     }
@@ -37,9 +38,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
-        User user = userList.get(position);
-        holder.tvTitle.setText(""+user.getCode());
-        holder.tvDesc.setText(""+user.getName());
+        MobileUser user = userList.get(position);
+        holder.tvTitle.setText(""+user.getFirstName()+" "+user.getLastName());
+        holder.tvConstructionDescp.setText("Username: " );
+        holder.tvDesc.setText(""+user.getUserName());
 
     }
 
@@ -52,11 +54,12 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.MyViewHolder> 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvTitle, tvDesc;
+        private TextView tvTitle, tvDesc, tvConstructionDescp;
 
         public MyViewHolder(View view) {
             super(view);
             tvTitle = (TextView) view.findViewById(R.id.tvTitle);
+            tvConstructionDescp = (TextView) view.findViewById(R.id.tvConstructionDescp);
             tvDesc = (TextView) view.findViewById(R.id.tvDesc);
         }
     }

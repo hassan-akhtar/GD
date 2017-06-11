@@ -21,6 +21,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
@@ -800,6 +801,14 @@ public class DataManager {
     }
 
 
+
+    public void saveResultMaintenance(EquipmentMaintenance obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
     public void saveQuickCountResult(QuickCount obj) {
 
         realm.beginTransaction();
@@ -903,6 +912,14 @@ public class DataManager {
 
     public List<JobNumber> getAllDepJobNumberList(int ID) {
         return realm.where(JobNumber.class).equalTo("DepartmentID", ID).findAll().sort("Code");
+    }
+
+    public List<MobileUser> getAllMobileUserList() {
+        return realm.where(MobileUser.class).findAll().sort("FirstName");
+    }
+
+    public MobileUser getMobileUser(String user) {
+        return realm.where(MobileUser.class).equalTo("UserName",user).findFirst();
     }
 
     public JobNumber getJobNumber(String code) {
