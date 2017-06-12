@@ -208,9 +208,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         syncCheckOutRequestDTO = new SyncCheckOutRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKIN, checkOutList);
 
-        if (0 != checkOutList.size()) {
+/*        if (0 != checkOutList.size()) {
             sendCheckOutCall = true;
-        }
+        }*/
     }
 
     private void setupCheckInData() {
@@ -219,9 +219,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
         syncCheckInRequestDTO = new SyncCheckInRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKIN, checkInList);
 
-        if (0 != checkInList.size()) {
+/*        if (0 != checkInList.size()) {
             sendCheckInCall = true;
-        }
+        }*/
     }
 
     private void setupQuickCountData() {
