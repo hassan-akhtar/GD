@@ -4,9 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.ets.gd.Constants.Constants;
-import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckInForCall;
-import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOutForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
@@ -22,7 +20,6 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncToolhawkTransferDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.LoginResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
@@ -342,7 +339,7 @@ public class GSDServiceImpl implements GSDService {
             for (int j=0;j<checkIn.getCheckInList().get(i).getEquipmentID().size();j++) {
                 EquipmentID.add(checkIn.getCheckInList().get(i).getEquipmentID().get(j).getEquipmentID());
             }
-            checkInForCall.setEquipmentID(EquipmentID);
+            checkInForCall.setEquipmentIDList(EquipmentID);
             lstCheckIn.add(checkInForCall);
         }
 
@@ -380,7 +377,7 @@ public class GSDServiceImpl implements GSDService {
             for (int j=0;j<checkOut.getCheckOutList().get(i).getEquipmentID().size();j++) {
                 EquipmentID.add(checkOut.getCheckOutList().get(i).getEquipmentID().get(j).getEquipmentID());
             }
-            checkOutForCall.setEquipmentID(EquipmentID);
+            checkOutForCall.setEquipmentIDList(EquipmentID);
             lstCheckOut.add(checkOutForCall);
         }
 

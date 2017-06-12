@@ -11,6 +11,9 @@ public class CheckInOutEquipment extends RealmObject {
 
     private int equipmentID;
 
+    public CheckInOutEquipment() {
+    }
+
     public CheckInOutEquipment(int equipmentID) {
         this.equipmentID = equipmentID;
     }

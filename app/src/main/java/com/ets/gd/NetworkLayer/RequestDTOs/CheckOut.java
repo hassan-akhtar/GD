@@ -4,6 +4,7 @@ import com.ets.gd.Models.CheckInOutEquipment;
 
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 
 /**
@@ -17,7 +18,7 @@ public class CheckOut extends RealmObject {
     private int UserID;
     private int JobNumberID;
     private String DueDate;
-    private List<CheckInOutEquipment> EquipmentID;
+    private RealmList<CheckInOutEquipment> EquipmentID;
 
     public CheckOut() {
     }
@@ -54,11 +55,11 @@ public class CheckOut extends RealmObject {
         DueDate = dueDate;
     }
 
-    public List<CheckInOutEquipment> getEquipmentID() {
+    public RealmList<CheckInOutEquipment> getEquipmentID() {
         return EquipmentID;
     }
 
-    public void setEquipmentID(List<CheckInOutEquipment> equipmentID) {
+    public void setEquipmentID(RealmList<CheckInOutEquipment> equipmentID) {
         EquipmentID = equipmentID;
     }
 }

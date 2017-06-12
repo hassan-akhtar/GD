@@ -1,10 +1,6 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
-import com.ets.gd.Models.CheckInOutEquipment;
-
 import java.util.List;
-
-import io.realm.RealmObject;
 
 /**
  * Created by hakhtar on 6/11/2017.
@@ -15,7 +11,7 @@ public class CheckInForCall {
 
     private int UserID;
     private int JobNumberID ;
-    private List<Integer> EquipmentID ;
+    private List<Integer> equipmentIDList;
 
     public CheckInForCall() {
     }
@@ -37,11 +33,11 @@ public class CheckInForCall {
         this.JobNumberID  = jobNumberID;
     }
 
-    public List<Integer> getEquipmentID() {
-        return EquipmentID;
+    public List<Integer> getEquipmentIDList() {
+        return equipmentIDList;
     }
 
-    public void setEquipmentID(List<Integer> equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentIDList(List<Integer> equipmentIDList) {
+        this.equipmentIDList = equipmentIDList;
     }
 }

@@ -9,12 +9,14 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -46,6 +48,8 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmList;
+
 public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeScan {
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText, tvDepartment, tvReturningUser, tvJobNumberCode;
@@ -72,7 +76,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
     String[] assetNames;
     CheckIn syncPostCheckInRequestDTO;
     CheckOut syncPostCheckOutRequestDTO;
-    List<CheckInOutEquipment> equipmentIDList = new ArrayList<CheckInOutEquipment>();
+    RealmList<CheckInOutEquipment> equipmentIDList = new RealmList<CheckInOutEquipment>();
 
 
     @Override
@@ -336,6 +340,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
                             DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
                             showToast("Check Out Complete!");
+                            sendMessage("finish");
                             finish();
 
 
@@ -353,6 +358,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             syncPostCheckInRequestDTO.setEquipmentID(equipmentIDList);
                             DataManager.getInstance().saveCheckInResult(syncPostCheckInRequestDTO);
                             showToast("Check In Complete!");
+                            sendMessage("finish");
                             finish();
                         }
                     }
@@ -363,6 +369,13 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
     };
 
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 
     void showAssetList() {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,

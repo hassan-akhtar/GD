@@ -1,7 +1,5 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
-import com.ets.gd.Models.CheckInOutEquipment;
-
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -11,13 +9,13 @@ import io.realm.RealmObject;
  * General Data
  */
 
-public class CheckOutForCall extends RealmObject {
+public class CheckOutForCall  {
 
     private String CheckOutType;
     private int UserID;
     private int JobNumberID;
     private String DueDate;
-    private List<Integer> EquipmentID;
+    private List<Integer> equipmentIDList;
 
     public CheckOutForCall() {
     }
@@ -54,11 +52,11 @@ public class CheckOutForCall extends RealmObject {
         DueDate = dueDate;
     }
 
-    public List<Integer> getEquipmentID() {
-        return EquipmentID;
+    public List<Integer> getEquipmentIDList() {
+        return equipmentIDList;
     }
 
-    public void setEquipmentID(List<Integer> equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentIDList(List<Integer> equipmentIDList) {
+        this.equipmentIDList = equipmentIDList;
     }
 }
