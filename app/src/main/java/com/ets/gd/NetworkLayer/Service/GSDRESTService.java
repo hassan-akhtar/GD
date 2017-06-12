@@ -2,6 +2,8 @@ package com.ets.gd.NetworkLayer.Service;
 
 
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
@@ -102,6 +104,16 @@ public interface GSDRESTService {
     @POST(Constants.URL_SYNC_POST_MAINTENANCE)
     public void postSyncMaintenace(@Body List<EquipmentMaintenance> maintenanceList,
                                    Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_CHECKIN)
+    public void postSyncCheckIn(@Body List<CheckIn> checkIn,
+                                Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_CHECKOUT)
+    public void postSyncCheckOut(@Body List<CheckOut> checkOut,
+                                Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 }
 

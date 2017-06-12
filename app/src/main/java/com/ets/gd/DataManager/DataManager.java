@@ -7,10 +7,10 @@ import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
-import com.ets.gd.NetworkLayer.RequestDTOs.QuickCountAsset;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
@@ -816,6 +816,20 @@ public class DataManager {
         realm.commitTransaction();
     }
 
+    public void saveCheckInResult(CheckIn obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
+    public void saveCheckOutResult(CheckOut obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
     public void deleteQuickCountResult(String code) {
         realm.beginTransaction();
         realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst().deleteFromRealm();
@@ -909,6 +923,16 @@ public class DataManager {
     public List<JobNumber> getAllJobNumberList() {
         return realm.where(JobNumber.class).findAll().sort("Code");
     }
+
+    public List<CheckIn> getAllCheckInList() {
+        return realm.where(CheckIn.class).findAll();
+    }
+
+
+    public List<CheckOut> getAllCheckOutList() {
+        return realm.where(CheckOut.class).findAll();
+    }
+
 
     public List<JobNumber> getAllDepJobNumberList(int ID) {
         return realm.where(JobNumber.class).equalTo("DepartmentID", ID).findAll().sort("Code");

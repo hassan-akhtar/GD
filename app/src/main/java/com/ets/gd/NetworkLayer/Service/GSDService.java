@@ -1,10 +1,14 @@
 package com.ets.gd.NetworkLayer.Service;
 
 
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckInRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckOutRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
@@ -46,7 +50,11 @@ public interface GSDService {
 
     void postSyncQuickCount(SyncPostQuickCountRequestDTO syncPostQuickCountRequestDTO, MyCallBack callback);
 
-
     void postSyncMaintenace(SyncPostEquipmentMaintenanceDTO syncPostEquipmentMaintenanceDTO, MyCallBack callback);
+
+    void postSyncCheckIn(SyncCheckInRequestDTO checkIn, MyCallBack callback);
+
+    void postSyncCheckOut(SyncCheckOutRequestDTO checkOut, MyCallBack callback);
+
 
 }

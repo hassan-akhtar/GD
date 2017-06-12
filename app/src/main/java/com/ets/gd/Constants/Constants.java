@@ -28,6 +28,8 @@ public class Constants {
     public static final int RESPONSE_SYNC_POST_TOOLHAWK_MOVE = 10;
     public static final int RESPONSE_SYNC_POST_QUICK_COUNT = 11;
     public static final int RESPONSE_SYNC_POST_MAINTENANCE = 12;
+    public static final int RESPONSE_SYNC_POST_CHECKOUT = 13;
+    public static final int RESPONSE_SYNC_POST_CHECKIN = 14;
 
     // Urls Firebug
     public static final String URL_LOGIN = "/Services/Services/Mobile/Login";
@@ -44,5 +46,7 @@ public class Constants {
     public static final String URL_SYNC_POST_TOOLHAWK_MOVE = "/Services/Services/Mobile/MoveToolHawkEquipment";
     public static final String URL_SYNC_POST_QUICK_COUNT = "/Services/Services/Mobile/QuickCount";
     public static final String URL_SYNC_POST_MAINTENANCE  = "/Services/Services/Mobile/ToolHawkEquipmentMaintenance";
+    public static final String URL_SYNC_POST_CHECKOUT  = "/Services/Services/Mobile/CheckOutToolHawkEquipment";
+    public static final String URL_SYNC_POST_CHECKIN  = "/Services/Services/Mobile/CheckInToolHawkEquipment";
 
 }

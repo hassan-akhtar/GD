@@ -30,18 +30,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DashboardStats;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
-import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -71,6 +69,10 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
     ToolhawkEquipment toolhawkEquipment;
     Context mContext;
     String[] assetNames;
+    CheckIn syncPostCheckInRequestDTO;
+    CheckOut syncPostCheckOutRequestDTO;
+    List<Integer> equipmentIDList = new ArrayList<Integer>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -190,11 +192,11 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                                                         int id) {
 
                                         mAdapter.removeAt(position);
-                                            if (0 != equipmentList.size()) {
-                                                tvCount.setText("" + equipmentList.size());
-                                            } else {
-                                                rlBottomSheetMove.setVisibility(View.GONE);
-                                            }
+                                        if (0 != equipmentList.size()) {
+                                            tvCount.setText("" + equipmentList.size());
+                                        } else {
+                                            rlBottomSheetMove.setVisibility(View.GONE);
+                                        }
                                     }
                                 })
                         .setNegativeButton("CANCEL",
@@ -247,7 +249,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                                 if (!equipmentList.contains(toolhawkEquipment)) {
                                     equipmentList.add(toolhawkEquipment);
                                     rlBottomSheetMove.setVisibility(View.VISIBLE);
-                                    tvCount.setText(""+equipmentList.size());
+                                    tvCount.setText("" + equipmentList.size());
                                     mAdapter.notifyDataSetChanged();
                                     etBarcode.setText("");
                                     hideKeyboard();
@@ -286,35 +288,72 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                         rlCheckInOut.setVisibility(View.VISIBLE);
                         rlListArea.setVisibility(View.GONE);
                         rvList.setVisibility(View.GONE);
-                        if(tbTitleBottom.getText().toString().contains("out")){
-                            tvAssetTextandCount.setText("Checking out "+ equipmentList.size()+" Asset(s)");
-                        }else{
-                            tvAssetTextandCount.setText("Checking In "+ equipmentList.size()+" Asset(s)");
+                        if (tbTitleBottom.getText().toString().contains("out")) {
+                            tvAssetTextandCount.setText("Checking out " + equipmentList.size() + " Asset(s)");
+                        } else {
+                            tvAssetTextandCount.setText("Checking In " + equipmentList.size() + " Asset(s)");
                         }
 
                         if (!isUser) {
-                            tvUser.setText(""+JobNumber);
+                            tvUser.setText("" + JobNumber);
                             tvTitle.setText("JOB NUMBER");
-                        }else{
-                            tvUser.setText(""+returningUser);
+                        } else {
+                            tvUser.setText("" + returningUser);
                             tvTitle.setText("USER");
                         }
 
 
-                        if(1==equipmentList.size()){
-                            tvAssets.setText(""+ equipmentList.get(0).getCode()+"");
-                        }else{
-                            tvAssets.setText(""+ equipmentList.get(0).getCode()+",...");
+                        if (1 == equipmentList.size()) {
+                            tvAssets.setText("" + equipmentList.get(0).getCode() + "");
+                        } else {
+                            tvAssets.setText("" + equipmentList.get(0).getCode() + ",...");
                             btnViewAllAssets.setVisibility(View.VISIBLE);
                         }
 
-                        tvReturningUser.setText(""+returningUser);
+                        tvReturningUser.setText("" + returningUser);
                         tvCount.setText("");
-                        tvCountSupportText.setText("Are you sure you want to " + tbTitleBottom.getText().toString() +" "+equipmentList.size() + " Asset(s)");
+                        tvCountSupportText.setText("Are you sure you want to " + tbTitleBottom.getText().toString() + " " + equipmentList.size() + " Asset(s)");
                         tvTaskName.setText("" + tbTitleBottom.getText().toString().toUpperCase());
                         isfinalCheckout = true;
                     } else {
-                        showToast("yoo");
+                        if (tbTitleBottom.getText().toString().toLowerCase().startsWith("check out")) {
+
+                            syncPostCheckOutRequestDTO = new CheckOut();
+                            syncPostCheckOutRequestDTO.setUserID(0);
+                            if (isUser) {
+                                syncPostCheckOutRequestDTO.setCheckOutType("User");
+                            } else {
+                                syncPostCheckOutRequestDTO.setCheckOutType("JobNumber");
+                            }
+                            if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
+                                syncPostCheckOutRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
+                            }
+
+                            for (int i = 0; i < equipmentList.size(); i++) {
+                                equipmentIDList.add(equipmentList.get(i).getID());
+                            }
+                            syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
+                            DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
+                            showToast("Check Out Complete!");
+                            finish();
+
+
+                        } else {
+                            syncPostCheckInRequestDTO = new CheckIn();
+                            syncPostCheckInRequestDTO.setUserID(0);
+                            if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
+                                syncPostCheckInRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
+                            } else {
+                            }
+
+                            for (int i = 0; i < equipmentList.size(); i++) {
+                                equipmentIDList.add(equipmentList.get(i).getID());
+                            }
+                            syncPostCheckInRequestDTO.setLstEquipments(equipmentIDList);
+                            DataManager.getInstance().saveCheckInResult(syncPostCheckInRequestDTO);
+                            showToast("Check In Complete!");
+                            finish();
+                        }
                     }
                     break;
                 }
@@ -322,7 +361,6 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
         }
 
     };
-
 
 
     void showAssetList() {
@@ -351,6 +389,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
+
     private void checkCameraPermission() {
 
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
@@ -475,7 +514,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                 if (!equipmentList.contains(toolhawkEquipment)) {
                     equipmentList.add(toolhawkEquipment);
                     rlBottomSheetMove.setVisibility(View.VISIBLE);
-                    tvCount.setText(""+equipmentList.size());
+                    tvCount.setText("" + equipmentList.size());
                     mAdapter.notifyDataSetChanged();
                     etBarcode.setText("");
                     hideKeyboard();

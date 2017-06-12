@@ -4,8 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.ets.gd.Constants.Constants;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckInRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckOutRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
@@ -309,6 +313,50 @@ public class GSDServiceImpl implements GSDService {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
                 syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
                 syncPostEquipmentResponseDTO.setCallBackId(syncPostEquipmentMaintenanceDTO.getCallBackId());
+                callback.onSuccess(syncPostEquipmentResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void postSyncCheckIn(final SyncCheckInRequestDTO checkIn, final MyCallBack callback) {
+        adapter.postSyncCheckIn(checkIn.getCheckInList(), new Callback<List<SyncPostEquipment>>() {
+            @Override
+            public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
+                syncPostEquipmentResponseDTO.setCallBackId(checkIn.getCallBackId());
+                callback.onSuccess(syncPostEquipmentResponseDTO);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                if (error != null && error.getResponse() != null && error.getResponse().getStatus() != 0) {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), error.getResponse().getStatus()));
+                } else {
+                    callback.onFailure(new ResponseDTO(error.getMessage(), 1));
+                }
+            }
+        });
+    }
+
+    @Override
+    public void postSyncCheckOut(final SyncCheckOutRequestDTO checkOut, final MyCallBack callback) {
+        adapter.postSyncCheckOut(checkOut.getCheckOutList(), new Callback<List<SyncPostEquipment>>() {
+            @Override
+            public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
+                syncPostEquipmentResponseDTO.setSyncPostEquipments(syncPostEquipment);
+                syncPostEquipmentResponseDTO.setCallBackId(checkOut.getCallBackId());
                 callback.onSuccess(syncPostEquipmentResponseDTO);
             }
 

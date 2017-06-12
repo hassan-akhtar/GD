@@ -31,6 +31,7 @@ public class SharedPreferencesManager {
     public static final String  CURRENT_INSPECTION_ASSET_LOC= "assetLoc";
     public static final String  CURRENT_SELECT_LOC_TYPE= "selectLocType";
     public static final String  BASE_URL= "baseURL";
+    public static final String  LOGGED_IN_USERID = "userId";
 
 
 
