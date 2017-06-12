@@ -11,13 +11,13 @@ import io.realm.RealmObject;
  * General Data
  */
 
-public class CheckIn extends RealmObject {
+public class CheckInForCall {
 
     private int UserID;
     private int JobNumberID ;
-    private List<CheckInOutEquipment> EquipmentID ;
+    private List<Integer> EquipmentID ;
 
-    public CheckIn() {
+    public CheckInForCall() {
     }
 
 
@@ -37,11 +37,11 @@ public class CheckIn extends RealmObject {
         this.JobNumberID  = jobNumberID;
     }
 
-    public List<CheckInOutEquipment> getEquipmentID() {
+    public List<Integer> getEquipmentID() {
         return EquipmentID;
     }
 
-    public void setEquipmentID(List<CheckInOutEquipment> equipmentID) {
+    public void setEquipmentID(List<Integer> equipmentID) {
         EquipmentID = equipmentID;
     }
 }

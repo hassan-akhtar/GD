@@ -34,6 +34,7 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.CheckInOutEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
@@ -71,7 +72,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
     String[] assetNames;
     CheckIn syncPostCheckInRequestDTO;
     CheckOut syncPostCheckOutRequestDTO;
-    List<Integer> equipmentIDList = new ArrayList<Integer>();
+    List<CheckInOutEquipment> equipmentIDList = new ArrayList<CheckInOutEquipment>();
 
 
     @Override
@@ -330,7 +331,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             }
 
                             for (int i = 0; i < equipmentList.size(); i++) {
-                                equipmentIDList.add(equipmentList.get(i).getID());
+                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
                             }
                             syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
                             DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
@@ -347,9 +348,9 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             }
 
                             for (int i = 0; i < equipmentList.size(); i++) {
-                                equipmentIDList.add(equipmentList.get(i).getID());
+                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
                             }
-                            syncPostCheckInRequestDTO.setLstEquipments(equipmentIDList);
+                            syncPostCheckInRequestDTO.setEquipmentID(equipmentIDList);
                             DataManager.getInstance().saveCheckInResult(syncPostCheckInRequestDTO);
                             showToast("Check In Complete!");
                             finish();

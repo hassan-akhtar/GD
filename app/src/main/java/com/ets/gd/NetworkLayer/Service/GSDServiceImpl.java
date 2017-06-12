@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckInForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
+import com.ets.gd.NetworkLayer.RequestDTOs.CheckOutForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.LoginDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckInRequestDTO;
@@ -29,6 +31,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipmentResponseDTO;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.squareup.okhttp.OkHttpClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -329,7 +332,22 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void postSyncCheckIn(final SyncCheckInRequestDTO checkIn, final MyCallBack callback) {
-        adapter.postSyncCheckIn(checkIn.getCheckInList(), new Callback<List<SyncPostEquipment>>() {
+
+        List<CheckInForCall> lstCheckIn =  new ArrayList<CheckInForCall>();
+        for (int i=0;i<checkIn.getCheckInList().size();i++) {
+            CheckInForCall checkInForCall = new CheckInForCall();
+            checkInForCall.setUserID(checkIn.getCheckInList().get(i).getUserID());
+            checkInForCall.setJobNumberID(checkIn.getCheckInList().get(i).getJobNumberID());
+             List<Integer> EquipmentID =  new ArrayList<Integer>();
+            for (int j=0;j<checkIn.getCheckInList().get(i).getEquipmentID().size();j++) {
+                EquipmentID.add(checkIn.getCheckInList().get(i).getEquipmentID().get(j).getEquipmentID());
+            }
+            checkInForCall.setEquipmentID(EquipmentID);
+            lstCheckIn.add(checkInForCall);
+        }
+
+
+        adapter.postSyncCheckIn(lstCheckIn, new Callback<List<SyncPostEquipment>>() {
             @Override
             public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
@@ -351,7 +369,22 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void postSyncCheckOut(final SyncCheckOutRequestDTO checkOut, final MyCallBack callback) {
-        adapter.postSyncCheckOut(checkOut.getCheckOutList(), new Callback<List<SyncPostEquipment>>() {
+
+        List<CheckOutForCall> lstCheckOut =  new ArrayList<CheckOutForCall>();
+        for (int i=0;i<checkOut.getCheckOutList().size();i++) {
+            CheckOutForCall checkOutForCall = new CheckOutForCall();
+            checkOutForCall.setUserID(checkOut.getCheckOutList().get(i).getUserID());
+            checkOutForCall.setCheckOutType(checkOut.getCheckOutList().get(i).getCheckOutType());
+            checkOutForCall.setJobNumberID(checkOut.getCheckOutList().get(i).getJobNumberID());
+            List<Integer> EquipmentID =  new ArrayList<Integer>();
+            for (int j=0;j<checkOut.getCheckOutList().get(i).getEquipmentID().size();j++) {
+                EquipmentID.add(checkOut.getCheckOutList().get(i).getEquipmentID().get(j).getEquipmentID());
+            }
+            checkOutForCall.setEquipmentID(EquipmentID);
+            lstCheckOut.add(checkOutForCall);
+        }
+
+        adapter.postSyncCheckOut(lstCheckOut, new Callback<List<SyncPostEquipment>>() {
             @Override
             public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();

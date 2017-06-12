@@ -11,15 +11,15 @@ import io.realm.RealmObject;
  * General Data
  */
 
-public class CheckOut extends RealmObject {
+public class CheckOutForCall extends RealmObject {
 
     private String CheckOutType;
     private int UserID;
     private int JobNumberID;
     private String DueDate;
-    private List<CheckInOutEquipment> EquipmentID;
+    private List<Integer> EquipmentID;
 
-    public CheckOut() {
+    public CheckOutForCall() {
     }
 
     public String getCheckOutType() {
@@ -54,11 +54,11 @@ public class CheckOut extends RealmObject {
         DueDate = dueDate;
     }
 
-    public List<CheckInOutEquipment> getEquipmentID() {
+    public List<Integer> getEquipmentID() {
         return EquipmentID;
     }
 
-    public void setEquipmentID(List<CheckInOutEquipment> equipmentID) {
+    public void setEquipmentID(List<Integer> equipmentID) {
         EquipmentID = equipmentID;
     }
 }
