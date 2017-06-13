@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#66bcb0</color>
     <color name="colorAccent">#66bcb0</color>
     <color name="windowBackground">#FFFFFF</color>
-    <color name="textColorPrimary">#FFFFFF</color>
+    <color name="textColorPrimary">#66bcb0</color>
     <color name="blueButton">#66bcb0</color>
     <color name="blueGrey">#e2f4fc</color>
     <color name="blueDark">#024f6e</color>

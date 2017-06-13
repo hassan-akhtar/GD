@@ -358,14 +358,20 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
 
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("ma")) {
-                        toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
-                        if (null!=toolhawkEquipment) {
-                            Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
-                            in.putExtra("assetID", etBarcode.getText().toString());
-                            startActivity(in);
-                        }else{
-                            showToast("No Equipment Found!");
+
+                        if ("".equals(etBarcode.getText().toString().trim())) {
+                            checkCameraPermission();
+                        } else {
+                            toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
+                            if (null!=toolhawkEquipment) {
+                                Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
+                                in.putExtra("assetID", etBarcode.getText().toString());
+                                startActivity(in);
+                            }else{
+                                showToast("No Equipment Found!");
+                            }
                         }
+
                     }
                     break;
                 }
@@ -600,6 +606,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
                 in.putExtra("assetID", message);
                 startActivity(in);
+                etBarcode.setText("");
             }else{
                 showToast("No Equipment Found!");
             }

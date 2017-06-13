@@ -259,10 +259,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
 
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
-
-                                    if (clearAssets) {
-                                        assetList.clear();
-                                    }
                                     hideKeyboard();
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
@@ -271,7 +267,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to Move");
                                     mAdapter.notifyDataSetChanged();
-                                    clearAssets = false;
                                 } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();

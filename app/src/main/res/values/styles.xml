@@ -7,6 +7,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="drawerArrowStyle">@style/DrawerIcon</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 
 
@@ -71,6 +72,7 @@
         <item name="colorControlNormal">@color/colorPrimary</item>
         <item name="colorControlActivated">@color/blueDark</item>
     </style>
+
 
 
 </resources>

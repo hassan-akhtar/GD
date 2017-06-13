@@ -114,7 +114,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
             actions[i + 1] = lstMaintenanceAction.get(i).getCode();
         }
         actions[0] = "Please select an Action";
-        ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, actions);
+        ArrayAdapter<String> dataAdapterCustomer = new ArrayAdapter<String>(MaintenanceActivity.this, android.R.layout.simple_spinner_item, actions);
         dataAdapterCustomer.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spAction.setAdapter(dataAdapterCustomer);
 
@@ -126,7 +126,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
             categories[i + 1] = lstCategory.get(i).getCode();
         }
         categories[0] = "Please select a Category";
-        ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, categories);
+        ArrayAdapter<String> dataAdapterCategory = new ArrayAdapter<String>(MaintenanceActivity.this, android.R.layout.simple_spinner_item, categories);
         dataAdapterCategory.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spCategory.setAdapter(dataAdapterCategory);
 

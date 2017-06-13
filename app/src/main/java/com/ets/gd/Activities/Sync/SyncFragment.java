@@ -204,24 +204,24 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
     private void setupCheckOutData() {
 
-       // checkOutList = DataManager.getInstance().getAllCheckOutList();
+       checkOutList = DataManager.getInstance().getAllCheckOutList();
 
         syncCheckOutRequestDTO = new SyncCheckOutRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKIN, checkOutList);
 
-/*        if (0 != checkOutList.size()) {
+        if (0 != checkOutList.size()) {
             sendCheckOutCall = true;
-        }*/
+        }
     }
 
     private void setupCheckInData() {
 
-        //checkInList = DataManager.getInstance().getAllCheckInList();
+        checkInList = DataManager.getInstance().getAllCheckInList();
 
         syncCheckInRequestDTO = new SyncCheckInRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKIN, checkInList);
 
-/*        if (0 != checkInList.size()) {
+        if (0 != checkInList.size()) {
             sendCheckInCall = true;
-        }*/
+        }
     }
 
     private void setupQuickCountData() {
