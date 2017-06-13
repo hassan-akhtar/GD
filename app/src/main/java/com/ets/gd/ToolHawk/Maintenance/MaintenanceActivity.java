@@ -28,6 +28,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
@@ -46,7 +47,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     EditText etPrice, etMaintDate, etNote;
     int posAction, posCategory;
     List<Action> lstMaintenanceAction = new ArrayList<Action>();
-    List<Category> lstCategory = new ArrayList<Category>();
+    List<MaintenanceCategory> lstCategory = new ArrayList<MaintenanceCategory>();
     String[] categories;
     String[] actions;
 
@@ -104,7 +105,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     private void initObj() {
 
         lstMaintenanceAction = DataManager.getInstance().getAllActions();
-        lstCategory = DataManager.getInstance().getAllCategory();
+        lstCategory = DataManager.getInstance().getAllMaintenanceCategory();
 
 
         int sizeAction = lstMaintenanceAction.size() + 1;

@@ -20,6 +20,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
@@ -457,6 +458,12 @@ public class DataManager {
     }
 
 
+    // For getting asset all assets from DB
+    public List<MaintenanceCategory> getAllMaintenanceCategory() {
+        return realm.where(MaintenanceCategory.class).findAll().sort("Code");
+    }
+
+
     public Category getCategory(String code) {
         return realm.where(Category.class).equalTo("Code",code).findFirst();
     }
@@ -782,6 +789,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstMaintenanceAction(obj.getLstMaintenanceAction());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
                 realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
+                realmSyncGetResponseDTO.setLstMaintenanceCategory(obj.getLstMaintenanceCategory());
                 realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
                 realmSyncGetResponseDTO.setLstRoutes(obj.getLstRoutes());
                 realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);

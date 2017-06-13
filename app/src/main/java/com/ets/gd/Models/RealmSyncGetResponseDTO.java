@@ -27,6 +27,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     DashboardStats mobileDashboard;
     RealmList<FirebugBuilding> lstFireBugBuilding;
     RealmList<Action> lstMaintenanceAction;
+    RealmList<MaintenanceCategory> lstMaintenanceCategory;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -50,6 +51,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstMaintenanceAction(RealmList<Action> lstMaintenanceAction) {
         this.lstMaintenanceAction = lstMaintenanceAction;
+    }
+
+    public RealmList<MaintenanceCategory> getLstMaintenanceCategory() {
+        return lstMaintenanceCategory;
+    }
+
+    public void setLstMaintenanceCategory(RealmList<MaintenanceCategory> lstMaintenanceCategory) {
+        this.lstMaintenanceCategory = lstMaintenanceCategory;
     }
 
     public RealmList<FirebugBuilding> getLstFireBugBuilding() {

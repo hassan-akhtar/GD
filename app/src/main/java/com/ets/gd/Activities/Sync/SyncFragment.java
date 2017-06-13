@@ -206,7 +206,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
        checkOutList = DataManager.getInstance().getAllCheckOutList();
 
-        syncCheckOutRequestDTO = new SyncCheckOutRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKIN, checkOutList);
+        syncCheckOutRequestDTO = new SyncCheckOutRequestDTO(Constants.RESPONSE_SYNC_POST_CHECKOUT, checkOutList);
 
         if (0 != checkOutList.size()) {
             sendCheckOutCall = true;

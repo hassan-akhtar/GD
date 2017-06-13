@@ -23,6 +23,8 @@ public class SyncGetResponseDTO extends ResponseDTO {
     DashboardStats  mobileDashboard;
     RealmList<FirebugBuilding> lstFireBugBuilding;
     RealmList<Action> lstMaintenanceAction;
+    RealmList<MaintenanceCategory> lstMaintenanceCategory;
+
 
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
@@ -39,6 +41,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<MaintenanceCategory> getLstMaintenanceCategory() {
+        return lstMaintenanceCategory;
+    }
+
+    public void setLstMaintenanceCategory(RealmList<MaintenanceCategory> lstMaintenanceCategory) {
+        this.lstMaintenanceCategory = lstMaintenanceCategory;
     }
 
     public RealmList<Action> getLstMaintenanceAction() {
