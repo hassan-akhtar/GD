@@ -32,6 +32,7 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
@@ -58,6 +59,7 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
     private List<JobNumber> jobNumberList = new ArrayList<JobNumber>();
     private List<ToolhawkEquipment> equipmentList = new ArrayList<ToolhawkEquipment>();
     private List<ETSLocations> etsLocationsList = new ArrayList<ETSLocations>();
+    private List<Building> depBuildingList = new ArrayList<Building>();
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
@@ -190,7 +192,12 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
             mAdapter = new MoveAdapter(ToolhawkScanActivityWithList.this, jobNumberList, "job Number");
 
         } else if (scanType.toLowerCase().startsWith("loc")) {
-            etsLocationsList = DataManager.getInstance().getAllCustomerETSLocations(cusID);
+
+            depBuildingList = DataManager.getInstance().getAllBuildingsByDep(depID);
+
+            for (int i=0;i<depBuildingList.size();i++ ) {
+                etsLocationsList = DataManager.getInstance().getAllBuildingETSLocations(depBuildingList.get(i).getID());
+            }
             mAdapter = new MoveAdapter(etsLocationsList, "loc", ToolhawkScanActivityWithList.this);
 
         } else if (scanType.toLowerCase().startsWith("asset")) {

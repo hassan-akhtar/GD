@@ -490,6 +490,10 @@ public class DataManager {
         return realm.where(Building.class).findAll().sort("Code");
     }
 
+
+    public List<Building> getAllBuildingsByDep(int ID) {
+        return realm.where(Building.class).equalTo("DepartmentID", ID).findAll().sort("Code");
+    }
     public Building getBuilding(int ID) {
         return realm.where(Building.class).equalTo("ID", ID).findFirst();
     }
@@ -1022,6 +1026,11 @@ public class DataManager {
     }
 
 
+    public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllBuildingETSLocations(int ID) {
+        RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.ID", ID).findAll().sort("Code");
+        List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
+        return copied;
+    }
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllDepETSLocations(int depID) {
         RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.DepartmentID", depID).findAll().sort("Code");
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
