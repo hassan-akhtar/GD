@@ -373,6 +373,7 @@ public class GSDServiceImpl implements GSDService {
             checkOutForCall.setUserID(checkOut.getCheckOutList().get(i).getUserID());
             checkOutForCall.setCheckOutType(checkOut.getCheckOutList().get(i).getCheckOutType());
             checkOutForCall.setJobNumberID(checkOut.getCheckOutList().get(i).getJobNumberID());
+            checkOutForCall.setDueDate(checkOut.getCheckOutList().get(i).getDueDate());
             List<Integer> EquipmentID =  new ArrayList<Integer>();
             for (int j=0;j<checkOut.getCheckOutList().get(i).getEquipmentID().size();j++) {
                 EquipmentID.add(checkOut.getCheckOutList().get(i).getEquipmentID().get(j).getEquipmentID());

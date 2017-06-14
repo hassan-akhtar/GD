@@ -1,10 +1,12 @@
 package com.ets.gd.ToolHawk.CheckInOut;
 
 import android.Manifest;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -33,6 +36,7 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
+import com.ets.gd.FireBug.ViewInformation.InspectionDatesFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
@@ -43,6 +47,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
+import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -58,7 +63,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
     RelativeLayout rlForwardArrow, rlCheckInOut, rlListArea, rlBottomSheetMove;
     Button btnCross, btnScan, btnViewAllAssets;
     LinearLayout llbtns;
-    EditText etBarcode;
+    EditText etBarcode, etReturnDate;
     ImageView ivInfo;
     LinearLayout llJobNumber, llUser;
     RecyclerView rvList;
@@ -100,6 +105,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
         llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
+        etReturnDate = (EditText) findViewById(R.id.etReturnDate);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvDepartment = (TextView) findViewById(R.id.tvDepartment);
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
@@ -137,6 +143,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
         tvUnderText.setText("Scan or Enter asset ID");
         tvReturningUser.setText("" + returningUser);
         tvJobNumberCode.setText("" + JobNumber);
+        etReturnDate.setHint("MM/DD/YYYY");
 
         dep = DataManager.getInstance().getDepartmentByCode(department);
 
@@ -180,6 +187,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         btnViewAllAssets.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        etReturnDate.setOnClickListener(mGlobal_OnClickListener);
         rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
 
         rvList.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getApplicationContext(), rvList, new FragmentDrawer.ClickListener() {
@@ -219,6 +227,17 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
             }
         }));
+
+
+        etReturnDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                hideKeyboard();
+                InspectionDatesFragment.viewID = v.getId();
+                DialogFragment newFragment = new DatePickerFragmentEditText();
+                newFragment.show(getFragmentManager(), "Date Picker");
+            }
+        });
 
     }
 
@@ -293,9 +312,11 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                         rlCheckInOut.setVisibility(View.VISIBLE);
                         rlListArea.setVisibility(View.GONE);
                         rvList.setVisibility(View.GONE);
-                        if (tbTitleBottom.getText().toString().contains("out")) {
+                        if (tbTitleBottom.getText().toString().toLowerCase().contains("out")) {
                             tvAssetTextandCount.setText("Checking out " + equipmentList.size() + " Asset(s)");
+                            etReturnDate.setVisibility(View.VISIBLE);
                         } else {
+                            etReturnDate.setVisibility(View.GONE);
                             tvAssetTextandCount.setText("Checking In " + equipmentList.size() + " Asset(s)");
                         }
 
@@ -323,25 +344,30 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                     } else {
                         if (tbTitleBottom.getText().toString().toLowerCase().startsWith("check out")) {
 
-                            syncPostCheckOutRequestDTO = new CheckOut();
-                            syncPostCheckOutRequestDTO.setUserID(0);
-                            if (isUser) {
-                                syncPostCheckOutRequestDTO.setCheckOutType("User");
-                            } else {
-                                syncPostCheckOutRequestDTO.setCheckOutType("JobNumber");
-                            }
-                            if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
-                                syncPostCheckOutRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
-                            }
+                            if (!"".equals(etReturnDate.getText().toString().trim())) {
+                                syncPostCheckOutRequestDTO = new CheckOut();
+                                syncPostCheckOutRequestDTO.setUserID(0);
+                                if (isUser) {
+                                    syncPostCheckOutRequestDTO.setCheckOutType("User");
+                                } else {
+                                    syncPostCheckOutRequestDTO.setCheckOutType("JobNumber");
+                                }
+                                if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
+                                    syncPostCheckOutRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
+                                }
 
-                            for (int i = 0; i < equipmentList.size(); i++) {
-                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                for (int i = 0; i < equipmentList.size(); i++) {
+                                    equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                }
+                                syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
+                                syncPostCheckOutRequestDTO.setDueDate(""+etReturnDate.getText().toString().trim());
+                                DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
+                                showToast("Check Out Complete!");
+                                sendMessage("finish");
+                                finish();
+                            } else {
+                                showToast("Please select return date.");
                             }
-                            syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
-                            DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
-                            showToast("Check Out Complete!");
-                            sendMessage("finish");
-                            finish();
 
 
                         } else {

@@ -191,7 +191,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         } else if (null != fireBugEquipment.getManufacturerDate() && fireBugEquipment.getManufacturerDate().contains("/")) {
             tvMfgDate.setText("" + fireBugEquipment.getManufacturerDate());
         } else {
-            tvMfgDate.setText("YY-MM-DD");
+            tvMfgDate.setText("MM/DD/YYYY");
         }
 
 

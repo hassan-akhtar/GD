@@ -101,7 +101,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Move to Job Number"
+                android:text="Job Number"
                 android:textColor="@color/blueDark"
                 android:textSize="15sp" />
 
@@ -136,7 +136,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Move to User"
+                android:text="User"
                 android:textColor="@color/blueDark"
                 android:textSize="15sp" />
 

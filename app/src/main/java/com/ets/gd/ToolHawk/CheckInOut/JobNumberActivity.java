@@ -45,10 +45,10 @@ public class JobNumberActivity extends AppCompatActivity  implements BarcodeScan
 
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText, tvDepartment, tvScanType;
-    TextView tvCount, tvCountSupportText, tvTaskName;
+    TextView tvCount, tvCountSupportText, tvTaskName, tvReturningUserName;
     RelativeLayout rlForwardArrow;
     Button btnCross, btnScan;
-    LinearLayout llbtns;
+    LinearLayout llbtns, llUser;
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, department, returningUser;
@@ -81,6 +81,7 @@ public class JobNumberActivity extends AppCompatActivity  implements BarcodeScan
     private void initViews() {
         rvList = (RecyclerView) findViewById(R.id.rvList);
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
+        tvReturningUserName = (TextView) findViewById(R.id.tvReturningUserName);
         btnCross = (Button) findViewById(R.id.btnCross);
         btnScan = (Button) findViewById(R.id.btnScan);
         llbtns = (LinearLayout) findViewById(R.id.llbtnsQuickCount);
@@ -91,7 +92,7 @@ public class JobNumberActivity extends AppCompatActivity  implements BarcodeScan
         tvScanType = (TextView) findViewById(R.id.tvScanType);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
-
+        llUser = (LinearLayout) findViewById(R.id.llUser);
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
         tvTaskName = (TextView) findViewById(R.id.tvTaskName);
@@ -105,6 +106,7 @@ public class JobNumberActivity extends AppCompatActivity  implements BarcodeScan
         department = getIntent().getStringExtra("department");
         isUser = getIntent().getBooleanExtra("isUser",false);
         returningUser = getIntent().getStringExtra("returningUser");
+        tvReturningUserName.setText(""+returningUser);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("" + taskType);
         tvScanType.setText("Select / Scan Job Number");
@@ -116,8 +118,10 @@ public class JobNumberActivity extends AppCompatActivity  implements BarcodeScan
 
         if(isUser){
             rlBottomSheetMove.setVisibility(View.VISIBLE);
+            llUser.setVisibility(View.VISIBLE);
         }else{
             rlBottomSheetMove.setVisibility(View.GONE);
+            llUser.setVisibility(View.GONE);
         }
     }
 
