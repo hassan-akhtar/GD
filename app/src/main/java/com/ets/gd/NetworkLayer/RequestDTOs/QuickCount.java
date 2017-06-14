@@ -18,6 +18,7 @@ public class QuickCount extends RealmObject {
     private  boolean IsComplete;
     private  String Status;
     private boolean isChanged;
+    private  int CustomerID ;
     private  String AssetType;
     private RealmList<QuickCountAsset> QuickCountAssets;
 
@@ -35,6 +36,14 @@ public class QuickCount extends RealmObject {
         this.isChanged = isChanged;
     }
 
+
+    public int getCustomerID() {
+        return CustomerID;
+    }
+
+    public void setCustomerID(int customerID) {
+        CustomerID = customerID;
+    }
 
     public int getID() {
         return ID;

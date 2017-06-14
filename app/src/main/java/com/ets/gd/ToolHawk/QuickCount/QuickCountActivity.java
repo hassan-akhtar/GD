@@ -128,7 +128,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(QuickCountActivity.this);
-            orgQuickCount = DataManager.getInstance().getQuickCount(etsLocation.getCode());
+        orgQuickCount = DataManager.getInstance().getQuickCount(etsLocation.getCode());
     }
 
 
@@ -176,12 +176,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
             if (null != DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID())) {
                 if (QuickCountAssets.get(i).isFound() && !QuickCountAssets.get(i).isUnExpected()) {
                     assetFoundList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
-                } else {
+                } else if (!QuickCountAssets.get(i).isFound() && QuickCountAssets.get(i).isUnExpected()) {
                     assetUnExpectedList.add(DataManager.getInstance().getToolhawkEquipmentByID(QuickCountAssets.get(i).getAssetID()));
                 }
             }
         }
-        List<ToolhawkEquipment> list = DataManager.getInstance().getLocationEquipment(etsLocation.getCode());
+        List<ToolhawkEquipment> list = DataManager.getInstance().getLocationEquipment(locationCode);
         if (null != list) {
 
             for (int j = 0; j < list.size(); j++) {
@@ -191,7 +191,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
             }
         }
 
-        int expectedCount = assetList.size() + assetFoundList.size();
+        int expectedCount = list.size();
         tvExpected.setText("" + expectedCount);
         tvFound.setText("" + assetFoundList.size());
         tvUnExpected.setText("" + assetUnExpectedList.size());
@@ -338,6 +338,9 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                         myQuickCount.setID(orgQuickCount.getID());
                     } else {
                         myQuickCount.setID(0);
+                    }
+                    if (null != etsLocation.getCustomer()) {
+                        myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
                     }
                     myQuickCount.setAssetCode(etsLocation.getCode());
                     myQuickCount.setChanged(true);
