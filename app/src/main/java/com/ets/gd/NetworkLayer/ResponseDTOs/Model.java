@@ -20,6 +20,7 @@ public class Model extends RealmObject {
     private String CompanyName;
     private String DataSheetUrl;
     private String ModifiedBy;
+    private boolean IsGeneric;
     private String ModifiedTime;
 
     public int getID() {
@@ -36,6 +37,14 @@ public class Model extends RealmObject {
 
     public int getManufacturer() {
         return Manufacturer;
+    }
+
+    public boolean isGeneric() {
+        return IsGeneric;
+    }
+
+    public void setGeneric(boolean generic) {
+        IsGeneric = generic;
     }
 
     public void setManufacturer(int manufacturer) {

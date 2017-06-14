@@ -215,7 +215,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             List<Model> modelsList = new ArrayList<Model>();
             String[] models = new String[0];
             if (0 != macufacturerID) {
-                modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                modelsList = DataManager.getInstance().getModelFromManufacturerIDFirebug(macufacturerID);
                 if (0 != modelsList.size()) {
                     int sizeModels = modelsList.size() + 1;
                     models = new String[sizeModels];
@@ -382,7 +382,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     int macufacturerID = DataManager.getInstance().getAssetManufacturer(strSelectedState).getID();
                     List<Model> modelsList = new ArrayList<Model>();
                     if (0 != macufacturerID) {
-                        modelsList = DataManager.getInstance().getModelFromManufacturerID(macufacturerID);
+                        modelsList = DataManager.getInstance().getModelFromManufacturerIDFirebug(macufacturerID);
                         if (0 != modelsList.size()) {
                             int sizeModels = modelsList.size() + 1;
                             String[] models = new String[sizeModels];

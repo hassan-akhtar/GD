@@ -469,6 +469,10 @@ public class DataManager {
     }
 
 
+
+    public MaintenanceCategory getMaintenanceCategory(String code) {
+        return realm.where(MaintenanceCategory.class).equalTo("Code",code).findFirst();
+    }
     public Action getAction(String code) {
         return realm.where(Action.class).equalTo("Code",code).findFirst();
     }
@@ -581,7 +585,10 @@ public class DataManager {
         return realm.where(Model.class).equalTo("Manufacturer", id).findAll().sort("Code");
     }
 
-
+    // For getting asset all assets from DB
+    public List<Model> getModelFromManufacturerIDFirebug(int id) {
+        return realm.where(Model.class).equalTo("Manufacturer", id).equalTo("IsGeneric",true).findAll().sort("Code");
+    }
     // For getting asset all assets from DB
     public void addEquipment(FireBugEquipment fireBugEquipment) {
         realm.beginTransaction();
