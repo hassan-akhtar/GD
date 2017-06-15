@@ -75,7 +75,7 @@
 
         <Button
             android:id="@+id/btnNewCount"
-            android:drawableLeft="@drawable/ic_asset"
+            android:drawableLeft="@drawable/ic_quickcount_18"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:drawablePadding="5dp"
@@ -93,7 +93,7 @@
 
         <Button
             android:id="@+id/btnExistingCount"
-            android:drawableLeft="@drawable/ic_asset"
+            android:drawableLeft="@drawable/ic_quickcount_18"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:drawablePadding="5dp"

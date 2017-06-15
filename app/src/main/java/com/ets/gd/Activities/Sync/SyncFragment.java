@@ -603,7 +603,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
                 }
-                equipment.setUnitCost(toolhawkEquipment.getUnitCost());
+                try {
+                    equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 lstEditTHEquipment.add(equipment);
             }
@@ -621,7 +625,11 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
                 }
-                equipment.setUnitCost(toolhawkEquipment.getUnitCost());
+                try {
+                    equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
 
                 lstAddTHEquipment.add(equipment);
             }

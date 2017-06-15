@@ -13,7 +13,7 @@ import com.ets.gd.FireBug.Customer.CustomerFragment;
 import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.Inventory.InventoryDashboardFragment;
+import com.ets.gd.Inventory.Fragments.InventoryDashboardFragment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;

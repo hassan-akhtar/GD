@@ -13,10 +13,10 @@ public class THEquipment {
     private int LocationID;
     private int ManufacturerID;
     private int ModelID;
-    private String UnitCost;
+    private float UnitCost;
 
 
-    public THEquipment(int ID, String code, int departmentID, int locationID, int manufacturerID, int modelID, String unitCost) {
+    public THEquipment(int ID, String code, int departmentID, int locationID, int manufacturerID, int modelID, float unitCost) {
         this.ID = ID;
         Code = code;
         DepartmentID = departmentID;
@@ -77,11 +77,11 @@ public class THEquipment {
         ModelID = modelID;
     }
 
-    public String getUnitCost() {
+    public float getUnitCost() {
         return UnitCost;
     }
 
-    public void setUnitCost(String unitCost) {
+    public void setUnitCost(float unitCost) {
         UnitCost = unitCost;
     }
 }

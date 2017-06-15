@@ -31,7 +31,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
     private static FloatingActionMenu fab;
     private static FloatingActionButton fabItemAddItem, itemAddLocation;
     String[] thTasks = {"Equipment Info", "Quick Count", "Move Assets", "Check Out", "Check In", "Maintenance"}; //, "Transfer Assets"
-    int[] thTasksImages = {R.drawable.ic_view_info, R.drawable.ic_move_op, R.drawable.ic_move_op, R.drawable.ic_transfer, R.drawable.ic_inspect_op, R.drawable.ic_inspect_op};//, R.drawable.ic_transfer
+    int[] thTasksImages = {R.drawable.ic_view_info, R.drawable.ic_quickcount, R.drawable.ic_move_op, R.drawable.ic_checkout, R.drawable.ic_checkin, R.drawable.ic_maintenance};//, R.drawable.ic_transfer
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;

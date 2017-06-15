@@ -1,8 +1,7 @@
-package com.ets.gd.Inventory;
+package com.ets.gd.Inventory.Fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -17,12 +16,7 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
-import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
-import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.SharedPreferencesManager;
-import com.github.clans.fab.FloatingActionButton;
-import com.github.clans.fab.FloatingActionMenu;
 
 
 public class InventoryDashboardFragment extends Fragment {
@@ -30,7 +24,7 @@ public class InventoryDashboardFragment extends Fragment {
 
     View rootView;
     String[] thTasks = {"Move", "Issue", "Receive"};
-    int[] thTasksImages = { R.drawable.ic_move_op, R.drawable.ic_move_op, R.drawable.ic_move_op,};
+    int[] thTasksImages = { R.drawable.ic_move_op, R.drawable.ic_issue, R.drawable.ic_receive,};
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;
