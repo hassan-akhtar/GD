@@ -30,7 +30,7 @@ import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.DeviceInfoFragment;
 import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
-import com.ets.gd.Fragments.InventoryDashboardFragment;
+import com.ets.gd.Inventory.InventoryDashboardFragment;
 import com.ets.gd.Activities.Sync.SyncFragment;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;

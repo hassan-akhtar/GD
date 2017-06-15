@@ -13,11 +13,12 @@ import com.ets.gd.FireBug.Customer.CustomerFragment;
 import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Inventory.InventoryDashboardFragment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Stock;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -33,9 +34,12 @@ public class DashboardFragment extends Fragment {
     RelativeLayout rlFireBugBody, rlFireBugHeader, rlToolHawkHeader, rlToolHawkBody, ivForwardArrowFb, ivForwardArrowTh;
     TextView WeeklyOverdueValue, MonthlyOverdueValue, QuarterlyOverdueValue, SemiAnnualOverdueValue, AnnualOverdueValue, YearsOverdueValue, tvWeeklyDueValue, MonthlyDueValue, QuarterlyDueValue, SemiAnnualDueValue, AnnualDueValue, YearsDueValue;
     TextView thOverdueValue, thMaintdueValue, thCheckoutValue, thMaintOverdueValue;
+    TextView OutOfStockValue, lowStockValue, inStockValue, itemToReorderValue;
+    RelativeLayout ivForwardArrowIn, rlInventoryHeader, rlInventoryBody;
     InspectionDue inspectionDue;
     InspectionOverDue inspectionOverDue;
     MaintenanceDue maintenanceDue;
+    Stock stock;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -77,6 +81,16 @@ public class DashboardFragment extends Fragment {
         rlToolHawkHeader = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkHeader);
         rlToolHawkBody = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkBody);
 
+        ivForwardArrowIn = (RelativeLayout) rootView.findViewById(R.id.ivForwardArrowIn);
+        rlInventoryHeader = (RelativeLayout) rootView.findViewById(R.id.rlInventoryHeader);
+        rlInventoryBody = (RelativeLayout) rootView.findViewById(R.id.rlInventoryBody);
+
+        OutOfStockValue = (TextView) rootView.findViewById(R.id.OutOfStock);
+        lowStockValue = (TextView) rootView.findViewById(R.id.lowStock);
+        inStockValue = (TextView) rootView.findViewById(R.id.inStock);
+        itemToReorderValue = (TextView) rootView.findViewById(R.id.itemToReorder);
+
+
         WeeklyOverdueValue = (TextView) rootView.findViewById(R.id.WeeklyOverdueValue);
         MonthlyOverdueValue = (TextView) rootView.findViewById(R.id.MonthlyOverdueValue);
         QuarterlyOverdueValue = (TextView) rootView.findViewById(R.id.QuarterlyOverdueValue);
@@ -91,10 +105,10 @@ public class DashboardFragment extends Fragment {
         YearsDueValue = (TextView) rootView.findViewById(R.id.YearsDueValue);
 
 
-        thOverdueValue = (TextView) rootView.findViewById(R.id.thOverdueValue);
-        thMaintdueValue = (TextView) rootView.findViewById(R.id.thMaintdueValue);
-        thCheckoutValue = (TextView) rootView.findViewById(R.id.thCheckoutValue);
-        thMaintOverdueValue = (TextView) rootView.findViewById(R.id.thMaintOverdueValue);
+        thOverdueValue = (TextView) rootView.findViewById(R.id.OutOfStockValue);
+        thMaintdueValue = (TextView) rootView.findViewById(R.id.inStockValue);
+        thCheckoutValue = (TextView) rootView.findViewById(R.id.lowStockValue);
+        thMaintOverdueValue = (TextView) rootView.findViewById(R.id.itemToReorderValue);
 
 
         ///fb overdue
@@ -205,7 +219,7 @@ public class DashboardFragment extends Fragment {
 
         }
 
-        maintenanceDue =  DataManager.getInstance().getDashboardStatsToolhawk();
+        maintenanceDue = DataManager.getInstance().getDashboardStatsToolhawk();
 
         if (null != maintenanceDue) {
             String totalOverdue, totalCheckout, maintenanceOverdue, maintDue;
@@ -242,6 +256,43 @@ public class DashboardFragment extends Fragment {
 
         }
 
+        stock = DataManager.getInstance().getDashboardStatsInventory();
+
+        if (null != stock) {
+            String outOfStock, lowStock, inStock, itemsToReorder;
+            outOfStock = "" + stock.getOutOfStockItems();
+            lowStock = "" + stock.getLowAtStockItems();
+            inStock = "" + stock.getInStockItems();
+            itemsToReorder = "" + stock.getReOrderItems();
+
+            if (outOfStock.length() == 1) {
+                OutOfStockValue.setText("0" + outOfStock);
+            } else {
+                OutOfStockValue.setText(outOfStock);
+            }
+
+
+            if (lowStock.length() == 1) {
+                lowStockValue.setText("0" + lowStock);
+            } else {
+                lowStockValue.setText(lowStock);
+            }
+
+
+            if (inStock.length() == 1) {
+                inStockValue.setText("0" + inStock);
+            } else {
+                inStockValue.setText(inStock);
+            }
+
+
+            if (itemsToReorder.length() == 1) {
+                itemToReorderValue.setText("0" + itemsToReorder);
+            } else {
+                itemToReorderValue.setText(itemsToReorder);
+            }
+        }
+
     }
 
     private void initObj() {
@@ -254,6 +305,8 @@ public class DashboardFragment extends Fragment {
         rlToolHawkHeader.setOnClickListener(mGlobal_OnClickListener);
         ivForwardArrowTh.setOnClickListener(mGlobal_OnClickListener);
         ivForwardArrowFb.setOnClickListener(mGlobal_OnClickListener);
+        ivForwardArrowIn.setOnClickListener(mGlobal_OnClickListener);
+        rlInventoryHeader.setOnClickListener(mGlobal_OnClickListener);
     }
 
 
@@ -263,6 +316,11 @@ public class DashboardFragment extends Fragment {
                 case R.id.rlFireBugHeader: {
                     if (rlToolHawkBody.getVisibility() == View.VISIBLE) {
                         rlToolHawkBody.setVisibility(View.GONE);
+                    }
+
+
+                    if (rlInventoryBody.getVisibility() == View.VISIBLE) {
+                        rlInventoryBody.setVisibility(View.GONE);
                     }
 
                     if (rlFireBugBody.getVisibility() == View.VISIBLE) {
@@ -278,6 +336,11 @@ public class DashboardFragment extends Fragment {
                     if (rlFireBugBody.getVisibility() == View.VISIBLE) {
                         rlFireBugBody.setVisibility(View.GONE);
                     }
+
+
+                    if (rlInventoryBody.getVisibility() == View.VISIBLE) {
+                        rlInventoryBody.setVisibility(View.GONE);
+                    }
                     if (rlToolHawkBody.getVisibility() == View.VISIBLE) {
                         rlToolHawkBody.setVisibility(View.GONE);
                     } else {
@@ -292,6 +355,30 @@ public class DashboardFragment extends Fragment {
                     BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                     break;
                 }
+
+                case R.id.ivForwardArrowIn: {
+                    //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
+                    BaseActivity.refreshMainViewByNew(new InventoryDashboardFragment());
+                    break;
+                }
+
+                case R.id.rlInventoryHeader: {
+                    if (rlFireBugBody.getVisibility() == View.VISIBLE) {
+                        rlFireBugBody.setVisibility(View.GONE);
+                    }
+                    if (rlToolHawkBody.getVisibility() == View.VISIBLE) {
+                        rlToolHawkBody.setVisibility(View.GONE);
+                    }
+
+                    if (rlInventoryBody.getVisibility() == View.VISIBLE) {
+                        rlInventoryBody.setVisibility(View.GONE);
+                    } else {
+                        rlInventoryBody.setVisibility(View.VISIBLE);
+                    }
+
+                    break;
+                }
+
 
                 case R.id.ivForwardArrowFb: {
                     if (DataManager.getInstance().isServiceCompany()) {

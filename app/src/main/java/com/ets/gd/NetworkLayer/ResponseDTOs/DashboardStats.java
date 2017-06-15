@@ -2,16 +2,11 @@ package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 import io.realm.RealmObject;
 
-/**
- * Created by hakhtar on 5/23/2017.
- * General Data
- */
-
 public class DashboardStats extends RealmObject{
 
     FireBugDashBoard fireBugDashBoard;
     ToolHawkDashBoard toolHawkDashBoard;
-    //InventoryDashboard etsInventoryDashboard;
+    InventoryDashboard etsInventoryDashboard;
 
 
     public FireBugDashBoard getFireBugDashBoard() {
@@ -30,4 +25,11 @@ public class DashboardStats extends RealmObject{
         this.toolHawkDashBoard = toolHawkDashBoard;
     }
 
+    public InventoryDashboard getEtsInventoryDashboard() {
+        return etsInventoryDashboard;
+    }
+
+    public void setEtsInventoryDashboard(InventoryDashboard etsInventoryDashboard) {
+        this.etsInventoryDashboard = etsInventoryDashboard;
+    }
 }

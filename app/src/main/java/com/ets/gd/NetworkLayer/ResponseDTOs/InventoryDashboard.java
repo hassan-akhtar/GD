@@ -9,5 +9,13 @@ import io.realm.RealmObject;
 
 public class InventoryDashboard extends RealmObject {
 
-     private int MaterialID;
+ private ETSInventory ETSInventoryMaterialDetailsCount;
+
+    public ETSInventory getETSInventoryMaterialDetailsCount() {
+        return ETSInventoryMaterialDetailsCount;
+    }
+
+    public void setETSInventoryMaterialDetailsCount(ETSInventory ETSInventoryMaterialDetailsCount) {
+        this.ETSInventoryMaterialDetailsCount = ETSInventoryMaterialDetailsCount;
+    }
 }

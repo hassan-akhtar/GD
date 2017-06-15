@@ -42,6 +42,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Stock;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
@@ -684,6 +685,11 @@ public class DataManager {
     public MaintenanceDue getDashboardStatsToolhawk() {
         return realm.where(MaintenanceDue.class).findFirst();
     }
+
+    public Stock getDashboardStatsInventory() {
+        return realm.where(Stock.class).findFirst();
+    }
+
 
     // For getting asset all assets from DB
     public List<Asset> getAllAssets(int count) {

@@ -99,6 +99,52 @@
 
                 <include layout="@layout/toolhawk_body_layout" />
             </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlInventoryHeader"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:layout_below="@+id/rlToolHawkBody"
+                android:layout_marginTop="1dp"
+                android:background="@color/colorPrimary">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:text="Inventory"
+                    android:textColor="@android:color/white"
+                    android:textSize="22dp" />
+
+                <RelativeLayout
+                    android:id="@+id/ivForwardArrowIn"
+                    android:layout_width="60dp"
+                    android:layout_height="55dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true">
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_height="18dp"
+                        android:src="@drawable/forward_arrow" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlInventoryBody"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlInventoryHeader"
+                android:layout_marginTop="1dp"
+                android:visibility="gone">
+
+                <include layout="@layout/inventorybody_layout" />
+            </RelativeLayout>
+
+
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

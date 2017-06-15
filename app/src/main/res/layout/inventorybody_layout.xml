@@ -14,7 +14,7 @@
             android:id="@+id/rl1Overdue"
             android:layout_weight="1"
             android:layout_width="wrap_content"
-            android:layout_height="100dp"
+            android:layout_height="150dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true">
@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
-                android:text="TOOLHAWK"
+                android:text="INVENTORY"
                 android:textColor="@color/greyLight" />
 
             <TextView
@@ -48,7 +48,7 @@
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="85dp"
+            android:layout_height="125dp"
             android:layout_marginTop="25dp"
             android:layout_toEndOf="@+id/rl1Overdue"
             android:layout_toRightOf="@+id/rl1Overdue">
@@ -71,14 +71,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:text=" Overdue"
+                        android:text=" Out Of Stock"
                         android:textColor="@color/greyLight" />
 
                     <TextView
-                        android:id="@+id/OutOfStockValue"
+                        android:id="@+id/OutOfStock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="5dp"
                         android:text="02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -90,7 +90,7 @@
                     android:layout_weight="1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="10dp"
                     android:layout_toEndOf="@+id/llWeekly"
                     android:layout_toRightOf="@+id/llWeekly"
                     android:orientation="horizontal">
@@ -99,14 +99,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:text="Checked Out"
+                        android:text="Low Stock"
                         android:textColor="@color/greyLight" />
 
                     <TextView
-                        android:id="@+id/lowStockValue"
+                        android:id="@+id/lowStock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginLeft="41dp"
                         android:text="02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -133,14 +133,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="2dp"
-                        android:text=" Maint Due"
+                        android:text="  In Stock"
                         android:textColor="@color/greyLight" />
 
                     <TextView
-                        android:id="@+id/inStockValue"
+                        android:id="@+id/inStock"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginLeft="32dp"
                         android:text="02"
                         android:textColor="@color/greyLight"
                         android:textStyle="bold" />
@@ -151,7 +151,7 @@
                     android:id="@+id/llAnnualOverdue"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="19dp"
+                    android:layout_marginLeft="9dp"
                     android:layout_toEndOf="@+id/llMonthly"
                     android:layout_toRightOf="@+id/llMonthly"
                     android:orientation="horizontal">
@@ -160,11 +160,11 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="3dp"
-                        android:text="Maint Overdue"
+                        android:text="Item To Reorder"
                         android:textColor="@color/greyLight" />
 
                     <TextView
-                        android:id="@+id/itemToReorderValue"
+                        android:id="@+id/itemToReorder"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="5dp"
