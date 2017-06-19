@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context="com.ets.gd.ToolHawk.Move.MoveActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/rlHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/activity_header_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlAssetInfo"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_below="@+id/rlHeader"
+        android:background="@color/colorPrimary">
+
+        <TextView
+            android:id="@+id/textDepartment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:text="Material:"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvMaterial"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@+id/textDepartment"
+            android:text="1111111"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rlDepartment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rlAssetInfo"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <RelativeLayout
+            android:id="@+id/rlFirst"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:id="@+id/tvMove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Select Move Type"
+                android:textColor="@color/greyLight"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <View
+                android:id="@+id/firstLine"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/tvMove"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlJob"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlFirst"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/tvJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="User "
+                android:textColor="@color/blueDark"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/secondLine"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/tvJob"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_forward_green" />
+
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rlLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlJob"
+            android:layout_marginTop="15dp">
+
+            <TextView
+                android:id="@+id/tvLoc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Container"
+                android:textColor="@color/blueDark"
+                android:textSize="15sp" />
+
+            <View
+                android:id="@+id/thirdLine"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_below="@+id/tvLoc"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorPrimary" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_forward_green" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

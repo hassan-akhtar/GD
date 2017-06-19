@@ -36,11 +36,13 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Inventory.Adapters.InventoryScannedMaterialAdapter;
+import com.ets.gd.Inventory.Move.MoveToActivity;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -274,7 +276,15 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
 
                 case R.id.rlForwardArrow: {
-                    showToast("yooo");
+                    Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("materialName", materialID);
+                    if (0<materialList.size()) {
+                        in.putExtra("isMultiple", true);
+                    } else {
+                        in.putExtra("isMultiple", false);
+                    }
+                    startActivity(in);
                     break;
                 }
 
