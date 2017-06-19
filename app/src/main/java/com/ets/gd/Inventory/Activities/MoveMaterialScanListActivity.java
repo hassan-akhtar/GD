@@ -15,7 +15,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,14 +29,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.Activities.Other.BaseActivity;
+import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
+import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Inventory.Adapters.InventoryScannedMaterialAdapter;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
+import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoveMaterialScanListActivity extends AppCompatActivity implements BarcodeScan {
 
@@ -43,22 +56,25 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     LinearLayout llbtns, llbtnsEq;
     EditText etBarcode;
     ImageView ivInfo;
-    String taskType, JobNumber, materialID;
-    int quantity, JobNumberID, materialLocID;
+    String taskType, JobNumber, materialID, quantity;
+    int JobNumberID, materialLocID;
     ImageView ivBack, ivTick;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     ToolhawkEquipment toolhawkEquipment;
     ETSLocation etsLocation;
-    RelativeLayout rlBottomSheetMove, rlForwardArrow;
+    RelativeLayout rlBottomSheetMove, rlForwardArrow, rlJobNumber;
     RecyclerView rvList;
-    TextView tvCount, tvCountSupportText, tvTaskName;
+    TextView tvCount, tvCountSupportText, tvTaskName, tvJobNumber;
+    InventoryScannedMaterialAdapter mAdapter;
+    private List<Note> materialList = new ArrayList<Note>();
+    Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_common_toolhawk_scan);
+        setContentView(R.layout.activity_inventory_scan);
 
         initViews();
         initObj();
@@ -72,6 +88,8 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     private void initViews() {
 
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
+        tvJobNumber = (TextView) findViewById(R.id.tvJobNumber);
+        rlJobNumber  = (RelativeLayout) findViewById(R.id.rlJobNumber);
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
         tvTaskName = (TextView) findViewById(R.id.tvTaskName);
@@ -95,7 +113,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
         taskType = getIntent().getStringExtra("taskType");
-        quantity = getIntent().getIntExtra("quantity", 0);
+        quantity = getIntent().getStringExtra("quantity");
         JobNumberID = getIntent().getIntExtra("JobNumberID", 0);
         materialLocID = getIntent().getIntExtra("materialLocID", 0);
         materialID = getIntent().getStringExtra("materialID");
@@ -104,12 +122,40 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan/Enter ID of Material");
 
+
+        if(null!=JobNumber){
+            rlJobNumber.setVisibility(View.VISIBLE);
+            tvJobNumber.setText(""+JobNumber);
+        }else{
+            rlJobNumber.setVisibility(View.GONE);
+        }
     }
 
     private void initObj() {
+        mContext =this;
         sharedPreferencesManager = new SharedPreferencesManager(MoveMaterialScanListActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
+
+        Note material = new Note();
+        material.setNoteTitle("" + materialID);
+        material.setNoteDescription("" + quantity);
+        materialList.add(material);
+        mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MoveMaterialScanListActivity.this);
+        rvList.setLayoutManager(mLayoutManager);
+        rvList.setItemAnimator(new DefaultItemAnimator());
+        rvList.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
+        if (0 != materialList.size()) {
+            rlBottomSheetMove.setVisibility(View.VISIBLE);
+            if (taskType.toLowerCase().startsWith("mo")) {
+                tvTaskName.setText("MOVE ASSET");
+                tvCount.setText("" + materialList.size());
+                tvCountSupportText.setText("Asset Selected to Move");
+            }
+        }
     }
 
     private void initListeners() {
@@ -119,8 +165,50 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
-        btnLocation.setOnClickListener(mGlobal_OnClickListener);
-        btnAsset.setOnClickListener(mGlobal_OnClickListener);
+        rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
+
+
+        rvList.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(MoveMaterialScanListActivity.this, rvList, new FragmentDrawer.ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        mContext);
+                alertDialogBuilder.setTitle("Remove Material");
+                alertDialogBuilder.setMessage("Are you sure you want to remove " + materialList.get(position).getNoteTitle());
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("REMOVE",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+
+                                        mAdapter.removeAt(position);
+                                        if (0 != materialList.size()) {
+                                            tvCount.setText("" + materialList.size());
+                                        } else {
+                                            rlBottomSheetMove.setVisibility(View.GONE);
+                                        }
+
+                                    }
+                                })
+                        .setNegativeButton("CANCEL",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,
+                                                        int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                alertDialogBuilder.show();
+
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
     }
 
     private void setupView() {
@@ -136,6 +224,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
     }
+
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
@@ -147,10 +236,11 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                            sendMessage("finish");
+                            Intent in = new Intent(MoveMaterialScanListActivity.this, CommonMaterialScanActivity.class);
                             in.putExtra("taskType", taskType);
-                            in.putExtra("materialID", etBarcode.getText().toString());
                             startActivity(in);
+                            finish();
                         }
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
@@ -159,20 +249,14 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
-                            in.putExtra("taskType", taskType);
-                            in.putExtra("materialID", etBarcode.getText().toString());
-                            startActivity(in);
+
                         }
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
 
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
-                            in.putExtra("taskType", taskType);
-                            in.putExtra("materialID", etBarcode.getText().toString());
-                            startActivity(in);
+
                         }
                     }
                     break;
@@ -187,12 +271,24 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
                     break;
                 }
+
+
+                case R.id.rlForwardArrow: {
+                    showToast("yooo");
+                    break;
+                }
+
             }
         }
 
     };
 
-
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }

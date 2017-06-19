@@ -121,6 +121,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
     private void setupLocList() {
 
+        hideKeyboard();
         locList = DataManager.getInstance().getAllDepartments();
 
         mAdapter = new DepartmentAdapter(MaterialQuantityActivity.this, locList);
@@ -167,6 +168,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
 
     public void hideKeyboard() {
+        etQuantity.clearFocus();
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );

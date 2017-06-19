@@ -16,6 +16,8 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -118,6 +120,8 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
     }
+
+
 
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {

@@ -52,8 +52,8 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     LinearLayout llbtns, llUser;
     EditText etBarcode;
     ImageView ivInfo;
-    String taskType, department, returningUser, materialID;
-    int quantity,  materialLocID;
+    String taskType, department, returningUser, materialID, quantity;
+    int  materialLocID;
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     private List<JobNumber> jobNumberList = new ArrayList<JobNumber>();
@@ -108,7 +108,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         taskType = getIntent().getStringExtra("taskType");
         materialLocID = getIntent().getIntExtra("materialLocID",0);
         materialID = getIntent().getStringExtra("materialID");
-        quantity = getIntent().getIntExtra("quantity", 0);
+        quantity = getIntent().getStringExtra("quantity");
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan or Enter Job Number");
@@ -139,6 +139,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                 in.putExtra("materialLocID", materialLocID);
                 in.putExtra("materialID", materialID);
                 in.putExtra("quantity", quantity);
+                in.putExtra("taskType", taskType);
                 in.putExtra("JobNumber", jobNumberList.get(position).getCode());
                 in.putExtra("JobNumberID", jobNumberList.get(position).getID());
                 startActivity(in);
@@ -208,6 +209,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                             Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
                             in.putExtra("materialLocID", materialLocID);
                             in.putExtra("materialID", materialID);
+                            in.putExtra("taskType", taskType);
                             in.putExtra("quantity", quantity);
                             in.putExtra("JobNumber", jobNumber.getCode());
                             in.putExtra("JobNumberID", jobNumber.getID());
@@ -366,6 +368,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
             in.putExtra("materialLocID", materialLocID);
             in.putExtra("materialID", materialID);
             in.putExtra("quantity", quantity);
+            in.putExtra("taskType", taskType);
             in.putExtra("JobNumber", jobNumber.getCode());
             in.putExtra("JobNumberID", jobNumber.getID());
             startActivity(in);
