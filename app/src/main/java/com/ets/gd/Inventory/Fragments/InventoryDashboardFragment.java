@@ -2,6 +2,7 @@ package com.ets.gd.Inventory.Fragments;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Inventory.Activities.CommonMaterialScanActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -24,7 +26,7 @@ public class InventoryDashboardFragment extends Fragment {
 
     View rootView;
     String[] thTasks = {"Move", "Issue", "Receive"};
-    int[] thTasksImages = { R.drawable.ic_move_op, R.drawable.ic_issue, R.drawable.ic_receive,};
+    int[] thTasksImages = {R.drawable.ic_move_op, R.drawable.ic_issue, R.drawable.ic_receive,};
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;
@@ -39,7 +41,7 @@ public class InventoryDashboardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        rootView =  inflater.inflate(R.layout.fragment_inventory_dashboard, container, false);
+        rootView = inflater.inflate(R.layout.fragment_inventory_dashboard, container, false);
 
         initViews();
         initObj();
@@ -70,8 +72,23 @@ public class InventoryDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                    showToast("" + thTasks[position]);
+                //showToast("" + thTasks[position]);
+                if (thTasks[position].toLowerCase().startsWith("mo")) {
 
+                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                    in.putExtra("taskType",thTasks[position]);
+                    startActivity(in);
+                } else  if (thTasks[position].toLowerCase().startsWith("iss")) {
+
+                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                    in.putExtra("taskType",thTasks[position]);
+                    startActivity(in);
+                } else  if (thTasks[position].toLowerCase().startsWith("rec")) {
+                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                    in.putExtra("taskType",thTasks[position]);
+                    startActivity(in);
+
+                }
 
             }
 

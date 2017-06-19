@@ -75,7 +75,12 @@
         <activity
             android:name=".Activities.Sync.FirstTimeSyncActicity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Activities.CommonMaterialScanActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".FireBug.RouteInspection.RouteAssetActivity" />
+        <activity android:name=".Inventory.Activities.MoveMaterialScanListActivity" />
+        <activity android:name=".Inventory.Activities.InventoryJobNumberActivity" />
         <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity" />
         <activity android:name=".ToolHawk.EquipmentInfo.EquipmentInfoActivity" />
         <activity android:name=".ToolHawk.Activities.CommonToolhawkScanActivity" />
@@ -91,7 +96,8 @@
         <activity android:name=".ToolHawk.CheckInOut.UserActivity" />
         <activity android:name=".ToolHawk.CheckInOut.JobNumberActivity" />
         <activity android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity" />
-        <activity android:name=".FireBug.ViewInformation.ViewAllAssetsActivity"></activity>
+        <activity android:name=".FireBug.ViewInformation.ViewAllAssetsActivity" />
+        <activity android:name=".Inventory.Activities.MaterialQuantityActivity"></activity>
     </application>
 
 </manifest>

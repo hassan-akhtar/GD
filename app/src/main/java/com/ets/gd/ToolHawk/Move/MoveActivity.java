@@ -104,7 +104,6 @@ public class MoveActivity extends AppCompatActivity {
                     }else{
                         showToast("No Job number Found in "+departmentName);
                     }
-
                     break;
                 }
 
