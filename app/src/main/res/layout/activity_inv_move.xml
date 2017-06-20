@@ -102,7 +102,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="User "
+                android:text="Location "
                 android:textColor="@color/blueDark"
                 android:textSize="15sp" />
 

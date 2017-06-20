@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Material;
+import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMove;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -36,13 +38,14 @@ public class MoveFinalActivity extends AppCompatActivity {
     String[] assetNames;
     public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet, rlAssetInfo;
-    private String taskType;
+    private String taskType,scanType;
     int count;
     int locID, cusID;
     TextView tvJobNumber;
     SharedPreferencesManager sharedPreferencesManager;
     public static List<Material> materialList = new ArrayList<Material>();
-
+    MoveInventory moveInventory;
+    private List<InventoryMove> Materials;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,6 +96,7 @@ public class MoveFinalActivity extends AppCompatActivity {
     private void setupData() {
 
         taskName = getIntent().getStringExtra("taskType");
+        scanType  = getIntent().getStringExtra("scanType");
         count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
         loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
@@ -171,6 +175,28 @@ public class MoveFinalActivity extends AppCompatActivity {
                 case R.id.rlYes: {
 
                     if (taskName.toLowerCase().startsWith("m")) {
+                        if (scanType.startsWith("con")) {
+                            moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                            moveInventory.setMoveType("Container");
+                        }
+                        if (scanType.startsWith("loc")) {
+                            moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getID());
+                            moveInventory.setMoveType("Location");
+                        }
+                        moveInventory.setUserID(0);
+
+                        moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+                       for(int i=0;i<materialList.size();i++){
+                           InventoryMove inventoryMove = new InventoryMove();
+                           inventoryMove.setCode(materialList.get(i).getName());
+                           inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
+                           inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
+                           inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
+
+                           Materials.add(inventoryMove);
+                       }
+                        moveInventory.setMaterials(Materials);
+                        DataManager.getInstance().saveMoveInventoryResult(moveInventory);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("i")) {
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Issued!", Toast.LENGTH_LONG).show();

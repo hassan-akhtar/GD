@@ -10,6 +10,7 @@ public class Material {
     private String name;
     private String quantity;
     private int locID;
+    private int jobNumberID;
 
     public Material() {
     }
@@ -19,10 +20,27 @@ public class Material {
         this.quantity = quantity;
     }
 
+
     public Material(String name, String quantity, int locID) {
         this.name = name;
         this.quantity = quantity;
         this.locID = locID;
+    }
+
+    public Material(String name, String quantity, int locID, int jobNumberID) {
+        this.name = name;
+        this.quantity = quantity;
+        this.locID = locID;
+        this.jobNumberID = jobNumberID;
+    }
+
+
+    public int getJobNumberID() {
+        return jobNumberID;
+    }
+
+    public void setJobNumberID(int jobNumberID) {
+        this.jobNumberID = jobNumberID;
     }
 
     public String getName() {

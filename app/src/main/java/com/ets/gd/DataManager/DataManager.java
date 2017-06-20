@@ -6,6 +6,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventory;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
@@ -678,9 +679,12 @@ public class DataManager {
     }
 
     public List<Inventory> getInventoryListByMaterialID(int materialID) {
-        return realm.where(Inventory.class).equalTo("ID", materialID).findAll();
+        return realm.where(Inventory.class).equalTo("MaterialID", materialID).findAll();
     }
 
+    public Inventory getInventoryByMaterialID(int materialID) {
+        return realm.where(Inventory.class).equalTo("MaterialID", materialID).findFirst();
+    }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCodeOnly(String code) {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
@@ -880,6 +884,14 @@ public class DataManager {
     }
 
     public void saveQuickCountResult(QuickCount obj) {
+
+        realm.beginTransaction();
+        realm.copyToRealm(obj);
+        realm.commitTransaction();
+    }
+
+
+    public void saveMoveInventoryResult(MoveInventory obj) {
 
         realm.beginTransaction();
         realm.copyToRealm(obj);

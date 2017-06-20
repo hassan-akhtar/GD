@@ -151,7 +151,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                     startActivity(in);
                     etBarcode.setText("");
                 } else {
-                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumberList.get(position).getID()));
                     sendMessage("finish");
                 }
             }
@@ -227,7 +227,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                                 startActivity(in);
                                 etBarcode.setText("");
                             } else {
-                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
                                 sendMessage("finish");
                             }
                         } else {
@@ -399,7 +399,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                 startActivity(in);
                 etBarcode.setText("");
             } else {
-                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
                 sendMessage("finish");
             }
         } else {

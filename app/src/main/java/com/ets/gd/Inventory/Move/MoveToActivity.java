@@ -98,7 +98,7 @@ public class MoveToActivity extends AppCompatActivity {
 
                     Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
                     in.putExtra("taskType", taskName);
-                    in.putExtra("scanType", "User");
+                    in.putExtra("scanType", "Location");
                     in.putExtra("material", materialName);
                     in.putExtra("isMultiple", isMultiple);
                     startActivity(in);

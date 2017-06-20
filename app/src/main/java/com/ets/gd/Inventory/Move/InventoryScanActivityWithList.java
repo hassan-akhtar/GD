@@ -59,11 +59,11 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     private List<ToolhawkEquipment> containerList = new ArrayList<ToolhawkEquipment>();
-    private List<MobileUser> userList = new ArrayList<MobileUser>();
+    private List<ETSLocations> locList = new ArrayList<ETSLocations>();
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
-    MobileUser mobileUser;
+    ETSLocations etsLocations;
     ToolhawkEquipment container;
     ETSLocations etsLocation;
     boolean isMultiple;
@@ -138,7 +138,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
-                    in.putExtra("toLoc", userList.get(position).getUserName());
+                    in.putExtra("toLoc", locList.get(position).getCode());
                     startActivity(in);
 
                 } else if (scanType.toLowerCase().startsWith("con")) {
@@ -179,8 +179,8 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
 
         if (scanType.toLowerCase().startsWith("use")) {
 
-            userList = DataManager.getInstance().getAllMobileUserList();
-            mAdapter = new UserContainerAdapter(InventoryScanActivityWithList.this, userList, "user");
+            locList = DataManager.getInstance().getAllETSLocations();
+            mAdapter = new UserContainerAdapter(InventoryScanActivityWithList.this, locList, "loc");
 
         } else if (scanType.toLowerCase().startsWith("con")) {
             containerList = DataManager.getInstance().getAllContainerToolhawkAssets();
@@ -203,18 +203,18 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                         checkCameraPermission();
                     } else {
 
-                        if (scanType.toLowerCase().startsWith("use")) {
-                            mobileUser = DataManager.getInstance().getMobileUser(etBarcode.getText().toString());
-                            if (null != mobileUser) {
+                        if (scanType.toLowerCase().startsWith("loc")) {
+                            etsLocations = DataManager.getInstance().getETSLocationsByCode(etBarcode.getText().toString());
+                            if (null != etsLocations) {
                                 Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                                 in.putExtra("taskType", taskType);
                                 in.putExtra("scanType", scanType);
                                 in.putExtra("jobNumber", "");
-                                in.putExtra("toLoc", mobileUser.getUserName());
+                                in.putExtra("toLoc", etsLocations.getCode());
                                 startActivity(in);
                                 etBarcode.setText("");
                             } else {
-                                showToast("No such user Found!");
+                                showToast("No such location Found!");
                             }
 
 
@@ -388,18 +388,18 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
         String task = barcode.getTask();
 
 
-        if (scanType.toLowerCase().startsWith("use")) {
-            mobileUser = DataManager.getInstance().getMobileUser(message);
-            if (null != mobileUser) {
+        if (scanType.toLowerCase().startsWith("loc")) {
+            etsLocations = DataManager.getInstance().getETSLocationsByCode(message);
+            if (null != etsLocations) {
                 Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                 in.putExtra("taskType", taskType);
                 in.putExtra("scanType", scanType);
                 in.putExtra("jobNumber", "");
-                in.putExtra("toLoc", mobileUser.getUserName());
+                in.putExtra("toLoc", etsLocations.getCode());
                 startActivity(in);
                 etBarcode.setText("");
             } else {
-                showToast("No such user Found!");
+                showToast("No such location Found!");
             }
         } else if (scanType.toLowerCase().startsWith("con")) {
 
