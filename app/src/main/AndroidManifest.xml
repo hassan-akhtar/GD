@@ -99,7 +99,8 @@
         <activity android:name=".ToolHawk.CheckInOut.JobNumberActivity" />
         <activity android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity" />
         <activity android:name=".FireBug.ViewInformation.ViewAllAssetsActivity" />
-        <activity android:name=".Inventory.Activities.MaterialQuantityActivity"></activity>
+        <activity android:name=".Inventory.Activities.MaterialQuantityActivity" />
+        <activity android:name=".Inventory.Move.MoveFinalActivity"></activity>
     </application>
 
 </manifest>

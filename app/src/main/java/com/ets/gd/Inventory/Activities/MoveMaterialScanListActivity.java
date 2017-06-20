@@ -279,7 +279,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                     Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("materialName", materialID);
-                    if (0<materialList.size()) {
+                    if (1<materialList.size()) {
                         in.putExtra("isMultiple", true);
                     } else {
                         in.putExtra("isMultiple", false);

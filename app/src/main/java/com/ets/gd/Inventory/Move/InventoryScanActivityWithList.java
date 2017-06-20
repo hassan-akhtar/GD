@@ -44,7 +44,7 @@ import com.ets.gd.Utils.SharedPreferencesManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryScanActivityWithList extends AppCompatActivity implements BarcodeScan{
+public class InventoryScanActivityWithList extends AppCompatActivity implements BarcodeScan {
 
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText, tvDepartment, tvScanType, textDepartment;
@@ -110,7 +110,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
     }
 
     private void initObj() {
-        sharedPreferencesManager =new SharedPreferencesManager(InventoryScanActivityWithList.this);
+        sharedPreferencesManager = new SharedPreferencesManager(InventoryScanActivityWithList.this);
         hideKeyboard();
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
@@ -127,21 +127,20 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             public void onClick(View view, int position) {
 
                 if (scanType.toLowerCase().startsWith("use")) {
-                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
+                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
                     in.putExtra("moveCode", jobNumberList.get(position).getCode());
                     startActivity(in);
 
                 } else if (scanType.toLowerCase().startsWith("con")) {
-                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
+                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
                     in.putExtra("moveCode", etsLocationsList.get(position).getCode());
                     startActivity(in);
 
                 }
-
 
 
             }
@@ -188,7 +187,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
 
             depBuildingList = DataManager.getInstance().getAllBuildingsByDep(depID);
 
-            for (int i=0;i<depBuildingList.size();i++ ) {
+            for (int i = 0; i < depBuildingList.size(); i++) {
                 etsLocationsList = DataManager.getInstance().getAllBuildingETSLocations(depBuildingList.get(i).getID());
             }
             mAdapter = new MoveAdapter(etsLocationsList, "loc", InventoryScanActivityWithList.this);
@@ -227,22 +226,26 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     } else {
 
                         if (scanType.toLowerCase().startsWith("use")) {
-                            jobNumber = DataManager.getInstance().getJobNumber(etBarcode.getText().toString());
+                            //   jobNumber = DataManager.getInstance().getJobNumber(etBarcode.getText().toString());
 
-                            if(null!=jobNumber){
-                                Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
-                                in.putExtra("taskType", taskType);
-                                in.putExtra("scanType", scanType);
-                                in.putExtra("moveCode", jobNumber.getCode());
-                                startActivity(in);
-                            }else{
-                                showToast("Job Number not found!");
-                            }
+                            //   if(null!=jobNumber){
+                            Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                            in.putExtra("taskType", taskType);
+                            in.putExtra("scanType", scanType);
+                            in.putExtra("loc", "U-0-1");
+                            in.putExtra("count", 0);
+                            in.putExtra("jobNumber", "J-0099");
+                            in.putExtra("toLoc", "C-1-1");
+
+                            startActivity(in);
+                            //  }else{
+                            //   showToast("Job Number not found!");
+                            // }
 
                         } else if (scanType.toLowerCase().startsWith("con")) {
-                            etsLocation= DataManager.getInstance().getETSLocations(etBarcode.getText().toString());
+                            etsLocation = DataManager.getInstance().getETSLocations(etBarcode.getText().toString());
 
-                            if(null!=etsLocation){
+                            if (null != etsLocation) {
                                 if (etsLocationsList.contains(etsLocation)) {
                                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
                                     in.putExtra("taskType", taskType);
@@ -252,7 +255,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                                 } else {
                                     showToast("This Location is not found in ");
                                 }
-                            }else{
+                            } else {
                                 showToast("Location not found!");
                             }
 
@@ -415,30 +418,30 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
         if (scanType.toLowerCase().startsWith("use")) {
             jobNumber = DataManager.getInstance().getJobNumber(message);
 
-            if(null!=jobNumber){
+            if (null != jobNumber) {
                 Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
                 in.putExtra("taskType", taskType);
                 in.putExtra("scanType", scanType);
                 in.putExtra("moveCode", jobNumber.getCode());
                 startActivity(in);
-            }else{
+            } else {
                 showToast("Job Number not found!");
             }
 
         } else if (scanType.toLowerCase().startsWith("con")) {
-            etsLocation= DataManager.getInstance().getETSLocations(message);
+            etsLocation = DataManager.getInstance().getETSLocations(message);
 
-            if(null!=etsLocation){
-                if(etsLocationsList.contains(etsLocation)){
-                Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
-                in.putExtra("taskType", taskType);
-                in.putExtra("scanType", scanType);
-                in.putExtra("moveCode", etsLocation.getCode());
-                startActivity(in);
+            if (null != etsLocation) {
+                if (etsLocationsList.contains(etsLocation)) {
+                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveAssetActivity.class);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("scanType", scanType);
+                    in.putExtra("moveCode", etsLocation.getCode());
+                    startActivity(in);
+                } else {
+                    showToast("This Location is not found in ");
+                }
             } else {
-                showToast("This Location is not found in ");
-            }
-            }else{
                 showToast("Location not found!");
             }
 

@@ -102,6 +102,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         rvList.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(MaterialQuantityActivity.this, rvList, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                hideKeyboard();
                 if (!"".equals(etQuantity.getText().toString().trim())) {
                     materialLocID = locList.get(position).getID();
                     rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
@@ -121,7 +122,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
     private void setupLocList() {
 
-        hideKeyboard();
+
         locList = DataManager.getInstance().getAllDepartments();
 
         mAdapter = new DepartmentAdapter(MaterialQuantityActivity.this, locList);
