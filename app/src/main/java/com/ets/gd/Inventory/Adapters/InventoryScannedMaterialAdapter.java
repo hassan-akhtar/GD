@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.ets.gd.Models.Material;
 import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
@@ -21,13 +22,13 @@ import java.util.List;
  */
 public class InventoryScannedMaterialAdapter extends RecyclerView.Adapter<InventoryScannedMaterialAdapter.MyViewHolder> {
 
-    private List<Note> materialList = new ArrayList<Note>();
+    private List<Material> materialList = new ArrayList<Material>();
     String type = "";
     TextDrawable drawable;
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public InventoryScannedMaterialAdapter(Context context, List<Note> materialList) {
+    public InventoryScannedMaterialAdapter(Context context, List<Material> materialList) {
         this.materialList = materialList;
         this.mContext = context;
     }
@@ -44,15 +45,15 @@ public class InventoryScannedMaterialAdapter extends RecyclerView.Adapter<Invent
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
-        Note asset = materialList.get(position);
+        Material asset = materialList.get(position);
         holder.tvTag.setVisibility(View.GONE);
-        holder.tvName.setText(""+asset.getNoteTitle());
-        holder.tvQuantity.setText(""+asset.getNoteDescription());
+        holder.tvName.setText(""+asset.getName());
+        holder.tvQuantity.setText(""+asset.getQuantity());
 
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
-                        .buildRound("Mat".substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
+                        .buildRound(asset.getName().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
     }
 

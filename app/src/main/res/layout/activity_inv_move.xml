@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="16dp"
-            android:text="Material:"
+            android:text="Material(s):"
             android:textColor="@android:color/white" />
 
         <TextView

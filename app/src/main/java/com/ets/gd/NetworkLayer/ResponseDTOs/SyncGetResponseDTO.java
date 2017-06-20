@@ -24,6 +24,7 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<FirebugBuilding> lstFireBugBuilding;
     RealmList<Action> lstMaintenanceAction;
     RealmList<MaintenanceCategory> lstMaintenanceCategory;
+    RealmList<Material> lstMaterials;
 
 
 
@@ -45,6 +46,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public RealmList<MaintenanceCategory> getLstMaintenanceCategory() {
         return lstMaintenanceCategory;
+    }
+
+    public RealmList<Material> getLstMaterials() {
+        return lstMaterials;
+    }
+
+    public void setLstMaterials(RealmList<Material> lstMaterials) {
+        this.lstMaterials = lstMaterials;
     }
 
     public void setLstMaintenanceCategory(RealmList<MaintenanceCategory> lstMaintenanceCategory) {

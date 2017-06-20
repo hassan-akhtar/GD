@@ -1,14 +1,11 @@
 package com.ets.gd.Inventory.Move;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.FireBug.Customer.CustomerActivity;
-import com.ets.gd.FireBug.Move.SelectLocationActivity;
-import com.ets.gd.Interfaces.BarcodeScan;
-import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -39,7 +33,6 @@ public class MoveFinalActivity extends AppCompatActivity {
     TextView tbTitleTop, tbTitleBottom, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc, tvStatement;
     Button btnSelectLoc, btnViewAllAssets, btnViewAllLocations;
     String taskName, loc,toLoc , jobNumber;
-    public static List<FireBugEquipment> asset = new ArrayList<FireBugEquipment>();
     String[] assetNames;
     public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet, rlAssetInfo;
@@ -48,6 +41,7 @@ public class MoveFinalActivity extends AppCompatActivity {
     int locID, cusID;
     TextView tvJobNumber;
     SharedPreferencesManager sharedPreferencesManager;
+    public static List<Material> materialList = new ArrayList<Material>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +93,9 @@ public class MoveFinalActivity extends AppCompatActivity {
     private void setupData() {
 
         taskName = getIntent().getStringExtra("taskType");
-        count = getIntent().getIntExtra("count", 0);
+        count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
-        loc = getIntent().getStringExtra("loc");
+        loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
         toLoc = getIntent().getStringExtra("toLoc");
         tbTitleBottom.setText(taskName);
 
@@ -113,6 +107,8 @@ public class MoveFinalActivity extends AppCompatActivity {
         }else{
             rlAssetInfo.setVisibility(View.GONE);
         }
+
+        rlAssetInfo.setVisibility(View.GONE);
 
         if (taskName.toLowerCase().startsWith("m")) {
             btnSelectLoc.setVisibility(View.VISIBLE);
@@ -126,41 +122,40 @@ public class MoveFinalActivity extends AppCompatActivity {
 
 
 
-//        if (1 < locationNames.length) {
-//            btnViewAllLocations.setVisibility(View.VISIBLE);
-//            if (loc.length()<17) {
-//                tvFromLoc.setText(loc + ",...");
-//            }else{
-//                tvFromLoc.setText(loc.substring(0,15)+",...");
-//            }
-//
-//        } else {
+        if (1 < locationNames.length) {
+            btnViewAllLocations.setVisibility(View.VISIBLE);
+            if (loc.length()<17) {
+                tvFromLoc.setText(loc + ",...");
+            }else{
+                tvFromLoc.setText(loc.substring(0,15)+",...");
+            }
+
+        } else {
             btnViewAllLocations.setVisibility(View.GONE);
             tvFromLoc.setText(loc);
-       // }
-
-        tvMovingAsset.setText("Moving " + asset.size() + " Material(s)");
-
-        if (1 < asset.size()) {
-            btnViewAllAssets.setVisibility(View.VISIBLE);
-            //tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ",...");
-        } else {
-            btnViewAllAssets.setVisibility(View.GONE);
-            //tvAssetsNames.setText(asset.get(0).getManufacturers().getCode());
-            tvAssetsNames.setText("xxxxxxx");
         }
 
-        assetNames = new String[asset.size()];
+        tvMovingAsset.setText("Moving " + materialList.size() + " Material(s)");
 
-        for (int i = 0; i < asset.size(); i++) {
-            assetNames[i] = asset.get(i).getManufacturers().getCode() + ", " + asset.get(i).getModel().getCode();
+        if (1 < materialList.size()) {
+            btnViewAllAssets.setVisibility(View.VISIBLE);
+            tvAssetsNames.setText(materialList.get(0).getName() + ",...");
+        } else {
+            btnViewAllAssets.setVisibility(View.GONE);
+            tvAssetsNames.setText(materialList.get(0).getName());
+        }
+
+        assetNames = new String[materialList.size()];
+
+        for (int i = 0; i < materialList.size(); i++) {
+            assetNames[i] = materialList.get(i).getName();
         }
 
         if (taskName.toLowerCase().startsWith("m")) {
-            tvStatement.setText("Are you sure you want to move " + asset.size() + " Material(s) To " + toLoc);
+            tvStatement.setText("Are you sure you want to move " + materialList.size() + " Material(s) To " + toLoc);
             rlBottomSheet.setVisibility(View.VISIBLE);
         } else if (taskName.toLowerCase().startsWith("i")) {
-            tvStatement.setText("Are you sure you want to issue " + asset.size() + " Material(s) To " + toLoc);
+            tvStatement.setText("Are you sure you want to issue " + materialList.size() + " Material(s) To " + toLoc);
             rlBottomSheet.setVisibility(View.VISIBLE);
         }
     }
@@ -227,7 +222,7 @@ public class MoveFinalActivity extends AppCompatActivity {
         View dialogView = li.inflate(R.layout.assets_view_all, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 MoveFinalActivity.this);
-        alertDialogBuilder.setTitle("Assets From " + loc);
+        alertDialogBuilder.setTitle("Materials" );
         alertDialogBuilder.setView(dialogView);
         final ListView listAssets = (ListView) dialogView
                 .findViewById(R.id.lvAssets);

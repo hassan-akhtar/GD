@@ -116,4 +116,13 @@
         <include layout="@layout/bottom_decision_layout" />
     </RelativeLayout>
 
+    <TextView
+        android:id="@+id/tvNoLocFound"
+        android:text="This material is not found in any Location(s)!"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </RelativeLayout>

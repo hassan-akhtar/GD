@@ -32,14 +32,18 @@ import android.widget.Toast;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.MaterialAdded;
 import com.ets.gd.Inventory.Adapters.InventoryScannedMaterialAdapter;
+import com.ets.gd.Inventory.Move.MoveFinalActivity;
 import com.ets.gd.Inventory.Move.MoveToActivity;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
@@ -48,9 +52,12 @@ import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class MoveMaterialScanListActivity extends AppCompatActivity implements BarcodeScan {
+public class MoveMaterialScanListActivity extends AppCompatActivity implements BarcodeScan, MaterialAdded {
 
 
     TextView tvBarcodeValue, tbTitleTop, tbTitleBottom, tvBarcodeTitle, tvUnderText;
@@ -70,8 +77,10 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     RecyclerView rvList;
     TextView tvCount, tvCountSupportText, tvTaskName, tvJobNumber;
     InventoryScannedMaterialAdapter mAdapter;
-    private List<Note> materialList = new ArrayList<Note>();
+    private List<com.ets.gd.Models.Material> materialList = new ArrayList<com.ets.gd.Models.Material>();
     Context mContext;
+    String[] locationNames;
+    public static boolean addMoreMaretailItem = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +100,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         tvJobNumber = (TextView) findViewById(R.id.tvJobNumber);
-        rlJobNumber  = (RelativeLayout) findViewById(R.id.rlJobNumber);
+        rlJobNumber = (RelativeLayout) findViewById(R.id.rlJobNumber);
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvCountSupportText = (TextView) findViewById(R.id.tvCountSupportText);
         tvTaskName = (TextView) findViewById(R.id.tvTaskName);
@@ -125,23 +134,25 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         tvUnderText.setText("Scan/Enter ID of Material");
 
 
-        if(null!=JobNumber){
+        if (null != JobNumber) {
             rlJobNumber.setVisibility(View.VISIBLE);
-            tvJobNumber.setText(""+JobNumber);
-        }else{
+            tvJobNumber.setText("" + JobNumber);
+        } else {
             rlJobNumber.setVisibility(View.GONE);
         }
+        rlJobNumber.setVisibility(View.GONE);
     }
 
     private void initObj() {
-        mContext =this;
+        mContext = this;
         sharedPreferencesManager = new SharedPreferencesManager(MoveMaterialScanListActivity.this);
         LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mMoveCompleteBroadcastReceiver,
                 new IntentFilter("move-complete"));
 
-        Note material = new Note();
-        material.setNoteTitle("" + materialID);
-        material.setNoteDescription("" + quantity);
+        com.ets.gd.Models.Material material = new com.ets.gd.Models.Material();
+        material.setName("" + materialID);
+        material.setQuantity("" + quantity);
+        material.setLocID(materialLocID);
         materialList.add(material);
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MoveMaterialScanListActivity.this);
@@ -177,7 +188,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                         mContext);
                 alertDialogBuilder.setTitle("Remove Material");
-                alertDialogBuilder.setMessage("Are you sure you want to remove " + materialList.get(position).getNoteTitle());
+                alertDialogBuilder.setMessage("Are you sure you want to remove " + materialList.get(position).getName());
                 alertDialogBuilder
                         .setCancelable(false)
                         .setPositiveButton("REMOVE",
@@ -218,6 +229,8 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
+
+
     }
 
 
@@ -238,11 +251,19 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            sendMessage("finish");
-                            Intent in = new Intent(MoveMaterialScanListActivity.this, CommonMaterialScanActivity.class);
-                            in.putExtra("taskType", taskType);
-                            startActivity(in);
-                            finish();
+
+                            Material material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null != material) {
+                                setupFlags();
+                                sendMessage("finish");
+                                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("materialID", etBarcode.getText().toString());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
@@ -276,10 +297,26 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
 
                 case R.id.rlForwardArrow: {
+
+                    locationNames = new String[materialList.size()];
+                    for (int i = 0; i < materialList.size(); i++) {
+                        locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
+                    }
+
+                    Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
+                    locationNames = new String[uniqueWords.size()];
+                    int j = 0;
+                    for (String loc : uniqueWords) {
+                        locationNames[j] = loc;
+                        j++;
+                    }
+                    MoveFinalActivity.locationNames = locationNames;
+
                     Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
+                    MoveFinalActivity.materialList = materialList;
                     in.putExtra("taskType", taskType);
                     in.putExtra("materialName", materialID);
-                    if (1<materialList.size()) {
+                    if (1 < materialList.size()) {
                         in.putExtra("isMultiple", true);
                     } else {
                         in.putExtra("isMultiple", false);
@@ -293,12 +330,21 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
     };
 
+    private void setupFlags() {
+        addMoreMaretailItem = true;
+        InventoryJobNumberActivity.materialAdded = this;
+        MaterialQuantityActivity.materialAdded = this;
+    }
+
+
     private void sendMessage(String msg) {
         Log.d("sender", "Broadcasting message");
         Intent intent = new Intent("move-complete");
         intent.putExtra("message", msg);
+        intent.putExtra("type", "fin");
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
     void showToast(String msg) {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
     }
@@ -307,9 +353,12 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+            String type = intent.getStringExtra("type");
 
-            if (message.startsWith("fin")) {
-                finish();
+            if (!"fin".equals(type)) {
+                if (message.startsWith("fin")) {
+                    finish();
+                }
             }
 
         }
@@ -434,10 +483,30 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
         if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mo")) {
 
+            Material material = DataManager.getInstance().getMaterial(message);
+            if (null != material) {
+                addMoreMaretailItem = true;
+                sendMessage("finish");
+                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("materialID", message);
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Material found!");
+            }
+
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
 
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
 
         }
+    }
+
+    @Override
+    public void MaterialMoveListItemAdded(com.ets.gd.Models.Material material) {
+        materialList.add(material);
+        tvCount.setText("" + materialList.size());
+        mAdapter.notifyDataSetChanged();
     }
 }

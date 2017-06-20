@@ -57,7 +57,7 @@ public class MoveToActivity extends AppCompatActivity {
         tbTitleBottom.setText("" + taskName);
 
         if(isMultiple){
-            tvMaterial.setText(""+materialName+"...");
+            tvMaterial.setText(""+materialName+",...");
         }else{
             tvMaterial.setText(" "+materialName);
         }
@@ -100,7 +100,7 @@ public class MoveToActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskName);
                     in.putExtra("scanType", "User");
                     in.putExtra("material", materialName);
-
+                    in.putExtra("isMultiple", isMultiple);
                     startActivity(in);
                     break;
                 }
@@ -111,6 +111,7 @@ public class MoveToActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskName);
                     in.putExtra("scanType", "Container");
                     in.putExtra("material", materialName);
+                    in.putExtra("isMultiple", isMultiple);
                     startActivity(in);
                     break;
                 }

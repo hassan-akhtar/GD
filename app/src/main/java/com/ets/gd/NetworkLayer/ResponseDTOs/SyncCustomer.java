@@ -22,6 +22,7 @@ public class SyncCustomer extends RealmObject {
     RealmList<ETSBuilding> lstETSBuildings;
     RealmList<Locations> lstLocations;
     RealmList<QuickCount> lstQuickCount;
+    RealmList<Inventory> lstInventory;
 
 
     public int getCustomerId() {
@@ -54,6 +55,14 @@ public class SyncCustomer extends RealmObject {
 
     public void setLstLocations(RealmList<Locations> lstLocations) {
         this.lstLocations = lstLocations;
+    }
+
+    public RealmList<Inventory> getLstInventory() {
+        return lstInventory;
+    }
+
+    public void setLstInventory(RealmList<Inventory> lstInventory) {
+        this.lstInventory = lstInventory;
     }
 
     public RealmList<Department> getLstDepartments() {

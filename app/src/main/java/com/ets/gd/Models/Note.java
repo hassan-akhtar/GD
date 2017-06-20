@@ -11,6 +11,7 @@ public class Note extends RealmObject implements Serializable {
     private String noteDescription;
 
 
+
     public Note() {
     }
 

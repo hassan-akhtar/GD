@@ -31,6 +31,7 @@ import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
@@ -56,7 +57,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     ToolhawkEquipment toolhawkEquipment;
-    ETSLocation etsLocation;
+    Material material;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,16 +132,19 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                 case R.id.btnScan: {
                     if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mo")) {
 
-
-
-
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
-                            in.putExtra("taskType",taskType);
-                            in.putExtra("materialID",etBarcode.getText().toString());
-                            startActivity(in);
+
+                            material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null!=material) {
+                                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType",taskType);
+                                in.putExtra("materialID",material.getCode());
+                                startActivity(in);
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
 
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
@@ -314,10 +318,18 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
         String message = barcode.getMessage();
         String task = barcode.getTask();
 
-        toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(message);
+        material = DataManager.getInstance().getMaterial(message);
 
         if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mo")) {
 
+            if (null!=material) {
+                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType",taskType);
+                in.putExtra("materialID",material.getCode());
+                startActivity(in);
+            } else {
+                showToast("No Material found!");
+            }
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
 
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {

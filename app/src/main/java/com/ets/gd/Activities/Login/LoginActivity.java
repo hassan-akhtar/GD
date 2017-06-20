@@ -64,7 +64,10 @@ public class LoginActivity extends AppCompatActivity {
 //        etUsername.setText("eric55");
 //        etPassword.setText("1234567");
 
-           etUsername.setText("dsit");
+/*           etUsername.setText("dsit");
+        etPassword.setText("1324");*/
+
+        etUsername.setText("k1");
         etPassword.setText("1324");
 
     }

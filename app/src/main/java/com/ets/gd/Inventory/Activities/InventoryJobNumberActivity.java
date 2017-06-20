@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -32,7 +33,10 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.MaterialAdded;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Material;
+import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.JobNumberAdapter;
@@ -64,6 +68,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     JobNumber jobNumber;
+    public static MaterialAdded materialAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,15 +140,20 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
             public void onClick(View view, int position) {
 
 
-                Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-                in.putExtra("materialLocID", materialLocID);
-                in.putExtra("materialID", materialID);
-                in.putExtra("quantity", quantity);
-                in.putExtra("taskType", taskType);
-                in.putExtra("JobNumber", jobNumberList.get(position).getCode());
-                in.putExtra("JobNumberID", jobNumberList.get(position).getID());
-                startActivity(in);
-
+                if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                    Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
+                    in.putExtra("materialLocID", materialLocID);
+                    in.putExtra("materialID", materialID);
+                    in.putExtra("quantity", quantity);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("JobNumber", jobNumberList.get(position).getCode());
+                    in.putExtra("JobNumberID", jobNumberList.get(position).getID());
+                    startActivity(in);
+                    etBarcode.setText("");
+                } else {
+                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                    sendMessage("finish");
+                }
             }
 
             @Override
@@ -206,14 +216,20 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                         jobNumber = DataManager.getInstance().getJobNumber(etBarcode.getText().toString().trim());
                         if (null != jobNumber) {
 
-                            Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-                            in.putExtra("materialLocID", materialLocID);
-                            in.putExtra("materialID", materialID);
-                            in.putExtra("taskType", taskType);
-                            in.putExtra("quantity", quantity);
-                            in.putExtra("JobNumber", jobNumber.getCode());
-                            in.putExtra("JobNumberID", jobNumber.getID());
-                            startActivity(in);
+                            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                                Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
+                                in.putExtra("materialLocID", materialLocID);
+                                in.putExtra("materialID", materialID);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("quantity", quantity);
+                                in.putExtra("JobNumber", jobNumber.getCode());
+                                in.putExtra("JobNumberID", jobNumber.getID());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                                sendMessage("finish");
+                            }
                         } else {
                             showToast("No Job Number Found!");
                         }
@@ -353,6 +369,14 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         }
     }
 
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        intent.putExtra("type", "fin");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
     private boolean checkValidation() {
         return false;
     }
@@ -364,18 +388,26 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
 
         jobNumber = DataManager.getInstance().getJobNumber(message);
         if (null != jobNumber) {
-            Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-            in.putExtra("materialLocID", materialLocID);
-            in.putExtra("materialID", materialID);
-            in.putExtra("quantity", quantity);
-            in.putExtra("taskType", taskType);
-            in.putExtra("JobNumber", jobNumber.getCode());
-            in.putExtra("JobNumberID", jobNumber.getID());
-            startActivity(in);
+            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
+                in.putExtra("materialLocID", materialLocID);
+                in.putExtra("materialID", materialID);
+                in.putExtra("quantity", quantity);
+                in.putExtra("taskType", taskType);
+                in.putExtra("JobNumber", jobNumber.getCode());
+                in.putExtra("JobNumberID", jobNumber.getID());
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID));
+                sendMessage("finish");
+            }
         } else {
             showToast("No Job Number Found!");
         }
     }
 }
+
+
 
 

@@ -28,6 +28,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<FirebugBuilding> lstFireBugBuilding;
     RealmList<Action> lstMaintenanceAction;
     RealmList<MaintenanceCategory> lstMaintenanceCategory;
+    RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> lstMaterials;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -35,6 +36,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> getLstMaterials() {
+        return lstMaterials;
+    }
+
+    public void setLstMaterials(RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> lstMaterials) {
+        this.lstMaterials = lstMaterials;
     }
 
     public RealmList<JobNumber> getLstJobNumber() {

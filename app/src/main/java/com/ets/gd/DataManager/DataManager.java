@@ -19,9 +19,11 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
@@ -477,6 +479,12 @@ public class DataManager {
     public Action getAction(String code) {
         return realm.where(Action.class).equalTo("Code",code).findFirst();
     }
+
+    public Material getMaterial(String code) {
+        return realm.where(Material.class).equalTo("Code",code).findFirst();
+    }
+
+
     public List<FireBugEquipment> getAllAddAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isAdded", true).findAll().sort("Code");
     }
@@ -539,6 +547,10 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
+
+    public List<ToolhawkEquipment> getAllContainerToolhawkAssets() {
+        return realm.where(ToolhawkEquipment.class).equalTo("IsContainer", true).findAll().sort("Code");
+    }
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
         return realm.where(Manufacturer.class).equalTo("Code", Code).findFirst();
@@ -643,8 +655,39 @@ public class DataManager {
     }
 
 
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByIDOnly(int ID) {
+
+        if (null != realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("ID", ID).findFirst()) {
+            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("ID", ID).findFirst();
+        } else {
+
+            ETSLocations loc = realm.where(ETSLocations.class).equalTo("ID", ID).findFirst();
+            if (null != loc) {
+                realm.beginTransaction();
+                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
+                newLoc.setCode(loc.getCode());
+                newLoc.setDescription(loc.getDescription());
+                newLoc.setSiteID(loc.getSite().getID());
+                newLoc.setBuildingID(loc.getBuilding().getID());
+                realm.commitTransaction();
+                return newLoc;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    public List<Inventory> getInventoryListByMaterialID(int materialID) {
+        return realm.where(Inventory.class).equalTo("ID", materialID).findAll();
+    }
+
+
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCodeOnly(String code) {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+    }
+
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByID(int ID ) {
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("ID", ID).findFirst();
 
     }
 
@@ -803,6 +846,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstMaintenanceAction(obj.getLstMaintenanceAction());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
                 realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
+                realmSyncGetResponseDTO.setLstMaterials(obj.getLstMaterials());
                 realmSyncGetResponseDTO.setLstMaintenanceCategory(obj.getLstMaintenanceCategory());
                 realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
                 realmSyncGetResponseDTO.setLstRoutes(obj.getLstRoutes());
@@ -994,6 +1038,9 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
 
+    public ToolhawkEquipment getToolhawkContainerEquipment(String barcodeID) {
+        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).equalTo("IsContainer", true).findFirst();
+    }
 
     public ToolhawkEquipment getToolhawkEquipmentByID(int ID) {
         return realm.where(ToolhawkEquipment.class).equalTo("ID", ID).findFirst();

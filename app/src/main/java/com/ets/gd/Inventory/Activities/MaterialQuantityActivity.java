@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -23,7 +24,12 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.Interfaces.MaterialAdded;
+import com.ets.gd.Inventory.Adapters.MaterialAdapter;
+import com.ets.gd.Models.Material;
+import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
@@ -37,17 +43,18 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
 
     RecyclerView rvList;
-    TextView tvMaterialFoundAt;
+    TextView tvMaterialFoundAt, tvNoLocFound;
     EditText etQuantity, etMaterialID;
     ImageView ivBack, ivTick;
     TextView tbTitleTop, tbTitleBottom;
     SharedPreferencesManager sharedPreferencesManager;
     String taskType, materialID;
-    DepartmentAdapter mAdapter;
-    private List<Department> locList = new ArrayList<Department>();
+    MaterialAdapter mAdapter;
+    private List<Inventory> locList = new ArrayList<Inventory>();
     RelativeLayout rlBottomSheetJobnumber, rlYes, rlNo;
     TextView tvStatement;
     int materialLocID ;
+    public static MaterialAdded materialAdded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +71,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
     private void initViews() {
 
         tvMaterialFoundAt = (TextView) findViewById(R.id.tvMaterialFoundAt);
+        tvNoLocFound = (TextView) findViewById(R.id.tvNoLocFound);
         etMaterialID = (EditText) findViewById(R.id.etMaterialID);
         etQuantity = (EditText) findViewById(R.id.etQuantity);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
@@ -104,8 +112,13 @@ public class MaterialQuantityActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 hideKeyboard();
                 if (!"".equals(etQuantity.getText().toString().trim())) {
-                    materialLocID = locList.get(position).getID();
-                    rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+                    if (locList.get(position).getQuantity()<Integer.parseInt(etQuantity.getText().toString())) {
+                        showToast("This location doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
+                    } else {
+                        materialLocID = locList.get(position).getLocationID();
+                        rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+
+                    }
                 } else {
                     showToast("Please enter quantity first!");
                 }
@@ -123,9 +136,13 @@ public class MaterialQuantityActivity extends AppCompatActivity {
     private void setupLocList() {
 
 
-        locList = DataManager.getInstance().getAllDepartments();
+        locList = DataManager.getInstance().getInventoryListByMaterialID(DataManager.getInstance().getMaterial(materialID).getID());
 
-        mAdapter = new DepartmentAdapter(MaterialQuantityActivity.this, locList);
+        if(0==locList.size()){
+            tvNoLocFound.setVisibility(View.VISIBLE);
+        }
+
+        mAdapter = new MaterialAdapter(MaterialQuantityActivity.this, locList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaterialQuantityActivity.this);
         rvList.setLayoutManager(mLayoutManager);
         rvList.setItemAnimator(new DefaultItemAnimator());
@@ -149,17 +166,25 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                     in.putExtra("taskType", taskType);
                     in.putExtra("quantity", etQuantity.getText().toString());
                     startActivity(in);
+                    etQuantity.setText("");
                     break;
                 }
 
 
                 case R.id.rlNo: {
-                    Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
-                    in.putExtra("materialLocID", materialLocID);
-                    in.putExtra("materialID", materialID);
-                    in.putExtra("taskType", taskType);
-                    in.putExtra("quantity", etQuantity.getText().toString());
-                    startActivity(in);
+                    if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                        Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
+                        in.putExtra("materialLocID", materialLocID);
+                        in.putExtra("materialID", materialID);
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("quantity", etQuantity.getText().toString());
+                        startActivity(in);
+                        etQuantity.setText("");
+                    } else {
+                        materialAdded.MaterialMoveListItemAdded(new Material(materialID, etQuantity.getText().toString(),materialLocID));
+                        sendMessage("finish");
+
+                    }
                     break;
                 }
             }
@@ -167,6 +192,14 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
     };
 
+
+    private void sendMessage(String msg) {
+        Log.d("sender", "Broadcasting message");
+        Intent intent = new Intent("move-complete");
+        intent.putExtra("message", msg);
+        intent.putExtra("type", "fin");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
 
     public void hideKeyboard() {
         etQuantity.clearFocus();
