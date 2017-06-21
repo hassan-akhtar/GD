@@ -11,6 +11,7 @@ public class Material {
     private String quantity;
     private int locID;
     private int jobNumberID;
+    private int equipmentID;
 
     public Material() {
     }
@@ -34,6 +35,20 @@ public class Material {
         this.jobNumberID = jobNumberID;
     }
 
+    public Material(int equipmentID, String name, String quantity, int locID) {
+        this.name = name;
+        this.quantity = quantity;
+        this.locID = locID;
+        this.equipmentID = equipmentID;
+    }
+
+    public int getEquipmentID() {
+        return equipmentID;
+    }
+
+    public void setEquipmentID(int equipmentID) {
+        this.equipmentID = equipmentID;
+    }
 
     public int getJobNumberID() {
         return jobNumberID;

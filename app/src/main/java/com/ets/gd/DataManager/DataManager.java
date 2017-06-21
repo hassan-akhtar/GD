@@ -6,7 +6,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
-import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventory;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
@@ -891,7 +891,7 @@ public class DataManager {
     }
 
 
-    public void saveMoveInventoryResult(MoveInventory obj) {
+    public void saveMoveInventoryResult(MoveInventoryRealm obj) {
 
         realm.beginTransaction();
         realm.copyToRealm(obj);
@@ -1016,6 +1016,11 @@ public class DataManager {
     }
 
 
+    public List<MoveInventoryRealm> getAllMoveInventoryList() {
+        return realm.where(MoveInventoryRealm.class).findAll();
+    }
+
+
     public List<JobNumber> getAllDepJobNumberList(int ID) {
         return realm.where(JobNumber.class).equalTo("DepartmentID", ID).findAll().sort("Code");
     }
@@ -1049,6 +1054,7 @@ public class DataManager {
     public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
     }
+
 
     public ToolhawkEquipment getToolhawkContainerEquipment(String barcodeID) {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).equalTo("IsContainer", true).findFirst();

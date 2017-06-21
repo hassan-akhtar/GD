@@ -53,7 +53,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
     private List<Inventory> locList = new ArrayList<Inventory>();
     RelativeLayout rlBottomSheetJobnumber, rlYes, rlNo;
     TextView tvStatement;
-    int materialLocID ;
+    int materialLocID , eqID ;
     public static MaterialAdded materialAdded;
 
     @Override
@@ -113,9 +113,10 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 hideKeyboard();
                 if (!"".equals(etQuantity.getText().toString().trim())) {
                     if (locList.get(position).getQuantity()<Integer.parseInt(etQuantity.getText().toString())) {
-                        showToast("This location doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
+                        showToast("This Location/Container doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
                     } else {
                         materialLocID = locList.get(position).getLocationID();
+                        eqID = locList.get(position).getEquipmentID();
                         rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
 
                     }
@@ -164,6 +165,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                     in.putExtra("materialLocID", materialLocID);
                     in.putExtra("materialID", materialID);
                     in.putExtra("taskType", taskType);
+                    in.putExtra("eqID", eqID);
                     in.putExtra("quantity", etQuantity.getText().toString());
                     startActivity(in);
                     etQuantity.setText("");
@@ -177,11 +179,12 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         in.putExtra("materialLocID", materialLocID);
                         in.putExtra("materialID", materialID);
                         in.putExtra("taskType", taskType);
+                        in.putExtra("eqID", eqID);
                         in.putExtra("quantity", etQuantity.getText().toString());
                         startActivity(in);
                         etQuantity.setText("");
                     } else {
-                        materialAdded.MaterialMoveListItemAdded(new Material(materialID, etQuantity.getText().toString(),materialLocID));
+                        materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(),materialLocID));
                         sendMessage("finish");
 
                     }

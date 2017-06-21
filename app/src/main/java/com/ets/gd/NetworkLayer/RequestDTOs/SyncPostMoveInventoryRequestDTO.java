@@ -1,5 +1,7 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
+import com.ets.gd.Models.MoveInventoryCall;
+
 import java.util.List;
 
 /**
@@ -10,18 +12,18 @@ import java.util.List;
 public class SyncPostMoveInventoryRequestDTO extends BaseDTO {
 
 
-    List<MoveInventory> moveInventoryList;
+    List<MoveInventoryCall> moveInventoryList;
 
-    public SyncPostMoveInventoryRequestDTO(int callBackId, List<MoveInventory> moveInventoryList) {
+    public SyncPostMoveInventoryRequestDTO(int callBackId, List<MoveInventoryCall> moveInventoryList) {
         super(callBackId);
         this.moveInventoryList = moveInventoryList;
     }
 
-    public List<MoveInventory> getMoveInventoryList() {
+    public List<MoveInventoryCall> getMoveInventoryList() {
         return moveInventoryList;
     }
 
-    public void setMoveInventoryList(List<MoveInventory> moveInventoryList) {
+    public void setMoveInventoryList(List<MoveInventoryCall> moveInventoryList) {
         this.moveInventoryList = moveInventoryList;
     }
 }

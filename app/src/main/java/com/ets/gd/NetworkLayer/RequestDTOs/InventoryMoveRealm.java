@@ -7,7 +7,7 @@ import io.realm.RealmObject;
  * General Data
  */
 
-public class InventoryMove extends RealmObject {
+public class InventoryMoveRealm extends RealmObject {
 
     public int MaterialID ;
     public String Code ;

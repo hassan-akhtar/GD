@@ -57,7 +57,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, department, returningUser, materialID, quantity;
-    int  materialLocID;
+    int  materialLocID,eqID;
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     private List<JobNumber> jobNumberList = new ArrayList<JobNumber>();
@@ -114,6 +114,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         materialLocID = getIntent().getIntExtra("materialLocID",0);
         materialID = getIntent().getStringExtra("materialID");
         quantity = getIntent().getStringExtra("quantity");
+        eqID  = getIntent().getIntExtra("eqID",0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan or Enter Job Number");
@@ -145,6 +146,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                     in.putExtra("materialLocID", materialLocID);
                     in.putExtra("materialID", materialID);
                     in.putExtra("quantity", quantity);
+                    in.putExtra("eqID", eqID);
                     in.putExtra("taskType", taskType);
                     in.putExtra("JobNumber", jobNumberList.get(position).getCode());
                     in.putExtra("JobNumberID", jobNumberList.get(position).getID());

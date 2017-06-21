@@ -19,14 +19,15 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Material;
-import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMove;
-import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventory;
-import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMoveRealm;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmList;
 
 public class MoveFinalActivity extends AppCompatActivity {
 
@@ -34,18 +35,19 @@ public class MoveFinalActivity extends AppCompatActivity {
     ImageView ivBack, ivTick;
     TextView tbTitleTop, tbTitleBottom, tvFromLoc, tvMovingAsset, tvAssetsNames, tvToLoc, tvStatement;
     Button btnSelectLoc, btnViewAllAssets, btnViewAllLocations;
-    String taskName, loc,toLoc , jobNumber;
+    String taskName, loc, toLoc, jobNumber;
     String[] assetNames;
     public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet, rlAssetInfo;
-    private String taskType,scanType;
+    private String taskType, scanType;
     int count;
     int locID, cusID;
     TextView tvJobNumber;
     SharedPreferencesManager sharedPreferencesManager;
     public static List<Material> materialList = new ArrayList<Material>();
-    MoveInventory moveInventory;
-    private List<InventoryMove> Materials;
+    MoveInventoryRealm moveInventory;
+    private RealmList<InventoryMoveRealm> Materials = new RealmList<InventoryMoveRealm>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,7 +76,7 @@ public class MoveFinalActivity extends AppCompatActivity {
         ivTick = (ImageView) findViewById(R.id.ivTick);
         rlYes = (RelativeLayout) findViewById(R.id.rlYes);
         rlNo = (RelativeLayout) findViewById(R.id.rlNo);
-        rlAssetInfo  = (RelativeLayout) findViewById(R.id.rlAssetInfo);
+        rlAssetInfo = (RelativeLayout) findViewById(R.id.rlAssetInfo);
         rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheetMove);
         ivTick.setVisibility(View.GONE);
     }
@@ -96,19 +98,25 @@ public class MoveFinalActivity extends AppCompatActivity {
     private void setupData() {
 
         taskName = getIntent().getStringExtra("taskType");
-        scanType  = getIntent().getStringExtra("scanType");
+        scanType = getIntent().getStringExtra("scanType");
         count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
-        loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
+        if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
+            loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
+        } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getEquipmentID())) {
+            loc = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getEquipmentID()).getCode();
+        } else {
+            loc = "N/A";
+        }
         toLoc = getIntent().getStringExtra("toLoc");
         tbTitleBottom.setText(taskName);
 
-        tvToLoc.setText(""+toLoc);
+        tvToLoc.setText("" + toLoc);
 
-        if(null!=jobNumber){
+        if (null != jobNumber) {
             rlAssetInfo.setVisibility(View.VISIBLE);
-            tvJobNumber.setText(""+jobNumber);
-        }else{
+            tvJobNumber.setText("" + jobNumber);
+        } else {
             rlAssetInfo.setVisibility(View.GONE);
         }
 
@@ -124,14 +132,12 @@ public class MoveFinalActivity extends AppCompatActivity {
         }
 
 
-
-
         if (1 < locationNames.length) {
             btnViewAllLocations.setVisibility(View.VISIBLE);
-            if (loc.length()<17) {
+            if (loc.length() < 17) {
                 tvFromLoc.setText(loc + ",...");
-            }else{
-                tvFromLoc.setText(loc.substring(0,15)+",...");
+            } else {
+                tvFromLoc.setText(loc.substring(0, 15) + ",...");
             }
 
         } else {
@@ -174,35 +180,41 @@ public class MoveFinalActivity extends AppCompatActivity {
 
                 case R.id.rlYes: {
 
-                    if (taskName.toLowerCase().startsWith("m")) {
-                        if (scanType.startsWith("con")) {
-                            moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
-                            moveInventory.setMoveType("Container");
-                        }
-                        if (scanType.startsWith("loc")) {
-                            moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getID());
-                            moveInventory.setMoveType("Location");
-                        }
-                        moveInventory.setUserID(0);
+                    if (!tvToLoc.getText().toString().toLowerCase().equals(tvFromLoc.getText().toString())) {
+                        moveInventory = new MoveInventoryRealm();
+                        if (taskName.toLowerCase().startsWith("m")) {
+                            if (scanType.toLowerCase().startsWith("con")) {
+                                moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                                moveInventory.setMoveType("Equipment");
+                            }
+                            if (scanType.toLowerCase().startsWith("loc")) {
+                                moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getID());
+                                moveInventory.setMoveType("Location");
+                            }
+                            moveInventory.setUserID(0);
 
-                        moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
-                       for(int i=0;i<materialList.size();i++){
-                           InventoryMove inventoryMove = new InventoryMove();
-                           inventoryMove.setCode(materialList.get(i).getName());
-                           inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
-                           inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
-                           inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
+                            moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+                            for (int i = 0; i < materialList.size(); i++) {
+                                InventoryMoveRealm inventoryMove = new InventoryMoveRealm();
+                                inventoryMove.setCode(materialList.get(i).getName());
+                                inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
+                                inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
+                                inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
 
-                           Materials.add(inventoryMove);
-                       }
-                        moveInventory.setMaterials(Materials);
-                        DataManager.getInstance().saveMoveInventoryResult(moveInventory);
-                        Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
-                    } else if (taskName.toLowerCase().startsWith("i")) {
-                        Toast.makeText(getApplicationContext(), "Asset(s) Successfully Issued!", Toast.LENGTH_LONG).show();
+                                Materials.add(inventoryMove);
+                            }
+                            moveInventory.setMaterials(Materials);
+                            DataManager.getInstance().saveMoveInventoryResult(moveInventory);
+                            Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
+                        } else if (taskName.toLowerCase().startsWith("i")) {
+                            Toast.makeText(getApplicationContext(), "Asset(s) Successfully Issued!", Toast.LENGTH_LONG).show();
+                        }
+                        sendMessage("finish");
+                        finish();
+                    } else {
+                        Toast.makeText(MoveFinalActivity.this,"You cannot move to same Location/Container.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MoveFinalActivity.this,"Please select any other Location/Container.",Toast.LENGTH_LONG).show();
                     }
-                    sendMessage("finish");
-                    finish();
                     break;
                 }
 
@@ -248,7 +260,7 @@ public class MoveFinalActivity extends AppCompatActivity {
         View dialogView = li.inflate(R.layout.assets_view_all, null);
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 MoveFinalActivity.this);
-        alertDialogBuilder.setTitle("Materials" );
+        alertDialogBuilder.setTitle("Materials");
         alertDialogBuilder.setView(dialogView);
         final ListView listAssets = (ListView) dialogView
                 .findViewById(R.id.lvAssets);

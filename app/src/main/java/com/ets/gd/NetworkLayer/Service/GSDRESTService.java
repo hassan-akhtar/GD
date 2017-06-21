@@ -2,12 +2,12 @@ package com.ets.gd.NetworkLayer.Service;
 
 
 import com.ets.gd.Constants.Constants;
-import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
+import com.ets.gd.Models.MoveInventoryCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckInForCall;
-import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOutForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
@@ -117,5 +117,11 @@ public interface GSDRESTService {
     public void postSyncCheckOut(@Body List<CheckOutForCall> checkOut,
                                 Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
+
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_MOVE_INVENTORY)
+    public void postSyncMoveInventory(@Body List<MoveInventoryCall> lstmoveInventory,
+                                 Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 }
 

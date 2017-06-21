@@ -75,7 +75,7 @@ public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdap
 
     @Override
     public int getItemCount() {
-        if (type.toLowerCase().startsWith("use")) {
+        if (type.toLowerCase().startsWith("loc")) {
             return userList.size();
         } else if (type.toLowerCase().startsWith("con")) {
             return containerList.size();

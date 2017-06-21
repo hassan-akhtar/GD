@@ -134,7 +134,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             @Override
             public void onClick(View view, int position) {
 
-                if (scanType.toLowerCase().startsWith("use")) {
+                if (scanType.toLowerCase().startsWith("loc")) {
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
@@ -177,7 +177,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
 
     private void setupList() {
 
-        if (scanType.toLowerCase().startsWith("use")) {
+        if (scanType.toLowerCase().startsWith("loc")) {
 
             locList = DataManager.getInstance().getAllETSLocations();
             mAdapter = new UserContainerAdapter(InventoryScanActivityWithList.this, locList, "loc");

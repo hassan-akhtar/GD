@@ -40,7 +40,13 @@ public class MaterialAdapter extends RecyclerView.Adapter<MaterialAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         myViewHolder = holder;
         Inventory inv = locList.get(position);
-        holder.tvTitle.setText(""+ DataManager.getInstance().getETSLocationByIDOnly(inv.getLocationID()).getCode());
+        if (null!=DataManager.getInstance().getETSLocationByIDOnly(inv.getLocationID())) {
+            holder.tvTitle.setText(""+ DataManager.getInstance().getETSLocationByIDOnly(inv.getLocationID()).getCode());
+        }else if (null!=DataManager.getInstance().getToolhawkEquipmentByID(inv.getEquipmentID())) {
+            holder.tvTitle.setText(""+ DataManager.getInstance().getToolhawkEquipmentByID(inv.getEquipmentID()).getCode());
+        } else{
+            holder.tvTitle.setText("N/A");
+        }
         holder.tvDesc.setText(""+inv.getQuantity());
         holder.tvConstructionDescp.setText("Quantity:");
 

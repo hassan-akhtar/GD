@@ -66,7 +66,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, JobNumber, materialID, quantity;
-    int JobNumberID, materialLocID;
+    int JobNumberID, materialLocID, eqID;
     ImageView ivBack, ivTick;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -129,6 +129,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         materialLocID = getIntent().getIntExtra("materialLocID", 0);
         materialID = getIntent().getStringExtra("materialID");
         JobNumber = getIntent().getStringExtra("JobNumber");
+        eqID  = getIntent().getIntExtra("eqID", 0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan/Enter ID of Material");
@@ -153,6 +154,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setName("" + materialID);
         material.setQuantity("" + quantity);
         material.setLocID(materialLocID);
+        material.setEquipmentID(eqID);
         materialList.add(material);
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MoveMaterialScanListActivity.this);
@@ -300,7 +302,13 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
                     locationNames = new String[materialList.size()];
                     for (int i = 0; i < materialList.size(); i++) {
-                        locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
+                        if (null!=DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                            locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
+                        } else    if (null!=DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                            locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
+                        }else{
+                            locationNames[i] = "N/A";
+                        }
                     }
 
                     Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));

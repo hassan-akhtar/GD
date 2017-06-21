@@ -1,22 +1,22 @@
-package com.ets.gd.NetworkLayer.RequestDTOs;
+package com.ets.gd.Models;
+
+import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMoveRealm;
 
 import java.util.List;
-
-import io.realm.RealmObject;
 
 /**
  * Created by hakhtar on 6/20/2017.
  * General Data
  */
 
-public class MoveInventory extends RealmObject{
+public class MoveInventoryCall{
 
     private int EquipmentID;
     private String MoveType;
     private int UserID;
     private int JobNumberID;
     private int LocationID;
-    private List<InventoryMove> Materials;
+    private List<InventoryMoveCall> Materials;
 
     public int getEquipmentID() {
         return EquipmentID;
@@ -58,11 +58,11 @@ public class MoveInventory extends RealmObject{
         LocationID = locationID;
     }
 
-    public List<InventoryMove> getMaterials() {
+    public List<InventoryMoveCall> getMaterials() {
         return Materials;
     }
 
-    public void setMaterials(List<InventoryMove> materials) {
+    public void setMaterials(List<InventoryMoveCall> materials) {
         Materials = materials;
     }
 }

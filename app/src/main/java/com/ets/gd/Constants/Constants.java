@@ -38,26 +38,26 @@ public class Constants {
 
 
     // Urls Firebug
-    public static final String URL_LOGIN = "/Login";
-    public static final String URL_SYNC_GET = "/GetCustomerData";
-    public static final String URL_SYNC_POST_EQUIPMENT = "/CreateEquipment";
-    public static final String URL_SYNC_POST_ADD_LOCATION = "/CreateFbLocations";
-    public static final String URL_SYNC_POST_MOVE_TRANSFER = "/MoveOrTransferEquipments";
-    public static final String URL_SYNC_POST_INSPECT_EQUIPMENT = "/InspectEquipments";
+    public static final String URL_LOGIN = "/Services/Services/Mobile/Login";
+    public static final String URL_SYNC_GET = "/Services/Services/Mobile/GetCustomerData";
+    public static final String URL_SYNC_POST_EQUIPMENT = "/Services/Services/Mobile/CreateEquipment";
+    public static final String URL_SYNC_POST_ADD_LOCATION = "/Services/Services/Mobile/CreateFbLocations";
+    public static final String URL_SYNC_POST_MOVE_TRANSFER = "/Services/Services/Mobile/MoveOrTransferEquipments";
+    public static final String URL_SYNC_POST_INSPECT_EQUIPMENT = "/Services/Services/Mobile/InspectEquipments";
 
     // Urls Toolhawk
-    public static final String URL_SYNC_POST_TOOLHAWK_EQUIPMENT = "/CreateToolHawkEquipment";
-    public static final String URL_SYNC_POST_ETS_LOCATION = "/CreateETSLocation";
-    public static final String URL_SYNC_POST_TOOLHAWK_TRANSFER = "/TransferToolHawkEquipment";
-    public static final String URL_SYNC_POST_TOOLHAWK_MOVE = "/MoveToolHawkEquipment";
-    public static final String URL_SYNC_POST_QUICK_COUNT = "/QuickCount";
-    public static final String URL_SYNC_POST_MAINTENANCE  = "/ToolHawkEquipmentMaintenance";
-    public static final String URL_SYNC_POST_CHECKOUT  = "/CheckOutToolHawkEquipment";
-    public static final String URL_SYNC_POST_CHECKIN  = "/CheckInToolHawkEquipment";
+    public static final String URL_SYNC_POST_TOOLHAWK_EQUIPMENT = "/Services/Services/Mobile/CreateToolHawkEquipment";
+    public static final String URL_SYNC_POST_ETS_LOCATION = "/Services/Services/Mobile/CreateETSLocation";
+    public static final String URL_SYNC_POST_TOOLHAWK_TRANSFER = "/Services/Services/Mobile/TransferToolHawkEquipment";
+    public static final String URL_SYNC_POST_TOOLHAWK_MOVE = "/Services/Services/Mobile/MoveToolHawkEquipment";
+    public static final String URL_SYNC_POST_QUICK_COUNT = "/Services/Services/Mobile/QuickCount";
+    public static final String URL_SYNC_POST_MAINTENANCE  = "/Services/Services/Mobile/ToolHawkEquipmentMaintenance";
+    public static final String URL_SYNC_POST_CHECKOUT  = "/Services/Services/Mobile/CheckOutToolHawkEquipment";
+    public static final String URL_SYNC_POST_CHECKIN  = "/Services/Services/Mobile/CheckInToolHawkEquipment";
 
 
     // Urls Inventory
-    public static final String URL_SYNC_POST_MOVE_INVENTORY  = "/MoveInventory";
-    public static final String URL_SYNC_POST__ISSUE = "/IssueInventory";
-    public static final String URL_SYNC_POST_RECEIVE = "/ReceiveInventory";
+    public static final String URL_SYNC_POST_MOVE_INVENTORY  = "/Services/Services/Mobile/MoveInventory";
+    public static final String URL_SYNC_POST__ISSUE = "/Services/Services/Mobile/IssueInventory";
+    public static final String URL_SYNC_POST_RECEIVE = "/Services/Services/Mobile/ReceiveInventory";
 }

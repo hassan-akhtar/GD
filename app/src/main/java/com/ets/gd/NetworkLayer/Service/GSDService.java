@@ -14,6 +14,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentMaintenanceDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostMoveInventoryRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostQuickCountRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
@@ -55,6 +56,8 @@ public interface GSDService {
     void postSyncCheckIn(SyncCheckInRequestDTO checkIn, MyCallBack callback);
 
     void postSyncCheckOut(SyncCheckOutRequestDTO checkOut, MyCallBack callback);
+
+    void postSyncMoveInventory(SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO , MyCallBack callback);
 
 
 }
