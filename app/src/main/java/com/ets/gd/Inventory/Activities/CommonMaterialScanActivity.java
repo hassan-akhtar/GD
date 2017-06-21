@@ -142,6 +142,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                                 in.putExtra("taskType",taskType);
                                 in.putExtra("materialID",material.getCode());
                                 startActivity(in);
+                                etBarcode.setText("");
                             } else {
                                 showToast("No Material found!");
                             }
@@ -157,6 +158,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                             in.putExtra("taskType",taskType);
                             in.putExtra("materialID",etBarcode.getText().toString());
                             startActivity(in);
+                            etBarcode.setText("");
                         }
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
 
@@ -167,6 +169,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                             in.putExtra("taskType",taskType);
                             in.putExtra("materialID",etBarcode.getText().toString());
                             startActivity(in);
+                            etBarcode.setText("");
                         }
                     }
                     break;
@@ -327,6 +330,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                 in.putExtra("taskType",taskType);
                 in.putExtra("materialID",material.getCode());
                 startActivity(in);
+                etBarcode.setText("");
             } else {
                 showToast("No Material found!");
             }

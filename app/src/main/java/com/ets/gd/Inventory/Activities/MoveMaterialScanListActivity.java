@@ -174,6 +174,10 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                 tvTaskName.setText("ISSUE ASSET");
                 tvCount.setText("" + materialList.size());
                 tvCountSupportText.setText("Asset(s) Selected to Issue");
+            }else if (taskType.toLowerCase().startsWith("rec")) {
+                tvTaskName.setText("RECEIVE ASSET");
+                tvCount.setText("" + materialList.size());
+                tvCountSupportText.setText("Asset(s) Selected to Receive");
             }
         }
     }
@@ -279,14 +283,36 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-
+                            Material material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null != material) {
+                                setupFlags();
+                                sendMessage("finish");
+                                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("materialID", etBarcode.getText().toString());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
 
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-
+                            Material material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null != material) {
+                                setupFlags();
+                                sendMessage("finish");
+                                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("materialID", etBarcode.getText().toString());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
                     }
                     break;
@@ -305,36 +331,40 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
                 case R.id.rlForwardArrow: {
 
-                    locationNames = new String[materialList.size()];
-                    for (int i = 0; i < materialList.size(); i++) {
-                        if (null!=DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
-                            locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
-                        } else    if (null!=DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
-                            locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
-                        }else{
-                            locationNames[i] = "N/A";
+                    if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
+                        locationNames = new String[materialList.size()];
+                        for (int i = 0; i < materialList.size(); i++) {
+                            if (null!=DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                                locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
+                            } else    if (null!=DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                                locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
+                            }else{
+                                locationNames[i] = "N/A";
+                            }
                         }
-                    }
 
-                    Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
-                    locationNames = new String[uniqueWords.size()];
-                    int j = 0;
-                    for (String loc : uniqueWords) {
-                        locationNames[j] = loc;
-                        j++;
-                    }
-                    MoveFinalActivity.locationNames = locationNames;
+                        Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
+                        locationNames = new String[uniqueWords.size()];
+                        int j = 0;
+                        for (String loc : uniqueWords) {
+                            locationNames[j] = loc;
+                            j++;
+                        }
+                        MoveFinalActivity.locationNames = locationNames;
 
-                    Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
-                    MoveFinalActivity.materialList = materialList;
-                    in.putExtra("taskType", taskType);
-                    in.putExtra("materialName", materialID);
-                    if (1 < materialList.size()) {
-                        in.putExtra("isMultiple", true);
+                        Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
+                        MoveFinalActivity.materialList = materialList;
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("materialName", materialID);
+                        if (1 < materialList.size()) {
+                            in.putExtra("isMultiple", true);
+                        } else {
+                            in.putExtra("isMultiple", false);
+                        }
+                        startActivity(in);
                     } else {
-                        in.putExtra("isMultiple", false);
+                        showToast("receive");
                     }
-                    startActivity(in);
                     break;
                 }
 
@@ -510,8 +540,32 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
             }
 
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
+            Material material = DataManager.getInstance().getMaterial(message);
+            if (null != material) {
+                addMoreMaretailItem = true;
+                sendMessage("finish");
+                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("materialID", message);
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Material found!");
+            }
 
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
+            Material material = DataManager.getInstance().getMaterial(message);
+            if (null != material) {
+                addMoreMaretailItem = true;
+                sendMessage("finish");
+                Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("materialID", message);
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Material found!");
+            }
 
         }
     }

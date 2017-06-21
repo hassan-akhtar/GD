@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -53,7 +55,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
     private List<Inventory> locList = new ArrayList<Inventory>();
     RelativeLayout rlBottomSheetJobnumber, rlYes, rlNo;
     TextView tvStatement;
-    int materialLocID , eqID ;
+    int materialLocID, eqID;
     public static MaterialAdded materialAdded;
 
     @Override
@@ -63,8 +65,8 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         initViews();
         initObj();
         initListeners();
-        hideKeyboard();
-        setupLocList();
+
+        setupData();
     }
 
 
@@ -87,6 +89,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         taskType = getIntent().getStringExtra("taskType");
         materialID = getIntent().getStringExtra("materialID");
         tvStatement.setText("Do you want to assign a Job Number?");
+        tvMaterialFoundAt.setText("Material "+materialID+" found at following Location(s)");
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         etMaterialID.setText("" + materialID);
@@ -112,8 +115,8 @@ public class MaterialQuantityActivity extends AppCompatActivity {
             public void onClick(View view, int position) {
                 hideKeyboard();
                 if (!"".equals(etQuantity.getText().toString().trim())) {
-                    if (locList.get(position).getQuantity()<Integer.parseInt(etQuantity.getText().toString())) {
-                        showToast("This location doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
+                    if (locList.get(position).getQuantity() < Integer.parseInt(etQuantity.getText().toString())) {
+                        showToast("This location doesn't contain " + etQuantity.getText().toString() + " Material(s)!");
                     } else {
                         materialLocID = locList.get(position).getLocationID();
                         eqID = locList.get(position).getEquipmentID();
@@ -131,24 +134,76 @@ public class MaterialQuantityActivity extends AppCompatActivity {
             }
         }));
 
+        etQuantity.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (taskType.toLowerCase().startsWith("rec")) {
+                    if (s.length() >= 1) {
+                        showReceiveBottomSheet();
+                    } else {
+                        hideBottomsheet();
+                    }
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private void hideBottomsheet() {
+
+        rlBottomSheetJobnumber.setVisibility(View.GONE);
+    }
+
+    private void showReceiveBottomSheet() {
+        rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+        tvStatement.setText("Do you want to " + taskType + " " + etMaterialID.getText().toString() +", Quantity"+ etQuantity.getText().toString()+ " ?");
     }
 
 
-    private void setupLocList() {
+    private void showReceiveBottomSheetJobNumber() {
+        rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+        tvStatement.setText("Do you want to assign a Job Number?");
+    }
+
+    private void setupData() {
 
 
-        locList = DataManager.getInstance().getInventoryListByMaterialID(DataManager.getInstance().getMaterial(materialID).getID());
+        if (!taskType.toLowerCase().startsWith("rec")) {
+            hideKeyboard();
+            locList = DataManager.getInstance().getInventoryListByMaterialID(DataManager.getInstance().getMaterial(materialID).getID());
 
-        if(0==locList.size()){
-            tvNoLocFound.setVisibility(View.VISIBLE);
+            if (0 == locList.size()) {
+                tvNoLocFound.setVisibility(View.VISIBLE);
+            }
+
+            mAdapter = new MaterialAdapter(MaterialQuantityActivity.this, locList);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaterialQuantityActivity.this);
+            rvList.setLayoutManager(mLayoutManager);
+            rvList.setItemAnimator(new DefaultItemAnimator());
+            rvList.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
+        } else {
+            tvMaterialFoundAt.setText("Please enter "+materialID+" Quantity you want to Receive");
+            showKeyboard();
         }
+    }
 
-        mAdapter = new MaterialAdapter(MaterialQuantityActivity.this, locList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MaterialQuantityActivity.this);
-        rvList.setLayoutManager(mLayoutManager);
-        rvList.setItemAnimator(new DefaultItemAnimator());
-        rvList.setAdapter(mAdapter);
-        mAdapter.notifyDataSetChanged();
+    private void showKeyboard() {
+
+        etQuantity.requestFocus();
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(etQuantity ,
+                InputMethodManager.SHOW_IMPLICIT);
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -161,21 +216,8 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
-                    Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
-                    in.putExtra("materialLocID", materialLocID);
-                    in.putExtra("materialID", materialID);
-                    in.putExtra("taskType", taskType);
-                    in.putExtra("eqID", eqID);
-                    in.putExtra("quantity", etQuantity.getText().toString());
-                    startActivity(in);
-                    etQuantity.setText("");
-                    break;
-                }
-
-
-                case R.id.rlNo: {
-                    if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                        Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
+                    if (!taskType.toLowerCase().startsWith("rec")) {
+                        Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
                         in.putExtra("materialLocID", materialLocID);
                         in.putExtra("materialID", materialID);
                         in.putExtra("taskType", taskType);
@@ -184,9 +226,55 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         startActivity(in);
                         etQuantity.setText("");
                     } else {
-                        materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(),materialLocID));
-                        sendMessage("finish");
+                        if (tvStatement.getText().toString().contains("Quantity")) {
 
+                            showReceiveBottomSheetJobNumber();
+
+                        } else {
+                            Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
+                            in.putExtra("materialID", materialID);
+                            in.putExtra("taskType", taskType);
+                            in.putExtra("quantity", etQuantity.getText().toString());
+                            startActivity(in);
+                            etQuantity.setText("");
+                        }
+                    }
+                    break;
+                }
+
+
+                case R.id.rlNo: {
+                    if (!taskType.toLowerCase().startsWith("rec")) {
+                        if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                            Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
+                            in.putExtra("materialLocID", materialLocID);
+                            in.putExtra("materialID", materialID);
+                            in.putExtra("taskType", taskType);
+                            in.putExtra("eqID", eqID);
+                            in.putExtra("quantity", etQuantity.getText().toString());
+                            startActivity(in);
+                            etQuantity.setText("");
+                        } else {
+                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
+                            sendMessage("finish");
+                        }
+                    } else {
+                        if (tvStatement.getText().toString().contains("Quantity")) {
+                            finish();
+                            sendMessage("finish");
+                        } else {
+                            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                                Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
+                                in.putExtra("materialID", materialID);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("quantity", etQuantity.getText().toString());
+                                startActivity(in);
+                                etQuantity.setText("");
+                            } else {
+                                materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
+                                sendMessage("finish");
+                            }
+                        }
                     }
                     break;
                 }
