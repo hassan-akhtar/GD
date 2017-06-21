@@ -313,7 +313,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
             moveInventoryCall.setJobNumberID(lstReceiveInventoryRealm.get(i).getJobNumberID());
             moveInventoryCall.setUserID(lstReceiveInventoryRealm.get(i).getUserID());
 
-
             for(int j=0; j<lstReceiveInventoryRealm.get(i).getMaterials().size();j++){
                 InventoryMoveCall inventoryMoveCall = new InventoryMoveCall();
                 inventoryMoveCall.setCode(lstReceiveInventoryRealm.get(i).getMaterials().get(j).getCode());
