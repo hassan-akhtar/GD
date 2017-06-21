@@ -59,5 +59,7 @@ public interface GSDService {
 
     void postSyncMoveInventory(SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO , MyCallBack callback);
 
+    void postSyncIssueInventory(SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO , MyCallBack callback);
+
 
 }

@@ -13,6 +13,7 @@ public class MoveInventoryCall{
 
     private int EquipmentID;
     private String MoveType;
+    private String IssueType;
     private int UserID;
     private int JobNumberID;
     private int LocationID;
@@ -44,6 +45,14 @@ public class MoveInventoryCall{
 
     public int getJobNumberID() {
         return JobNumberID;
+    }
+
+    public String getIssueType() {
+        return IssueType;
+    }
+
+    public void setIssueType(String issueType) {
+        IssueType = issueType;
     }
 
     public void setJobNumberID(int jobNumberID) {

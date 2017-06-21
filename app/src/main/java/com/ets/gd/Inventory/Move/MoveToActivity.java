@@ -20,7 +20,7 @@ import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
 public class MoveToActivity extends AppCompatActivity {
 
 
-    TextView tbTitleTop, tbTitleBottom, tvMaterial;
+    TextView tbTitleTop, tbTitleBottom, tvMaterial, tvMove, tvFirst;
     String materialName, taskName;
     ImageView ivBack, ivTick;
     RelativeLayout rlJob, rlLocation;
@@ -41,6 +41,8 @@ public class MoveToActivity extends AppCompatActivity {
     private void initViews() {
 
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
+        tvMove  = (TextView) findViewById(R.id.tvMove);
+        tvFirst = (TextView) findViewById(R.id.tvJob);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tvMaterial = (TextView) findViewById(R.id.tvMaterial);
         ivBack = (ImageView) findViewById(R.id.ivBack);
@@ -60,6 +62,14 @@ public class MoveToActivity extends AppCompatActivity {
             tvMaterial.setText(""+materialName+",...");
         }else{
             tvMaterial.setText(" "+materialName);
+        }
+
+        if(taskName.toLowerCase().startsWith("mo")){
+            tvMove.setText("Select Move Type");
+            tvFirst.setText("Location");
+        }else if(taskName.toLowerCase().startsWith("iss")){
+            tvMove.setText("Select Issue Type");
+            tvFirst.setText("User");
         }
 
     }
@@ -96,12 +106,21 @@ public class MoveToActivity extends AppCompatActivity {
 
                 case R.id.rlJob: {
 
-                    Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
-                    in.putExtra("taskType", taskName);
-                    in.putExtra("scanType", "Location");
-                    in.putExtra("material", materialName);
-                    in.putExtra("isMultiple", isMultiple);
-                    startActivity(in);
+                    if (tvFirst.getText().toString().toLowerCase().startsWith("loc")) {
+                        Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
+                        in.putExtra("taskType", taskName);
+                        in.putExtra("scanType", "Location");
+                        in.putExtra("material", materialName);
+                        in.putExtra("isMultiple", isMultiple);
+                        startActivity(in);
+                    } else  if (tvFirst.getText().toString().toLowerCase().startsWith("use")) {
+                        Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
+                        in.putExtra("taskType", taskName);
+                        in.putExtra("scanType", "User");
+                        in.putExtra("material", materialName);
+                        in.putExtra("isMultiple", isMultiple);
+                        startActivity(in);
+                    }
                     break;
                 }
 

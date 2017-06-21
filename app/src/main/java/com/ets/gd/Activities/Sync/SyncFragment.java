@@ -91,7 +91,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
     boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false, sendUnitInspcall = false, sendToolHawkEquipmentCall = false, sendETSLocationCall = false;
     boolean sendTransferToolhawkCall = false, sendMoveToolhawkCall = false, sendQuickCountCall = false, sendMaintenanceCall = false, sendCheckInCall = false, sendCheckOutCall = false;
-    boolean sendMoveInventoryCall = false;
+    boolean sendMoveInventoryCall = false, sendIssueInventoryCall = false, sendReceiveInventoryCall = false;
     MoveTransferRequestDTO moveTransferRequestDTO;
     List<MoveTransfer> lstMoveEquipment = new ArrayList<MoveTransfer>();
     List<FireBugEquipment> lstAllAssets = new ArrayList<FireBugEquipment>();
@@ -121,6 +121,14 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO;
     List<MoveInventoryRealm> lstmoveInventoryRealm = new ArrayList<MoveInventoryRealm>();
     List<MoveInventoryCall> lstmoveInventory = new ArrayList<MoveInventoryCall>();
+
+    SyncPostMoveInventoryRequestDTO syncPostIssueInventoryRequestDTO;
+    List<MoveInventoryRealm> lstIssueInventoryRealm = new ArrayList<MoveInventoryRealm>();
+    List<MoveInventoryCall> lstIssueInventory = new ArrayList<MoveInventoryCall>();
+
+    SyncPostMoveInventoryRequestDTO syncPostReceiveInventoryRequestDTO;
+    List<MoveInventoryRealm> lstReceiveInventoryRealm = new ArrayList<MoveInventoryRealm>();
+    List<MoveInventoryCall> lstReceiveInventory = new ArrayList<MoveInventoryCall>();
 
     public SyncFragment() {
     }
@@ -175,6 +183,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         setupCheckInData();
         setupCheckOutData();
         setupMoveInventoryData();
+        setupIssueInventoryData();
 
         if (sendEquipmentCall) {
             callSyncPostEqupmentService();
@@ -202,6 +211,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
             callSyncPostCheckOutService();
         } else if(sendMoveInventoryCall){
             callSyncPostMoveInventoryService();
+        }else if(sendIssueInventoryCall){
+            callSyncPostIssueInventoryService();
         }else {
             // tvSyncInProgress.setText("No data found for syncing");
             // showToast("No data found for syncing");
@@ -254,6 +265,36 @@ public class SyncFragment extends Fragment implements MyCallBack {
     }
 
 
+    private void setupIssueInventoryData() {
+
+        lstIssueInventoryRealm = DataManager.getInstance().getAllIssueInventoryList();
+        List<InventoryMoveCall> Materials = new ArrayList<InventoryMoveCall>();
+        for(int i=0; i<lstIssueInventoryRealm.size();i++){
+            MoveInventoryCall moveInventoryCall = new MoveInventoryCall();
+            moveInventoryCall.setEquipmentID(lstIssueInventoryRealm.get(i).getEquipmentID());
+            moveInventoryCall.setJobNumberID(lstIssueInventoryRealm.get(i).getJobNumberID());
+            moveInventoryCall.setIssueType(lstIssueInventoryRealm.get(i).getIssueType());
+            moveInventoryCall.setUserID(lstIssueInventoryRealm.get(i).getUserID());
+
+            for(int j=0; j<lstIssueInventoryRealm.get(i).getMaterials().size();j++){
+                InventoryMoveCall inventoryMoveCall = new InventoryMoveCall();
+                inventoryMoveCall.setCode(lstIssueInventoryRealm.get(i).getMaterials().get(j).getCode());
+                inventoryMoveCall.setQuantity(lstIssueInventoryRealm.get(i).getMaterials().get(j).getQuantity());
+                inventoryMoveCall.setInventoryID(lstIssueInventoryRealm.get(i).getMaterials().get(j).getInventoryID());
+                inventoryMoveCall.setMaterialID(lstIssueInventoryRealm.get(i).getMaterials().get(j).getMaterialID());
+                Materials.add(inventoryMoveCall);
+            }
+            moveInventoryCall.setMaterials(Materials);
+            lstIssueInventory.add(moveInventoryCall);
+        }
+
+
+        syncPostIssueInventoryRequestDTO = new SyncPostMoveInventoryRequestDTO(Constants.RESPONSE_SYNC_POST_ISSUE, lstIssueInventory);
+
+        if (0 != lstIssueInventory.size()) {
+            sendIssueInventoryCall = true;
+        }
+    }
     private void setupCheckInData() {
 
         checkInList = DataManager.getInstance().getAllCheckInList();
@@ -443,6 +484,22 @@ public class SyncFragment extends Fragment implements MyCallBack {
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncMoveInventory(
                 syncPostMoveInventoryRequestDTO, this
+        );
+        //} else {
+        //     tvSyncInProgress.setText("No data found for syncing");
+        //      showToast("No data found for syncing");
+        //  }
+    }
+
+
+    void callSyncPostIssueInventoryService() {
+
+        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
+        CommonActions.showProgressDialog(getActivity());
+        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
+        tvSyncInProgress.setText("Sync in progress...");
+        GSDServiceFactory.getService(getActivity()).postSyncIssueInventory(
+                syncPostIssueInventoryRequestDTO, this
         );
         //} else {
         //     tvSyncInProgress.setText("No data found for syncing");
@@ -884,6 +941,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -933,6 +992,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -980,6 +1041,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1024,6 +1087,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1066,6 +1131,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1107,6 +1174,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1146,6 +1215,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1183,6 +1254,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1217,6 +1290,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1249,6 +1324,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1281,6 +1358,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostCheckOutService();
                     } else if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1310,6 +1389,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                     if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
+                    }else if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
                     }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
@@ -1338,8 +1419,12 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    if(sendIssueInventoryCall){
+                        callSyncPostIssueInventoryService();
+                    }else {
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
+                    }
 
                 } else {
                     CommonActions.DismissesDialog();
@@ -1356,6 +1441,28 @@ public class SyncFragment extends Fragment implements MyCallBack {
             }
             break;
 
+            case Constants.RESPONSE_SYNC_POST_ISSUE: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    DataManager.getInstance().deleteRealm();
+                    callSyncGetService();
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
 
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;

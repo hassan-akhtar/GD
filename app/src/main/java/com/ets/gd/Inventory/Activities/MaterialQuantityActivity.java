@@ -113,7 +113,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 hideKeyboard();
                 if (!"".equals(etQuantity.getText().toString().trim())) {
                     if (locList.get(position).getQuantity()<Integer.parseInt(etQuantity.getText().toString())) {
-                        showToast("This Location/Container doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
+                        showToast("This location doesn't contain "+etQuantity.getText().toString()+" Material(s)!");
                     } else {
                         materialLocID = locList.get(position).getLocationID();
                         eqID = locList.get(position).getEquipmentID();

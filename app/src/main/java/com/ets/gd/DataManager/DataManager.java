@@ -1017,9 +1017,13 @@ public class DataManager {
 
 
     public List<MoveInventoryRealm> getAllMoveInventoryList() {
-        return realm.where(MoveInventoryRealm.class).findAll();
+        return realm.where(MoveInventoryRealm.class).equalTo("isMoved",true).findAll();
     }
 
+
+    public List<MoveInventoryRealm> getAllIssueInventoryList() {
+        return realm.where(MoveInventoryRealm.class).equalTo("isIssued",true).findAll();
+    }
 
     public List<JobNumber> getAllDepJobNumberList(int ID) {
         return realm.where(JobNumber.class).equalTo("DepartmentID", ID).findAll().sort("Code");

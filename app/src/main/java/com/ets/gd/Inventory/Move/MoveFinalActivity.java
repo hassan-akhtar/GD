@@ -145,7 +145,6 @@ public class MoveFinalActivity extends AppCompatActivity {
             tvFromLoc.setText(loc);
         }
 
-        tvMovingAsset.setText("Moving " + materialList.size() + " Material(s)");
 
         if (1 < materialList.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
@@ -162,9 +161,11 @@ public class MoveFinalActivity extends AppCompatActivity {
         }
 
         if (taskName.toLowerCase().startsWith("m")) {
+            tvMovingAsset.setText("Moving " + materialList.size() + " Material(s)");
             tvStatement.setText("Are you sure you want to move " + materialList.size() + " Material(s) To " + toLoc);
             rlBottomSheet.setVisibility(View.VISIBLE);
-        } else if (taskName.toLowerCase().startsWith("i")) {
+        } else if (taskName.toLowerCase().startsWith("is")) {
+            tvMovingAsset.setText("Issuing " + materialList.size() + " Material(s)");
             tvStatement.setText("Are you sure you want to issue " + materialList.size() + " Material(s) To " + toLoc);
             rlBottomSheet.setVisibility(View.VISIBLE);
         }
@@ -183,6 +184,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                     if (!tvToLoc.getText().toString().toLowerCase().equals(tvFromLoc.getText().toString())) {
                         moveInventory = new MoveInventoryRealm();
                         if (taskName.toLowerCase().startsWith("m")) {
+                            moveInventory.setMoved(true);
                             if (scanType.toLowerCase().startsWith("con")) {
                                 moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
                                 moveInventory.setMoveType("Equipment");
@@ -206,14 +208,41 @@ public class MoveFinalActivity extends AppCompatActivity {
                             moveInventory.setMaterials(Materials);
                             DataManager.getInstance().saveMoveInventoryResult(moveInventory);
                             Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
-                        } else if (taskName.toLowerCase().startsWith("i")) {
+                        } else if (taskName.toLowerCase().startsWith("iss")) {
+                            moveInventory.setIssued(true);
+                            if (scanType.toLowerCase().startsWith("con")) {
+                                moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                                moveInventory.setIssueType("Equipment");
+                            }
+                            if (scanType.toLowerCase().startsWith("use")) {
+                                moveInventory.setUserID(DataManager.getInstance().getMobileUser(tvToLoc.getText().toString()).getID());
+                                moveInventory.setIssueType("User");
+                            }
+
+                            moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+
+                            for (int i = 0; i < materialList.size(); i++) {
+                                InventoryMoveRealm inventoryMove = new InventoryMoveRealm();
+                                inventoryMove.setCode(materialList.get(i).getName());
+                                inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
+                                inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
+                                inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
+                                Materials.add(inventoryMove);
+                            }
+                            moveInventory.setMaterials(Materials);
+
+                            DataManager.getInstance().saveMoveInventoryResult(moveInventory);
                             Toast.makeText(getApplicationContext(), "Asset(s) Successfully Issued!", Toast.LENGTH_LONG).show();
                         }
                         sendMessage("finish");
                         finish();
                     } else {
-                        Toast.makeText(MoveFinalActivity.this,"You cannot move to same Location/Container.",Toast.LENGTH_SHORT).show();
-                        Toast.makeText(MoveFinalActivity.this,"Please select any other Location/Container.",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MoveFinalActivity.this, "You cannot " + taskName + " to same Location/Container.", Toast.LENGTH_SHORT).show();
+                        if (taskName.toLowerCase().startsWith("m")) {
+                            Toast.makeText(MoveFinalActivity.this, "Please select any other Location/Container.", Toast.LENGTH_LONG).show();
+                        } else if (taskName.toLowerCase().startsWith("iss")) {
+                            Toast.makeText(MoveFinalActivity.this, "Please select any other User/Container.", Toast.LENGTH_LONG).show();
+                        }
                     }
                     break;
                 }

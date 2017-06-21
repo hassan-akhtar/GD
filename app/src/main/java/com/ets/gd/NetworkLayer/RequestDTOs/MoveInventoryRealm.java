@@ -12,9 +12,13 @@ public class MoveInventoryRealm extends RealmObject{
 
     private int EquipmentID;
     private String MoveType;
+    private String IssueType;
     private int UserID;
     private int JobNumberID;
     private int LocationID;
+    boolean isIssued;
+    boolean isMoved;
+    boolean isReceived;
     private RealmList<InventoryMoveRealm> Materials;
 
     public int getEquipmentID() {
@@ -49,6 +53,30 @@ public class MoveInventoryRealm extends RealmObject{
         JobNumberID = jobNumberID;
     }
 
+    public boolean issued() {
+        return isIssued;
+    }
+
+    public void setIssued(boolean issued) {
+        isIssued = issued;
+    }
+
+    public boolean isMoved() {
+        return isMoved;
+    }
+
+    public void setMoved(boolean moved) {
+        isMoved = moved;
+    }
+
+    public boolean isReceived() {
+        return isReceived;
+    }
+
+    public void setReceived(boolean received) {
+        isReceived = received;
+    }
+
     public int getLocationID() {
         return LocationID;
     }
@@ -59,6 +87,14 @@ public class MoveInventoryRealm extends RealmObject{
 
     public RealmList<InventoryMoveRealm> getMaterials() {
         return Materials;
+    }
+
+    public String getIssueType() {
+        return IssueType;
+    }
+
+    public void setIssueType(String issueType) {
+        IssueType = issueType;
     }
 
     public void setMaterials(RealmList<InventoryMoveRealm> materials) {

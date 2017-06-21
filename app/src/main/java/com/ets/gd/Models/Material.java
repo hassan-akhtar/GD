@@ -35,7 +35,9 @@ public class Material {
         this.jobNumberID = jobNumberID;
     }
 
-    public Material(int equipmentID, String name, String quantity, int locID) {
+
+
+    public Material(int equipmentID, String name, String quantity, int locID ) {
         this.name = name;
         this.quantity = quantity;
         this.locID = locID;

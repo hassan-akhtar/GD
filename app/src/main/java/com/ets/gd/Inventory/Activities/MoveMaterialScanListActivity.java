@@ -154,6 +154,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setName("" + materialID);
         material.setQuantity("" + quantity);
         material.setLocID(materialLocID);
+
         material.setEquipmentID(eqID);
         materialList.add(material);
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
@@ -168,7 +169,11 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
             if (taskType.toLowerCase().startsWith("mo")) {
                 tvTaskName.setText("MOVE ASSET");
                 tvCount.setText("" + materialList.size());
-                tvCountSupportText.setText("Asset Selected to Move");
+                tvCountSupportText.setText("Asset(s) Selected to Move");
+            }else if (taskType.toLowerCase().startsWith("iss")) {
+                tvTaskName.setText("ISSUE ASSET");
+                tvCount.setText("" + materialList.size());
+                tvCountSupportText.setText("Asset(s) Selected to Issue");
             }
         }
     }

@@ -19,13 +19,14 @@ import java.util.List;
 public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdapter.MyViewHolder> {
 
     private List<ToolhawkEquipment> containerList = new ArrayList<ToolhawkEquipment>();
-    private List<ETSLocations> userList = new ArrayList<ETSLocations>();
+    private List<ETSLocations> locList = new ArrayList<ETSLocations>();
+    private List<MobileUser> userList = new ArrayList<MobileUser>();
     Context mContext;
     String type;
     MyViewHolder myViewHolder;
 
-    public UserContainerAdapter(Context context, List<ETSLocations> userList, String type) {
-        this.userList = userList;
+    public UserContainerAdapter(Context context, List<ETSLocations> locList, String type) {
+        this.locList = locList;
         this.type = type;
         this.mContext = context;
     }
@@ -36,6 +37,12 @@ public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdap
         this.mContext = context;
     }
 
+
+    public UserContainerAdapter(String type, Context context,  List<MobileUser> userList) {
+        this.userList = userList;
+        this.type = type;
+        this.mContext = context;
+    }
 
 
 
@@ -52,7 +59,7 @@ public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdap
         myViewHolder = holder;
 
         if (type.toLowerCase().startsWith("loc")) {
-            ETSLocations user = userList.get(position);
+            ETSLocations user = locList.get(position);
             holder.tvTitle.setText("" + user.getCode());
             holder.txtDesc.setText("Description:");
             if (null!=user.getDescription()) {
@@ -69,6 +76,15 @@ public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdap
             } else {
                 holder.tvDesc.setText("N/A");
             }
+        }else if (type.toLowerCase().startsWith("use")) {
+            MobileUser mobileUser = userList.get(position);
+            holder.tvTitle.setText("" + mobileUser.getFirstName()+", "+mobileUser.getLastName());
+            holder.txtDesc.setText("Username:");
+            if (null!=mobileUser.getUserName()) {
+                holder.tvDesc.setText("" + mobileUser.getUserName());
+            } else {
+                holder.tvDesc.setText("N/A");
+            }
         }
     }
 
@@ -76,9 +92,11 @@ public class UserContainerAdapter extends RecyclerView.Adapter<UserContainerAdap
     @Override
     public int getItemCount() {
         if (type.toLowerCase().startsWith("loc")) {
-            return userList.size();
+            return locList.size();
         } else if (type.toLowerCase().startsWith("con")) {
             return containerList.size();
+        }else if (type.toLowerCase().startsWith("use")) {
+            return userList.size();
         }else {
             return 0;
         }

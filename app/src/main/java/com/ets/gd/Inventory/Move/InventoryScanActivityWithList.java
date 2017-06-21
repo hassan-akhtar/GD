@@ -60,12 +60,14 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
     RecyclerView rvList;
     private List<ToolhawkEquipment> containerList = new ArrayList<ToolhawkEquipment>();
     private List<ETSLocations> locList = new ArrayList<ETSLocations>();
+    private List<MobileUser> userList = new ArrayList<MobileUser>();
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     ETSLocations etsLocations;
     ToolhawkEquipment container;
     ETSLocations etsLocation;
+    MobileUser mobileUser;
     boolean isMultiple;
 
     @Override
@@ -148,6 +150,13 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     in.putExtra("toLoc", containerList.get(position).getCode());
                     startActivity(in);
 
+                }else if (scanType.toLowerCase().startsWith("use")) {
+                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("scanType", scanType);
+                    in.putExtra("toLoc", userList.get(position).getUserName());
+                    startActivity(in);
+
                 }
 
 
@@ -185,6 +194,9 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
         } else if (scanType.toLowerCase().startsWith("con")) {
             containerList = DataManager.getInstance().getAllContainerToolhawkAssets();
             mAdapter = new UserContainerAdapter(InventoryScanActivityWithList.this, "container", containerList);
+        } else if (scanType.toLowerCase().startsWith("use")) {
+            userList = DataManager.getInstance().getAllMobileUserList();
+            mAdapter = new UserContainerAdapter( "use", InventoryScanActivityWithList.this, userList);
         }
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(InventoryScanActivityWithList.this);
@@ -230,6 +242,20 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                                 etBarcode.setText("");
                             } else {
                                 showToast("No such Container Found!");
+                            }
+
+                        }else if (scanType.toLowerCase().startsWith("use")) {
+                            mobileUser = DataManager.getInstance().getMobileUser(etBarcode.getText().toString());
+                            if (null != mobileUser) {
+                                Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("scanType", scanType);
+                                in.putExtra("jobNumber", "");
+                                in.putExtra("toLoc", mobileUser.getUserName());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No User Found!");
                             }
 
                         }
@@ -415,6 +441,20 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             } else {
                 showToast("No such Container Found!");
             }
+        }else if (scanType.toLowerCase().startsWith("use")) {
+            mobileUser = DataManager.getInstance().getMobileUser(message);
+            if (null != mobileUser) {
+                Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("scanType", scanType);
+                in.putExtra("jobNumber", "");
+                in.putExtra("toLoc", mobileUser.getUserName());
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No User Found!");
+            }
+
         }
 
     }
