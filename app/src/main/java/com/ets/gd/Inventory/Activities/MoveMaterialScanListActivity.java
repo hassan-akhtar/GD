@@ -38,8 +38,10 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Interfaces.MaterialAdded;
 import com.ets.gd.Inventory.Adapters.InventoryScannedMaterialAdapter;
+import com.ets.gd.Inventory.Move.InventoryScanActivityWithList;
 import com.ets.gd.Inventory.Move.MoveFinalActivity;
 import com.ets.gd.Inventory.Move.MoveToActivity;
+import com.ets.gd.Inventory.Receive.ReceiveMaterialActivity;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
@@ -154,9 +156,9 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setName("" + materialID);
         material.setQuantity("" + quantity);
         material.setLocID(materialLocID);
-
         material.setEquipmentID(eqID);
         materialList.add(material);
+        ReceiveMaterialActivity.materialList= materialList;
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MoveMaterialScanListActivity.this);
         rvList.setLayoutManager(mLayoutManager);
@@ -363,7 +365,16 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         }
                         startActivity(in);
                     } else {
-                        showToast("receive");
+                        Intent in = new Intent(MoveMaterialScanListActivity.this, InventoryScanActivityWithList.class);
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("scanType", "Location");
+                        in.putExtra("material", materialID);
+                        if (1 < materialList.size()) {
+                            in.putExtra("isMultiple", true);
+                        } else {
+                            in.putExtra("isMultiple", false);
+                        }
+                        startActivity(in);
                     }
                     break;
                 }
@@ -573,6 +584,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     @Override
     public void MaterialMoveListItemAdded(com.ets.gd.Models.Material material) {
         materialList.add(material);
+        ReceiveMaterialActivity.materialList= materialList;
         tvCount.setText("" + materialList.size());
         mAdapter.notifyDataSetChanged();
     }

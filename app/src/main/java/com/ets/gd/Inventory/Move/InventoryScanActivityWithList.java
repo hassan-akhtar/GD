@@ -32,6 +32,7 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Inventory.Adapters.UserContainerAdapter;
+import com.ets.gd.Inventory.Receive.ReceiveMaterialActivity;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
@@ -137,11 +138,17 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             public void onClick(View view, int position) {
 
                 if (scanType.toLowerCase().startsWith("loc")) {
-                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
-                    in.putExtra("taskType", taskType);
-                    in.putExtra("scanType", scanType);
-                    in.putExtra("toLoc", locList.get(position).getCode());
-                    startActivity(in);
+                    if (!taskType.toLowerCase().startsWith("rec")) {
+                        Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("scanType", scanType);
+                        in.putExtra("toLoc", locList.get(position).getCode());
+                        startActivity(in);
+                    } else {
+                        Intent in = new Intent(InventoryScanActivityWithList.this, ReceiveMaterialActivity.class);
+                        in.putExtra("toLoc", locList.get(position).getCode());
+                        startActivity(in);
+                    }
 
                 } else if (scanType.toLowerCase().startsWith("con")) {
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
@@ -150,7 +157,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     in.putExtra("toLoc", containerList.get(position).getCode());
                     startActivity(in);
 
-                }else if (scanType.toLowerCase().startsWith("use")) {
+                } else if (scanType.toLowerCase().startsWith("use")) {
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
@@ -196,7 +203,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             mAdapter = new UserContainerAdapter(InventoryScanActivityWithList.this, "container", containerList);
         } else if (scanType.toLowerCase().startsWith("use")) {
             userList = DataManager.getInstance().getAllMobileUserList();
-            mAdapter = new UserContainerAdapter( "use", InventoryScanActivityWithList.this, userList);
+            mAdapter = new UserContainerAdapter("use", InventoryScanActivityWithList.this, userList);
         }
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(InventoryScanActivityWithList.this);
@@ -217,13 +224,20 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
 
                         if (scanType.toLowerCase().startsWith("loc")) {
                             etsLocations = DataManager.getInstance().getETSLocationsByCode(etBarcode.getText().toString());
+
                             if (null != etsLocations) {
-                                Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
-                                in.putExtra("taskType", taskType);
-                                in.putExtra("scanType", scanType);
-                                in.putExtra("jobNumber", "");
-                                in.putExtra("toLoc", etsLocations.getCode());
-                                startActivity(in);
+                                if (!taskType.toLowerCase().startsWith("rec")) {
+                                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                                    in.putExtra("taskType", taskType);
+                                    in.putExtra("scanType", scanType);
+                                    in.putExtra("jobNumber", "");
+                                    in.putExtra("toLoc", etsLocations.getCode());
+                                    startActivity(in);
+                                } else {
+                                    Intent in = new Intent(InventoryScanActivityWithList.this, ReceiveMaterialActivity.class);
+                                    in.putExtra("toLoc", etsLocations.getCode());
+                                    startActivity(in);
+                                }
                                 etBarcode.setText("");
                             } else {
                                 showToast("No such location Found!");
@@ -244,7 +258,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                                 showToast("No such Container Found!");
                             }
 
-                        }else if (scanType.toLowerCase().startsWith("use")) {
+                        } else if (scanType.toLowerCase().startsWith("use")) {
                             mobileUser = DataManager.getInstance().getMobileUser(etBarcode.getText().toString());
                             if (null != mobileUser) {
                                 Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
@@ -416,17 +430,25 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
 
         if (scanType.toLowerCase().startsWith("loc")) {
             etsLocations = DataManager.getInstance().getETSLocationsByCode(message);
+
             if (null != etsLocations) {
-                Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
-                in.putExtra("taskType", taskType);
-                in.putExtra("scanType", scanType);
-                in.putExtra("jobNumber", "");
-                in.putExtra("toLoc", etsLocations.getCode());
-                startActivity(in);
-                etBarcode.setText("");
+                if (!taskType.toLowerCase().startsWith("rec")) {
+                    Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("scanType", scanType);
+                    in.putExtra("jobNumber", "");
+                    in.putExtra("toLoc", etsLocations.getCode());
+                    startActivity(in);
+                    etBarcode.setText("");
+                } else {
+                    Intent in = new Intent(InventoryScanActivityWithList.this, ReceiveMaterialActivity.class);
+                    in.putExtra("toLoc", etsLocations.getCode());
+                    startActivity(in);
+                }
             } else {
                 showToast("No such location Found!");
             }
+
         } else if (scanType.toLowerCase().startsWith("con")) {
 
             container = DataManager.getInstance().getToolhawkContainerEquipment(message);
@@ -441,7 +463,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
             } else {
                 showToast("No such Container Found!");
             }
-        }else if (scanType.toLowerCase().startsWith("use")) {
+        } else if (scanType.toLowerCase().startsWith("use")) {
             mobileUser = DataManager.getInstance().getMobileUser(message);
             if (null != mobileUser) {
                 Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);

@@ -207,7 +207,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             }
                             moveInventory.setMaterials(Materials);
                             DataManager.getInstance().saveMoveInventoryResult(moveInventory);
-                            Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Material(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                         } else if (taskName.toLowerCase().startsWith("iss")) {
                             moveInventory.setIssued(true);
                             if (scanType.toLowerCase().startsWith("con")) {
@@ -232,7 +232,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             moveInventory.setMaterials(Materials);
 
                             DataManager.getInstance().saveMoveInventoryResult(moveInventory);
-                            Toast.makeText(getApplicationContext(), "Asset(s) Successfully Issued!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Material(s) Successfully Issued!", Toast.LENGTH_LONG).show();
                         }
                         sendMessage("finish");
                         finish();

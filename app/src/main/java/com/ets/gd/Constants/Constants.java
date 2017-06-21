@@ -58,6 +58,6 @@ public class Constants {
 
     // Urls Inventory
     public static final String URL_SYNC_POST_MOVE_INVENTORY  = "/Services/Services/Mobile/MoveInventory";
-    public static final String URL_SYNC_POST__ISSUE = "/Services/Services/Mobile/IssueInventory";
+    public static final String URL_SYNC_POST_ISSUE = "/Services/Services/Mobile/IssueInventory";
     public static final String URL_SYNC_POST_RECEIVE = "/Services/Services/Mobile/ReceiveInventory";
 }

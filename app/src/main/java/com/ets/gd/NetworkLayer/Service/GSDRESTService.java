@@ -126,8 +126,15 @@ public interface GSDRESTService {
 
 
     // Sync post data request location
-    @POST(Constants.URL_SYNC_POST__ISSUE)
+    @POST(Constants.URL_SYNC_POST_ISSUE)
     public void postSyncIssueInventory(@Body List<MoveInventoryCall> lstmoveInventory,
                                       Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_RECEIVE)
+    public void postSyncReceiveInventory(@Body List<MoveInventoryCall> lstmoveInventory,
+                                       Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
 }
 
