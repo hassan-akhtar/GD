@@ -44,7 +44,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     //SyncCustomer realmSyncGetResponseDTO;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
-
     public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0;
 
 

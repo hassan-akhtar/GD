@@ -89,7 +89,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         taskType = getIntent().getStringExtra("taskType");
         materialID = getIntent().getStringExtra("materialID");
         tvStatement.setText("Do you want to assign a Job Number?");
-        tvMaterialFoundAt.setText("Material "+materialID+" found at following Location(s)");
+        tvMaterialFoundAt.setText("Material "+materialID+" found at following Location(s).\n Please select a Location.");
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         etMaterialID.setText("" + materialID);

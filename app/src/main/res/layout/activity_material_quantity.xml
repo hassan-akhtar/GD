@@ -96,7 +96,6 @@
             android:text="Material S001 found at following Location(s)"
             android:textColor="@color/greyDark" />
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvList"
             android:layout_width="match_parent"

@@ -153,6 +153,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                     startActivity(in);
                     etBarcode.setText("");
                 } else {
+                    MoveMaterialScanListActivity.addMoreMaretailItem =false;
                     materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumberList.get(position).getID()));
                     sendMessage("finish");
                 }
@@ -229,6 +230,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                                 startActivity(in);
                                 etBarcode.setText("");
                             } else {
+                                MoveMaterialScanListActivity.addMoreMaretailItem =false;
                                 materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
                                 sendMessage("finish");
                             }
@@ -401,6 +403,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                 startActivity(in);
                 etBarcode.setText("");
             } else {
+                MoveMaterialScanListActivity.addMoreMaretailItem =false;
                 materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
                 sendMessage("finish");
             }
