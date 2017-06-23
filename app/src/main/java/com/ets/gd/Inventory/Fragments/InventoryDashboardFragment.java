@@ -17,6 +17,7 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Inventory.Activities.CommonMaterialScanActivity;
+import com.ets.gd.Inventory.Activities.MoveMaterialScanListActivity;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -74,16 +75,17 @@ public class InventoryDashboardFragment extends Fragment {
             public void onClick(View view, int position) {
                 //showToast("" + thTasks[position]);
                 if (thTasks[position].toLowerCase().startsWith("mo")) {
-
+                    MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
                 } else  if (thTasks[position].toLowerCase().startsWith("iss")) {
-
+                    MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
                 } else  if (thTasks[position].toLowerCase().startsWith("rec")) {
+                    MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);

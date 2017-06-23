@@ -3,10 +3,7 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-/**
- * Created by hakhtar on 6/20/2017.
- * General Data
- */
+
 
 public class MoveInventoryRealm extends RealmObject{
 

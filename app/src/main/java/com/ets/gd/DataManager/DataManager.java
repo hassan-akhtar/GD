@@ -6,6 +6,7 @@ import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
+import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMoveRealm;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
@@ -897,6 +898,7 @@ public class DataManager {
         realm.copyToRealm(obj);
         realm.commitTransaction();
     }
+
 
     public void saveCheckInResult(CheckIn obj) {
 

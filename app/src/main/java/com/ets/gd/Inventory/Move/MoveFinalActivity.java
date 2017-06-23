@@ -207,6 +207,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             }
                             moveInventory.setMaterials(Materials);
                             DataManager.getInstance().saveMoveInventoryResult(moveInventory);
+                            //DataManager.getInstance().updateInventoryQuantity();
                             Toast.makeText(getApplicationContext(), "Material(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                         } else if (taskName.toLowerCase().startsWith("iss")) {
                             moveInventory.setIssued(true);

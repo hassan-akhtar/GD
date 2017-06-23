@@ -116,8 +116,27 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 hideKeyboard();
 
                 if (checkValidation()) {
-                    if (locList.get(position).getQuantity() < Integer.parseInt(etQuantity.getText().toString())) {
-                        showToast("This location doesn't contain " + etQuantity.getText().toString() + " Material(s)!");
+
+                    int alreadyAddedQuantity = 0;
+                    if (null!=MoveMaterialScanListActivity.materialList) {
+                        for (Material mat : MoveMaterialScanListActivity.materialList) {
+                            if (etMaterialID.getText().toString().toLowerCase().equals(mat.getName().toLowerCase())) {
+                                alreadyAddedQuantity = Integer.parseInt(mat.getQuantity());
+                                break;
+                            }
+                        }
+                    }
+
+                    int totalQuantity = alreadyAddedQuantity + Integer.parseInt(etQuantity.getText().toString());
+
+                    if (locList.get(position).getQuantity() < totalQuantity ) {
+
+                        if (0==alreadyAddedQuantity) {
+                            showToast("This location doesn't contain " + etQuantity.getText().toString() + " Material(s)!");
+                        } else {
+                            showToast("You have already selected "+alreadyAddedQuantity+" Material(s)!");
+                            showToast("This location doesn't contain " + totalQuantity + " Material(s)!");
+                        }
                     } else {
                         etQuantity.setEnabled(false);
                         materialLocID = locList.get(position).getLocationID();

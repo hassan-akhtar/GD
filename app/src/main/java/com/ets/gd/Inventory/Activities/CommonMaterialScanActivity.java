@@ -130,6 +130,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
             switch (v.getId()) {
 
                 case R.id.btnScan: {
+                    MoveMaterialScanListActivity.materialList.clear();
                     if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mo")) {
 
                         if ("".equals(etBarcode.getText().toString().trim())) {
@@ -330,7 +331,7 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
     public void BarcodeScanned(Barcode barcode) {
         String message = barcode.getMessage();
         String task = barcode.getTask();
-
+        MoveMaterialScanListActivity.materialList.clear();
         material = DataManager.getInstance().getMaterial(message);
 
         if (tbTitleBottom.getText().toString().toLowerCase().startsWith("mo")) {

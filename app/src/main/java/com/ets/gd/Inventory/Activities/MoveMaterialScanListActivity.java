@@ -79,7 +79,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     RecyclerView rvList;
     TextView tvCount, tvCountSupportText, tvTaskName, tvJobNumber;
     InventoryScannedMaterialAdapter mAdapter;
-    private List<com.ets.gd.Models.Material> materialList = new ArrayList<com.ets.gd.Models.Material>();
+    public static List<com.ets.gd.Models.Material> materialList = new ArrayList<com.ets.gd.Models.Material>();
     Context mContext;
     String[] locationNames;
     public static boolean addMoreMaretailItem = false;

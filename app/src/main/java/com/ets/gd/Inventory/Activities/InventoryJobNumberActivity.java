@@ -21,6 +21,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -194,6 +195,11 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
         );
+
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                etBarcode.getWindowToken(), 0);
     }
 
 
@@ -235,6 +241,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                                 sendMessage("finish");
                             }
                         } else {
+                            hideKeyboard();
                             showToast("No Job Number Found!");
                         }
 
