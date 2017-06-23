@@ -89,7 +89,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         taskType = getIntent().getStringExtra("taskType");
         materialID = getIntent().getStringExtra("materialID");
         tvStatement.setText("Do you want to assign a Job Number?");
-        tvMaterialFoundAt.setText("Material "+materialID+" found at following Location(s).\n Please select a Location.");
+        tvMaterialFoundAt.setText("Material " + materialID + " found at following Location(s).\n Please select a Location.");
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         etMaterialID.setText("" + materialID);
@@ -114,17 +114,17 @@ public class MaterialQuantityActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
                 hideKeyboard();
-                if (!"".equals(etQuantity.getText().toString().trim())) {
+
+                if (checkValidation()) {
                     if (locList.get(position).getQuantity() < Integer.parseInt(etQuantity.getText().toString())) {
                         showToast("This location doesn't contain " + etQuantity.getText().toString() + " Material(s)!");
                     } else {
+                        etQuantity.setEnabled(false);
                         materialLocID = locList.get(position).getLocationID();
                         eqID = locList.get(position).getEquipmentID();
                         rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
 
                     }
-                } else {
-                    showToast("Please enter quantity first!");
                 }
             }
 
@@ -158,6 +158,17 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         });
     }
 
+    private boolean checkValidation() {
+        if ("".equals(etQuantity.getText().toString().trim())) {
+            showToast("Please enter Quantity first");
+        } else if ("0".equals(etQuantity.getText().toString().trim())) {
+            showToast("Please enter Quantity greater than 0");
+        } else {
+            return true;
+        }
+        return false;
+    }
+
     private void hideBottomsheet() {
 
         rlBottomSheetJobnumber.setVisibility(View.GONE);
@@ -165,7 +176,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
     private void showReceiveBottomSheet() {
         rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
-        tvStatement.setText("Do you want to " + taskType + " " + etMaterialID.getText().toString() +", Quantity"+ etQuantity.getText().toString()+ " ?");
+        tvStatement.setText("Do you want to " + taskType + " " + etMaterialID.getText().toString() + ", Quantity" + etQuantity.getText().toString() + " ?");
     }
 
 
@@ -192,7 +203,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
             rvList.setAdapter(mAdapter);
             mAdapter.notifyDataSetChanged();
         } else {
-            tvMaterialFoundAt.setText("Please enter "+materialID+" Quantity you want to Receive");
+            tvMaterialFoundAt.setText("Please enter " + materialID + " Quantity you want to Receive");
             showKeyboard();
         }
     }
@@ -202,7 +213,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         etQuantity.requestFocus();
         InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInput(etQuantity ,
+        imm.showSoftInput(etQuantity,
                 InputMethodManager.SHOW_IMPLICIT);
     }
 
@@ -225,9 +236,10 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         in.putExtra("quantity", etQuantity.getText().toString());
                         startActivity(in);
                         etQuantity.setText("");
+                        etQuantity.setEnabled(true);
                     } else {
                         if (tvStatement.getText().toString().contains("Quantity")) {
-
+                            etQuantity.setEnabled(false);
                             showReceiveBottomSheetJobNumber();
 
                         } else {
@@ -237,6 +249,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             in.putExtra("quantity", etQuantity.getText().toString());
                             startActivity(in);
                             etQuantity.setText("");
+                            etQuantity.setEnabled(true);
                         }
                     }
                     break;
@@ -254,7 +267,9 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             in.putExtra("quantity", etQuantity.getText().toString());
                             startActivity(in);
                             etQuantity.setText("");
+                            etQuantity.setEnabled(true);
                         } else {
+                            MoveMaterialScanListActivity.addMoreMaretailItem =false;
                             materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
                             sendMessage("finish");
                         }
@@ -270,7 +285,9 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                                 in.putExtra("quantity", etQuantity.getText().toString());
                                 startActivity(in);
                                 etQuantity.setText("");
+                                etQuantity.setEnabled(true);
                             } else {
+                                MoveMaterialScanListActivity.addMoreMaretailItem =false;
                                 materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
                                 sendMessage("finish");
                             }

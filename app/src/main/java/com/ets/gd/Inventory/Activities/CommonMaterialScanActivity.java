@@ -154,22 +154,32 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
-                            in.putExtra("taskType",taskType);
-                            in.putExtra("materialID",etBarcode.getText().toString());
-                            startActivity(in);
-                            etBarcode.setText("");
+                            material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null!=material) {
+                                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType",taskType);
+                                in.putExtra("materialID",material.getCode());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
                     } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
 
                         if ("".equals(etBarcode.getText().toString().trim())) {
                             checkCameraPermission();
                         } else {
-                            Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
-                            in.putExtra("taskType",taskType);
-                            in.putExtra("materialID",etBarcode.getText().toString());
-                            startActivity(in);
-                            etBarcode.setText("");
+                            material = DataManager.getInstance().getMaterial(etBarcode.getText().toString());
+                            if (null!=material) {
+                                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                                in.putExtra("taskType",taskType);
+                                in.putExtra("materialID",material.getCode());
+                                startActivity(in);
+                                etBarcode.setText("");
+                            } else {
+                                showToast("No Material found!");
+                            }
                         }
                     }
                     break;
@@ -335,9 +345,26 @@ public class CommonMaterialScanActivity extends AppCompatActivity implements Bar
                 showToast("No Material found!");
             }
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
+            if (null!=material) {
+                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType",taskType);
+                in.putExtra("materialID",material.getCode());
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Material found!");
+            }
 
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
-
+            if (null!=material) {
+                Intent in = new Intent(CommonMaterialScanActivity.this, MaterialQuantityActivity.class);
+                in.putExtra("taskType",taskType);
+                in.putExtra("materialID",material.getCode());
+                startActivity(in);
+                etBarcode.setText("");
+            } else {
+                showToast("No Material found!");
+            }
         }
     }
 }

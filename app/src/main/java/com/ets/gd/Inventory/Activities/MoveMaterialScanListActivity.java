@@ -131,7 +131,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         materialLocID = getIntent().getIntExtra("materialLocID", 0);
         materialID = getIntent().getStringExtra("materialID");
         JobNumber = getIntent().getStringExtra("JobNumber");
-        eqID  = getIntent().getIntExtra("eqID", 0);
+        eqID = getIntent().getIntExtra("eqID", 0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan/Enter ID of Material");
@@ -158,7 +158,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setLocID(materialLocID);
         material.setEquipmentID(eqID);
         materialList.add(material);
-        ReceiveMaterialActivity.materialList= materialList;
+        ReceiveMaterialActivity.materialList = materialList;
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(MoveMaterialScanListActivity.this);
         rvList.setLayoutManager(mLayoutManager);
@@ -172,11 +172,11 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                 tvTaskName.setText("MOVE ASSET");
                 tvCount.setText("" + materialList.size());
                 tvCountSupportText.setText("Asset(s) Selected to Move");
-            }else if (taskType.toLowerCase().startsWith("iss")) {
+            } else if (taskType.toLowerCase().startsWith("iss")) {
                 tvTaskName.setText("ISSUE ASSET");
                 tvCount.setText("" + materialList.size());
                 tvCountSupportText.setText("Asset(s) Selected to Issue");
-            }else if (taskType.toLowerCase().startsWith("rec")) {
+            } else if (taskType.toLowerCase().startsWith("rec")) {
                 tvTaskName.setText("RECEIVE ASSET");
                 tvCount.setText("" + materialList.size());
                 tvCountSupportText.setText("Asset(s) Selected to Receive");
@@ -336,11 +336,11 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                     if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
                         locationNames = new String[materialList.size()];
                         for (int i = 0; i < materialList.size(); i++) {
-                            if (null!=DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                            if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
-                            } else    if (null!=DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                            } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
-                            }else{
+                            } else {
                                 locationNames[i] = "N/A";
                             }
                         }
@@ -539,7 +539,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
             Material material = DataManager.getInstance().getMaterial(message);
             if (null != material) {
-                addMoreMaretailItem = true;
+                setupFlags();
                 sendMessage("finish");
                 Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
                 in.putExtra("taskType", taskType);
@@ -553,7 +553,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("iss")) {
             Material material = DataManager.getInstance().getMaterial(message);
             if (null != material) {
-                addMoreMaretailItem = true;
+                setupFlags();
                 sendMessage("finish");
                 Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
                 in.putExtra("taskType", taskType);
@@ -567,7 +567,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         } else if (tbTitleBottom.getText().toString().toLowerCase().startsWith("rec")) {
             Material material = DataManager.getInstance().getMaterial(message);
             if (null != material) {
-                addMoreMaretailItem = true;
+                setupFlags();
                 sendMessage("finish");
                 Intent in = new Intent(MoveMaterialScanListActivity.this, MaterialQuantityActivity.class);
                 in.putExtra("taskType", taskType);
@@ -583,8 +583,19 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
     @Override
     public void MaterialMoveListItemAdded(com.ets.gd.Models.Material material) {
-        materialList.add(material);
-        ReceiveMaterialActivity.materialList= materialList;
+        boolean isAdded = false;
+        for (com.ets.gd.Models.Material mat : materialList) {
+            if (mat.getName().toLowerCase().equals(material.getName().toLowerCase())) {
+                int newQuantity = Integer.parseInt(mat.getQuantity()) + Integer.parseInt(material.getQuantity());
+                mat.setQuantity(String.valueOf(newQuantity));
+                isAdded = true;
+                break;
+            }
+        }
+        if (!isAdded) {
+            materialList.add(material);
+        }
+        ReceiveMaterialActivity.materialList = materialList;
         tvCount.setText("" + materialList.size());
         mAdapter.notifyDataSetChanged();
     }
