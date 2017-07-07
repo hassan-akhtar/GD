@@ -1578,7 +1578,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (responseDTO != null) {
-                    if (null != syncGetResponseDTO && "".equals(responseDTO.getErrorMsg())) {
+                    if (null != syncGetResponseDTO && null==responseDTO.getErrorMsg()) {
 
                         tvSyncInProgress.setText("Sync Complete!");
                         // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,7 +36,8 @@ import io.realm.RealmList;
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    public static Spinner spLocation, spSite, spBuilding, spCustomer;
+    public static Spinner spLocation, spBuilding, spCustomer;
+    AutoCompleteTextView spSite;
     View rootView;
     public static EditText tvDescprition, tvLocationID;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
@@ -71,7 +73,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initViews() {
         spCustomer = (Spinner) rootView.findViewById(R.id.spCustomer);
-        spSite = (Spinner) rootView.findViewById(R.id.spDep);
+        spSite = (AutoCompleteTextView) rootView.findViewById(R.id.spDep);
         spBuilding = (Spinner) rootView.findViewById(R.id.spLoc);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
@@ -224,10 +226,10 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                     tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
 
                     for (int j = 0; j < sites.length; j++) {
-                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
+/*                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
                             spSite.setSelection(j);
                             break;
-                        }
+                        }*/
                     }
 
                     for (int k = 0; k < buildings.length; k++) {
@@ -281,11 +283,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
                             for (int k = 0; k < sites.length; k++) {
-                                if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
+                  /*              if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
                                     spSite.setSelection(k);
                                     selectedSiteID=DataManager.getInstance().getLocation(strSelectedState).getSite().getID();
                                     break;
-                                }
+                                }*/
                             }
 
 

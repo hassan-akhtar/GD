@@ -138,14 +138,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/spDep"
                     android:layout_below="@+id/tvLableDep"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
+                    android:hint="Please select a site"
                     android:layout_marginLeft="23dp"
                     android:layout_marginRight="23dp"
+                    android:completionThreshold="1"
+                    android:paddingLeft="12dp"
                     android:background="@drawable/sp_bg_new"
                     android:paddingBottom="10dp" />
             </RelativeLayout>
@@ -171,13 +174,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent" />
 
-                <Spinner
+                <AutoCompleteTextView
                     android:id="@+id/spLoc"
                     android:layout_below="@+id/tvLableBuilding"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_marginLeft="23dp"
+                    android:paddingLeft="12dp"
+                    android:hint="Please select a building"
+                    android:completionThreshold="1"
                     android:layout_marginRight="23dp"
                     android:background="@drawable/sp_bg_new"
                     android:paddingBottom="10dp" />
