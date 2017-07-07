@@ -36,8 +36,8 @@ import io.realm.RealmList;
 public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
 
-    public static Spinner spLocation, spBuilding, spCustomer;
-    AutoCompleteTextView spSite;
+    public static Spinner spLocation, spCustomer;
+    AutoCompleteTextView spSite, spBuilding;
     View rootView;
     public static EditText tvDescprition, tvLocationID;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
@@ -74,7 +74,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     private void initViews() {
         spCustomer = (Spinner) rootView.findViewById(R.id.spCustomer);
         spSite = (AutoCompleteTextView) rootView.findViewById(R.id.spDep);
-        spBuilding = (Spinner) rootView.findViewById(R.id.spLoc);
+        spBuilding = (AutoCompleteTextView) rootView.findViewById(R.id.spLoc);
         spLocation = (Spinner) rootView.findViewById(R.id.spLocation);
         lLocationID = (TextInputLayout) rootView.findViewById(R.id.lLocationID);
         letLocationID = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
@@ -150,21 +150,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             }
         }
 
-
-        sites = new String[1];
-        sites[0] = "Please select a site";
-        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, sites);
-        dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSite.setAdapter(dataAdapterSIte);
-
-
-        buildings = new String[1];
-        buildings[0] = "Please select a building";
-        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
-        dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spBuilding.setAdapter(dataAdapterBuilding);
-
-
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
         } else {
@@ -183,27 +168,15 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getSelectedItem().toString());
         SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
 
-        int sizeSite = syncCustomer.getLstLocations().size() + 1;
+        int sizeSite = syncCustomer.getLstLocations().size();
         sites = new String[sizeSite];
 
         for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-            sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
+            sites[i] = syncCustomer.getLstLocations().get(i).getSite().getCode();
         }
-        sites[0] = "Please select a site";
-        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, sites);
+        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, sites);
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
-
-       // int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
-        buildings = new String[1];
-
-/*        for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-            buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
-        }*/
-        buildings[0] = "Please select a building";
-        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
-        dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spBuilding.setAdapter(dataAdapterBuilding);
 
 
         int size = syncCustomer.getLstLocations().size() + 1;
@@ -224,21 +197,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                     spLocation.setSelection(i);
                     tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
-
-                    for (int j = 0; j < sites.length; j++) {
-/*                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(j).toString().toLowerCase())) {
-                            spSite.setSelection(j);
-                            break;
-                        }*/
-                    }
-
-                    for (int k = 0; k < buildings.length; k++) {
-                        if (realmSyncGetResponseDTO.getLstLocations().get(i - 1).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(k).toString().toLowerCase())) {
-                            spBuilding.setSelection(i);
-                            break;
-                        }
-                    }
-
                     break;
                 }
             }
@@ -254,8 +212,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         tvDescprition.setText("No location selected");
         spSite.setEnabled(false);
         spBuilding.setEnabled(false);
-        spSite.setSelection(0);
-        spBuilding.setSelection(0);
         spCustomer.setEnabled(true);
         //spCustomer.setSelection(0);
 
@@ -283,11 +239,11 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
                             for (int k = 0; k < sites.length; k++) {
-                  /*              if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(spSite.getItemAtPosition(k).toString().toLowerCase())) {
-                                    spSite.setSelection(k);
+                                if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(sites[k].toString().toLowerCase())) {
+                                    spSite.setText(sites[k].toString());
                                     selectedSiteID=DataManager.getInstance().getLocation(strSelectedState).getSite().getID();
                                     break;
-                                }*/
+                                }
                             }
 
 
@@ -296,13 +252,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                                     allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(selectedSiteID);
                                 }
                                 if (null!=allBuilding) {
-                                    int sizeBuilding = allBuilding.size() + 1;
+                                    int sizeBuilding = allBuilding.size() ;
                                     buildings = new String[sizeBuilding];
 
                                     for (int l = 0; l < allBuilding.size(); l++) {
-                                        buildings[l + 1] = allBuilding.get(l).getCode();
+                                        buildings[l] = allBuilding.get(l).getCode();
                                     }
-                                    buildings[0] = "Please select a building";
                                     ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
                                     dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spBuilding.setAdapter(dataAdapterBuilding);
@@ -310,8 +265,8 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
                             for (int j = 0; j < buildings.length; j++) {
-                                if (DataManager.getInstance().getLocation(strSelectedState).getBuilding().getCode().toLowerCase().equals(spBuilding.getItemAtPosition(j).toString().toLowerCase())) {
-                                    spBuilding.setSelection(j);
+                                if (DataManager.getInstance().getLocation(strSelectedState).getBuilding().getCode().toLowerCase().equals(buildings[j].toString().toLowerCase())) {
+                                    spBuilding.setText(buildings[j].toString());
                                     break;
                                 }
                             }
@@ -357,24 +312,22 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             if (0 != posCustomer && !"viewAsset".equals(ViewAssetInformationActivity.actionType)) {
                 Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
                 SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
-                int sizeSite = syncCustomer.getLstLocations().size() + 1;
+                int sizeSite = syncCustomer.getLstLocations().size();
                 sites = new String[sizeSite];
 
                 for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                    sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
+                    sites[i] = syncCustomer.getLstLocations().get(i).getSite().getCode();
                 }
-                sites[0] = "Please select a site";
                 ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, sites);
                 dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spSite.setAdapter(dataAdapterSIte);
 
-                int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
+                int sizeBuilding = syncCustomer.getLstLocations().size();
                 buildings = new String[sizeBuilding];
 
                 for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                    buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
+                    buildings[i ] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
                 }
-                buildings[0] = "Please select a building";
                 ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
                 dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spBuilding.setAdapter(dataAdapterBuilding);

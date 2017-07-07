@@ -970,7 +970,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                   // lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
 
                     if (sendLocationcall) {
@@ -1026,7 +1026,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                  //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendMovecall) {
                         callSyncPostMoveService();
@@ -1079,7 +1079,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                 //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
@@ -1129,7 +1129,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                  //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendToolHawkEquipmentCall) {
                         callSyncPostToolhawkEqupmentService();
@@ -1178,7 +1178,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                  //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
                     } else if (sendTransferToolhawkCall) {
@@ -1224,7 +1224,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                 //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
@@ -1270,7 +1270,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                  //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
                     } else if (sendQuickCountCall) {
@@ -1313,7 +1313,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                 //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
                     } else if (sendMaintenanceCall) {
@@ -1352,7 +1352,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                  //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendMaintenanceCall) {
                         callSyncPostMaintenanceService();
@@ -1389,7 +1389,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                 //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
 
                     if (sendCheckInCall) {
@@ -1427,7 +1427,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
 
                     if (sendCheckOutCall) {
@@ -1463,7 +1463,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if(sendMoveInventoryCall){
                         callSyncPostMoveInventoryService();
@@ -1498,7 +1498,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if(sendIssueInventoryCall){
                         callSyncPostIssueInventoryService();
                     }else if(sendReceiveInventoryCall){
@@ -1527,7 +1527,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                 //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if(sendReceiveInventoryCall){
                         callSyncPostReceiveInventoryService();
                     }else {
@@ -1556,7 +1556,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                         DataManager.getInstance().deleteRealm();
                         callSyncGetService();
 
