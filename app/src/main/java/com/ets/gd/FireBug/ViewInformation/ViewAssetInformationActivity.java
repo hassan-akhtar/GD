@@ -251,23 +251,24 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                     } else if (3 == tabLayout.getSelectedTabPosition()) {
                         if (isAssetAdded) {
                             if (checkValidationAddAssetInspectionDates()) {
-                                DataManager.getInstance().addUpdateAssetInspecDates(AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
-                                        InspectionDatesFragment.tvDaily.getText().toString().trim(),
-                                        InspectionDatesFragment.tvWeekly.getText().toString().trim(),
-                                        InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
-                                        InspectionDatesFragment.tvMonthly.getText().toString().trim(),
-                                        InspectionDatesFragment.tvSemiAnnual.getText().toString().trim(),
-                                        InspectionDatesFragment.tvAnnual.getText().toString().trim(),
-                                        InspectionDatesFragment.tvFiveYears.getText().toString().trim(),
-                                        InspectionDatesFragment.tvSixYears.getText().toString().trim(),
-                                        InspectionDatesFragment.tvTenYears.getText().toString().trim(),
-                                        InspectionDatesFragment.tvTwelveYears.getText().toString().trim()
+                                if (!"viewAsset".equals(actionType)) {
+                                    DataManager.getInstance().addUpdateAssetInspecDates(AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
+                                            InspectionDatesFragment.tvDaily.getText().toString().trim(),
+                                            InspectionDatesFragment.tvWeekly.getText().toString().trim(),
+                                            InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
+                                            InspectionDatesFragment.tvMonthly.getText().toString().trim(),
+                                            InspectionDatesFragment.tvSemiAnnual.getText().toString().trim(),
+                                            InspectionDatesFragment.tvAnnual.getText().toString().trim(),
+                                            InspectionDatesFragment.tvFiveYears.getText().toString().trim(),
+                                            InspectionDatesFragment.tvSixYears.getText().toString().trim(),
+                                            InspectionDatesFragment.tvTenYears.getText().toString().trim(),
+                                            InspectionDatesFragment.tvTwelveYears.getText().toString().trim()
 
-                                ));
-                                if ("viewAsset".equals(actionType)) {
-                                    showToast("Asset's Inspection Dates Updated");
+                                    ));
+
+                                    showToast("Asset's Inspection Date(s) Added.");
                                 } else {
-                                    showToast("Asset's Inspection Dates Added");
+                                    showToast("You cannot update Asset's Inspection Date(s).");
                                 }
                             }
                         } else {
@@ -284,7 +285,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
     };
 
-
     private boolean checkValidationAddAsset() {
         if ("".equals(AssetInformationFragment.tvTagID.getText().toString().trim())) {
             showToast("Please enter Tag ID");
@@ -294,11 +294,12 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             showToast("Please select a Manufacturer");
         } else if (0 == AssetInformationFragment.posModel) {
             showToast("Please select a Model");
-        } else if ("".equals(AssetInformationFragment.tvSrNo.getText().toString().trim())) {
-            showToast("Please enter Serial Number");
-        } else if ("".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {
+        }
+/*        else if ("MM/DD/YYYY".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {
             showToast("Please select Manufacturer date");
-        }  else {
+        } */
+
+        else {
             return true;
         }
 

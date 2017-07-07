@@ -585,7 +585,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     public void MaterialMoveListItemAdded(com.ets.gd.Models.Material material) {
         boolean isAdded = false;
         for (com.ets.gd.Models.Material mat : materialList) {
-            if (mat.getName().toLowerCase().equals(material.getName().toLowerCase())) {
+            if (mat.getName().toLowerCase().equals(material.getName().toLowerCase()) && mat.getLocID()==material.getLocID()) {
                 int newQuantity = Integer.parseInt(mat.getQuantity()) + Integer.parseInt(material.getQuantity());
                 mat.setQuantity(String.valueOf(newQuantity));
                 isAdded = true;

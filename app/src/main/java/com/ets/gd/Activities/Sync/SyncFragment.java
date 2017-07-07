@@ -716,7 +716,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 addLocation.setDescription(location.getDescription());
                 addLocation.setCustomer(location.getCustomer().getID());
                 addLocation.setSite(location.getSite().getID());
-                addLocation.setBuilding(location.getBuilding().getID());
+                if (null!=location.getBuilding()) {
+                    addLocation.setBuilding(location.getBuilding().getID());
+                }
                 lstAddLocation.add(addLocation);
             }
         }
@@ -1576,7 +1578,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (responseDTO != null) {
-                    if (null != syncGetResponseDTO) {
+                    if (null != syncGetResponseDTO && "".equals(responseDTO.getErrorMsg())) {
 
                         tvSyncInProgress.setText("Sync Complete!");
                         // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
@@ -1614,7 +1616,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                             itemList[i] = lstSyncPostEquipmentResults.get(i).getCode() + ", " + lstSyncPostEquipmentResults.get(i).getOperation() + ", " + status;
                         }
 
-                        itemList[itemList.length - 1] = "Update Db FAILURE";
+                        itemList[itemList.length - 1] = ""+responseDTO.getErrorMsg();
                         showSyncResults();
                     }
                 }

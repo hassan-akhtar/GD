@@ -120,7 +120,8 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                     int alreadyAddedQuantity = 0;
                     if (null!=MoveMaterialScanListActivity.materialList) {
                         for (Material mat : MoveMaterialScanListActivity.materialList) {
-                            if (etMaterialID.getText().toString().toLowerCase().equals(mat.getName().toLowerCase())) {
+                            if (etMaterialID.getText().toString().toLowerCase().equals(mat.getName().toLowerCase())
+                                     && locList.get(position).getLocationID()==mat.getLocID()) {
                                 alreadyAddedQuantity = Integer.parseInt(mat.getQuantity());
                                 break;
                             }
@@ -204,6 +205,10 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         tvStatement.setText("Do you want to assign a Job Number?");
     }
 
+    private void hideReceiveBottomSheetJobNumber() {
+        rlBottomSheetJobnumber.setVisibility(View.GONE);
+    }
+
     private void setupData() {
 
 
@@ -256,6 +261,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         startActivity(in);
                         etQuantity.setText("");
                         etQuantity.setEnabled(true);
+                        hideReceiveBottomSheetJobNumber();
                     } else {
                         if (tvStatement.getText().toString().contains("Quantity")) {
                             etQuantity.setEnabled(false);
@@ -269,6 +275,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             startActivity(in);
                             etQuantity.setText("");
                             etQuantity.setEnabled(true);
+                            hideReceiveBottomSheetJobNumber();
                         }
                     }
                     break;
@@ -287,6 +294,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             startActivity(in);
                             etQuantity.setText("");
                             etQuantity.setEnabled(true);
+                            hideReceiveBottomSheetJobNumber();
                         } else {
                             MoveMaterialScanListActivity.addMoreMaretailItem =false;
                             materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
@@ -305,6 +313,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                                 startActivity(in);
                                 etQuantity.setText("");
                                 etQuantity.setEnabled(true);
+                                hideReceiveBottomSheetJobNumber();
                             } else {
                                 MoveMaterialScanListActivity.addMoreMaretailItem =false;
                                 materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));

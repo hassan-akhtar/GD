@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Material;
 import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
@@ -48,9 +49,14 @@ public class InventoryScannedMaterialAdapter extends RecyclerView.Adapter<Invent
         Material asset = materialList.get(position);
         holder.tvTag.setVisibility(View.GONE);
         holder.tvName.setText(""+asset.getName());
-        holder.tvQuantity.setText(""+asset.getQuantity());
+        if (null!=DataManager.getInstance().getETSLocationByIDOnly(asset.getLocID())) {
+            holder.tvQuantity.setText("Quantity: "+asset.getQuantity()+" Location:"+ DataManager.getInstance().getETSLocationByIDOnly(asset.getLocID()).getCode());
+        } else {
+            holder.tvQuantity.setText("Quantity: "+asset.getQuantity());
+        }
 
-                drawable = TextDrawable.builder()
+
+        drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
                         .buildRound(asset.getName().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));

@@ -449,7 +449,7 @@ public class GSDServiceImpl implements GSDService {
 
     @Override
     public void postSyncReceiveInventory(final SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO, final MyCallBack callback) {
-        adapter.postSyncIssueInventory(syncPostMoveInventoryRequestDTO.getMoveInventoryList(), new Callback<List<SyncPostEquipment>>() {
+        adapter.postSyncReceiveInventory(syncPostMoveInventoryRequestDTO.getMoveInventoryList(), new Callback<List<SyncPostEquipment>>() {
             @Override
             public void success(List<SyncPostEquipment> syncPostEquipment, Response response) {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = new SyncPostEquipmentResponseDTO();
