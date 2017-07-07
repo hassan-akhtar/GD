@@ -11,6 +11,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.ViewInformation.ViewLocationInformationActivity;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
@@ -35,7 +37,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
     ImageView ivBack, ivTick;
     TextView tbTitleBottom, tbTitleTop;
-    Spinner spSite, spBuilding, spCustomer;
+    Spinner  spCustomer;
+    AutoCompleteTextView spSite, spBuilding;
     public static EditText tvDescprition, tvLocationID;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     List<Site> allSites = new ArrayList<Site>();
@@ -46,7 +49,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     String[] buildings;
     String[] customers;
     String taskType, barcodeID;
-    ETSLocations etsLocation;
+    ETSLocation etsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +59,18 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         initViews();
         initObj();
         initListeners();
-        hideKeyboard();
+        hideKeyboardLocAndDesc();
 
     }
 
     private void initViews() {
 
-        spSite = (Spinner) findViewById(R.id.spDep);
+        spSite = (AutoCompleteTextView) findViewById(R.id.spDep);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvLocationID = (EditText) findViewById(R.id.tvLocationID);
         ivTick = (ImageView) findViewById(R.id.ivTick);
-        spBuilding = (Spinner) findViewById(R.id.spLoc);
+        spBuilding = (AutoCompleteTextView) findViewById(R.id.spLoc);
         spCustomer = (Spinner) findViewById(R.id.spCustomer);
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
@@ -91,26 +94,24 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         allBuilding = DataManager.getInstance().getAllETSBuildings();
         allCustomers = DataManager.getInstance().getAllCustomerList();
 
-        int sizeSite = allSites.size() + 1;
+        int sizeSite = allSites.size();
         sites = new String[sizeSite];
 
         for (int i = 0; i < allSites.size(); i++) {
-            sites[i + 1] = allSites.get(i).getCode();
+            sites[i] = allSites.get(i).getCode();
         }
-        sites[0] = "Please select a site";
 
-        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_spinner_item, sites);
+        ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_list_item_1, sites);
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-        int sizeBuilding = allBuilding.size() + 1;
+        int sizeBuilding = allBuilding.size();
         buildings = new String[sizeBuilding];
 
         for (int i = 0; i < allBuilding.size(); i++) {
-            buildings[i + 1] = allBuilding.get(i).getCode();
+            buildings[i] = allBuilding.get(i).getCode();
         }
-        buildings[0] = "Please select a building";
-        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_spinner_item, buildings);
+        ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_list_item_1, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBuilding.setAdapter(dataAdapterBuilding);
 
@@ -144,8 +145,6 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         tvLocationID.setVisibility(View.VISIBLE);
         tvLocationID.setText("");
         tvDescprition.setText("");
-        spSite.setSelection(0);
-        spBuilding.setSelection(0);
         tvDescprition.setEnabled(true);
         tvLocationID.setEnabled(true);
         spBuilding.setEnabled(true);
@@ -155,7 +154,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     }
 
     void setViewForViewLoc() {
-        etsLocation = DataManager.getInstance().getETSLocationsByCode(barcodeID);
+        etsLocation = DataManager.getInstance().getETSLocationByCode(barcodeID);
         if (null != etsLocation) {
             tvLocationID.setText(""+etsLocation.getCode());
             tvDescprition.setText(""+etsLocation.getDescription());
@@ -172,9 +171,9 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         for (int i = 0; i < allSites.size() + 1; i++) {
-            if (null != DataManager.getInstance().getSiteByID(etsLocation.getSite().getID())) {
-                if (DataManager.getInstance().getSiteByID(etsLocation.getSite().getID()).getCode().toLowerCase().equals(spSite.getItemAtPosition(i).toString().toLowerCase())) {
-                    spSite.setSelection(i);
+            if ( null != DataManager.getInstance().getSiteByID(etsLocation.getSiteID())) {
+                if (DataManager.getInstance().getSiteByID(etsLocation.getSiteID()).getCode().toLowerCase().equals(sites[i].toString().toLowerCase())) {
+                    spSite.setText(sites[i].toString());
                     posSite = i;
                     break;
                 }
@@ -182,9 +181,9 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         }
 
         for (int i = 0; i < allBuilding.size() + 1; i++) {
-            if (null != DataManager.getInstance().getBuilding(etsLocation.getBuilding().getID())) {
-                if (DataManager.getInstance().getBuilding(etsLocation.getBuilding().getID()).getCode().toLowerCase().equals(spBuilding.getItemAtPosition(i).toString().toLowerCase())) {
-                    spBuilding.setSelection(i);
+            if ( null != DataManager.getInstance().getBuilding(etsLocation.getBuildingID())) {
+                if (DataManager.getInstance().getBuilding(etsLocation.getBuildingID()).getCode().toLowerCase().equals(buildings[i].toString().toLowerCase())) {
+                    spBuilding.setText(buildings[i].toString());
                     posBuilding = i;
                     break;
                 }
@@ -193,8 +192,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         for (int i = 0; i < allCustomers.size() + 1; i++) {
-            if (null != DataManager.getInstance().getCustomerByID(etsLocation.getCustomer().getID())) {
-                if (DataManager.getInstance().getCustomerByID(etsLocation.getCustomer().getID()).getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+            if (null != DataManager.getInstance().getCustomerByID(etsLocation.getCustomerID())) {
+                if (DataManager.getInstance().getCustomerByID(etsLocation.getCustomerID()).getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
                     spCustomer.setSelection(i);
                     posCustomer = i;
                     break;
@@ -204,7 +203,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
     }
 
-    public void hideKeyboard() {
+    public void hideKeyboardLocAndDesc() {
         InputMethodManager imm = (InputMethodManager)
                 getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(
@@ -215,19 +214,50 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                 tvDescprition.getWindowToken(), 0);
     }
 
+
+
+    public void hideKeyboard() {
+        getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
+
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(
+                spSite.getWindowToken(), 0);
+
+        InputMethodManager imm2 = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm2.hideSoftInputFromWindow(
+                spBuilding.getWindowToken(), 0);
+    }
+
     private void initListeners() {
-        spSite.setOnItemSelectedListener(this);
-        spBuilding.setOnItemSelectedListener(this);
         spCustomer.setOnItemSelectedListener(this);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
 
 
+        spSite.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                hideKeyboard();
+
+            }
+        });
         spSite.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
+                hideKeyboardLocAndDesc();
+                spSite.showDropDown();
                 return false;
+            }
+        });
+
+        spBuilding.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                hideKeyboard();
             }
         });
 
@@ -235,7 +265,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         spBuilding.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
+                hideKeyboardLocAndDesc();
+                spBuilding.showDropDown();
                 return false;
             }
         });
@@ -244,10 +275,12 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         spCustomer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                hideKeyboard();
+                hideKeyboardLocAndDesc();
                 return false;
             }
         });
+
+
 
     }
 
@@ -269,8 +302,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                                     tvLocationID.getText().toString(),
                                     tvDescprition.getText().toString(),
                                     DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()).getID(),
-                                    DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()).getID(),
-                                    DataManager.getInstance().getETSBuilding(spBuilding.getItemAtPosition(posBuilding).toString()).getID(),
+                                    DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID(),
+                                    DataManager.getInstance().getETSBuilding(spBuilding.getText().toString()).getID(),
                                     true
                             );
                             DataManager.getInstance().addETSLocation(etsLocation);
@@ -323,11 +356,15 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             showToast("Please enter a location");
         } else if ("".equals(tvDescprition.getText().toString().trim())) {
             showToast("Please enter a Description");
-        } else if (0 == posSite) {
+        } else if ("".equals(spSite.getText().toString().trim())) {
             showToast("Please select a site");
-        } else if (0 == posBuilding) {
+        } else if (null==DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
+            showToast("Please select a valid site");
+        } else if ("".equals(spBuilding.getText().toString().trim())) {
             showToast("Please select a building");
-        } else if (0 == posCustomer) {
+        } else if (null==DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
+            showToast("Please select a valid building");
+        }else if (0 == posCustomer) {
             showToast("Please select a Company");
         } else {
             return true;
