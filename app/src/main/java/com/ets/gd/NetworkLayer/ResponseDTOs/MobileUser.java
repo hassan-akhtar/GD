@@ -16,7 +16,6 @@ public class MobileUser extends RealmObject {
     private String Password;
     private String CustomerId;
     private String UserProfileId;
-    private List<String> Applications;
     private List<String> RolePermissions;
 
     public int getID() {
@@ -73,14 +72,6 @@ public class MobileUser extends RealmObject {
 
     public void setUserProfileId(String userProfileId) {
         UserProfileId = userProfileId;
-    }
-
-    public List<String> getApplications() {
-        return Applications;
-    }
-
-    public void setApplications(List<String> applications) {
-        Applications = applications;
     }
 
     public List<String> getRolePermissions() {
