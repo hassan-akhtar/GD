@@ -15,6 +15,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
@@ -54,6 +55,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode;
 
 import java.util.List;
 
+import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
@@ -236,7 +238,7 @@ public class DataManager {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
+                FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
                 RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", fireBugEquipment.getID()).findAll();
                 RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
                 if (0 != results.size()) {
@@ -346,7 +348,7 @@ public class DataManager {
     }
 
     public Locations getLocation(String barcodeID) {
-        return realm.where(Locations.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(Locations.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
     public Locations getLocationByID(int ID) {
@@ -358,19 +360,19 @@ public class DataManager {
     }
 
     public Site getLocationSite(String barcodeID) {
-        return realm.where(Site.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(Site.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
     public ETSBuilding getETSBuilding(String barcodeID) {
-        return realm.where(ETSBuilding.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(ETSBuilding.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
     public Building getLocationBuilding(String barcodeID) {
-        return realm.where(Building.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
     public List<ToolhawkEquipment> getLocationEquipment(String locCOde) {
-        return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", locCOde).findAll();
+        return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", locCOde, Case.INSENSITIVE).findAll();
     }
     public void addNewLocation(Locations location) {
         realm.beginTransaction();
@@ -476,14 +478,14 @@ public class DataManager {
 
 
     public MaintenanceCategory getMaintenanceCategory(String code) {
-        return realm.where(MaintenanceCategory.class).equalTo("Code",code).findFirst();
+        return realm.where(MaintenanceCategory.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
     }
     public Action getAction(String code) {
-        return realm.where(Action.class).equalTo("Code",code).findFirst();
+        return realm.where(Action.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
     }
 
     public Material getMaterial(String code) {
-        return realm.where(Material.class).equalTo("Code",code).findFirst();
+        return realm.where(Material.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
     }
 
 
@@ -497,11 +499,11 @@ public class DataManager {
     }
 
     public Site getSite(String code) {
-        return realm.where(Site.class).equalTo("Code", code).findFirst();
+        return realm.where(Site.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     public QuickCount getQuickCount(String code) {
-        return realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst();
+        return realm.where(QuickCount.class).equalTo("AssetCode", code, Case.INSENSITIVE).findFirst();
     }
 
     public Site getSiteByID(int ID) {
@@ -555,22 +557,22 @@ public class DataManager {
     }
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
-        return realm.where(Manufacturer.class).equalTo("Code", Code).findFirst();
+        return realm.where(Manufacturer.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
     public DeviceType getAssetDeviceType(String Code) {
-        return realm.where(DeviceType.class).equalTo("Code", Code).findFirst();
+        return realm.where(DeviceType.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
     public MyLocation getAssetLocation(String Code) {
-        return realm.where(MyLocation.class).equalTo("Code", Code).findFirst();
+        return realm.where(MyLocation.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
     public Locations getAssetLocations(String Code) {
-        return realm.where(Locations.class).equalTo("Code", Code).findFirst();
+        return realm.where(Locations.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
@@ -580,18 +582,18 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public AgentType getAssetAgentType(String Code) {
-        return realm.where(AgentType.class).equalTo("Code", Code).findFirst();
+        return realm.where(AgentType.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
 
     // For getting asset all assets from DB
     public VendorCode getAssetVendorCode(String Code) {
-        return realm.where(VendorCode.class).equalTo("Code", Code).findFirst();
+        return realm.where(VendorCode.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
     public Model getAssetModel(String Code) {
-        return realm.where(Model.class).equalTo("Code", Code).findFirst();
+        return realm.where(Model.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
 
@@ -626,21 +628,21 @@ public class DataManager {
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Department getDepartmentByCode(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).equalTo("Code", code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.Department.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Department getDepartmentCodeByEquipmentCode(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment.class).equalTo("Code", code).findFirst().getDepartment();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment.class).equalTo("Code", code, Case.INSENSITIVE).findFirst().getDepartment();
     }
 
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCode(String code) {
 
-        if (null != realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst()) {
-            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+        if (null != realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code, Case.INSENSITIVE).findFirst()) {
+            return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
         } else {
 
-            ETSLocations loc = realm.where(ETSLocations.class).equalTo("Code", code).findFirst();
+            ETSLocations loc = realm.where(ETSLocations.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
             if (null != loc) {
                 realm.beginTransaction();
                 ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
@@ -688,7 +690,7 @@ public class DataManager {
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByCodeOnly(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByID(int ID ) {
@@ -697,16 +699,16 @@ public class DataManager {
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocationsByCode(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     // For getting asset all assets from DB
     public Customer getCustomerByCode(String Code) {
-        if (null != realm.where(Customer.class).equalTo("Code", Code).findFirst()) {
-            return realm.where(Customer.class).equalTo("Code", Code).findFirst();
+        if (null != realm.where(Customer.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst()) {
+            return realm.where(Customer.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
         } else {
             realm.beginTransaction();
-            AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("Code", Code).findFirst();
+            AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
             Customer customer = realm.createObject(Customer.class, allCustomer.getID());
             customer.setDescription(allCustomer.getDescription());
             customer.setCode(allCustomer.getCode());
@@ -916,7 +918,7 @@ public class DataManager {
 
     public void deleteQuickCountResult(String code) {
         realm.beginTransaction();
-        realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst().deleteFromRealm();
+        realm.where(QuickCount.class).equalTo("AssetCode", code, Case.INSENSITIVE).findFirst().deleteFromRealm();
         realm.commitTransaction();
     }
 
@@ -1044,7 +1046,7 @@ public class DataManager {
     }
 
     public JobNumber getJobNumber(String code) {
-        return realm.where(JobNumber.class).equalTo("Code", code).findFirst();
+        return realm.where(JobNumber.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     public List<RouteInspection> getAllRouteInspectionTypes(int RouteID) {
@@ -1053,7 +1055,7 @@ public class DataManager {
 
 
     public FireBugEquipment getEquipment(String barcodeID) {
-        return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(FireBugEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
 
@@ -1062,12 +1064,12 @@ public class DataManager {
     }
 
     public ToolhawkEquipment getToolhawkEquipment(String barcodeID) {
-        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).findFirst();
+        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
 
     public ToolhawkEquipment getToolhawkContainerEquipment(String barcodeID) {
-        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID).equalTo("IsContainer", true).findFirst();
+        return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).equalTo("IsContainer", true).findFirst();
     }
 
     public ToolhawkEquipment getToolhawkEquipmentByID(int ID) {
@@ -1083,7 +1085,7 @@ public class DataManager {
     }
 
     public QuickCount getQuickCountAssetList(String code) {
-        return realm.where(QuickCount.class).equalTo("AssetCode", code).findFirst();
+        return realm.where(QuickCount.class).equalTo("AssetCode", code, Case.INSENSITIVE).findFirst();
     }
 
     public List<QuickCount> getAllChangesQuickCountAssetList() {
@@ -1135,7 +1137,7 @@ public class DataManager {
     }
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations getETSLocations(String code) {
-        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code).findFirst();
+        return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
 

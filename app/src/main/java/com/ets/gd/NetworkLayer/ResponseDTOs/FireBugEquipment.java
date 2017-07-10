@@ -9,6 +9,7 @@ public class FireBugEquipment  extends RealmObject {
 
     private int ID;
     @PrimaryKey
+
     private String Code;
     private String SerialNo;
     private String ManufacturerDate;
