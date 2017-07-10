@@ -1,9 +1,11 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import java.util.List;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class MobileUser  extends RealmObject {
+public class MobileUser extends RealmObject {
 
 
     @PrimaryKey
@@ -14,7 +16,8 @@ public class MobileUser  extends RealmObject {
     private String Password;
     private String CustomerId;
     private String UserProfileId;
-
+    private List<String> Applications;
+    private List<String> RolePermissions;
 
     public int getID() {
         return ID;
@@ -70,5 +73,21 @@ public class MobileUser  extends RealmObject {
 
     public void setUserProfileId(String userProfileId) {
         UserProfileId = userProfileId;
+    }
+
+    public List<String> getApplications() {
+        return Applications;
+    }
+
+    public void setApplications(List<String> applications) {
+        Applications = applications;
+    }
+
+    public List<String> getRolePermissions() {
+        return RolePermissions;
+    }
+
+    public void setRolePermissions(List<String> rolePermissions) {
+        RolePermissions = rolePermissions;
     }
 }
