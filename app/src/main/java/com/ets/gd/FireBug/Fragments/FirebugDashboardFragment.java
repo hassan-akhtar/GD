@@ -107,6 +107,20 @@ public class FirebugDashboardFragment extends Fragment {
             fab.setVisibility(View.GONE);
         }
 
+
+        boolean accessFBEq = false;
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("FireBugEquipment")) {
+                accessFBEq = true;
+            }
+        }
+
+        if (!accessFBEq) {
+            fab.setVisibility(View.GONE);
+        }
+
+
+
     }
 
     private void initListeners() {

@@ -90,6 +90,17 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
             fab.setVisibility(View.GONE);
         }
 
+        boolean accessTHEq = false;
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("ToolHawkEquipment")) {
+                accessTHEq = true;
+            }
+        }
+        if (!accessTHEq) {
+            fab.setVisibility(View.GONE);
+        }
+
+
     }
 
     private void initListeners() {
