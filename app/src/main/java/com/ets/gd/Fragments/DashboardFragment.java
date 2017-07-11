@@ -314,7 +314,7 @@ public class DashboardFragment extends Fragment {
 
         boolean accessFirebugDash = false;
         for (int i = 0; i < rolePermissions.size(); i++) {
-            if (rolePermissions.get(i).getValue().equals("FireBugDashBoard")) {
+            if (rolePermissions.get(i).getValue().equals("FireBug")) {
                 accessFirebugDash = true;
             }
         }
@@ -328,7 +328,7 @@ public class DashboardFragment extends Fragment {
 
         boolean accessToolhawkDash = false;
         for (int i = 0; i < rolePermissions.size(); i++) {
-            if (rolePermissions.get(i).getValue().equals("ToolHawkDashBoard")) {
+            if (rolePermissions.get(i).getValue().equals("ToolHawk")) {
                 accessToolhawkDash = true;
             }
         }

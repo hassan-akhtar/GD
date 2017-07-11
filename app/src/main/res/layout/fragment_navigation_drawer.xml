@@ -22,7 +22,7 @@
             android:layout_marginLeft="17sp"
             android:text="John Doe"
             android:textColor="@android:color/white"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
     </RelativeLayout>
 
