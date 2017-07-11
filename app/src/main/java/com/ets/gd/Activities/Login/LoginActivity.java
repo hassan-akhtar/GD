@@ -145,7 +145,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } else {
                                             new AlertDialog.Builder(LoginActivity.this)
                                                     .setTitle("Permission")
-                                                    .setMessage("You don't have Permission to use any app. Please contact support center.")
+                                                    .setMessage("You don't have Permission to use any app. Please contact Tech support.")
                                                     .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
 

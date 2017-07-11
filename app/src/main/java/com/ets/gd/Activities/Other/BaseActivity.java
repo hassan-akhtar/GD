@@ -364,7 +364,6 @@ public class BaseActivity extends AppCompatActivity
 
 
             case 3:
-
                 if (rolePermissions.contains("Inventory")  && rolePermissions.contains("ETSMaterial")) {
                     tbTitleTop.setText("ETS");
                     tbTitleBottom.setText("Inventory");

@@ -1050,7 +1050,7 @@ public class DataManager {
     }
 
     public MobileUser getMobileUser(String user) {
-        return realm.where(MobileUser.class).equalTo("UserName", user).findFirst();
+        return realm.where(MobileUser.class).equalTo("UserName", user, Case.INSENSITIVE).findFirst();
     }
 
     public JobNumber getJobNumber(String code) {

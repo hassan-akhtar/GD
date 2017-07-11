@@ -365,7 +365,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                             toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(etBarcode.getText().toString());
                             if (null!=toolhawkEquipment) {
                                 Intent in = new Intent(CommonToolhawkScanActivity.this, MaintenanceActivity.class);
-                                in.putExtra("assetID", etBarcode.getText().toString());
+                                in.putExtra("assetID", toolhawkEquipment.getCode().toString());
                                 startActivity(in);
                             }else{
                                 showToast("No Equipment Found!");

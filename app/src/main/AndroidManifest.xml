@@ -78,30 +78,78 @@
         <activity
             android:name=".Inventory.Activities.CommonMaterialScanActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".FireBug.RouteInspection.RouteAssetActivity" />
-        <activity android:name=".Inventory.Activities.MoveMaterialScanListActivity" />
-        <activity android:name=".Inventory.Activities.InventoryJobNumberActivity" />
-        <activity android:name=".Inventory.Move.MoveToActivity" />
-        <activity android:name=".Inventory.Move.InventoryScanActivityWithList" />
-        <activity android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity" />
-        <activity android:name=".ToolHawk.EquipmentInfo.EquipmentInfoActivity" />
-        <activity android:name=".ToolHawk.Activities.CommonToolhawkScanActivity" />
-        <activity android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity" />
-        <activity android:name=".ToolHawk.EquipmentInfo.ToolhawkLocationActivity" />
-        <activity android:name=".ToolHawk.Maintenance.MaintenanceActivity" />
-        <activity android:name=".ToolHawk.Move.MoveActivity" />
-        <activity android:name=".ToolHawk.QuickCount.QuickCountActivity" />
-        <activity android:name=".ToolHawk.Transfer.TransferActivity" />
-        <activity android:name=".ToolHawk.Activities.ToolhawkScanActivityWithList" />
-        <activity android:name=".ToolHawk.Move.MoveAssetActivity" />
-        <activity android:name=".ToolHawk.CheckInOut.CheckoutToActivity" />
-        <activity android:name=".ToolHawk.CheckInOut.UserActivity" />
-        <activity android:name=".ToolHawk.CheckInOut.JobNumberActivity" />
-        <activity android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity" />
-        <activity android:name=".FireBug.ViewInformation.ViewAllAssetsActivity" />
-        <activity android:name=".Inventory.Activities.MaterialQuantityActivity" />
-        <activity android:name=".Inventory.Move.MoveFinalActivity" />
-        <activity android:name=".Inventory.Receive.ReceiveMaterialActivity"></activity>
+        <activity
+            android:name=".FireBug.RouteInspection.RouteAssetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Activities.MoveMaterialScanListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Activities.InventoryJobNumberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Move.MoveToActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Move.InventoryScanActivityWithList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FireBug.RouteInspection.RouteAssetInspectionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.EquipmentInfo.EquipmentInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Activities.CommonToolhawkScanActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Activities.CommonToolhawkDepartmentActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.EquipmentInfo.ToolhawkLocationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Maintenance.MaintenanceActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Move.MoveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.QuickCount.QuickCountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Transfer.TransferActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Activities.ToolhawkScanActivityWithList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.Move.MoveAssetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.CheckInOut.CheckoutToActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.CheckInOut.UserActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.CheckInOut.JobNumberActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ToolHawk.CheckInOut.CheckoutAssetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FireBug.ViewInformation.ViewAllAssetsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Activities.MaterialQuantityActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Move.MoveFinalActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Inventory.Receive.ReceiveMaterialActivity"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
