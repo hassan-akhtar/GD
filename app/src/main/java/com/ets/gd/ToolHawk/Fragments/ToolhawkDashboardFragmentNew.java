@@ -99,19 +99,24 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-
+                rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
                 if (thTasks[position].toLowerCase().startsWith("eq")) {
                     boolean accessViewInfo = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("AddEdit")){
-                            accessViewInfo = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
+                                    accessViewInfo = true;
+                                }
+                            }
+
                         }
                     }
 
                     if (accessViewInfo) {
                         ToolhawkScanActivity(position);
                     } else {
-                        showToast("you don't have permission to Equipment Info");
+                        showToast("you don't have permission to Equipment Info/ToolHawk Equipment");
                     }
 
                 }
@@ -120,13 +125,18 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     boolean accessTransfer = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("Transfer")){
-                            accessTransfer = true;
+
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
+                                    accessTransfer = true;
+                                }
+                            }
                         }
                     }
                     if (accessTransfer) {
                         ToolhawkScanActivity(position);
                     } else {
-                        showToast("you don't have permission to Transfer");
+                        showToast("you don't have permission to Transfer/ToolHawk Equipment");
                     }
 
                 }
@@ -160,13 +170,18 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     boolean accessMove = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("Move")){
-                            accessMove = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
+                                    accessMove = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessMove) {
                         gotoToolhawkDepartmentActivity(position);
                     } else {
-                        showToast("you don't have permission to Move");
+                        showToast("you don't have permission to Move/ToolHawk Equipment");
                     }
 
                 }
@@ -174,13 +189,18 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     boolean accessCheckin = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("Checkin")){
-                            accessCheckin = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
+                                    accessCheckin = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessCheckin) {
                         gotoToolhawkDepartmentActivity(position);
                     } else {
-                        showToast("you don't have permission to Checkin");
+                        showToast("you don't have permission to Check In/ToolHawk Equipment");
                     }
 
                 }
@@ -189,13 +209,18 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     boolean accessCheckout = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("Checkout")){
-                            accessCheckout = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
+                                    accessCheckout = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessCheckout) {
                         gotoToolhawkDepartmentActivity(position);
                     } else {
-                        showToast("you don't have permission to Checkout");
+                        showToast("you don't have permission to Check Out/ToolHawk Equipment");
                     }
 
                 }

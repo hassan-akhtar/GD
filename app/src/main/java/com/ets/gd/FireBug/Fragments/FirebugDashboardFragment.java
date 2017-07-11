@@ -116,7 +116,7 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
                 if (fbTasks[position].toLowerCase().startsWith("ro")) {
                     boolean accessFBEq = false;
                     for (int i = 0; i < rolePermissions.size(); i++) {
@@ -157,7 +157,11 @@ public class FirebugDashboardFragment extends Fragment {
                         boolean accessViewInfo = false;
                         for (int i = 0; i < rolePermissions.size(); i++) {
                             if (rolePermissions.get(i).getValue().equals("AddEdit")) {
-                                accessViewInfo = true;
+                                for (int j = 0; j < rolePermissions.size(); j++) {
+                                    if (rolePermissions.get(j).getValue().equals("FireBugEquipment")) {
+                                        accessViewInfo = true;
+                                    }
+                                }
                             }
                         }
 
@@ -167,7 +171,7 @@ public class FirebugDashboardFragment extends Fragment {
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                             startActivity(in);
                         } else {
-                            showToast("you don't have permission to View Information");
+                            showToast("you don't have permission to View Information/FireBug Equipment");
                         }
                     }
 
@@ -175,7 +179,13 @@ public class FirebugDashboardFragment extends Fragment {
                         boolean accessMove = false;
                         for (int i = 0; i < rolePermissions.size(); i++) {
                             if (rolePermissions.get(i).getValue().equals("Move")) {
-                                accessMove = true;
+
+                                for (int j = 0; j < rolePermissions.size(); j++) {
+                                    if (rolePermissions.get(j).getValue().equals("FireBugEquipment")) {
+                                        accessMove = true;
+                                    }
+                                }
+
                             }
                         }
                         if (accessMove) {
@@ -184,7 +194,7 @@ public class FirebugDashboardFragment extends Fragment {
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                             startActivity(in);
                         } else {
-                            showToast("you don't have permission to Move");
+                            showToast("you don't have permission to Move/FireBug Equipment");
                         }
                     }
 
@@ -192,7 +202,11 @@ public class FirebugDashboardFragment extends Fragment {
                         boolean accessTransfer = false;
                         for (int i = 0; i < rolePermissions.size(); i++) {
                             if (rolePermissions.get(i).getValue().equals("Transfer")) {
-                                accessTransfer = true;
+                                for (int j = 0; j < rolePermissions.size(); j++) {
+                                    if (rolePermissions.get(j).getValue().equals("FireBugEquipment")) {
+                                        accessTransfer = true;
+                                    }
+                                }
                             }
                         }
                         if (accessTransfer) {
@@ -201,7 +215,7 @@ public class FirebugDashboardFragment extends Fragment {
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());
                             startActivity(in);
                         } else {
-                            showToast("you don't have permission to Transfer");
+                            showToast("you don't have permission to Transfer/FireBug Equipment");
                         }
                     }
 

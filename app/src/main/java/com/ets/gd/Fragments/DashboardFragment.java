@@ -312,6 +312,44 @@ public class DashboardFragment extends Fragment {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
 
+        boolean accessFirebugDash = false;
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("FireBugDashBoard")) {
+                accessFirebugDash = true;
+            }
+        }
+        if (accessFirebugDash) {
+            rlFirebugSection.setVisibility(View.VISIBLE);
+        }else{
+            rlFirebugSection.setVisibility(View.GONE);
+            rlToolHawkBody.setVisibility(View.VISIBLE);
+        }
+
+
+        boolean accessToolhawkDash = false;
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("ToolHawkDashBoard")) {
+                accessToolhawkDash = true;
+            }
+        }
+        if (accessToolhawkDash) {
+            rlToolhawkSection.setVisibility(View.VISIBLE);
+        }else{
+            rlToolhawkSection.setVisibility(View.GONE);
+            rlInventoryBody.setVisibility(View.VISIBLE);
+        }
+
+        boolean accessInventoryDash = false;
+        for(int i=0;i<rolePermissions.size();i++){
+            if(  rolePermissions.get(i).getValue().equals("Inventory")){
+                accessInventoryDash = true;
+            }
+        }
+        if (accessInventoryDash) {
+            rlInventorySection.setVisibility(View.VISIBLE);
+        }else{
+            rlInventorySection.setVisibility(View.GONE);
+        }
     }
 
     private void initListeners() {
@@ -326,7 +364,9 @@ public class DashboardFragment extends Fragment {
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
+            rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
             switch (v.getId()) {
+
                 case R.id.rlFireBugHeader: {
                     if (rlToolHawkBody.getVisibility() == View.VISIBLE) {
                         rlToolHawkBody.setVisibility(View.GONE);
@@ -367,9 +407,8 @@ public class DashboardFragment extends Fragment {
                 case R.id.ivForwardArrowTh: {
                     //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
                     boolean accessToolhawk = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if( rolePermissions.get(i).getValue().equals("ToolHawk") ||
-                                rolePermissions.get(i).getValue().equals("ToolHawkEquipment")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("ToolHawk")) {
                             accessToolhawk = true;
                         }
                     }
@@ -377,16 +416,15 @@ public class DashboardFragment extends Fragment {
                     if (accessToolhawk) {
                         BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                     } else {
-                        showToast("You don't have permission to use ToolHawk/ToolHawkEquipment");
+                        showToast("You don't have permission to use ToolHawk");
                     }
                     break;
                 }
 
                 case R.id.ivForwardArrowIn: {
                     boolean accessInventory = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if( rolePermissions.get(i).getValue().equals("Inventory") ||
-                                rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Inventory")) {
                             accessInventory = true;
                         }
                     }
@@ -394,7 +432,7 @@ public class DashboardFragment extends Fragment {
                     if (accessInventory) {
                         BaseActivity.refreshMainViewByNew(new InventoryDashboardFragment());
                     } else {
-                        showToast("You don't have permission to use Inventory/ETSMaterial");
+                        showToast("You don't have permission to use Inventory");
                     }
                     break;
                 }
@@ -421,9 +459,8 @@ public class DashboardFragment extends Fragment {
 
 
                     boolean accessFireBug = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if( rolePermissions.get(i).getValue().equals("FireBug") ||
-                                rolePermissions.get(i).getValue().equals("FireBugEquipment")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("FireBug")) {
                             accessFireBug = true;
                         }
                     }
@@ -439,7 +476,7 @@ public class DashboardFragment extends Fragment {
 
                         }
                     } else {
-                        showToast("You don't have permission to use Firebug/FireBugEquipment");
+                        showToast("You don't have permission to use Firebug");
                     }
                     break;
                 }

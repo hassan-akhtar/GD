@@ -80,13 +80,18 @@ public class InventoryDashboardFragment extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //showToast("" + thTasks[position]);
+                rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
                 if (thTasks[position].toLowerCase().startsWith("mo")) {
 
                     boolean accessMove = false;
                     for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Move") &&  rolePermissions.get(i).getValue().equals("ETSMaterial")){
-                            accessMove = true;
+                        if(  rolePermissions.get(i).getValue().equals("Move")){
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
+                                    accessMove = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessMove) {
@@ -102,7 +107,12 @@ public class InventoryDashboardFragment extends Fragment {
                     boolean accessIssue = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
-                            accessIssue = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
+                                    accessIssue = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessIssue) {
@@ -111,13 +121,18 @@ public class InventoryDashboardFragment extends Fragment {
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
                     } else {
-                        showToast("you don't have permission to Issue");
+                        showToast("you don't have permission to Issue/ETSMaterial");
                     }
                 } else  if (thTasks[position].toLowerCase().startsWith("rec")) {
                     boolean accessReceive = false;
                     for(int i=0;i<rolePermissions.size();i++){
                         if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
-                            accessReceive = true;
+                            for (int j = 0; j < rolePermissions.size(); j++) {
+                                if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
+                                    accessReceive = true;
+                                }
+                            }
+
                         }
                     }
                     if (accessReceive) {
@@ -126,7 +141,7 @@ public class InventoryDashboardFragment extends Fragment {
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
                 } else {
-                    showToast("you don't have permission to Receive");
+                    showToast("you don't have permission to Receive/ETSMaterial");
                 }
 
                 }

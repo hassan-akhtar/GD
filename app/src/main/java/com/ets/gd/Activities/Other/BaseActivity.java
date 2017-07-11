@@ -87,7 +87,6 @@ public class BaseActivity extends AppCompatActivity
     private void initObj() {
         fragmentManager = getSupportFragmentManager();
         sharedPreferencesManager = new SharedPreferencesManager(BaseActivity.this);
-        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
         setSupportActionBar(toolbar);
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
@@ -221,28 +220,6 @@ public class BaseActivity extends AppCompatActivity
     }
 
 
-/*    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.dashboard, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -273,53 +250,14 @@ public class BaseActivity extends AppCompatActivity
                     })
                     .setIcon(getResources().getDrawable(R.drawable.ic_logout_new))
                     .show();
-            //super.onBackPressed();
-            //Toast.makeText(this, "uncomment onBackPressed or override for back functionality", Toast.LENGTH_SHORT).show();
         }
     }
-
-/*    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        if (id == R.id.nav_dashboard) {
-            searchMenuItem.setVisible(false);
-            tbTitleTop.setText("ETS");
-            tbTitleBottom.setText("Dashboard");
-            refreshMainViewByNew(new DashboardFragment());
-
-        } else if (id == R.id.nav_firebug) {
-           *//* searchMenuItem.setVisible(true);
-            tbTitleTop.setText("Firebug");
-            tbTitleBottom.setText("Select Company");
-            refreshMainViewByNew(new CustomerFragment());*//*
-
-        } else if (id == R.id.nav_toolhawk) {
-//            searchMenuItem.setVisible(true);
-//            tbTitleTop.setText("Toolhawk");
-//            tbTitleBottom.setText("Select Company");
-//            refreshMainViewByNew(new CustomerFragment());
-
-        } else if (id == R.id.nav_deviceinfo) {
-            tbTitleTop.setText("ETS");
-            tbTitleBottom.setText("Device Info");
-
-        } else if (id == R.id.nav_logout) {
-            finish();
-            startActivity(new Intent(BaseActivity.this, LoginActivity.class));
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
-    }*/
 
 
     private void displayView(int position) {
         Fragment fragment = null;
         title = getString(R.string.app_name);
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
         switch (position) {
 
             case 0:
@@ -330,8 +268,7 @@ public class BaseActivity extends AppCompatActivity
             case 1:
                 boolean accessFireBug = false;
                 for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("FireBug") ||
-                            rolePermissions.get(i).getValue().equals("FireBugEquipment")){
+                    if( rolePermissions.get(i).getValue().equals("FireBug")){
                         accessFireBug = true;
                     }
                 }
@@ -349,7 +286,7 @@ public class BaseActivity extends AppCompatActivity
 
                     }
                 } else {
-                    showToast("You don't have permission to use Firebug/FireBugEquipment");
+                    showToast("You don't have permission to use Firebug");
                 }
 
 
@@ -359,8 +296,7 @@ public class BaseActivity extends AppCompatActivity
             case 2:
                 boolean accessToolhawk = false;
                 for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("ToolHawk") ||
-                            rolePermissions.get(i).getValue().equals("ToolHawkEquipment")){
+                    if( rolePermissions.get(i).getValue().equals("ToolHawk")){
                         accessToolhawk = true;
                     }
                 }
@@ -370,7 +306,7 @@ public class BaseActivity extends AppCompatActivity
                     tbTitleBottom.setText("Dashboard");
                     refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
                 } else {
-                    showToast("You don't have permission to use ToolHawk/ToolHawkEquipment");
+                    showToast("You don't have permission to use ToolHawk");
                 }
 
 
@@ -380,8 +316,7 @@ public class BaseActivity extends AppCompatActivity
             case 3:
                 boolean accessInventory = false;
                 for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("Inventory") ||
-                            rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                    if( rolePermissions.get(i).getValue().equals("Inventory")){
                         accessInventory = true;
                     }
                 }
@@ -391,7 +326,7 @@ public class BaseActivity extends AppCompatActivity
                     tbTitleBottom.setText("Inventory");
                     refreshMainViewByNew(new InventoryDashboardFragment());
                 } else {
-                    showToast("You don't have permission to use Inventory/ETSMaterial");
+                    showToast("You don't have permission to use Inventory");
                 }
 
                 break;
