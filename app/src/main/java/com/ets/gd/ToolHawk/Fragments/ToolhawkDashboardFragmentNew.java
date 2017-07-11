@@ -14,7 +14,9 @@ import android.widget.Toast;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
@@ -23,6 +25,9 @@ import com.ets.gd.ToolHawk.EquipmentInfo.ToolhawkLocationActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class ToolhawkDashboardFragmentNew extends Fragment {
@@ -36,6 +41,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
     AssetsAdapter adapter;
     Context mContext;
     SharedPreferencesManager sharedPreferencesManager;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
 
     public ToolhawkDashboardFragmentNew() {
         // Required empty public constructor
@@ -64,6 +70,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
         adapter = new AssetsAdapter(thTasks, thTasksImages);
         BaseActivity.currentFragment = new ToolhawkDashboardFragmentNew();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -80,20 +87,56 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
         rvTasks.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(getActivity(), rvTasks, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (thTasks[position].toLowerCase().startsWith("eq") || thTasks[position].toLowerCase().startsWith("tra") || thTasks[position].toLowerCase().startsWith("qu") || thTasks[position].toLowerCase().startsWith("ma")) {
-                    Intent in = new Intent(getActivity(), CommonToolhawkScanActivity.class);
-                    in.putExtra("taskType", thTasks[position]);
-                    startActivity(in);
+                if (thTasks[position].toLowerCase().startsWith("eq")) {
+                    if (rolePermissions.contains("AddEdit")) {
+                        ToolhawkScanActivity(position);
+                    } else {
+                        showToast("you don't have permission to Equipment Info");
+                    }
 
-                } else if (thTasks[position].toLowerCase().startsWith("mo")  || thTasks[position].toLowerCase().startsWith("ch") ) {
-                    Intent in = new Intent(getActivity(), CommonToolhawkDepartmentActivity.class);
-                    in.putExtra("taskType", thTasks[position]);
-                    startActivity(in);
-
-                } else {
-                    showToast("" + thTasks[position]);
                 }
 
+                if (thTasks[position].toLowerCase().startsWith("tra")) {
+                    if (rolePermissions.contains("Transfer")) {
+                        ToolhawkScanActivity(position);
+                    } else {
+                        showToast("you don't have permission to Transfer");
+                    }
+
+                }
+                if (thTasks[position].toLowerCase().startsWith("qu")) {
+                    ToolhawkScanActivity(position);
+
+                }
+                if (thTasks[position].toLowerCase().startsWith("ma")) {
+                    ToolhawkScanActivity(position);
+
+                }
+                if (thTasks[position].toLowerCase().startsWith("mo")) {
+                    if (rolePermissions.contains("Move")) {
+                        gotoToolhawkDepartmentActivity(position);
+                    } else {
+                        showToast("you don't have permission to Move");
+                    }
+
+                }
+                if (thTasks[position].toLowerCase().startsWith("check in")) {
+                    if (rolePermissions.contains("Checkin")) {
+                        gotoToolhawkDepartmentActivity(position);
+                    } else {
+                        showToast("you don't have permission to Checkin");
+                    }
+
+                }
+
+                if (thTasks[position].toLowerCase().startsWith("check out")) {
+                    if (rolePermissions.contains("Checkout")) {
+                        gotoToolhawkDepartmentActivity(position);
+                    } else {
+                        showToast("you don't have permission to Checkout");
+                    }
+
+                }
 
             }
 
@@ -104,6 +147,18 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
         }));
     }
 
+    void gotoToolhawkDepartmentActivity(int position) {
+        Intent in = new Intent(getActivity(), CommonToolhawkDepartmentActivity.class);
+        in.putExtra("taskType", thTasks[position]);
+        startActivity(in);
+    }
+
+
+    void ToolhawkScanActivity(int position) {
+        Intent in = new Intent(getActivity(), CommonToolhawkScanActivity.class);
+        in.putExtra("taskType", thTasks[position]);
+        startActivity(in);
+    }
 
     void showToast(String msg) {
         Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();

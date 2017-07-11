@@ -1,12 +1,14 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import com.ets.gd.Models.RealmString;
+
 import java.util.List;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class MobileUser extends RealmObject {
-
 
     @PrimaryKey
     private int ID;
@@ -16,7 +18,7 @@ public class MobileUser extends RealmObject {
     private String Password;
     private String CustomerId;
     private String UserProfileId;
-    private List<String> RolePermissions;
+    private RealmList<PermissionType> RolePermissions;
 
     public int getID() {
         return ID;
@@ -74,11 +76,11 @@ public class MobileUser extends RealmObject {
         UserProfileId = userProfileId;
     }
 
-    public List<String> getRolePermissions() {
+    public RealmList<PermissionType> getRolePermissions() {
         return RolePermissions;
     }
 
-    public void setRolePermissions(List<String> rolePermissions) {
+    public void setRolePermissions(RealmList<PermissionType> rolePermissions) {
         RolePermissions = rolePermissions;
     }
 }

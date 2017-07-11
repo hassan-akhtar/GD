@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.FireBug.Customer.CustomerFragment;
 import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
@@ -17,6 +18,7 @@ import com.ets.gd.Inventory.Fragments.InventoryDashboardFragment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Stock;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
@@ -24,6 +26,9 @@ import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DashboardFragment extends Fragment {
@@ -40,6 +45,8 @@ public class DashboardFragment extends Fragment {
     InspectionOverDue inspectionOverDue;
     MaintenanceDue maintenanceDue;
     Stock stock;
+    RelativeLayout rlFirebugSection, rlToolhawkSection, rlInventorySection;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -80,6 +87,10 @@ public class DashboardFragment extends Fragment {
         ivForwardArrowTh = (RelativeLayout) rootView.findViewById(R.id.ivForwardArrowTh);
         rlToolHawkHeader = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkHeader);
         rlToolHawkBody = (RelativeLayout) rootView.findViewById(R.id.rlToolHawkBody);
+
+        rlFirebugSection = (RelativeLayout) rootView.findViewById(R.id.rlFirebugSec);
+        rlToolhawkSection = (RelativeLayout) rootView.findViewById(R.id.rlToolhawkSection);
+        rlInventorySection = (RelativeLayout) rootView.findViewById(R.id.rlInventorySection);
 
         ivForwardArrowIn = (RelativeLayout) rootView.findViewById(R.id.ivForwardArrowIn);
         rlInventoryHeader = (RelativeLayout) rootView.findViewById(R.id.rlInventoryHeader);
@@ -296,8 +307,31 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initObj() {
+
         ca = new CommonActions(getActivity());
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
+
+
+        if (rolePermissions.contains("FireBug")) {
+            rlFirebugSection.setVisibility(View.VISIBLE);
+        } else {
+            rlFirebugSection.setVisibility(View.GONE);
+        }
+
+        if (rolePermissions.contains("ToolHawk")) {
+            rlToolhawkSection.setVisibility(View.VISIBLE);
+        } else {
+            rlToolhawkSection.setVisibility(View.GONE);
+        }
+
+
+        if (rolePermissions.contains("Inventory")) {
+            rlInventorySection.setVisibility(View.VISIBLE);
+        } else {
+            rlInventorySection.setVisibility(View.GONE);
+        }
+
     }
 
     private void initListeners() {
@@ -352,13 +386,21 @@ public class DashboardFragment extends Fragment {
 
                 case R.id.ivForwardArrowTh: {
                     //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
-                    BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
+                    if (rolePermissions.contains("ToolHawk") && rolePermissions.contains("ToolHawkEquipment")) {
+                        BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
+                    } else {
+                        showToast("You don't have permission to use ToolHawk/ToolHawkEquipment");
+                    }
                     break;
                 }
 
                 case R.id.ivForwardArrowIn: {
                     //BaseActivity.refreshMainViewByNew(new ToolhawkDashboardFragment());
-                    BaseActivity.refreshMainViewByNew(new InventoryDashboardFragment());
+                    if (rolePermissions.contains("Inventory") && rolePermissions.contains("ETSMaterial")) {
+                        BaseActivity.refreshMainViewByNew(new InventoryDashboardFragment());
+                    } else {
+                        showToast("You don't have permission to use Inventory/ETSMaterial");
+                    }
                     break;
                 }
 
@@ -381,14 +423,18 @@ public class DashboardFragment extends Fragment {
 
 
                 case R.id.ivForwardArrowFb: {
-                    if (DataManager.getInstance().isServiceCompany()) {
-                        BaseActivity.refreshMainViewByNew(new CustomerFragment());
-                    } else {
-                        BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                        if (null != DataManager.getInstance().getParentCompany()) {
-                            EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
-                        }
+                    if (rolePermissions.contains("FireBug") && rolePermissions.contains("FireBugEquipment")) {
+                        if (DataManager.getInstance().isServiceCompany()) {
+                            BaseActivity.refreshMainViewByNew(new CustomerFragment());
+                        } else {
+                            BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                            if (null != DataManager.getInstance().getParentCompany()) {
+                                EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
+                            }
 
+                        }
+                    } else {
+                        showToast("You don't have permission to use Firebug/FireBugEquipment");
                     }
                     break;
                 }
@@ -397,4 +443,7 @@ public class DashboardFragment extends Fragment {
 
     };
 
+    void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+    }
 }

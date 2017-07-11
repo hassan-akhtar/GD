@@ -14,136 +14,156 @@
             android:layout_height="wrap_content">
 
             <RelativeLayout
-                android:id="@+id/rlFireBugHeader"
+                android:id="@+id/rlFirebugSec"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Firebug"
-                    android:textColor="@android:color/white"
-                    android:textSize="22dp" />
+                android:layout_height="wrap_content">
 
                 <RelativeLayout
-                    android:id="@+id/ivForwardArrowFb"
-                    android:layout_width="60dp"
+                    android:id="@+id/rlFireBugHeader"
+                    android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorPrimary">
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_centerHorizontal="true"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_height="18dp"
-                        android:src="@drawable/forward_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:text="Firebug"
+                        android:textColor="@android:color/white"
+                        android:textSize="22dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/ivForwardArrowFb"
+                        android:layout_width="60dp"
+                        android:layout_height="55dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/forward_arrow" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rlFireBugBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlFireBugHeader"
+                    android:layout_marginTop="1dp">
+
+                    <include layout="@layout/firebug_body_layout" />
                 </RelativeLayout>
             </RelativeLayout>
 
 
             <RelativeLayout
-                android:id="@+id/rlFireBugBody"
+                android:id="@+id/rlToolhawkSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rlFireBugHeader"
-                android:layout_marginTop="1dp">
-
-                <include layout="@layout/firebug_body_layout" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlToolHawkHeader"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_below="@+id/rlFireBugBody"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Toolhawk"
-                    android:textColor="@android:color/white"
-                    android:textSize="22dp" />
+                android:layout_below="@+id/rlFirebugSec">
 
                 <RelativeLayout
-                    android:id="@+id/ivForwardArrowTh"
-                    android:layout_width="60dp"
+                    android:id="@+id/rlToolHawkHeader"
+                    android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorPrimary">
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_centerHorizontal="true"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_height="18dp"
-                        android:src="@drawable/forward_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:text="Toolhawk"
+                        android:textColor="@android:color/white"
+                        android:textSize="22dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/ivForwardArrowTh"
+                        android:layout_width="60dp"
+                        android:layout_height="55dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/forward_arrow" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlToolHawkBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlToolHawkHeader"
+                    android:layout_marginTop="1dp"
+                    android:visibility="gone">
+
+                    <include layout="@layout/toolhawk_body_layout" />
                 </RelativeLayout>
             </RelativeLayout>
 
+
             <RelativeLayout
-                android:id="@+id/rlToolHawkBody"
+                android:id="@+id/rlInventorySection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/rlToolHawkHeader"
-                android:layout_marginTop="1dp"
-                android:visibility="gone">
+                android:layout_below="@+id/rlToolhawkSection">
 
-                <include layout="@layout/toolhawk_body_layout" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlInventoryHeader"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_below="@+id/rlToolHawkBody"
-                android:layout_marginTop="1dp"
-                android:background="@color/colorPrimary">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="20dp"
-                    android:text="Inventory"
-                    android:textColor="@android:color/white"
-                    android:textSize="22dp" />
 
                 <RelativeLayout
-                    android:id="@+id/ivForwardArrowIn"
-                    android:layout_width="60dp"
+                    android:id="@+id/rlInventoryHeader"
+                    android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true">
+                    android:layout_marginTop="1dp"
+                    android:background="@color/colorPrimary">
 
-                    <ImageView
-                        android:layout_width="18dp"
-                        android:layout_centerHorizontal="true"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_height="18dp"
-                        android:src="@drawable/forward_arrow" />
+                        android:layout_marginLeft="20dp"
+                        android:text="Inventory"
+                        android:textColor="@android:color/white"
+                        android:textSize="22dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/ivForwardArrowIn"
+                        android:layout_width="60dp"
+                        android:layout_height="55dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true">
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/forward_arrow" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlInventoryBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlInventoryHeader"
+                    android:layout_marginTop="1dp"
+                    android:visibility="gone">
+
+                    <include layout="@layout/inventorybody_layout" />
                 </RelativeLayout>
             </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlInventoryBody"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlInventoryHeader"
-                android:layout_marginTop="1dp"
-                android:visibility="gone">
-
-                <include layout="@layout/inventorybody_layout" />
-            </RelativeLayout>
-
 
         </RelativeLayout>
     </ScrollView>

@@ -32,12 +32,16 @@ import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Inventory.Fragments.InventoryDashboardFragment;
 import com.ets.gd.Activities.Sync.SyncFragment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class BaseActivity extends AppCompatActivity
@@ -57,6 +61,7 @@ public class BaseActivity extends AppCompatActivity
     String title;
     TextView username;
     public static boolean isSearching = false;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,7 @@ public class BaseActivity extends AppCompatActivity
     private void initObj() {
         fragmentManager = getSupportFragmentManager();
         sharedPreferencesManager = new SharedPreferencesManager(BaseActivity.this);
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
         setSupportActionBar(toolbar);
         drawerFragment = (FragmentDrawer)
                 getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
@@ -315,37 +321,58 @@ public class BaseActivity extends AppCompatActivity
         Fragment fragment = null;
         title = getString(R.string.app_name);
         switch (position) {
+
             case 0:
                 tbTitleTop.setText("ETS");
                 tbTitleBottom.setText("Dashboard");
                 refreshMainViewByNew(new DashboardFragment());
                 break;
             case 1:
-                tbTitleTop.setText("Firebug");
-                tbTitleBottom.setText("Select Company");
-                if (DataManager.getInstance().isServiceCompany()) {
-                    BaseActivity.refreshMainViewByNew(new CustomerFragment());
-                } else {
-                    BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                    if (null != DataManager.getInstance().getParentCompany()) {
-                        EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
-                    }
 
+                if (rolePermissions.contains("FireBug") && rolePermissions.contains("FireBugEquipment")) {
+                    tbTitleTop.setText("Firebug");
+                    tbTitleBottom.setText("Select Company");
+                    if (DataManager.getInstance().isServiceCompany()) {
+                        BaseActivity.refreshMainViewByNew(new CustomerFragment());
+                    } else {
+                        BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
+                        if (null != DataManager.getInstance().getParentCompany()) {
+                            EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
+                        }
+
+                    }
+                } else {
+                    showToast("You don't have permission to use Firebug/FireBugEquipment");
                 }
+
+
                 break;
 
 
             case 2:
-                tbTitleTop.setText("Toolhawk");
-                tbTitleBottom.setText("Dashboard");
-                refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
+
+                if (rolePermissions.contains("ToolHawk")  && rolePermissions.contains("ToolHawkEquipment")) {
+                    tbTitleTop.setText("Toolhawk");
+                    tbTitleBottom.setText("Dashboard");
+                    refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
+                } else {
+                    showToast("You don't have permission to use ToolHawk/ToolHawkEquipment");
+                }
+
+
                 break;
 
 
             case 3:
-                tbTitleTop.setText("ETS");
-                tbTitleBottom.setText("Inventory");
-                refreshMainViewByNew(new InventoryDashboardFragment());
+
+                if (rolePermissions.contains("Inventory")  && rolePermissions.contains("ETSMaterial")) {
+                    tbTitleTop.setText("ETS");
+                    tbTitleBottom.setText("Inventory");
+                    refreshMainViewByNew(new InventoryDashboardFragment());
+                } else {
+                    showToast("You don't have permission to use Inventory/ETSMaterial");
+                }
+
                 break;
 
             default:

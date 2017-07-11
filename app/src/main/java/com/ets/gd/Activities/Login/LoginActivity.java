@@ -1,12 +1,14 @@
 package com.ets.gd.Activities.Login;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -16,9 +18,11 @@ import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
+import com.ets.gd.Activities.Sync.FirstTimeSyncActicity;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RegisteredDevice;
 import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
@@ -33,6 +37,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.realm.RealmList;
 
@@ -47,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     RealmList<MobileUser> lstMusers = new RealmList<MobileUser>();
     RealmList<RegisteredDevice> lstDevices;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
+    boolean accessFirebugToolhawkInventory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,9 +129,30 @@ public class LoginActivity extends AppCompatActivity {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
                                     CommonActions.DismissesDialog();
                                     if (checkDevice()) {
-                                        showToast("Login Successful");
-                                        startActivity(new Intent(LoginActivity.this, BaseActivity.class));
-                                        finish();
+                                        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(etUsername.getText().toString().trim());
+                                        if(rolePermissions!=null){
+
+                                            if( rolePermissions.contains("FireBug") || rolePermissions.contains("ToolHawk") || rolePermissions.contains("Inventory")){
+                                                accessFirebugToolhawkInventory = true;
+                                            }
+                                        }
+
+                                        if (accessFirebugToolhawkInventory) {
+                                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_USERNAME,etUsername.getText().toString().trim());
+                                            showToast("Login Successful");
+                                            startActivity(new Intent(LoginActivity.this, BaseActivity.class));
+                                            finish();
+                                        } else {
+                                            new AlertDialog.Builder(LoginActivity.this)
+                                                    .setTitle("Permission")
+                                                    .setMessage("You don't have Permission to use any app. Please contact support center.")
+                                                    .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int which) {
+
+                                                        }
+                                                    })
+                                                    .show();
+                                        }
                                     } else {
                                         showToast("This Device is not registered!");
                                     }

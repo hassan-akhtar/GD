@@ -5,46 +5,45 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
-import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMoveRealm;
-import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
-import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
+import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
+import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
+import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
-import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
-import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
-import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
-import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
-import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType;
-import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
-import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
-import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Stock;
@@ -374,6 +373,7 @@ public class DataManager {
     public List<ToolhawkEquipment> getLocationEquipment(String locCOde) {
         return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", locCOde, Case.INSENSITIVE).findAll();
     }
+
     public void addNewLocation(Locations location) {
         realm.beginTransaction();
         realm.copyToRealm(location);
@@ -472,20 +472,20 @@ public class DataManager {
 
 
     public Category getCategory(String code) {
-        return realm.where(Category.class).equalTo("Code",code).findFirst();
+        return realm.where(Category.class).equalTo("Code", code).findFirst();
     }
-
 
 
     public MaintenanceCategory getMaintenanceCategory(String code) {
-        return realm.where(MaintenanceCategory.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
+        return realm.where(MaintenanceCategory.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
+
     public Action getAction(String code) {
-        return realm.where(Action.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
+        return realm.where(Action.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
     public Material getMaterial(String code) {
-        return realm.where(Material.class).equalTo("Code",code, Case.INSENSITIVE).findFirst();
+        return realm.where(Material.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
 
@@ -518,6 +518,7 @@ public class DataManager {
     public List<Building> getAllBuildingsByDep(int ID) {
         return realm.where(Building.class).equalTo("DepartmentID", ID).findAll().sort("Code");
     }
+
     public Building getBuilding(int ID) {
         return realm.where(Building.class).equalTo("ID", ID).findFirst();
     }
@@ -555,6 +556,7 @@ public class DataManager {
     public List<ToolhawkEquipment> getAllContainerToolhawkAssets() {
         return realm.where(ToolhawkEquipment.class).equalTo("IsContainer", true).findAll().sort("Code");
     }
+
     // For getting asset all assets from DB
     public Manufacturer getAssetManufacturer(String Code) {
         return realm.where(Manufacturer.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
@@ -605,8 +607,9 @@ public class DataManager {
     // For getting asset all assets from DB
     public List<Model> getModelFromManufacturerIDFirebug(int id) {
         return realm.where(Model.class).equalTo("Manufacturer", id).equalTo("IsGen" +
-                "eric",true).findAll().sort("Code");
+                "eric", true).findAll().sort("Code");
     }
+
     // For getting asset all assets from DB
     public void addEquipment(FireBugEquipment fireBugEquipment) {
         realm.beginTransaction();
@@ -693,7 +696,7 @@ public class DataManager {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
     }
 
-    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByID(int ID ) {
+    public com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation getETSLocationByID(int ID) {
         return realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation.class).equalTo("ID", ID).findFirst();
 
     }
@@ -833,6 +836,12 @@ public class DataManager {
         return copied;
     }
 
+    public List<PermissionType> getRolePermissionsByUserName(String UserName) {
+
+        return realm.where(MobileUser.class).equalTo("UserName", UserName).findFirst().getRolePermissions();
+
+
+    }
 
     public void saveSyncGetResponse(final SyncGetResponseDTO obj) {
         realm.executeTransaction(new Realm.Transaction() {
@@ -876,7 +885,6 @@ public class DataManager {
         realm.copyToRealm(obj);
         realm.commitTransaction();
     }
-
 
 
     public void saveResultMaintenance(EquipmentMaintenance obj) {
@@ -1021,16 +1029,16 @@ public class DataManager {
 
 
     public List<MoveInventoryRealm> getAllMoveInventoryList() {
-        return realm.where(MoveInventoryRealm.class).equalTo("isMoved",true).findAll();
+        return realm.where(MoveInventoryRealm.class).equalTo("isMoved", true).findAll();
     }
 
 
     public List<MoveInventoryRealm> getAllIssueInventoryList() {
-        return realm.where(MoveInventoryRealm.class).equalTo("isIssued",true).findAll();
+        return realm.where(MoveInventoryRealm.class).equalTo("isIssued", true).findAll();
     }
 
     public List<MoveInventoryRealm> getAllReceiveInventoryList() {
-        return realm.where(MoveInventoryRealm.class).equalTo("isReceived",true).findAll();
+        return realm.where(MoveInventoryRealm.class).equalTo("isReceived", true).findAll();
     }
 
     public List<JobNumber> getAllDepJobNumberList(int ID) {
@@ -1042,7 +1050,7 @@ public class DataManager {
     }
 
     public MobileUser getMobileUser(String user) {
-        return realm.where(MobileUser.class).equalTo("UserName",user).findFirst();
+        return realm.where(MobileUser.class).equalTo("UserName", user).findFirst();
     }
 
     public JobNumber getJobNumber(String code) {
@@ -1089,15 +1097,15 @@ public class DataManager {
     }
 
     public List<QuickCount> getAllChangesQuickCountAssetList() {
-        RealmResults<QuickCount>  realmResults = realm.where(QuickCount.class).equalTo("isChanged", true).findAll();
+        RealmResults<QuickCount> realmResults = realm.where(QuickCount.class).equalTo("isChanged", true).findAll();
         List<QuickCount> copied = realm.copyFromRealm(realmResults);
-        return  copied;
+        return copied;
     }
 
     public List<EquipmentMaintenance> getAllEquipmentMaintenanceList() {
-        RealmResults<EquipmentMaintenance>  realmResults = realm.where(EquipmentMaintenance.class).findAll();
+        RealmResults<EquipmentMaintenance> realmResults = realm.where(EquipmentMaintenance.class).findAll();
         List<EquipmentMaintenance> copied = realm.copyFromRealm(realmResults);
-        return  copied;
+        return copied;
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipment() {
@@ -1130,6 +1138,7 @@ public class DataManager {
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
         return copied;
     }
+
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllDepETSLocations(int depID) {
         RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).equalTo("Building.DepartmentID", depID).findAll().sort("Code");
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);

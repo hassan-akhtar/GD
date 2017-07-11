@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Customer.CustomerFragment;
 import com.ets.gd.FireBug.RouteInspection.RouteInspectionActivity;
 import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
@@ -23,6 +24,7 @@ import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.Fragments.FragmentDrawer;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 import com.github.clans.fab.FloatingActionButton;
@@ -31,6 +33,9 @@ import com.github.clans.fab.FloatingActionMenu;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FirebugDashboardFragment extends Fragment {
@@ -48,6 +53,7 @@ public class FirebugDashboardFragment extends Fragment {
     TextView tvCompanyValue;
     ImageView ivChangeCompany;
     SharedPreferencesManager sharedPreferencesManager;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
 
     public FirebugDashboardFragment() {
         // Required empty public constructor
@@ -79,6 +85,7 @@ public class FirebugDashboardFragment extends Fragment {
     private void initObj() {
 
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
 //        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
 //            ivChangeCompany.setVisibility(View.GONE);
 //            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
@@ -158,10 +165,40 @@ public class FirebugDashboardFragment extends Fragment {
                     startActivity(in);
 
                 } else {
-                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType", fbTasks[position]);
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);
+
+                    if (fbTasks[position].toLowerCase().startsWith("view")) {
+                        if (rolePermissions.contains("AddEdit")) {
+                            Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                            in.putExtra("taskType", fbTasks[position]);
+                            in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                            startActivity(in);
+                        } else {
+                            showToast("you don't have permission to View Information");
+                        }
+                    }
+
+                    if (fbTasks[position].toLowerCase().startsWith("mov")) {
+                        if (rolePermissions.contains("Move")) {
+                            Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                            in.putExtra("taskType", fbTasks[position]);
+                            in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                            startActivity(in);
+                        } else {
+                            showToast("you don't have permission to Move");
+                        }
+                    }
+
+                    if (fbTasks[position].toLowerCase().startsWith("tran")) {
+                        if (rolePermissions.contains("Transfer")) {
+                            Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                            in.putExtra("taskType", fbTasks[position]);
+                            in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                            startActivity(in);
+                        } else {
+                            showToast("you don't have permission to Transfer");
+                        }
+                    }
+
                 }
                 // }
 
