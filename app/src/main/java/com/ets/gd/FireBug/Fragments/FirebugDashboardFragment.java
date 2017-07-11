@@ -86,18 +86,8 @@ public class FirebugDashboardFragment extends Fragment {
 
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
-//        if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
-//            ivChangeCompany.setVisibility(View.GONE);
-//            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
-//        }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
-//                0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
-//            ivChangeCompany.setVisibility(View.GONE);
-//            adapter = new AssetsAdapter(fbTasksWithoutTransfer, fbTasksImagesWithoutTransfer);
-        //  } else {
         ivChangeCompany.setVisibility(View.VISIBLE);
         adapter = new AssetsAdapter(fbTasks, fbTasksImages);
-        //  }
-
         BaseActivity.currentFragment = new FirebugDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvTasks.setLayoutManager(mLayoutManager);
@@ -105,6 +95,17 @@ public class FirebugDashboardFragment extends Fragment {
         rvTasks.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
+
+        boolean accessViewInfo = false;
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("AddEdit")) {
+                accessViewInfo = true;
+            }
+        }
+
+        if (!accessViewInfo) {
+            fab.setVisibility(View.GONE);
+        }
 
     }
 
@@ -116,58 +117,51 @@ public class FirebugDashboardFragment extends Fragment {
             @Override
             public void onClick(View view, int position) {
 
-
-//                if (!DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany()) {
-//                    if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("ro")) {
-//                        showToast("" + fbTasksWithoutTransfer[position]);
-//
-//                    } else if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("uni")) {
-//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-//                        in.putExtra("taskType", "Inspect Assets");
-//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-//                        startActivity(in);
-//
-//                    } else {
-//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-//                        in.putExtra("taskType", fbTasksWithoutTransfer[position]);
-//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-//                        startActivity(in);
-//                    }
-//                }else if( DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).isServiceCompany() &&
-//                        0==DataManager.getInstance().getAllCustomerList(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)).size()){
-//                    if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("ro")) {
-//                        showToast("" + fbTasksWithoutTransfer[position]);
-//
-//                    } else if (fbTasksWithoutTransfer[position].toLowerCase().startsWith("uni")) {
-//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-//                        in.putExtra("taskType", "Inspect Assets");
-//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-//                        startActivity(in);
-//
-//                    } else {
-//                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-//                        in.putExtra("taskType", fbTasksWithoutTransfer[position]);
-//                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-//                        startActivity(in);
-//                    }
-//                } else {
                 if (fbTasks[position].toLowerCase().startsWith("ro")) {
-                    // showToast("" + fbTasks[position]);
-                    Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
-                    in.putExtra("taskType", fbTasks[position]);
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);
+                    boolean accessFBEq = false;
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("FireBugEquipment")) {
+                            accessFBEq = true;
+                        }
+                    }
+
+                    if (accessFBEq) {
+                        Intent in = new Intent(getActivity(), RouteInspectionActivity.class);
+                        in.putExtra("taskType", fbTasks[position]);
+                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                        startActivity(in);
+                    } else {
+                        showToast("you don't have permission to FireBug Equipment");
+                    }
 
                 } else if (fbTasks[position].toLowerCase().startsWith("uni")) {
-                    Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
-                    in.putExtra("taskType", "Inspect Assets");
-                    in.putExtra("compName", tvCompanyValue.getText().toString().trim());
-                    startActivity(in);
+                    boolean accessFBEq = false;
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("FireBugEquipment")) {
+                            accessFBEq = true;
+                        }
+                    }
+
+                    if (accessFBEq) {
+                        Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
+                        in.putExtra("taskType", "Inspect Assets");
+                        in.putExtra("compName", tvCompanyValue.getText().toString().trim());
+                        startActivity(in);
+                    } else {
+                        showToast("you don't have permission to FireBug Equipment");
+                    }
 
                 } else {
 
                     if (fbTasks[position].toLowerCase().startsWith("view")) {
-                        if (rolePermissions.contains("AddEdit")) {
+                        boolean accessViewInfo = false;
+                        for (int i = 0; i < rolePermissions.size(); i++) {
+                            if (rolePermissions.get(i).getValue().equals("AddEdit")) {
+                                accessViewInfo = true;
+                            }
+                        }
+
+                        if (accessViewInfo) {
                             Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
                             in.putExtra("taskType", fbTasks[position]);
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());
@@ -178,7 +172,13 @@ public class FirebugDashboardFragment extends Fragment {
                     }
 
                     if (fbTasks[position].toLowerCase().startsWith("mov")) {
-                        if (rolePermissions.contains("Move")) {
+                        boolean accessMove = false;
+                        for (int i = 0; i < rolePermissions.size(); i++) {
+                            if (rolePermissions.get(i).getValue().equals("Move")) {
+                                accessMove = true;
+                            }
+                        }
+                        if (accessMove) {
                             Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
                             in.putExtra("taskType", fbTasks[position]);
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());
@@ -189,7 +189,13 @@ public class FirebugDashboardFragment extends Fragment {
                     }
 
                     if (fbTasks[position].toLowerCase().startsWith("tran")) {
-                        if (rolePermissions.contains("Transfer")) {
+                        boolean accessTransfer = false;
+                        for (int i = 0; i < rolePermissions.size(); i++) {
+                            if (rolePermissions.get(i).getValue().equals("Transfer")) {
+                                accessTransfer = true;
+                            }
+                        }
+                        if (accessTransfer) {
                             Intent in = new Intent(getActivity(), CommonFirebugScanActivity.class);
                             in.putExtra("taskType", fbTasks[position]);
                             in.putExtra("compName", tvCompanyValue.getText().toString().trim());

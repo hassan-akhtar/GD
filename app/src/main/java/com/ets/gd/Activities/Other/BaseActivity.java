@@ -250,7 +250,7 @@ public class BaseActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else if (currentFragment instanceof FirebugDashboardFragment) {
             refreshMainViewByNew(new CustomerFragment());
-        } else if (currentFragment instanceof CustomerFragment || currentFragment instanceof ToolhawkDashboardFragment) {
+        } else if (currentFragment instanceof CustomerFragment || currentFragment instanceof ToolhawkDashboardFragmentNew || currentFragment instanceof InventoryDashboardFragment) {
             refreshMainViewByNew(new DashboardFragment());
 
         } else {
@@ -328,8 +328,15 @@ public class BaseActivity extends AppCompatActivity
                 refreshMainViewByNew(new DashboardFragment());
                 break;
             case 1:
+                boolean accessFireBug = false;
+                for(int i=0;i<rolePermissions.size();i++){
+                    if( rolePermissions.get(i).getValue().equals("FireBug") ||
+                            rolePermissions.get(i).getValue().equals("FireBugEquipment")){
+                        accessFireBug = true;
+                    }
+                }
 
-                if (rolePermissions.contains("FireBug") && rolePermissions.contains("FireBugEquipment")) {
+                if (accessFireBug) {
                     tbTitleTop.setText("Firebug");
                     tbTitleBottom.setText("Select Company");
                     if (DataManager.getInstance().isServiceCompany()) {
@@ -350,8 +357,15 @@ public class BaseActivity extends AppCompatActivity
 
 
             case 2:
+                boolean accessToolhawk = false;
+                for(int i=0;i<rolePermissions.size();i++){
+                    if( rolePermissions.get(i).getValue().equals("ToolHawk") ||
+                            rolePermissions.get(i).getValue().equals("ToolHawkEquipment")){
+                        accessToolhawk = true;
+                    }
+                }
 
-                if (rolePermissions.contains("ToolHawk")  && rolePermissions.contains("ToolHawkEquipment")) {
+                if (accessToolhawk) {
                     tbTitleTop.setText("Toolhawk");
                     tbTitleBottom.setText("Dashboard");
                     refreshMainViewByNew(new ToolhawkDashboardFragmentNew());
@@ -364,7 +378,15 @@ public class BaseActivity extends AppCompatActivity
 
 
             case 3:
-                if (rolePermissions.contains("Inventory")  && rolePermissions.contains("ETSMaterial")) {
+                boolean accessInventory = false;
+                for(int i=0;i<rolePermissions.size();i++){
+                    if( rolePermissions.get(i).getValue().equals("Inventory") ||
+                            rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                        accessInventory = true;
+                    }
+                }
+
+                if (accessInventory) {
                     tbTitleTop.setText("ETS");
                     tbTitleBottom.setText("Inventory");
                     refreshMainViewByNew(new InventoryDashboardFragment());

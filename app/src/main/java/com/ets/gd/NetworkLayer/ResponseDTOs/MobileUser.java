@@ -1,9 +1,5 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
-import com.ets.gd.Models.RealmString;
-
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;

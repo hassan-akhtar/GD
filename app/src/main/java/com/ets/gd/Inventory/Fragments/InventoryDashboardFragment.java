@@ -15,11 +15,16 @@ import android.widget.Toast;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.AssetsAdapter;
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Inventory.Activities.CommonMaterialScanActivity;
 import com.ets.gd.Inventory.Activities.MoveMaterialScanListActivity;
+import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class InventoryDashboardFragment extends Fragment {
@@ -32,6 +37,7 @@ public class InventoryDashboardFragment extends Fragment {
     AssetsAdapter adapter;
     Context mContext;
     SharedPreferencesManager sharedPreferencesManager;
+    private List<PermissionType> rolePermissions = new ArrayList<>();
 
     public InventoryDashboardFragment() {
         // Required empty public constructor
@@ -58,6 +64,7 @@ public class InventoryDashboardFragment extends Fragment {
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
+        rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
         adapter = new AssetsAdapter(thTasks, thTasksImages);
         BaseActivity.currentFragment = new InventoryDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -75,20 +82,52 @@ public class InventoryDashboardFragment extends Fragment {
             public void onClick(View view, int position) {
                 //showToast("" + thTasks[position]);
                 if (thTasks[position].toLowerCase().startsWith("mo")) {
+
+                    boolean accessMove = false;
+                    for(int i=0;i<rolePermissions.size();i++){
+                        if(  rolePermissions.get(i).getValue().equals("Move") &&  rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                            accessMove = true;
+                        }
+                    }
+                    if (accessMove) {
                     MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
+                    } else {
+                        showToast("you don't have permission to Move/ETSMaterial");
+                    }
                 } else  if (thTasks[position].toLowerCase().startsWith("iss")) {
+
+                    boolean accessIssue = false;
+                    for(int i=0;i<rolePermissions.size();i++){
+                        if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                            accessIssue = true;
+                        }
+                    }
+                    if (accessIssue) {
                     MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
+                    } else {
+                        showToast("you don't have permission to Issue");
+                    }
                 } else  if (thTasks[position].toLowerCase().startsWith("rec")) {
+                    boolean accessReceive = false;
+                    for(int i=0;i<rolePermissions.size();i++){
+                        if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                            accessReceive = true;
+                        }
+                    }
+                    if (accessReceive) {
                     MoveMaterialScanListActivity.materialList.clear();
                     Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
                     in.putExtra("taskType",thTasks[position]);
                     startActivity(in);
+                } else {
+                    showToast("you don't have permission to Receive");
+                }
 
                 }
 

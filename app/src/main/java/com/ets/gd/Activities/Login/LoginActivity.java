@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     RealmList<MobileUser> lstMusers = new RealmList<MobileUser>();
     RealmList<RegisteredDevice> lstDevices;
-    private List<PermissionType> rolePermissions = new ArrayList<>();
+    private List<PermissionType> rolePermissions = new ArrayList<PermissionType>();
     boolean accessFirebugToolhawkInventory = false;
 
     @Override
@@ -132,8 +132,11 @@ public class LoginActivity extends AppCompatActivity {
                                         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(etUsername.getText().toString().trim());
                                         if(rolePermissions!=null){
 
-                                            if( rolePermissions.contains("FireBug") || rolePermissions.contains("ToolHawk") || rolePermissions.contains("Inventory")){
-                                                accessFirebugToolhawkInventory = true;
+                                            for(int i=0;i<rolePermissions.size();i++){
+                                                if( rolePermissions.get(i).getValue().equals("FireBug") || rolePermissions.get(i).getValue().equals("ToolHawk") ||
+                                                        rolePermissions.get(i).getValue().equals("Inventory")){
+                                                    accessFirebugToolhawkInventory = true;
+                                                }
                                             }
                                         }
 
@@ -145,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                                         } else {
                                             new AlertDialog.Builder(LoginActivity.this)
                                                     .setTitle("Permission")
-                                                    .setMessage("You don't have Permission to use any app. Please contact Tech support.")
+                                                    .setMessage("You don't have Permission to use any App. Please contact Tech support.")
                                                     .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
                                                         public void onClick(DialogInterface dialog, int which) {
 
