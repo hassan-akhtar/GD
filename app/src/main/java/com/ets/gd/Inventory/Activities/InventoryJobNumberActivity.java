@@ -58,7 +58,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, department, returningUser, materialID, quantity;
-    int  materialLocID,eqID;
+    int  materialLocID,eqID,inventoryID;
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     private List<JobNumber> jobNumberList = new ArrayList<JobNumber>();
@@ -113,6 +113,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
         taskType = getIntent().getStringExtra("taskType");
         materialLocID = getIntent().getIntExtra("materialLocID",0);
+        inventoryID = getIntent().getIntExtra("inventoryID",0);
         materialID = getIntent().getStringExtra("materialID");
         quantity = getIntent().getStringExtra("quantity");
         eqID  = getIntent().getIntExtra("eqID",0);
@@ -147,6 +148,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                     in.putExtra("materialLocID", materialLocID);
                     in.putExtra("materialID", materialID);
                     in.putExtra("quantity", quantity);
+                    in.putExtra("inventoryID", inventoryID);
                     in.putExtra("eqID", eqID);
                     in.putExtra("taskType", taskType);
                     in.putExtra("JobNumber", jobNumberList.get(position).getCode());
@@ -155,7 +157,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                     etBarcode.setText("");
                 } else {
                     MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumberList.get(position).getID()));
+                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumberList.get(position).getID(),inventoryID));
                     sendMessage("finish");
                 }
             }
@@ -230,6 +232,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                                 in.putExtra("materialLocID", materialLocID);
                                 in.putExtra("materialID", materialID);
                                 in.putExtra("taskType", taskType);
+                                in.putExtra("inventoryID", inventoryID);
                                 in.putExtra("quantity", quantity);
                                 in.putExtra("JobNumber", jobNumber.getCode());
                                 in.putExtra("JobNumberID", jobNumber.getID());
@@ -237,7 +240,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                                 etBarcode.setText("");
                             } else {
                                 MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
+                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID(),inventoryID));
                                 sendMessage("finish");
                             }
                         } else {
@@ -405,13 +408,14 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                 in.putExtra("materialID", materialID);
                 in.putExtra("quantity", quantity);
                 in.putExtra("taskType", taskType);
+                in.putExtra("inventoryID", inventoryID);
                 in.putExtra("JobNumber", jobNumber.getCode());
                 in.putExtra("JobNumberID", jobNumber.getID());
                 startActivity(in);
                 etBarcode.setText("");
             } else {
                 MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID()));
+                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID(),inventoryID));
                 sendMessage("finish");
             }
         } else {

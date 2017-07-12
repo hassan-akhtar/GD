@@ -68,7 +68,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, JobNumber, materialID, quantity;
-    int JobNumberID, materialLocID, eqID;
+    int JobNumberID, materialLocID, eqID, inventoryID;
     ImageView ivBack, ivTick;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -129,6 +129,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         quantity = getIntent().getStringExtra("quantity");
         JobNumberID = getIntent().getIntExtra("JobNumberID", 0);
         materialLocID = getIntent().getIntExtra("materialLocID", 0);
+        inventoryID = getIntent().getIntExtra("inventoryID", 0);
         materialID = getIntent().getStringExtra("materialID");
         JobNumber = getIntent().getStringExtra("JobNumber");
         eqID = getIntent().getIntExtra("eqID", 0);
@@ -157,6 +158,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setQuantity("" + quantity);
         material.setLocID(materialLocID);
         material.setEquipmentID(eqID);
+        material.setInventoryID(inventoryID);
         materialList.add(material);
         ReceiveMaterialActivity.materialList = materialList;
         mAdapter = new InventoryScannedMaterialAdapter(MoveMaterialScanListActivity.this, materialList);

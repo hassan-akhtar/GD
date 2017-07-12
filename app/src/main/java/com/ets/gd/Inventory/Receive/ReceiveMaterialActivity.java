@@ -128,7 +128,7 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
                     for (int i = 0; i < materialList.size(); i++) {
                         InventoryMoveRealm inventoryMove = new InventoryMoveRealm();
                         inventoryMove.setCode(materialList.get(i).getName());
-                        inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
+                        inventoryMove.setInventoryID(materialList.get(i).getInventoryID());
                         inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
                         inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
                         Materials.add(inventoryMove);

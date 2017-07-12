@@ -55,7 +55,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
     private List<Inventory> locList = new ArrayList<Inventory>();
     RelativeLayout rlBottomSheetJobnumber, rlYes, rlNo;
     TextView tvStatement;
-    int materialLocID, eqID;
+    int materialLocID, eqID, inventoryID;
     public static MaterialAdded materialAdded;
 
     @Override
@@ -141,6 +141,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                     } else {
                         etQuantity.setEnabled(false);
                         materialLocID = locList.get(position).getLocationID();
+                        inventoryID = locList.get(position).getID();
                         eqID = locList.get(position).getEquipmentID();
                         rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
 
@@ -254,6 +255,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                     if (!taskType.toLowerCase().startsWith("rec")) {
                         Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
                         in.putExtra("materialLocID", materialLocID);
+                        in.putExtra("inventoryID", inventoryID);
                         in.putExtra("materialID", materialID);
                         in.putExtra("taskType", taskType);
                         in.putExtra("eqID", eqID);
@@ -288,6 +290,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
                             in.putExtra("materialLocID", materialLocID);
                             in.putExtra("materialID", materialID);
+                            in.putExtra("inventoryID", inventoryID);
                             in.putExtra("taskType", taskType);
                             in.putExtra("eqID", eqID);
                             in.putExtra("quantity", etQuantity.getText().toString());
@@ -297,7 +300,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             hideReceiveBottomSheetJobNumber();
                         } else {
                             MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
+                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
                             sendMessage("finish");
                         }
                     } else {
@@ -309,6 +312,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                                 Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
                                 in.putExtra("materialID", materialID);
                                 in.putExtra("taskType", taskType);
+                                in.putExtra("inventoryID", inventoryID);
                                 in.putExtra("quantity", etQuantity.getText().toString());
                                 startActivity(in);
                                 etQuantity.setText("");
@@ -316,7 +320,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                                 hideReceiveBottomSheetJobNumber();
                             } else {
                                 MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                                materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID));
+                                materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
                                 sendMessage("finish");
                             }
                         }

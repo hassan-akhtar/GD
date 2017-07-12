@@ -12,6 +12,7 @@ public class Material {
     private int locID;
     private int jobNumberID;
     private int equipmentID;
+    private int inventoryID;
 
     public Material() {
     }
@@ -28,20 +29,30 @@ public class Material {
         this.locID = locID;
     }
 
-    public Material(String name, String quantity, int locID, int jobNumberID) {
+    public Material(String name, String quantity, int locID, int jobNumberID, int inventoryID) {
         this.name = name;
         this.quantity = quantity;
+        this.inventoryID = inventoryID;
         this.locID = locID;
         this.jobNumberID = jobNumberID;
     }
 
 
-
-    public Material(int equipmentID, String name, String quantity, int locID ) {
+    public Material(int equipmentID, String name, String quantity, int locID, int inventoryID) {
         this.name = name;
         this.quantity = quantity;
+        this.inventoryID = inventoryID;
         this.locID = locID;
         this.equipmentID = equipmentID;
+    }
+
+
+    public int getInventoryID() {
+        return inventoryID;
+    }
+
+    public void setInventoryID(int inventoryID) {
+        this.inventoryID = inventoryID;
     }
 
     public int getEquipmentID() {
