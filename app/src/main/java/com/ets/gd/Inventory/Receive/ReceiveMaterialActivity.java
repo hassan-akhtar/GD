@@ -131,7 +131,6 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
                         inventoryMove.setInventoryID(DataManager.getInstance().getInventoryByMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID()).getID());
                         inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
                         inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
-
                         Materials.add(inventoryMove);
                     }
                     moveInventory.setMaterials(Materials);

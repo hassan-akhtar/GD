@@ -688,6 +688,15 @@ public class DataManager {
         return realm.where(Inventory.class).equalTo("MaterialID", materialID).findAll();
     }
 
+
+    public void updateInventoryQuantity(int materialID, int locID ,int quantity) {
+        Inventory inventory =  realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("LocationID",locID).findFirst();
+        realm.beginTransaction();
+        inventory.setQuantity(inventory.getQuantity()-quantity);
+        realm.copyToRealmOrUpdate(inventory);
+        realm.commitTransaction();
+    }
+
     public Inventory getInventoryByMaterialID(int materialID) {
         return realm.where(Inventory.class).equalTo("MaterialID", materialID).findFirst();
     }
