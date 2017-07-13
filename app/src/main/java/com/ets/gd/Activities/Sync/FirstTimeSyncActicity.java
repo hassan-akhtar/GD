@@ -50,7 +50,6 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
     private void callSyncGetService() {
         btnSync.setEnabled(false);
         CommonActions.showProgressDialog(FirstTimeSyncActicity.this);
-        DataManager.getInstance().deleteRealm();
         //GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, sharedPreferencesManager.getString(SharedPreferencesManager.MY_DEVICE_ID), customerID), this);
         GSDServiceFactory.getService(getApplicationContext()).getSyncData(new SyncGetDTO(Constants.RESPONSE_SYNC_GET, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID)), this);
     }
@@ -109,8 +108,7 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
                 if (null != responseDTO) {
                     if (null != syncGetResponseDTO && null!=syncGetResponseDTO.getLstCustomerData()  && 0 != syncGetResponseDTO.getLstCustomerData().size()) {
-
-
+                        DataManager.getInstance().deleteRealm();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                         sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, getIntent().getStringExtra("customerCode"));
                        // sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());

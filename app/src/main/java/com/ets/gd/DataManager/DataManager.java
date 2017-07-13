@@ -45,6 +45,9 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderFireBug;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderInventory;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderToolHawk;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Stock;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
@@ -279,14 +282,14 @@ public class DataManager {
                     myInspectionQuaterly.setID(0);
                     myInspectionQuaterly.setEquipmentID(fireBugEquipment.getID());
                     myInspectionQuaterly.setDueDate(inspectionNewDates.getQuaterly());
-                    myInspectionQuaterly.setInspectionType("Quaterly");
+                    myInspectionQuaterly.setInspectionType("Quarterly");
                     res.add(myInspectionQuaterly);
 
                     MyInspectionDates myInspectionSemiAnnual = realm.createObject(MyInspectionDates.class);
                     myInspectionSemiAnnual.setID(0);
                     myInspectionSemiAnnual.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSemiAnnual.setDueDate(inspectionNewDates.getSemiAnnual());
-                    myInspectionSemiAnnual.setInspectionType("SemiAnnual");
+                    myInspectionSemiAnnual.setInspectionType("6 Months");
                     res.add(myInspectionSemiAnnual);
 
                     MyInspectionDates myInspectionAnnual = realm.createObject(MyInspectionDates.class);
@@ -300,21 +303,21 @@ public class DataManager {
                     myInspectionFiveYear.setID(0);
                     myInspectionFiveYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionFiveYear.setDueDate(inspectionNewDates.getFiveYear());
-                    myInspectionFiveYear.setInspectionType("FiveYear");
+                    myInspectionFiveYear.setInspectionType("5 Years");
                     res.add(myInspectionFiveYear);
 
                     MyInspectionDates myInspectionSixYear = realm.createObject(MyInspectionDates.class);
                     myInspectionSixYear.setID(0);
                     myInspectionSixYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSixYear.setDueDate(inspectionNewDates.getSixYear());
-                    myInspectionSixYear.setInspectionType("SixYear");
+                    myInspectionSixYear.setInspectionType("6 Years");
                     res.add(myInspectionSixYear);
 
                     MyInspectionDates myInspectionTenYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTenYears.setID(0);
                     myInspectionTenYears.setEquipmentID(fireBugEquipment.getID());
                     myInspectionTenYears.setDueDate(inspectionNewDates.getTenYear());
-                    myInspectionTenYears.setInspectionType("TenYears");
+                    myInspectionTenYears.setInspectionType("10 Years");
                     res.add(myInspectionTenYears);
 
 
@@ -322,7 +325,7 @@ public class DataManager {
                     myInspectionTwelveYears.setID(0);
                     myInspectionTwelveYears.setEquipmentID(fireBugEquipment.getID());
                     myInspectionTwelveYears.setDueDate(inspectionNewDates.getTwelveYear());
-                    myInspectionTwelveYears.setInspectionType("TwelveYears");
+                    myInspectionTwelveYears.setInspectionType("12 Years");
                     res.add(myInspectionTenYears);
 
 
@@ -875,6 +878,9 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstMaintenanceCategory(obj.getLstMaintenanceCategory());
                 realmSyncGetResponseDTO.setLstFbEquipmentNotes(obj.getLstFbEquipmentNotes());
                 realmSyncGetResponseDTO.setLstRoutes(obj.getLstRoutes());
+                realmSyncGetResponseDTO.setInventoryMenuSortOrder(obj.getInventoryMenuSortOrder());
+                realmSyncGetResponseDTO.setFireBugMenuSortOrder(obj.getFireBugMenuSortOrder());
+                realmSyncGetResponseDTO.setToolHawkMenuSortOrder(obj.getToolHawkMenuSortOrder());
                 realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
             }
         });
@@ -1045,6 +1051,19 @@ public class DataManager {
     public List<MoveInventoryRealm> getAllIssueInventoryList() {
         return realm.where(MoveInventoryRealm.class).equalTo("isIssued", true).findAll();
     }
+
+    public List<SortOrderInventory> getAllInventorySortOrderList() {
+        return realm.where(SortOrderInventory.class).findAll();
+    }
+
+    public List<SortOrderFireBug> getAllFireBugSortOrderList() {
+        return realm.where(SortOrderFireBug.class).findAll();
+    }
+
+    public List<SortOrderToolHawk> getAllToolHawkSortOrderList() {
+        return realm.where(SortOrderToolHawk.class).findAll();
+    }
+
 
     public List<MoveInventoryRealm> getAllReceiveInventoryList() {
         return realm.where(MoveInventoryRealm.class).equalTo("isReceived", true).findAll();

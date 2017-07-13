@@ -1,9 +1,7 @@
 package com.ets.gd.Activities.Login;
 
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,7 +16,6 @@ import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
-import com.ets.gd.Activities.Sync.FirstTimeSyncActicity;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
@@ -28,13 +25,6 @@ import com.ets.gd.R;
 import com.ets.gd.Utils.CommonActions;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -77,16 +67,6 @@ public class LoginActivity extends AppCompatActivity {
             etPassword.setBackgroundColor(Color.parseColor("#ffffff"));
             etUsername.setBackgroundColor(Color.parseColor("#ffffff"));
         }
-
-//        etUsername.setText("eric55");
-//        etPassword.setText("1234567");
-
-//           etUsername.setText("dsit");
-//        etPassword.setText("1324");
-
-//        etUsername.setText("k1");
-//        etPassword.setText("1324");
-
     }
 
     private void initObj() {
@@ -101,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             lstDevices = realmSyncGetResponseDTO.getLstDevices();
             lstMusers.clear();
             for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomerData().size(); i++) {
-                lstMusers.addAll(realmSyncGetResponseDTO.getLstCustomerData().get(i).getLstMusers());
+                 lstMusers.addAll(realmSyncGetResponseDTO.getLstCustomerData().get(i).getLstMusers());
 
             }
         }
@@ -125,24 +105,27 @@ public class LoginActivity extends AppCompatActivity {
                         if (checkValidation()) {
                             sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USER_ID, etUsername.getText().toString().trim());
                             CommonActions.showProgressDialog(LoginActivity.this);
-                            if (null != lstMusers && 0!=lstMusers.size()) {
+                            if (null != lstMusers && 0 != lstMusers.size()) {
                                 if (checkMobileUserFromDatabase(etUsername.getText().toString().trim(), etPassword.getText().toString().trim())) {
                                     CommonActions.DismissesDialog();
                                     if (checkDevice()) {
                                         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(etUsername.getText().toString().trim());
-                                        if(rolePermissions!=null){
+                                        if (rolePermissions != null) {
 
-                                            for(int i=0;i<rolePermissions.size();i++){
-                                                if( rolePermissions.get(i).getValue().equals("FireBug") || rolePermissions.get(i).getValue().equals("ToolHawk") ||
-                                                        rolePermissions.get(i).getValue().equals("Inventory")){
+                                            for (int i = 0; i < rolePermissions.size(); i++) {
+                                                if (rolePermissions.get(i).getValue().equals("FireBug") || rolePermissions.get(i).getValue().equals("ToolHawk") ||
+                                                        rolePermissions.get(i).getValue().equals("Inventory")) {
                                                     accessFirebugToolhawkInventory = true;
                                                 }
                                             }
                                         }
 
                                         if (accessFirebugToolhawkInventory) {
-                                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_USERNAME,etUsername.getText().toString().trim());
-                                            showToast("Login Successful");
+                                            sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_USERNAME, etUsername.getText().toString().trim());
+                                            sharedPreferencesManager.setInt(SharedPreferencesManager.LOGGED_IN_USERID, DataManager.getInstance().getMobileUser(etUsername.getText().toString().trim()).getID());
+
+
+                                                    showToast("Login Successful");
                                             startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                                             finish();
                                         } else {
@@ -209,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
         String encryptedDeviceID = md5(deviceID);
         for (int i = 0; i < lstMusers.size(); i++) {
             if (username.equals(lstMusers.get(i).getUserName().trim()) && pass.equals(lstMusers.get(i).getPassword().trim())) {
-                sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USERNAME, lstMusers.get(i).getFirstName()+" "+lstMusers.get(i).getLastName());
+                sharedPreferencesManager.setString(SharedPreferencesManager.LOGGED_IN_USERNAME, lstMusers.get(i).getFirstName() + " " + lstMusers.get(i).getLastName());
                 doesUserExist = true;
                 break;
             }

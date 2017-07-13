@@ -20,6 +20,7 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Inventory.Activities.CommonMaterialScanActivity;
 import com.ets.gd.Inventory.Activities.MoveMaterialScanListActivity;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderInventory;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -31,13 +32,14 @@ public class InventoryDashboardFragment extends Fragment {
 
 
     View rootView;
-    String[] thTasks = {"Move", "Issue", "Receive"};
-    int[] thTasksImages = {R.drawable.ic_move_op, R.drawable.ic_issue, R.drawable.ic_receive,};
+    String[] thTasks;
+    int[] thTasksImages;
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;
     SharedPreferencesManager sharedPreferencesManager;
     private List<PermissionType> rolePermissions = new ArrayList<>();
+    List<SortOrderInventory> sortOrderInventoryList = new ArrayList<>();
 
     public InventoryDashboardFragment() {
         // Required empty public constructor
@@ -65,6 +67,7 @@ public class InventoryDashboardFragment extends Fragment {
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
+        setupSortOrder();
         adapter = new AssetsAdapter(thTasks, thTasksImages);
         BaseActivity.currentFragment = new InventoryDashboardFragment();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -73,6 +76,26 @@ public class InventoryDashboardFragment extends Fragment {
         rvTasks.setAdapter(adapter);
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
+    }
+
+    private void setupSortOrder() {
+        sortOrderInventoryList = DataManager.getInstance().getAllInventorySortOrderList();
+
+        if (null != sortOrderInventoryList) {
+            thTasks = new String[sortOrderInventoryList.size()];
+            thTasksImages = new int[sortOrderInventoryList.size()];
+
+            for (int i = 0; i < sortOrderInventoryList.size(); i++) {
+                thTasks[i] = sortOrderInventoryList.get(i).getName();
+                if (sortOrderInventoryList.get(i).getName().toString().toLowerCase().startsWith("mov")) {
+                    thTasksImages[i] = R.drawable.ic_move_op;
+                } else if (sortOrderInventoryList.get(i).getName().toString().toLowerCase().startsWith("rec")) {
+                    thTasksImages[i] = R.drawable.ic_receive;
+                } else if (sortOrderInventoryList.get(i).getName().toString().toLowerCase().startsWith("iss")) {
+                    thTasksImages[i] = R.drawable.ic_issue;
+                }
+            }
+        }
     }
 
 
@@ -84,8 +107,8 @@ public class InventoryDashboardFragment extends Fragment {
                 if (thTasks[position].toLowerCase().startsWith("mo")) {
 
                     boolean accessMove = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Move")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Move")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
                                     accessMove = true;
@@ -95,18 +118,18 @@ public class InventoryDashboardFragment extends Fragment {
                         }
                     }
                     if (accessMove) {
-                    MoveMaterialScanListActivity.materialList.clear();
-                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
-                    in.putExtra("taskType",thTasks[position]);
-                    startActivity(in);
+                        MoveMaterialScanListActivity.materialList.clear();
+                        Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                        in.putExtra("taskType", thTasks[position]);
+                        startActivity(in);
                     } else {
                         showToast("you don't have permission to Move/ETSMaterial");
                     }
-                } else  if (thTasks[position].toLowerCase().startsWith("iss")) {
+                } else if (thTasks[position].toLowerCase().startsWith("iss")) {
 
                     boolean accessIssue = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("ETSMaterial")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
                                     accessIssue = true;
@@ -116,17 +139,17 @@ public class InventoryDashboardFragment extends Fragment {
                         }
                     }
                     if (accessIssue) {
-                    MoveMaterialScanListActivity.materialList.clear();
-                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
-                    in.putExtra("taskType",thTasks[position]);
-                    startActivity(in);
+                        MoveMaterialScanListActivity.materialList.clear();
+                        Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                        in.putExtra("taskType", thTasks[position]);
+                        startActivity(in);
                     } else {
                         showToast("you don't have permission to Issue/ETSMaterial");
                     }
-                } else  if (thTasks[position].toLowerCase().startsWith("rec")) {
+                } else if (thTasks[position].toLowerCase().startsWith("rec")) {
                     boolean accessReceive = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("ETSMaterial")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("ETSMaterial")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ETSMaterial")) {
                                     accessReceive = true;
@@ -136,13 +159,13 @@ public class InventoryDashboardFragment extends Fragment {
                         }
                     }
                     if (accessReceive) {
-                    MoveMaterialScanListActivity.materialList.clear();
-                    Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
-                    in.putExtra("taskType",thTasks[position]);
-                    startActivity(in);
-                } else {
-                    showToast("you don't have permission to Receive/ETSMaterial");
-                }
+                        MoveMaterialScanListActivity.materialList.clear();
+                        Intent in = new Intent(getActivity(), CommonMaterialScanActivity.class);
+                        in.putExtra("taskType", thTasks[position]);
+                        startActivity(in);
+                    } else {
+                        showToast("you don't have permission to Receive/ETSMaterial");
+                    }
 
                 }
 

@@ -219,7 +219,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
         }else {
             // tvSyncInProgress.setText("No data found for syncing");
             // showToast("No data found for syncing");
-            DataManager.getInstance().deleteRealm();
             callSyncGetService();
         }
     }
@@ -636,7 +635,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
         moveTransferRequestDTO = new MoveTransferRequestDTO(Constants.RESPONSE_SYNC_POST_MOVE_TRANSFER,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstMoveEquipment);
 
         if (0 != lstMoveEquipment.size()) {
@@ -649,9 +648,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
         lstInspectionResult = DataManager.getInstance().getAllUnitInspectedAssets();
 
         syncPostUnitInspectionRequestDTO = new SyncPostUnitInspectionRequestDTO(Constants.RESPONSE_SYNC_POST_INSPECT_EQUIPMENT,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstInspectionResult);
-
         if (0 != lstInspectionResult.size()) {
             sendUnitInspcall = true;
         }
@@ -725,7 +723,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
         syncPostAddLocationRequestDTO = new SyncPostAddLocationRequestDTO(Constants.RESPONSE_SYNC_POST_ADD_LOCATION,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstAddLocation);
 
         if (0 != lstAddLocation.size()) {
@@ -751,7 +749,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
         syncPostAddETSLocationRequestDTO = new SyncPostAddETSLocationRequestDTO(Constants.RESPONSE_SYNC_POST_ETS_LOCATION,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstAddETSLocation);
 
         if (0 != lstAddETSLocation.size()) {
@@ -807,7 +805,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
         syncPostTHEquipmentRequestDTO = new SyncPostToolhawkEquipment(Constants.RESPONSE_SYNC_POST_TOOLHAWK_EQUIPMENT,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstAddTHEquipment,
                 lstEditTHEquipment);
 
@@ -924,7 +922,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
         syncPostEquipmentRequestDTO = new SyncPostEquipmentRequestDTO(Constants.RESPONSE_SYNC_POST_EQUIPMENT,
-                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID)),
+                String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstAddEquipment,
                 lstEditEquipment);
 
@@ -1598,8 +1596,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         itemList[itemList.length - 1] = "Update Db SUCCESS";
 
                         CommonActions.DismissesDialog();
+                        DataManager.getInstance().deleteRealm();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        //  sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, syncGetResponseDTO.getCustomerId());
+                        //  sharedPreferencesManager.setInt(SharedPreferencesManager.LOGGED_IN_USERID, syncGetResponseDTO.getCustomerId());
                         setCurrentDateAndTime();
                         showSyncResults();
                     } else {

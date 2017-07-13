@@ -2,7 +2,6 @@ package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 
 import io.realm.RealmList;
-import io.realm.annotations.PrimaryKey;
 
 
 public class SyncGetResponseDTO extends ResponseDTO {
@@ -25,8 +24,9 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<Action> lstMaintenanceAction;
     RealmList<MaintenanceCategory> lstMaintenanceCategory;
     RealmList<Material> lstMaterials;
-
-
+    RealmList<SortOrderInventory>  InventoryMenuSortOrder;
+    RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
+    RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
         return lstFbEquipmentNotes;
@@ -74,6 +74,30 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstFireBugBuilding(RealmList<FirebugBuilding> lstFireBugBuilding) {
         this.lstFireBugBuilding = lstFireBugBuilding;
+    }
+
+    public RealmList<SortOrderInventory> getInventoryMenuSortOrder() {
+        return InventoryMenuSortOrder;
+    }
+
+    public void setInventoryMenuSortOrder(RealmList<SortOrderInventory> inventoryMenuSortOrder) {
+        InventoryMenuSortOrder = inventoryMenuSortOrder;
+    }
+
+    public RealmList<SortOrderFireBug> getFireBugMenuSortOrder() {
+        return FireBugMenuSortOrder;
+    }
+
+    public void setFireBugMenuSortOrder(RealmList<SortOrderFireBug> fireBugMenuSortOrder) {
+        FireBugMenuSortOrder = fireBugMenuSortOrder;
+    }
+
+    public RealmList<SortOrderToolHawk> getToolHawkMenuSortOrder() {
+        return ToolHawkMenuSortOrder;
+    }
+
+    public void setToolHawkMenuSortOrder(RealmList<SortOrderToolHawk> toolHawkMenuSortOrder) {
+        ToolHawkMenuSortOrder = toolHawkMenuSortOrder;
     }
 
     public RealmList<JobNumber> getLstJobNumber() {

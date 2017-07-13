@@ -346,7 +346,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
                             if (!"".equals(etReturnDate.getText().toString().trim())) {
                                 syncPostCheckOutRequestDTO = new CheckOut();
-                                syncPostCheckOutRequestDTO.setUserID(0);
+                                syncPostCheckOutRequestDTO.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                                 if (isUser) {
                                     syncPostCheckOutRequestDTO.setCheckOutType("User");
                                 } else {
@@ -372,7 +372,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
                         } else {
                             syncPostCheckInRequestDTO = new CheckIn();
-                            syncPostCheckInRequestDTO.setUserID(0);
+                            syncPostCheckInRequestDTO.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                             if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
                                 syncPostCheckInRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
                             } else {

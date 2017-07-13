@@ -193,7 +193,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                                 moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getID());
                                 moveInventory.setMoveType("Location");
                             }
-                            moveInventory.setUserID(0);
+                            moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
                             moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
                             for (int i = 0; i < materialList.size(); i++) {

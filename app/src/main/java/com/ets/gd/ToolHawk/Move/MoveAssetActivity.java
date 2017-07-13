@@ -388,7 +388,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                             } else {
                                                 toolhawkMove.setToJobNumberID(0);
                                             }
-                                            toolhawkMove.setUserID(0);
+                                            toolhawkMove.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                                             equipmentToMoveList.add(toolhawkMove);
                                         }
 

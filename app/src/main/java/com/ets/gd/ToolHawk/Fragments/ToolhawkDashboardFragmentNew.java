@@ -17,6 +17,7 @@ import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderToolHawk;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
 import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
@@ -35,13 +36,14 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
     View rootView;
     private static FloatingActionMenu fab;
     private static FloatingActionButton fabItemAddItem, itemAddLocation;
-    String[] thTasks = {"Equipment Info", "Quick Count", "Check Out", "Check In", "Move Assets", "Maintenance"}; //, "Transfer Assets"
-    int[] thTasksImages = {R.drawable.ic_view_info, R.drawable.ic_quickcount, R.drawable.ic_checkout, R.drawable.ic_checkin, R.drawable.ic_move_op, R.drawable.ic_maintenance};//, R.drawable.ic_transfer
+    String[] thTasks;
+    int[] thTasksImages;
     RecyclerView rvTasks;
     AssetsAdapter adapter;
     Context mContext;
     SharedPreferencesManager sharedPreferencesManager;
     private List<PermissionType> rolePermissions = new ArrayList<>();
+    List<SortOrderToolHawk> sortOrderToolHawkList = new ArrayList<>();
 
     public ToolhawkDashboardFragmentNew() {
         // Required empty public constructor
@@ -71,6 +73,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
+        setupSortOrder();
         adapter = new AssetsAdapter(thTasks, thTasksImages);
         BaseActivity.currentFragment = new ToolhawkDashboardFragmentNew();
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
@@ -80,8 +83,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
         adapter.notifyDataSetChanged();
         mContext = this.getActivity();
         boolean accessViewInfo = false;
-        for(int i=0;i<rolePermissions.size();i++){
-            if(  rolePermissions.get(i).getValue().equals("AddEdit")){
+        for (int i = 0; i < rolePermissions.size(); i++) {
+            if (rolePermissions.get(i).getValue().equals("AddEdit")) {
                 accessViewInfo = true;
             }
         }
@@ -103,6 +106,31 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
 
     }
 
+
+    private void setupSortOrder() {
+        sortOrderToolHawkList = DataManager.getInstance().getAllToolHawkSortOrderList();
+        if (null != sortOrderToolHawkList) {
+            thTasks = new String[sortOrderToolHawkList.size()];
+            thTasksImages = new int[sortOrderToolHawkList.size()];
+            for (int i = 0; i < sortOrderToolHawkList.size(); i++) {
+                thTasks[i] = sortOrderToolHawkList.get(i).getName();
+                if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("equ")) {
+                    thTasksImages[i] = R.drawable.ic_view_info;
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("qui")) {
+                    thTasksImages[i] = R.drawable.ic_quickcount;
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().contains("out")) {
+                    thTasksImages[i] = R.drawable.ic_checkout;
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().contains("in")) {
+                    thTasksImages[i] = R.drawable.ic_checkin;
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("mov")) {
+                    thTasksImages[i] = R.drawable.ic_move_op;
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("main")) {
+                    thTasksImages[i] = R.drawable.ic_maintenance;
+                }
+            }
+        }
+    }
+
     private void initListeners() {
         fabItemAddItem.setOnClickListener(mGlobal_OnClickListener);
         itemAddLocation.setOnClickListener(mGlobal_OnClickListener);
@@ -113,8 +141,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                 rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
                 if (thTasks[position].toLowerCase().startsWith("eq")) {
                     boolean accessViewInfo = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("AddEdit")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("AddEdit")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
                                     accessViewInfo = true;
@@ -134,8 +162,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
 
                 if (thTasks[position].toLowerCase().startsWith("tra")) {
                     boolean accessTransfer = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Transfer")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Transfer")) {
 
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
@@ -153,34 +181,34 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                 }
                 if (thTasks[position].toLowerCase().startsWith("qu")) {
                     boolean accessTHEq = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("ToolHawkEquipment")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("ToolHawkEquipment")) {
                             accessTHEq = true;
                         }
                     }
                     if (accessTHEq) {
-                    ToolhawkScanActivity(position);
+                        ToolhawkScanActivity(position);
                     } else {
                         showToast("you don't have permission to ToolHawk Equipment");
                     }
                 }
                 if (thTasks[position].toLowerCase().startsWith("ma")) {
                     boolean accessTHEq = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("ToolHawkEquipment")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("ToolHawkEquipment")) {
                             accessTHEq = true;
                         }
                     }
                     if (accessTHEq) {
-                    ToolhawkScanActivity(position);
+                        ToolhawkScanActivity(position);
                     } else {
                         showToast("you don't have permission to ToolHawk Equipment");
                     }
                 }
                 if (thTasks[position].toLowerCase().startsWith("mo")) {
                     boolean accessMove = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Move")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Move")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
                                     accessMove = true;
@@ -198,8 +226,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                 }
                 if (thTasks[position].toLowerCase().startsWith("check in")) {
                     boolean accessCheckin = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Checkin")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Checkin")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
                                     accessCheckin = true;
@@ -218,8 +246,8 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
 
                 if (thTasks[position].toLowerCase().startsWith("check out")) {
                     boolean accessCheckout = false;
-                    for(int i=0;i<rolePermissions.size();i++){
-                        if(  rolePermissions.get(i).getValue().equals("Checkout")){
+                    for (int i = 0; i < rolePermissions.size(); i++) {
+                        if (rolePermissions.get(i).getValue().equals("Checkout")) {
                             for (int j = 0; j < rolePermissions.size(); j++) {
                                 if (rolePermissions.get(j).getValue().equals("ToolHawkEquipment")) {
                                     accessCheckout = true;

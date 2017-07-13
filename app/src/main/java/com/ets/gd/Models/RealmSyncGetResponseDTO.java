@@ -29,6 +29,9 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<Action> lstMaintenanceAction;
     RealmList<MaintenanceCategory> lstMaintenanceCategory;
     RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> lstMaterials;
+    RealmList<SortOrderInventory>  InventoryMenuSortOrder;
+    RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
+    RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -44,6 +47,30 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstMaterials(RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> lstMaterials) {
         this.lstMaterials = lstMaterials;
+    }
+
+    public RealmList<SortOrderInventory> getInventoryMenuSortOrder() {
+        return InventoryMenuSortOrder;
+    }
+
+    public void setInventoryMenuSortOrder(RealmList<SortOrderInventory> inventoryMenuSortOrder) {
+        InventoryMenuSortOrder = inventoryMenuSortOrder;
+    }
+
+    public RealmList<SortOrderFireBug> getFireBugMenuSortOrder() {
+        return FireBugMenuSortOrder;
+    }
+
+    public void setFireBugMenuSortOrder(RealmList<SortOrderFireBug> fireBugMenuSortOrder) {
+        FireBugMenuSortOrder = fireBugMenuSortOrder;
+    }
+
+    public RealmList<SortOrderToolHawk> getToolHawkMenuSortOrder() {
+        return ToolHawkMenuSortOrder;
+    }
+
+    public void setToolHawkMenuSortOrder(RealmList<SortOrderToolHawk> toolHawkMenuSortOrder) {
+        ToolHawkMenuSortOrder = toolHawkMenuSortOrder;
     }
 
     public RealmList<JobNumber> getLstJobNumber() {
