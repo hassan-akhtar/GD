@@ -70,6 +70,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
     ETSLocations etsLocation;
     MobileUser mobileUser;
     boolean isMultiple;
+    int JobNumberID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +107,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
         scanType = getIntent().getStringExtra("scanType");
         material = getIntent().getStringExtra("material");
         isMultiple = getIntent().getBooleanExtra("isMultiple", false);
-
+        JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvScanType.setText("Select / Scan " + scanType);
@@ -142,11 +143,13 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                         Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                         in.putExtra("taskType", taskType);
                         in.putExtra("scanType", scanType);
+                        in.putExtra("JobNumberID", JobNumberID);
                         in.putExtra("toLoc", locList.get(position).getCode());
                         startActivity(in);
                     } else {
                         Intent in = new Intent(InventoryScanActivityWithList.this, ReceiveMaterialActivity.class);
                         in.putExtra("toLoc", locList.get(position).getCode());
+                        in.putExtra("JobNumberID", JobNumberID);
                         startActivity(in);
                     }
 
@@ -154,6 +157,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
+                    in.putExtra("JobNumberID", JobNumberID);
                     in.putExtra("toLoc", containerList.get(position).getCode());
                     startActivity(in);
 
@@ -161,6 +165,7 @@ public class InventoryScanActivityWithList extends AppCompatActivity implements 
                     Intent in = new Intent(InventoryScanActivityWithList.this, MoveFinalActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("scanType", scanType);
+                    in.putExtra("JobNumberID", JobNumberID);
                     in.putExtra("toLoc", userList.get(position).getUserName());
                     startActivity(in);
 

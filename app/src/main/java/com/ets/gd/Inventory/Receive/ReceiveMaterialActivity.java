@@ -48,6 +48,9 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
     MoveInventoryRealm moveInventory;
     public static List<Material> materialList = new ArrayList<Material>();
     private RealmList<InventoryMoveRealm> Materials = new RealmList<InventoryMoveRealm>();
+    int JobNumberID;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +95,7 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("Receive");
         loc = getIntent().getStringExtra("toLoc");
+        JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         tvLoc.setText("" + loc);
 
         if (1 == materialList.size()) {
@@ -123,7 +127,7 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
                     moveInventory.setReceived(true);
                     moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvLoc.getText().toString()).getID());
                     moveInventory.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
-                    moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+                    moveInventory.setJobNumberID(JobNumberID);
 
                     for (int i = 0; i < materialList.size(); i++) {
                         InventoryMoveRealm inventoryMove = new InventoryMoveRealm();

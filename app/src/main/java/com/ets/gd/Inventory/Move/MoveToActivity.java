@@ -25,6 +25,7 @@ public class MoveToActivity extends AppCompatActivity {
     ImageView ivBack, ivTick;
     RelativeLayout rlJob, rlLocation;
     boolean isMultiple;
+    int JobNumberID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +54,7 @@ public class MoveToActivity extends AppCompatActivity {
 
         taskName = getIntent().getStringExtra("taskType");
         materialName = getIntent().getStringExtra("materialName");
+        JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         isMultiple = getIntent().getBooleanExtra("isMultiple", false);
         tvMaterial.setText("" + materialName);
         tbTitleTop.setText("Toolhawk");
@@ -111,12 +113,14 @@ public class MoveToActivity extends AppCompatActivity {
                         in.putExtra("taskType", taskName);
                         in.putExtra("scanType", "Location");
                         in.putExtra("material", materialName);
+                        in.putExtra("JobNumberID", JobNumberID);
                         in.putExtra("isMultiple", isMultiple);
                         startActivity(in);
                     } else  if (tvFirst.getText().toString().toLowerCase().startsWith("use")) {
                         Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
                         in.putExtra("taskType", taskName);
                         in.putExtra("scanType", "User");
+                        in.putExtra("JobNumberID", JobNumberID);
                         in.putExtra("material", materialName);
                         in.putExtra("isMultiple", isMultiple);
                         startActivity(in);
@@ -129,6 +133,7 @@ public class MoveToActivity extends AppCompatActivity {
                     Intent in = new Intent(MoveToActivity.this, InventoryScanActivityWithList.class);
                     in.putExtra("taskType", taskName);
                     in.putExtra("scanType", "Container");
+                    in.putExtra("JobNumberID", JobNumberID);
                     in.putExtra("material", materialName);
                     in.putExtra("isMultiple", isMultiple);
                     startActivity(in);

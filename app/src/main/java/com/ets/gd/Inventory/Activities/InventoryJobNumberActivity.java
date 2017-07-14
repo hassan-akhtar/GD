@@ -35,6 +35,8 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Interfaces.MaterialAdded;
+import com.ets.gd.Inventory.Move.InventoryScanActivityWithList;
+import com.ets.gd.Inventory.Move.MoveToActivity;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.Material;
 import com.ets.gd.Models.Note;
@@ -58,7 +60,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     EditText etBarcode;
     ImageView ivInfo;
     String taskType, department, returningUser, materialID, quantity;
-    int  materialLocID,eqID,inventoryID;
+    int materialLocID, eqID, inventoryID;
     ImageView ivBack, ivTick;
     RecyclerView rvList;
     private List<JobNumber> jobNumberList = new ArrayList<JobNumber>();
@@ -70,6 +72,7 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
     SharedPreferencesManager sharedPreferencesManager;
     JobNumber jobNumber;
     public static MaterialAdded materialAdded;
+    boolean isMultiple = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,11 +115,12 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
         taskType = getIntent().getStringExtra("taskType");
-        materialLocID = getIntent().getIntExtra("materialLocID",0);
-        inventoryID = getIntent().getIntExtra("inventoryID",0);
+        materialLocID = getIntent().getIntExtra("materialLocID", 0);
+        isMultiple = getIntent().getBooleanExtra("materialLocID", false);
+        inventoryID = getIntent().getIntExtra("inventoryID", 0);
         materialID = getIntent().getStringExtra("materialID");
         quantity = getIntent().getStringExtra("quantity");
-        eqID  = getIntent().getIntExtra("eqID",0);
+        eqID = getIntent().getIntExtra("eqID", 0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan or Enter Job Number");
@@ -143,23 +147,25 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
             public void onClick(View view, int position) {
 
 
-                if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                    Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-                    in.putExtra("materialLocID", materialLocID);
-                    in.putExtra("materialID", materialID);
-                    in.putExtra("quantity", quantity);
-                    in.putExtra("inventoryID", inventoryID);
-                    in.putExtra("eqID", eqID);
+                if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
+                    Intent in = new Intent(InventoryJobNumberActivity.this, MoveToActivity.class);
                     in.putExtra("taskType", taskType);
-                    in.putExtra("JobNumber", jobNumberList.get(position).getCode());
+                    in.putExtra("materialName", materialID);
                     in.putExtra("JobNumberID", jobNumberList.get(position).getID());
+                    in.putExtra("isMultiple", isMultiple);
+
                     startActivity(in);
-                    etBarcode.setText("");
                 } else {
-                    MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                    materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumberList.get(position).getID(),inventoryID));
-                    sendMessage("finish");
+                    Intent in = new Intent(InventoryJobNumberActivity.this, InventoryScanActivityWithList.class);
+                    in.putExtra("taskType", taskType);
+                    in.putExtra("scanType", "Location");
+                    in.putExtra("material", materialID);
+                    in.putExtra("JobNumberID", jobNumberList.get(position).getID());
+                    in.putExtra("isMultiple", isMultiple);
+                    startActivity(in);
                 }
+                etBarcode.setText("");
+
             }
 
             @Override
@@ -227,22 +233,26 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
                         jobNumber = DataManager.getInstance().getJobNumber(etBarcode.getText().toString().trim());
                         if (null != jobNumber) {
 
-                            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                                Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-                                in.putExtra("materialLocID", materialLocID);
-                                in.putExtra("materialID", materialID);
+
+                            if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
+                                Intent in = new Intent(InventoryJobNumberActivity.this, MoveToActivity.class);
                                 in.putExtra("taskType", taskType);
-                                in.putExtra("inventoryID", inventoryID);
-                                in.putExtra("quantity", quantity);
-                                in.putExtra("JobNumber", jobNumber.getCode());
+                                in.putExtra("materialName", materialID);
                                 in.putExtra("JobNumberID", jobNumber.getID());
+                                in.putExtra("isMultiple", isMultiple);
+
                                 startActivity(in);
-                                etBarcode.setText("");
                             } else {
-                                MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID(),inventoryID));
-                                sendMessage("finish");
+                                Intent in = new Intent(InventoryJobNumberActivity.this, InventoryScanActivityWithList.class);
+                                in.putExtra("taskType", taskType);
+                                in.putExtra("scanType", "Location");
+                                in.putExtra("material", materialID);
+                                in.putExtra("JobNumberID", jobNumber.getID());
+                                in.putExtra("isMultiple", isMultiple);
+                                startActivity(in);
                             }
+                            etBarcode.setText("");
+
                         } else {
                             hideKeyboard();
                             showToast("No Job Number Found!");
@@ -402,22 +412,25 @@ public class InventoryJobNumberActivity extends AppCompatActivity implements Bar
 
         jobNumber = DataManager.getInstance().getJobNumber(message);
         if (null != jobNumber) {
-            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                Intent in = new Intent(InventoryJobNumberActivity.this, MoveMaterialScanListActivity.class);
-                in.putExtra("materialLocID", materialLocID);
-                in.putExtra("materialID", materialID);
-                in.putExtra("quantity", quantity);
+            if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
+                Intent in = new Intent(InventoryJobNumberActivity.this, MoveToActivity.class);
                 in.putExtra("taskType", taskType);
-                in.putExtra("inventoryID", inventoryID);
-                in.putExtra("JobNumber", jobNumber.getCode());
+                in.putExtra("materialName", materialID);
                 in.putExtra("JobNumberID", jobNumber.getID());
+                in.putExtra("isMultiple", isMultiple);
+
                 startActivity(in);
-                etBarcode.setText("");
             } else {
-                MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                materialAdded.MaterialMoveListItemAdded(new Material(materialID, quantity,materialLocID,jobNumber.getID(),inventoryID));
-                sendMessage("finish");
+                Intent in = new Intent(InventoryJobNumberActivity.this, InventoryScanActivityWithList.class);
+                in.putExtra("taskType", taskType);
+                in.putExtra("scanType", "Location");
+                in.putExtra("material", materialID);
+                in.putExtra("JobNumberID", jobNumber.getID());
+                in.putExtra("isMultiple", isMultiple);
+                startActivity(in);
             }
+            etBarcode.setText("");
+
         } else {
             showToast("No Job Number Found!");
         }

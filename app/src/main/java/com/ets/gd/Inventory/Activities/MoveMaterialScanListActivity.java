@@ -29,10 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.Other.BaseActivity;
-import com.ets.gd.Adapters.AssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
@@ -43,14 +40,10 @@ import com.ets.gd.Inventory.Move.MoveFinalActivity;
 import com.ets.gd.Inventory.Move.MoveToActivity;
 import com.ets.gd.Inventory.Receive.ReceiveMaterialActivity;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.Models.Note;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.ToolhawkScanActivityWithList;
-import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
-import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -67,6 +60,8 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     LinearLayout llbtns, llbtnsEq;
     EditText etBarcode;
     ImageView ivInfo;
+    boolean isMultiple;
+    RelativeLayout rlBottomSheetJobnumber, rlYes, rlNo;
     String taskType, JobNumber, materialID, quantity;
     int JobNumberID, materialLocID, eqID, inventoryID;
     ImageView ivBack, ivTick;
@@ -82,6 +77,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     public static List<com.ets.gd.Models.Material> materialList = new ArrayList<com.ets.gd.Models.Material>();
     Context mContext;
     String[] locationNames;
+    TextView tvStatement;
     public static boolean addMoreMaretailItem = false;
 
     @Override
@@ -120,8 +116,12 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
+        tvStatement = (TextView) findViewById(R.id.tvStatement);
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
+        rlBottomSheetJobnumber = (RelativeLayout) findViewById(R.id.rlBottomSheetJobnumber);
+        rlYes = (RelativeLayout) findViewById(R.id.rlYes);
+        rlNo = (RelativeLayout) findViewById(R.id.rlNo);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivInfo = (ImageView) findViewById(R.id.ivInfo);
@@ -137,6 +137,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         tbTitleBottom.setText("" + taskType);
         tvUnderText.setText("Scan/Enter ID of Material");
 
+        tvStatement.setText("Do you want to assign a Job Number?");
 
         if (null != JobNumber) {
             rlJobNumber.setVisibility(View.VISIBLE);
@@ -195,6 +196,8 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
         rlForwardArrow.setOnClickListener(mGlobal_OnClickListener);
+        rlYes.setOnClickListener(mGlobal_OnClickListener);
+        rlNo.setOnClickListener(mGlobal_OnClickListener);
 
 
         rvList.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(MoveMaterialScanListActivity.this, rvList, new FragmentDrawer.ClickListener() {
@@ -324,17 +327,12 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                 }
 
                 case R.id.ivBack: {
+                    sendMessage("finish");
                     finish();
                     break;
                 }
 
-                case R.id.ivTick: {
-
-                    break;
-                }
-
-
-                case R.id.rlForwardArrow: {
+                case R.id.rlYes: {
 
                     if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
                         locationNames = new String[materialList.size()];
@@ -357,8 +355,67 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                         }
                         MoveFinalActivity.locationNames = locationNames;
 
-                        Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
+
                         MoveFinalActivity.materialList = materialList;
+                        if (1 < materialList.size()) {
+                            isMultiple = true;
+                        } else {
+                            isMultiple = false;
+                        }
+                    }
+
+
+                    if (!taskType.toLowerCase().startsWith("rec")) {
+                        Intent in = new Intent(MoveMaterialScanListActivity.this, InventoryJobNumberActivity.class);
+                        in.putExtra("materialLocID", materialLocID);
+                        in.putExtra("inventoryID", inventoryID);
+                        in.putExtra("materialID", materialID);
+                        in.putExtra("isMultiple", isMultiple);
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("materialName", materialID);
+                        in.putExtra("eqID", eqID);
+                        in.putExtra("quantity", quantity);
+                        startActivity(in);
+                    } else {
+
+                        Intent in = new Intent(MoveMaterialScanListActivity.this, InventoryJobNumberActivity.class);
+                        in.putExtra("materialID", materialID);
+                        in.putExtra("taskType", taskType);
+                        in.putExtra("isMultiple", isMultiple);
+                        in.putExtra("quantity", quantity);
+                        in.putExtra("material", materialID);
+                        startActivity(in);
+
+                    }
+                    break;
+                }
+
+
+                case R.id.rlNo: {
+                    if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
+                        locationNames = new String[materialList.size()];
+                        for (int i = 0; i < materialList.size(); i++) {
+                            if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                                locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
+                            } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                                locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
+                            } else {
+                                locationNames[i] = "N/A";
+                            }
+                        }
+
+                        Set<String> uniqueWords = new HashSet<String>(Arrays.asList(locationNames));
+                        locationNames = new String[uniqueWords.size()];
+                        int j = 0;
+                        for (String loc : uniqueWords) {
+                            locationNames[j] = loc;
+                            j++;
+                        }
+                        MoveFinalActivity.locationNames = locationNames;
+
+
+                        MoveFinalActivity.materialList = materialList;
+                        Intent in = new Intent(MoveMaterialScanListActivity.this, MoveToActivity.class);
                         in.putExtra("taskType", taskType);
                         in.putExtra("materialName", materialID);
                         if (1 < materialList.size()) {
@@ -382,10 +439,30 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                     break;
                 }
 
+                case R.id.ivTick: {
+
+                    break;
+                }
+
+
+                case R.id.rlForwardArrow: {
+                    rlBottomSheetMove.setVisibility(View.GONE);
+
+                    rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+                    break;
+                }
+
             }
         }
 
     };
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        sendMessage("finish");
+    }
 
     private void setupFlags() {
         addMoreMaretailItem = true;
@@ -588,7 +665,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     public void MaterialMoveListItemAdded(com.ets.gd.Models.Material material) {
         boolean isAdded = false;
         for (com.ets.gd.Models.Material mat : materialList) {
-            if (mat.getName().toLowerCase().equals(material.getName().toLowerCase()) && mat.getLocID()==material.getLocID()) {
+            if (mat.getName().toLowerCase().equals(material.getName().toLowerCase()) && mat.getLocID() == material.getLocID()) {
                 int newQuantity = Integer.parseInt(mat.getQuantity()) + Integer.parseInt(material.getQuantity());
                 mat.setQuantity(String.valueOf(newQuantity));
                 isAdded = true;

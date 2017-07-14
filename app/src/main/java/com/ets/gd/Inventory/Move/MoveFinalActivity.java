@@ -47,6 +47,7 @@ public class MoveFinalActivity extends AppCompatActivity {
     public static List<Material> materialList = new ArrayList<Material>();
     MoveInventoryRealm moveInventory;
     private RealmList<InventoryMoveRealm> Materials = new RealmList<InventoryMoveRealm>();
+    int JobNumberID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,7 @@ public class MoveFinalActivity extends AppCompatActivity {
 
         taskName = getIntent().getStringExtra("taskType");
         scanType = getIntent().getStringExtra("scanType");
+        JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
         if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
@@ -195,7 +197,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             }
                             moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
-                            moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+                            moveInventory.setJobNumberID(JobNumberID);
                             for (int i = 0; i < materialList.size(); i++) {
                                 InventoryMoveRealm inventoryMove = new InventoryMoveRealm();
                                 inventoryMove.setCode(materialList.get(i).getName());
@@ -220,7 +222,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                                 moveInventory.setIssueType("User");
                             }
 
-                            moveInventory.setJobNumberID(materialList.get(0).getJobNumberID());
+                            moveInventory.setJobNumberID(JobNumberID);
 
                             for (int i = 0; i < materialList.size(); i++) {
                                 InventoryMoveRealm inventoryMove = new InventoryMoveRealm();

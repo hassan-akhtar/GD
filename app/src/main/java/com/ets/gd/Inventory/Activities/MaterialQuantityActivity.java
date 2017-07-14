@@ -4,9 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +16,8 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,13 +27,8 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.MaterialAdded;
 import com.ets.gd.Inventory.Adapters.MaterialAdapter;
 import com.ets.gd.Models.Material;
-import com.ets.gd.Models.Note;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Activities.CommonToolhawkDepartmentActivity;
-import com.ets.gd.ToolHawk.Activities.CommonToolhawkScanActivity;
-import com.ets.gd.ToolHawk.Adapters.DepartmentAdapter;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -118,10 +111,10 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 if (checkValidation()) {
 
                     int alreadyAddedQuantity = 0;
-                    if (null!=MoveMaterialScanListActivity.materialList) {
+                    if (null != MoveMaterialScanListActivity.materialList) {
                         for (Material mat : MoveMaterialScanListActivity.materialList) {
                             if (etMaterialID.getText().toString().toLowerCase().equals(mat.getName().toLowerCase())
-                                     && locList.get(position).getLocationID()==mat.getLocID()) {
+                                    && locList.get(position).getLocationID() == mat.getLocID()) {
                                 alreadyAddedQuantity = Integer.parseInt(mat.getQuantity());
                                 break;
                             }
@@ -130,12 +123,12 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
                     int totalQuantity = alreadyAddedQuantity + Integer.parseInt(etQuantity.getText().toString());
 
-                    if (locList.get(position).getQuantity() < totalQuantity ) {
+                    if (locList.get(position).getQuantity() < totalQuantity) {
 
-                        if (0==alreadyAddedQuantity) {
+                        if (0 == alreadyAddedQuantity) {
                             showToast("This location doesn't contain " + etQuantity.getText().toString() + " Material(s)!");
                         } else {
-                            showToast("You have already selected "+alreadyAddedQuantity+" Material(s)!");
+                            showToast("You have already selected " + alreadyAddedQuantity + " Material(s)!");
                             showToast("This location doesn't contain " + totalQuantity + " Material(s)!");
                         }
                     } else {
@@ -143,7 +136,21 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         materialLocID = locList.get(position).getLocationID();
                         inventoryID = locList.get(position).getID();
                         eqID = locList.get(position).getEquipmentID();
-                        rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
+                        if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                            Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
+                            in.putExtra("materialID", materialID);
+                            in.putExtra("taskType", taskType);
+                            in.putExtra("inventoryID", inventoryID);
+                            in.putExtra("materialLocID", materialLocID);
+                            in.putExtra("quantity", etQuantity.getText().toString());
+                            startActivity(in);
+                            etQuantity.setText("");
+                            etQuantity.setEnabled(true);
+                        } else {
+                            MoveMaterialScanListActivity.addMoreMaretailItem = false;
+                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
+                            sendMessage("finish");
+                        }
 
                     }
                 }
@@ -197,7 +204,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
 
     private void showReceiveBottomSheet() {
         rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
-        tvStatement.setText("Do you want to " + taskType + " " + etMaterialID.getText().toString() + ", Quantity" + etQuantity.getText().toString() + " ?");
+        tvStatement.setText("Do you want to " + taskType + " " + etMaterialID.getText().toString() + ", Quantity " + etQuantity.getText().toString() + " ?");
     }
 
 
@@ -206,9 +213,6 @@ public class MaterialQuantityActivity extends AppCompatActivity {
         tvStatement.setText("Do you want to assign a Job Number?");
     }
 
-    private void hideReceiveBottomSheetJobNumber() {
-        rlBottomSheetJobnumber.setVisibility(View.GONE);
-    }
 
     private void setupData() {
 
@@ -252,81 +256,30 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
-                    if (!taskType.toLowerCase().startsWith("rec")) {
-                        Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
-                        in.putExtra("materialLocID", materialLocID);
-                        in.putExtra("inventoryID", inventoryID);
+                    if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
+                        Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
                         in.putExtra("materialID", materialID);
                         in.putExtra("taskType", taskType);
-                        in.putExtra("eqID", eqID);
+                        in.putExtra("inventoryID", inventoryID);
                         in.putExtra("quantity", etQuantity.getText().toString());
                         startActivity(in);
                         etQuantity.setText("");
                         etQuantity.setEnabled(true);
-                        hideReceiveBottomSheetJobNumber();
                     } else {
-                        if (tvStatement.getText().toString().contains("Quantity")) {
-                            etQuantity.setEnabled(false);
-                            showReceiveBottomSheetJobNumber();
-
-                        } else {
-                            Intent in = new Intent(MaterialQuantityActivity.this, InventoryJobNumberActivity.class);
-                            in.putExtra("materialID", materialID);
-                            in.putExtra("taskType", taskType);
-                            in.putExtra("quantity", etQuantity.getText().toString());
-                            startActivity(in);
-                            etQuantity.setText("");
-                            etQuantity.setEnabled(true);
-                            hideReceiveBottomSheetJobNumber();
-                        }
+                        MoveMaterialScanListActivity.addMoreMaretailItem = false;
+                        materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
+                        sendMessage("finish");
                     }
                     break;
                 }
 
 
                 case R.id.rlNo: {
-                    if (!taskType.toLowerCase().startsWith("rec")) {
-                        if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                            Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
-                            in.putExtra("materialLocID", materialLocID);
-                            in.putExtra("materialID", materialID);
-                            in.putExtra("inventoryID", inventoryID);
-                            in.putExtra("taskType", taskType);
-                            in.putExtra("eqID", eqID);
-                            in.putExtra("quantity", etQuantity.getText().toString());
-                            startActivity(in);
-                            etQuantity.setText("");
-                            etQuantity.setEnabled(true);
-                            hideReceiveBottomSheetJobNumber();
-                        } else {
-                            MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
-                            sendMessage("finish");
-                        }
-                    } else {
-                        if (tvStatement.getText().toString().contains("Quantity")) {
-                            finish();
-                            sendMessage("finish");
-                        } else {
-                            if (!MoveMaterialScanListActivity.addMoreMaretailItem) {
-                                Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
-                                in.putExtra("materialID", materialID);
-                                in.putExtra("taskType", taskType);
-                                in.putExtra("inventoryID", inventoryID);
-                                in.putExtra("quantity", etQuantity.getText().toString());
-                                startActivity(in);
-                                etQuantity.setText("");
-                                etQuantity.setEnabled(true);
-                                hideReceiveBottomSheetJobNumber();
-                            } else {
-                                MoveMaterialScanListActivity.addMoreMaretailItem =false;
-                                materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
-                                sendMessage("finish");
-                            }
-                        }
-                    }
-                    break;
+                    finish();
+                    sendMessage("finish");
+
                 }
+                break;
             }
         }
 
