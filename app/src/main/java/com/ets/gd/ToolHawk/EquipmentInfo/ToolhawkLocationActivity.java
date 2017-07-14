@@ -364,6 +364,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             showToast("Please select a building");
         } else if (null==DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
             showToast("Please select a valid building");
+        }else if (DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID()!=DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()).getSiteID()) {
+            showToast("This Building doesn't belong to "+spSite.getText().toString());
         }else if (0 == posCustomer) {
             showToast("Please select a Company");
         } else {

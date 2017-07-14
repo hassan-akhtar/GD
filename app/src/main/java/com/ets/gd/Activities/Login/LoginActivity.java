@@ -123,7 +123,6 @@ public class LoginActivity extends AppCompatActivity {
                                         if (accessFirebugToolhawkInventory) {
                                             sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_USERNAME, etUsername.getText().toString().trim());
                                             sharedPreferencesManager.setInt(SharedPreferencesManager.LOGGED_IN_USERID, DataManager.getInstance().getMobileUser(etUsername.getText().toString().trim()).getID());
-                                            showToast("" + sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
                                             showToast("Login Successful");
                                             startActivity(new Intent(LoginActivity.this, BaseActivity.class));

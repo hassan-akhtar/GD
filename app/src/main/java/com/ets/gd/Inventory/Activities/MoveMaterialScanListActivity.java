@@ -157,6 +157,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setName("" + materialID);
         material.setQuantity("" + quantity);
         material.setLocID(materialLocID);
+        material.setJobNumberID(JobNumberID);
         material.setEquipmentID(eqID);
         material.setInventoryID(inventoryID);
         materialList.add(material);
