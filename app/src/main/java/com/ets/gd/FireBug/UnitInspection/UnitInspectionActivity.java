@@ -317,7 +317,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
         String timeStamp = sdf.format(new Date()).toString();
         inspectionResult.setInspectionDate(timeStamp);
-        inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
+        inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
         boolean result = false;
         if (spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")) {
             result = true;

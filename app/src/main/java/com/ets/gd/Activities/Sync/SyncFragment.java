@@ -844,11 +844,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                 List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
-                    InspectionDates inspectionDates = new InspectionDates();
-                    inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
-                    inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
-                    inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
-                    InspectionDates.add(inspectionDates);
+                    if (!"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
+                        InspectionDates inspectionDates = new InspectionDates();
+                        inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
+                        inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
+                        inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
+                        InspectionDates.add(inspectionDates);
+                    }
                 }
                 equipment.setInspectionDates(InspectionDates);
 
@@ -896,11 +898,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                 List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
-                    InspectionDates inspectionDates = new InspectionDates();
-                    inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
-                    inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
-                    inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
-                    InspectionDates.add(inspectionDates);
+                    if (!"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
+                        InspectionDates inspectionDates = new InspectionDates();
+                        inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
+                        inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
+                        inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
+                        InspectionDates.add(inspectionDates);
+                    }
                 }
                 equipment.setInspectionDates(InspectionDates);
 

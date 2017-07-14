@@ -81,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
             lstDevices = realmSyncGetResponseDTO.getLstDevices();
             lstMusers.clear();
             for (int i = 0; i < realmSyncGetResponseDTO.getLstCustomerData().size(); i++) {
-                 lstMusers.addAll(realmSyncGetResponseDTO.getLstCustomerData().get(i).getLstMusers());
+                lstMusers.addAll(realmSyncGetResponseDTO.getLstCustomerData().get(i).getLstMusers());
 
             }
         }
@@ -123,9 +123,9 @@ public class LoginActivity extends AppCompatActivity {
                                         if (accessFirebugToolhawkInventory) {
                                             sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_USERNAME, etUsername.getText().toString().trim());
                                             sharedPreferencesManager.setInt(SharedPreferencesManager.LOGGED_IN_USERID, DataManager.getInstance().getMobileUser(etUsername.getText().toString().trim()).getID());
+                                            showToast("" + sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
-
-                                                    showToast("Login Successful");
+                                            showToast("Login Successful");
                                             startActivity(new Intent(LoginActivity.this, BaseActivity.class));
                                             finish();
                                         } else {
