@@ -655,6 +655,7 @@ public class DataManager {
                 newLoc.setCode(loc.getCode());
                 newLoc.setDescription(loc.getDescription());
                 newLoc.setSiteID(loc.getSite().getID());
+                newLoc.setCustomerID(loc.getCustomer().getID());
                 newLoc.setBuildingID(loc.getBuilding().getID());
                 realm.commitTransaction();
                 return newLoc;
@@ -692,10 +693,10 @@ public class DataManager {
     }
 
 
-    public void updateInventoryQuantity(int materialID, int locID ,int quantity) {
-        Inventory inventory =  realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("LocationID",locID).findFirst();
+    public void updateInventoryQuantity(int materialID, int locID, int quantity) {
+        Inventory inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("LocationID", locID).findFirst();
         realm.beginTransaction();
-        inventory.setQuantity(inventory.getQuantity()-quantity);
+        inventory.setQuantity(inventory.getQuantity() - quantity);
         realm.copyToRealmOrUpdate(inventory);
         realm.commitTransaction();
     }
@@ -819,12 +820,16 @@ public class DataManager {
             return realm.where(Customer.class).equalTo("ID", Code).findFirst();
         } else {
             realm.beginTransaction();
+            Customer customer = null;
+
             AllCustomers allCustomer = realm.where(AllCustomers.class).equalTo("ID", Code).findFirst();
-            Customer customer = realm.createObject(Customer.class, allCustomer.getID());
-            customer.setDescription(allCustomer.getDescription());
-            customer.setCode(allCustomer.getCode());
-            customer.setApplicationID(allCustomer.getApplicationID());
-            customer.setServiceCompany(allCustomer.isServiceCompany());
+            if (0 != allCustomer.getID()) {
+                customer = realm.createObject(Customer.class, allCustomer.getID());
+                customer.setDescription(allCustomer.getDescription());
+                customer.setCode(allCustomer.getCode());
+                customer.setApplicationID(allCustomer.getApplicationID());
+                customer.setServiceCompany(allCustomer.isServiceCompany());
+            }
             realm.commitTransaction();
             return customer;
         }

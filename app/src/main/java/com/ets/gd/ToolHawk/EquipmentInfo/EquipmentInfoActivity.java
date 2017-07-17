@@ -139,7 +139,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         if (taskType.startsWith("vie")) {
 
 
-            if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("loc")) {
+            if ( null!=toolhawkEquipment.getEquipmentLocationInfo() && toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("loc")) {
                 if (null != locList) {
                     int sizeLocations = locList.size() + 1;
                     String[] locations = new String[sizeLocations];
@@ -163,7 +163,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                         }
                     }
                 }
-            } else if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("job")) {
+            } else if ( null!=toolhawkEquipment.getEquipmentLocationInfo() && toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("job")) {
 
                 if (null != toolhawkEquipment.getEquipmentLocationInfo().getLocation()) {
                     String[] locations = new String[1];
@@ -173,7 +173,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                     spLocation.setAdapter(dataAdapterVendor);
                     spLocation.setSelection(0);
                 }
-            } else if (toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("eq")) {
+            } else if ( null!=toolhawkEquipment.getEquipmentLocationInfo() &&toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("eq")) {
                 if (null != toolhawkEquipment.getEquipmentLocationInfo().getLocation()) {
                     String[] locations = new String[1];
                     locations[0] = toolhawkEquipment.getEquipmentLocationInfo().getLocation();
