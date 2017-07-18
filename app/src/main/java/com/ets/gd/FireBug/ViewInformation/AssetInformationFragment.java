@@ -301,7 +301,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     DialogFragment newFragment = new DatePickerFragmentEditText();
                     newFragment.show(getActivity().getFragmentManager(), "Date Picker");
                 } else {
-
+                    hideKeyboard();
                 }
 
 

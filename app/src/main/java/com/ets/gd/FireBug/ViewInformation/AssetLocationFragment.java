@@ -212,7 +212,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         tvDescprition.setText("No location selected");
         spSite.setEnabled(false);
         spBuilding.setEnabled(false);
-        spCustomer.setEnabled(true);
+        spCustomer.setEnabled(false);
         //spCustomer.setSelection(0);
 
     }
