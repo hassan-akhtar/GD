@@ -57,7 +57,7 @@ public class MoveToActivity extends AppCompatActivity {
         JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         isMultiple = getIntent().getBooleanExtra("isMultiple", false);
         tvMaterial.setText("" + materialName);
-        tbTitleTop.setText("Toolhawk");
+        tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskName);
 
         if(isMultiple){

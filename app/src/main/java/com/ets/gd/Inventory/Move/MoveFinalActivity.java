@@ -80,6 +80,7 @@ public class MoveFinalActivity extends AppCompatActivity {
         rlAssetInfo = (RelativeLayout) findViewById(R.id.rlAssetInfo);
         rlBottomSheet = (RelativeLayout) findViewById(R.id.rlBottomSheetMove);
         ivTick.setVisibility(View.GONE);
+        tbTitleTop.setText("Inventory");
     }
 
     private void initObj() {
@@ -105,8 +106,8 @@ public class MoveFinalActivity extends AppCompatActivity {
         jobNumber = getIntent().getStringExtra("jobNumber");
         if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
             loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
-        } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getEquipmentID())) {
-            loc = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getEquipmentID()).getCode();
+        } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getLocID())) {
+            loc = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getLocID()).getCode();
         } else {
             loc = "N/A";
         }

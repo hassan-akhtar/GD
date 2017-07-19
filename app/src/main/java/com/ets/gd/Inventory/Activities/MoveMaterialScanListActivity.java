@@ -447,7 +447,6 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
 
                 case R.id.rlForwardArrow: {
                     rlBottomSheetMove.setVisibility(View.GONE);
-
                     rlBottomSheetJobnumber.setVisibility(View.VISIBLE);
                     break;
                 }

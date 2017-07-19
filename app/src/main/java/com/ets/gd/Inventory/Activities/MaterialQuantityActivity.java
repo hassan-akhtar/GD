@@ -133,7 +133,11 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         }
                     } else {
                         etQuantity.setEnabled(false);
-                        materialLocID = locList.get(position).getLocationID();
+                        if (0!=locList.get(position).getLocationID()) {
+                            materialLocID = locList.get(position).getLocationID();
+                        } else {
+                            materialLocID = locList.get(position).getEquipmentID();
+                        }
                         inventoryID = locList.get(position).getID();
                         eqID = locList.get(position).getEquipmentID();
                         if (!MoveMaterialScanListActivity.addMoreMaretailItem) {

@@ -220,7 +220,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     private void initListeners() {
         spLocation.setOnItemSelectedListener(this);
         spCustomer.setOnItemSelectedListener(this);
-
     }
 
 

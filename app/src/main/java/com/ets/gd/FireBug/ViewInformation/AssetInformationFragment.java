@@ -319,10 +319,25 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     }
 
     public void hideKeyboard() {
+
+        getActivity().getWindow().setSoftInputMode(
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
+        );
         InputMethodManager imm = (InputMethodManager)
                 getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(
                 tvTagID.getWindowToken(), 0);
+
+        InputMethodManager imm2 = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm2.hideSoftInputFromWindow(
+                tvSrNo.getWindowToken(), 0);
+
+
+        InputMethodManager imm3 = (InputMethodManager)
+                getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm3.hideSoftInputFromWindow(
+                tvMfgDate.getWindowToken(), 0);
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
