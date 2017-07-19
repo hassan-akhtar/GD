@@ -460,7 +460,13 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
             etsLocation = DataManager.getInstance().getETSLocations(message);
 
             if (null != etsLocation) {
-                if (etsLocationsList.contains(etsLocation)) {
+                boolean isFound = false;
+                for (int i = 0; i < etsLocationsList.size(); i++) {
+                    if (etsLocationsList.get(i).getCode().toString().toLowerCase().equals(etsLocation.getCode().toLowerCase())) {
+                        isFound = true;
+                    }
+                }
+                if (isFound) {
                     Intent in = new Intent(ToolhawkScanActivityWithList.this, MoveAssetActivity.class);
                     in.putExtra("taskType", taskType);
                     in.putExtra("department", department);

@@ -543,6 +543,10 @@ public class DataManager {
         return realm.where(ETSBuilding.class).findAll().sort("Code");
     }
 
+    public List<ETSBuilding> getAllETSBuildingsBySiteID(int siteID) {
+        return realm.where(ETSBuilding.class).equalTo("site.ID", siteID).findAll().sort("Code");
+    }
+
     public List<FireBugEquipment> getAllUpdateAssets() {
         return realm.where(FireBugEquipment.class).equalTo("isUpdated", true).findAll().sort("Code");
     }

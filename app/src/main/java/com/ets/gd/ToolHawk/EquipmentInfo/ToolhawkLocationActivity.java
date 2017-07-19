@@ -37,7 +37,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
     ImageView ivBack, ivTick;
     TextView tbTitleBottom, tbTitleTop;
-    Spinner  spCustomer;
+    Spinner spCustomer;
     AutoCompleteTextView spSite, spBuilding;
     public static EditText tvDescprition, tvLocationID;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
@@ -91,7 +91,6 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         allSites = DataManager.getInstance().getAllSites();
-        allBuilding = DataManager.getInstance().getAllETSBuildings();
         allCustomers = DataManager.getInstance().getAllCustomerList();
 
         int sizeSite = allSites.size();
@@ -105,12 +104,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-        int sizeBuilding = allBuilding.size();
-        buildings = new String[sizeBuilding];
-
-        for (int i = 0; i < allBuilding.size(); i++) {
-            buildings[i] = allBuilding.get(i).getCode();
-        }
+        buildings = new String[1];
+        buildings[0] = "Please select a building";
         ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_list_item_1, buildings);
         dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spBuilding.setAdapter(dataAdapterBuilding);
@@ -129,12 +124,11 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         spCustomer.setAdapter(dataAdapterCus);
 
 
-        if(taskType.toLowerCase().startsWith("add")){
+        if (taskType.toLowerCase().startsWith("add")) {
             setViewForAddLoc();
-        }else{
+        } else {
             setViewForViewLoc();
         }
-
 
 
     }
@@ -156,8 +150,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     void setViewForViewLoc() {
         etsLocation = DataManager.getInstance().getETSLocationByCode(barcodeID);
         if (null != etsLocation) {
-            tvLocationID.setText(""+etsLocation.getCode());
-            tvDescprition.setText(""+etsLocation.getDescription());
+            tvLocationID.setText("" + etsLocation.getCode());
+            tvDescprition.setText("" + etsLocation.getDescription());
         }
         ivTick.setVisibility(View.GONE);
         tvLocationID.setVisibility(View.VISIBLE);
@@ -171,7 +165,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         for (int i = 0; i < allSites.size() + 1; i++) {
-            if ( null != DataManager.getInstance().getSiteByID(etsLocation.getSiteID())) {
+            if (null != DataManager.getInstance().getSiteByID(etsLocation.getSiteID())) {
                 if (DataManager.getInstance().getSiteByID(etsLocation.getSiteID()).getCode().toLowerCase().equals(sites[i].toString().toLowerCase())) {
                     spSite.setText(sites[i].toString());
                     posSite = i;
@@ -181,7 +175,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
         }
 
         for (int i = 0; i < allBuilding.size() + 1; i++) {
-            if ( null != DataManager.getInstance().getBuilding(etsLocation.getBuildingID())) {
+            if (null != DataManager.getInstance().getBuilding(etsLocation.getBuildingID())) {
                 if (DataManager.getInstance().getBuilding(etsLocation.getBuildingID()).getCode().toLowerCase().equals(buildings[i].toString().toLowerCase())) {
                     spBuilding.setText(buildings[i].toString());
                     posBuilding = i;
@@ -215,7 +209,6 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     }
 
 
-
     public void hideKeyboard() {
         getWindow().setSoftInputMode(
                 WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
@@ -242,6 +235,17 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 hideKeyboard();
+                allBuilding = DataManager.getInstance().getAllETSBuildingsBySiteID(DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID());
+                int sizeBuilding = allBuilding.size();
+                buildings = new String[sizeBuilding];
+
+                for (int i = 0; i < allBuilding.size(); i++) {
+                    buildings[i] = allBuilding.get(i).getCode();
+                }
+                ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_list_item_1, buildings);
+                dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spBuilding.setAdapter(dataAdapterBuilding);
+
 
             }
         });
@@ -279,7 +283,6 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                 return false;
             }
         });
-
 
 
     }
@@ -358,15 +361,15 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             showToast("Please enter a Description");
         } else if ("".equals(spSite.getText().toString().trim())) {
             showToast("Please select a site");
-        } else if (null==DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
+        } else if (null == DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
             showToast("Please select a valid site");
         } else if ("".equals(spBuilding.getText().toString().trim())) {
             showToast("Please select a building");
-        } else if (null==DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
+        } else if (null == DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
             showToast("Please select a valid building");
-        }else if (DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID()!=DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()).getSiteID()) {
-            showToast("This Building doesn't belong to "+spSite.getText().toString());
-        }else if (0 == posCustomer) {
+        } else if (DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID() != DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()).getSiteID()) {
+            showToast("This Building doesn't belong to " + spSite.getText().toString());
+        } else if (0 == posCustomer) {
             showToast("Please select a Company");
         } else {
             return true;
