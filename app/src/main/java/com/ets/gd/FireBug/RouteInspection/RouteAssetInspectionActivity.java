@@ -240,8 +240,9 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                 case R.id.tvTransfer: {
                     if (checkValidation(isFail)) {
-                        boolean alreadyInspected = false;
+                        boolean alreadyInspectedLocally = false, alreadyInspectedFromWeb = true;
                         List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
+                        List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
 
                         if (isHydro) {
@@ -249,12 +250,24 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                                 if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
                                         spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                                    alreadyInspected = true;
+                                    alreadyInspectedLocally = true;
                                     break;
                                 }
                             }
+
+                            for (RouteAsset obj : routeAssetList) {
+
+                                if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
+                                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                                    alreadyInspectedFromWeb = false;
+                                    break;
+                                }
+                            }
+
                         }
-                        if (alreadyInspected) {
+
+
+                        if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
                             showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
                         } else {
 
@@ -530,21 +543,31 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         int newEqipID = replace.getNewEqipID();
 
         if (message.startsWith("rep")) {
-            boolean alreadyInspected = false;
+            boolean alreadyInspectedLocally = false, alreadyInspectedFromWeb = true;
             List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
-
+            List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
             if (isHydro) {
                 for (UnitinspectionResult obj : unitinspectionResults) {
 
                     if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
                             spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                        alreadyInspected = true;
+                        alreadyInspectedLocally = true;
                         break;
                     }
                 }
+
+                for (RouteAsset obj : routeAssetList) {
+
+                    if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
+                            spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                        alreadyInspectedFromWeb = false;
+                        break;
+                    }
+                }
+
             }
-            if (alreadyInspected) {
+            if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
                 showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
             } else {
                 Toast.makeText(getApplicationContext(), "Asset Successfully Replaced!", Toast.LENGTH_LONG).show();

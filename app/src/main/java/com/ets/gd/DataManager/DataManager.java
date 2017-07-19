@@ -42,6 +42,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
@@ -968,6 +969,12 @@ public class DataManager {
     public List<UnitinspectionResult> getUnitinspectionResults(){
         return realm.where(UnitinspectionResult.class).findAll();
     }
+
+    public List<RouteAsset> getRouteAssets(){
+        return realm.where(RouteAsset.class).findAll();
+    }
+
+
     public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
 
         realm.executeTransaction(new Realm.Transaction() {
