@@ -961,6 +961,9 @@ public class DataManager {
     }
 
 
+    public List<UnitinspectionResult> getUnitinspectionResults(){
+        return realm.where(UnitinspectionResult.class).findAll();
+    }
     public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
 
         realm.executeTransaction(new Realm.Transaction() {

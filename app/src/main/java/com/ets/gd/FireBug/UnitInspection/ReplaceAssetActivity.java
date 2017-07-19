@@ -102,7 +102,6 @@ public class ReplaceAssetActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
-                    Toast.makeText(getApplicationContext(), "Asset Successfully Replaced!", Toast.LENGTH_LONG).show();
                     //sendMessage("replace",replaceType,newLocID , newEquipID );
                     assetReplaced.AssetReplaced(new Replace("replace",replaceType,newLocID , newEquipID ));
                     finish();

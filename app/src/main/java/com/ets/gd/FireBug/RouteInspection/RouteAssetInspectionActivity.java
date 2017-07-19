@@ -89,7 +89,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tvAssetName = (TextView) findViewById(R.id.tvLocNameInspect);
         etStatusCode = (TextView) findViewById(R.id.etStatusCode);
-        tvInspectedAssets  = (TextView) findViewById(R.id.tvInspectedAssets);
+        tvInspectedAssets = (TextView) findViewById(R.id.tvInspectedAssets);
         tvAssetCount = (TextView) findViewById(R.id.tvAssetCount);
         tvLocCount = (TextView) findViewById(R.id.tvLocCount);
         tvRouteName = (TextView) findViewById(R.id.tvRouteName);
@@ -127,13 +127,13 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
-        RouteID  = getIntent().getIntExtra("RouteID", 0);
+        RouteID = getIntent().getIntExtra("RouteID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
         equipmentID = getIntent().getIntExtra("equipmentID", 0);
         assetCount = getIntent().getStringExtra("AssetCount");
         locCount = getIntent().getStringExtra("LocCount");
         routeName = getIntent().getStringExtra("routeName");
-        cusID = getIntent().getIntExtra("cusID",0);
+        cusID = getIntent().getIntExtra("cusID", 0);
         tbTitleBottom.setText("Route Inspection");
         tvCompanyValue.setText("" + compName);
         tvLocCount.setText("" + locCount);
@@ -143,28 +143,28 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         tvAssetName.setText("" + tag);
         tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + loc);
         int InspectedAssetsCount = DataManager.getInstance().getCustomerRouteInspectedAssetsCount(cusID);
-        InspectedAssetsCount = InspectedAssetsCount+1;
-        tvInspectedAssets.setText(InspectedAssetsCount+" / "+assetCount);
+        InspectedAssetsCount = InspectedAssetsCount + 1;
+        tvInspectedAssets.setText(InspectedAssetsCount + " / " + assetCount);
         deviceTypeStatusCodes = DataManager.getInstance().getDeviceStatusCodesList(deviceTypeID);
 
         routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(routeAsset.getRouteID());
 
-        if(null!= routeInspections && !routeInspections.get(0).isHydro()){
+        if (null != routeInspections && !routeInspections.get(0).isHydro()) {
             isHydro = false;
             routeInspectionTypes = new String[1];
             routeInspectionTypes[0] = routeInspections.get(0).getInspectionType();
             spInspType.setEnabled(false);
-        }else if(null!= routeInspections && routeInspections.get(0).isHydro()){
+        } else if (null != routeInspections && routeInspections.get(0).isHydro()) {
             isHydro = true;
             spInspType.setEnabled(true);
-            routeInspectionTypes = new String[routeInspections.size()+1];
+            routeInspectionTypes = new String[routeInspections.size() + 1];
             for (int i = 0; i < routeInspections.size(); i++) {
-                routeInspectionTypes[i+1] = routeInspections.get(i).getInspectionType();
+                routeInspectionTypes[i + 1] = routeInspections.get(i).getInspectionType();
             }
             routeInspectionTypes[0] = "Please select Inspection Type";
             spInspType.setSelection(0);
-        }else{
-            Toast.makeText(getApplicationContext(),"No Inspection Type Found",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "No Inspection Type Found", Toast.LENGTH_LONG).show();
         }
 
         ArrayAdapter<String> dataAdapterInspType = new ArrayAdapter<String>(RouteAssetInspectionActivity.this, android.R.layout.simple_spinner_item, routeInspectionTypes);
@@ -240,46 +240,66 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                 case R.id.tvTransfer: {
                     if (checkValidation(isFail)) {
-                        UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                        inspectionResult.setEquipmentID(equipmentID);
-                        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
-                        RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
-                        inspectionResult.setReplaced(false);
-                        inspectionResult.setRouteID(RouteID);
-                        inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
-                        sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-                        String timeStamp = sdf.format(new Date()).toString();
-                        inspectionResult.setInspectionDate(timeStamp);
-                        inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
-                        boolean result = false;
-                        if (spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")) {
-                            result = true;
-                        }
-                        inspectionResult.setResult(result);
+                        boolean alreadyInspected = false;
+                        List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
 
-                        RealmList<InspectionStatusCodes> inspectionStatusCodes = new RealmList<InspectionStatusCodes>();
 
-                        if (0 < cbGroup.getCheckedIds().size()) {
+                        if (isHydro) {
+                            for (UnitinspectionResult obj : unitinspectionResults) {
 
-                            List<Object> lst = cbGroup.getCheckedIds();
-                            lst.clear();
-                            lst = cbGroup.getCheckedIds();
-
-                            for (int i = 0; i < lst.size(); i++) {
-                                int pos = Integer.parseInt(lst.get(i).toString());
-                                StatusCode statusCode = new StatusCode();
-                                statusCode = DataManager.getInstance().getStatusCodeID(statusCodesDescList.get(pos));
-                                inspectionStatusCodes.add(new InspectionStatusCodes(statusCode.getID()));
-
+                                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                                    alreadyInspected = true;
+                                    break;
+                                }
                             }
                         }
-                        inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
+                        if (alreadyInspected) {
+                            showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
+                        } else {
 
-                        DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
-                        showToast("Inspection completed Successfully");
-                        //sendMessage("finish");
-                        finish();
+
+                            UnitinspectionResult inspectionResult = new UnitinspectionResult();
+                            inspectionResult.setEquipmentID(equipmentID);
+                            DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+                            RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
+                            inspectionResult.setReplaced(false);
+                            inspectionResult.setRouteID(RouteID);
+                            inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
+                            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            String timeStamp = sdf.format(new Date()).toString();
+                            inspectionResult.setInspectionDate(timeStamp);
+                            inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                            boolean result = false;
+                            if (spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")) {
+                                result = true;
+                            }
+                            inspectionResult.setResult(result);
+
+                            RealmList<InspectionStatusCodes> inspectionStatusCodes = new RealmList<InspectionStatusCodes>();
+
+                            if (0 < cbGroup.getCheckedIds().size()) {
+
+                                List<Object> lst = cbGroup.getCheckedIds();
+                                lst.clear();
+                                lst = cbGroup.getCheckedIds();
+
+                                for (int i = 0; i < lst.size(); i++) {
+                                    int pos = Integer.parseInt(lst.get(i).toString());
+                                    StatusCode statusCode = new StatusCode();
+                                    statusCode = DataManager.getInstance().getStatusCodeID(statusCodesDescList.get(pos));
+                                    inspectionStatusCodes.add(new InspectionStatusCodes(statusCode.getID()));
+
+                                }
+                            }
+                            inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
+
+                            DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
+                            showToast("Inspection completed Successfully");
+                            //sendMessage("finish");
+                            finish();
+                        }
                     }
                     break;
                 }
@@ -316,25 +336,25 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
     private boolean checkValidation(boolean isFail) {
         if (isFail) {
-           if(!isHydro){
-               if (0 == posInspectionResult) {
-                   showToast("Please select Inspection Result");
-               } else if (0 == cbGroup.getCheckedIds().size()) {
-                   showToast("Please select status Code(s)");
-               } else {
-                   return true;
-               }
-               return false;
-           }else{
-                 if (0 == posInspectionResult) {
-                   showToast("Please select Inspection Result");
-               } else if (0 == cbGroup.getCheckedIds().size()) {
-                   showToast("Please select status Code(s)");
-               } else {
-                   return true;
-               }
-               return false;
-           }
+            if (!isHydro) {
+                if (0 == posInspectionResult) {
+                    showToast("Please select Inspection Result");
+                } else if (0 == cbGroup.getCheckedIds().size()) {
+                    showToast("Please select status Code(s)");
+                } else {
+                    return true;
+                }
+                return false;
+            } else {
+                if (0 == posInspectionResult) {
+                    showToast("Please select Inspection Result");
+                } else if (0 == cbGroup.getCheckedIds().size()) {
+                    showToast("Please select status Code(s)");
+                } else {
+                    return true;
+                }
+                return false;
+            }
         } else {
             if (0 == posInspectionResult) {
                 showToast("Please select Inspection Result");
@@ -510,7 +530,26 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         int newEqipID = replace.getNewEqipID();
 
         if (message.startsWith("rep")) {
-            saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
+            boolean alreadyInspected = false;
+            List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
+
+
+            if (isHydro) {
+                for (UnitinspectionResult obj : unitinspectionResults) {
+
+                    if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                            spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                        alreadyInspected = true;
+                        break;
+                    }
+                }
+            }
+            if (alreadyInspected) {
+                showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
+            } else {
+                Toast.makeText(getApplicationContext(), "Asset Successfully Replaced!", Toast.LENGTH_LONG).show();
+                saveInspectionAfterReplace(replaceType, newLocID, newEqipID);
+            }
 
         }
     }

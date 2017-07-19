@@ -29,6 +29,7 @@ import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -51,6 +52,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     static RouteAssetAdapter routeAssetAdapter;
     SharedPreferencesManager sharedPreferencesManager;
     int cusID;
+    List<RouteInspection> routeInspections;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
 
@@ -124,10 +126,13 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                boolean isHydro = false;
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(position).getEquipmentID());
-
-                if (!fireBugEquipment.isRouteUnitInspected() ) {
+                routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(position).getRouteID());
+                if (null != routeInspections && routeInspections.get(0).isHydro()) {
+                    isHydro = true;
+                }
+                if (!fireBugEquipment.isRouteUnitInspected() || isHydro) {
                     RouteAssetInspectionActivity.routeAsset = null;
                     RouteAssetInspectionActivity.routeAsset = assetList.get(position);
                     Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
