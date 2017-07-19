@@ -700,6 +700,10 @@ public class DataManager {
 
     public void updateInventoryQuantity(int materialID, int locID, int quantity) {
         Inventory inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("LocationID", locID).findFirst();
+
+       if(null== inventory){
+           inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("EquipmentID", locID).findFirst();
+       }
         realm.beginTransaction();
         inventory.setQuantity(inventory.getQuantity() - quantity);
         realm.copyToRealmOrUpdate(inventory);
