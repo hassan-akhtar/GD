@@ -49,9 +49,9 @@ public class InventoryScannedMaterialAdapter extends RecyclerView.Adapter<Invent
         Material asset = materialList.get(position);
         holder.tvTag.setVisibility(View.GONE);
         holder.tvName.setText(""+asset.getName());
-        if (null!=DataManager.getInstance().getETSLocationByIDOnly(asset.getLocID())) {
+        if (asset.isLoc() && null!=DataManager.getInstance().getETSLocationByIDOnly(asset.getLocID())) {
             holder.tvQuantity.setText("Quantity: "+asset.getQuantity()+" Location:"+ DataManager.getInstance().getETSLocationByIDOnly(asset.getLocID()).getCode());
-        } else if (null!=DataManager.getInstance().getToolhawkEquipmentByID(asset.getLocID())) {
+        } else if (!asset.isLoc() &&  null!=DataManager.getInstance().getToolhawkEquipmentByID(asset.getLocID())) {
             holder.tvQuantity.setText("Quantity: "+asset.getQuantity()+" Location:"+ DataManager.getInstance().getToolhawkEquipmentByID(asset.getLocID()).getCode());
         }else {
             holder.tvQuantity.setText("Quantity: "+asset.getQuantity());

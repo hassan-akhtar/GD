@@ -13,6 +13,7 @@ public class Material {
     private int jobNumberID;
     private int equipmentID;
     private int inventoryID;
+    private boolean isLoc;
 
     public Material() {
     }
@@ -38,14 +39,22 @@ public class Material {
     }
 
 
-    public Material(int equipmentID, String name, String quantity, int locID, int inventoryID) {
+    public Material(int equipmentID, String name, String quantity, int locID, int inventoryID, boolean isLoc) {
         this.name = name;
         this.quantity = quantity;
         this.inventoryID = inventoryID;
         this.locID = locID;
+        this.isLoc=isLoc;
         this.equipmentID = equipmentID;
     }
 
+    public boolean isLoc() {
+        return isLoc;
+    }
+
+    public void setLoc(boolean loc) {
+        isLoc = loc;
+    }
 
     public int getInventoryID() {
         return inventoryID;

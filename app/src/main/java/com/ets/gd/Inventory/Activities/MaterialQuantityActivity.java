@@ -133,10 +133,13 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         }
                     } else {
                         etQuantity.setEnabled(false);
+                        boolean isLoc;
                         if (0!=locList.get(position).getLocationID()) {
                             materialLocID = locList.get(position).getLocationID();
+                            isLoc = true;
                         } else {
                             materialLocID = locList.get(position).getEquipmentID();
+                            isLoc = false;
                         }
                         inventoryID = locList.get(position).getID();
                         eqID = locList.get(position).getEquipmentID();
@@ -144,6 +147,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             Intent in = new Intent(MaterialQuantityActivity.this, MoveMaterialScanListActivity.class);
                             in.putExtra("materialID", materialID);
                             in.putExtra("taskType", taskType);
+                            in.putExtra("isLoc", isLoc);
                             in.putExtra("inventoryID", inventoryID);
                             in.putExtra("materialLocID", materialLocID);
                             in.putExtra("quantity", etQuantity.getText().toString());
@@ -152,7 +156,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                             etQuantity.setEnabled(true);
                         } else {
                             MoveMaterialScanListActivity.addMoreMaretailItem = false;
-                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
+                            materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID,isLoc));
                             sendMessage("finish");
                         }
 
@@ -271,7 +275,7 @@ public class MaterialQuantityActivity extends AppCompatActivity {
                         etQuantity.setEnabled(true);
                     } else {
                         MoveMaterialScanListActivity.addMoreMaretailItem = false;
-                        materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID));
+                        materialAdded.MaterialMoveListItemAdded(new Material(eqID, materialID, etQuantity.getText().toString(), materialLocID, inventoryID,false));
                         sendMessage("finish");
                     }
                     break;

@@ -78,6 +78,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
     Context mContext;
     String[] locationNames;
     TextView tvStatement;
+    boolean isLoc;
     public static boolean addMoreMaretailItem = false;
 
     @Override
@@ -132,6 +133,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         inventoryID = getIntent().getIntExtra("inventoryID", 0);
         materialID = getIntent().getStringExtra("materialID");
         JobNumber = getIntent().getStringExtra("JobNumber");
+        isLoc = getIntent().getBooleanExtra("isLoc", false);
         eqID = getIntent().getIntExtra("eqID", 0);
         tbTitleTop.setText("Inventory");
         tbTitleBottom.setText("" + taskType);
@@ -160,6 +162,7 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
         material.setLocID(materialLocID);
         material.setJobNumberID(JobNumberID);
         material.setEquipmentID(eqID);
+        material.setLoc(isLoc);
         material.setInventoryID(inventoryID);
         materialList.add(material);
         ReceiveMaterialActivity.materialList = materialList;
@@ -337,9 +340,9 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                     if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
                         locationNames = new String[materialList.size()];
                         for (int i = 0; i < materialList.size(); i++) {
-                            if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                            if ( materialList.get(i).isLoc() && null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
-                            } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                            } else if (!materialList.get(i).isLoc() && null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
                             } else {
                                 locationNames[i] = "N/A";
@@ -395,9 +398,9 @@ public class MoveMaterialScanListActivity extends AppCompatActivity implements B
                     if (taskType.toLowerCase().startsWith("mo") || taskType.toLowerCase().startsWith("iss")) {
                         locationNames = new String[materialList.size()];
                         for (int i = 0; i < materialList.size(); i++) {
-                            if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
+                            if ( materialList.get(i).isLoc() && null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(i).getLocID()).getCode();
-                            } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
+                            } else if ( !materialList.get(i).isLoc() && null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID())) {
                                 locationNames[i] = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(i).getLocID()).getCode();
                             } else {
                                 locationNames[i] = "N/A";
