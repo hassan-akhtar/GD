@@ -104,9 +104,9 @@ public class MoveFinalActivity extends AppCompatActivity {
         JobNumberID = getIntent().getIntExtra("JobNumberID",0);
         count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
-        if (null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
+        if (materialList.get(0).isLoc() && null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
             loc = DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID()).getCode();
-        } else if (null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getLocID())) {
+        } else if (!materialList.get(0).isLoc() && null != DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getLocID())) {
             loc = DataManager.getInstance().getToolhawkEquipmentByID(materialList.get(0).getLocID()).getCode();
         } else {
             loc = "N/A";
