@@ -135,11 +135,11 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 }
 
                 case R.id.btnLocation: {
-                    etsLocation = DataManager.getInstance().getETSLocationByCode(tvBarcodeValue.getText().toString());
+                    etsLocation = DataManager.getInstance().getETSLocationByCode(tvBarcodeValue.getText().toString().trim());
                     if (null != etsLocation) {
                         Intent in = new Intent(CommonToolhawkScanActivity.this, ToolhawkLocationActivity.class);
                         in.putExtra("taskType", "view");
-                        in.putExtra("barcodeID", tvBarcodeValue.getText().toString());
+                        in.putExtra("barcodeID", tvBarcodeValue.getText().toString().trim());
                         startActivity(in);
                         etBarcode.setText("");
                         hideEnteredData();
@@ -151,11 +151,11 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
 
 
                 case R.id.btnAsset: {
-                    toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(tvBarcodeValue.getText().toString());
+                    toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(tvBarcodeValue.getText().toString().trim());
                     if (null != toolhawkEquipment) {
                         Intent in = new Intent(CommonToolhawkScanActivity.this, EquipmentInfoActivity.class);
                         in.putExtra("taskType", "view");
-                        in.putExtra("barcodeID", tvBarcodeValue.getText().toString());
+                        in.putExtra("barcodeID", tvBarcodeValue.getText().toString().trim());
                         startActivity(in);
                         etBarcode.setText("");
                         hideEnteredData();
@@ -167,7 +167,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
 
 
                 case R.id.btnNewCount: {
-                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString());
+                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString().trim());
 
                     if (null != etsLocation) {
                         List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
@@ -175,7 +175,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                             if (null == DataManager.getInstance().getQuickCount(etsLocation.getCode())) {
                                 Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                 in.putExtra("taskType", "new");
-                                in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                in.putExtra("locationCode", tvBarcodeValue.getText().toString().trim());
                                 startActivity(in);
                                 tvBarcodeTitle.setVisibility(View.GONE);
                                 tvBarcodeValue.setVisibility(View.GONE);
@@ -198,7 +198,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                             Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                             in.putExtra("taskType", "new");
                                             in.putExtra("newAfterSaveComplete", true);
-                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString().trim());
                                             startActivity(in);
                                             tvBarcodeTitle.setVisibility(View.GONE);
                                             tvBarcodeValue.setVisibility(View.GONE);
@@ -230,7 +230,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                             Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                             in.putExtra("taskType", "new");
                                             in.putExtra("newAfterSaveComplete", true);
-                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString().trim());
                                             startActivity(in);
                                             tvBarcodeTitle.setVisibility(View.GONE);
                                             tvBarcodeValue.setVisibility(View.GONE);
@@ -261,7 +261,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                     break;
                 }
                 case R.id.btnExistingCount: {
-                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString());
+                    ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString().trim());
                     if (null != etsLocation) {
                         List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
                         if (null != assetList && 0 != assetList.size()) {
@@ -269,7 +269,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                 if (!DataManager.getInstance().getQuickCount(etsLocation.getCode()).isComplete()) {
                                     Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                     in.putExtra("taskType", "existing");
-                                    in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                    in.putExtra("locationCode", tvBarcodeValue.getText().toString().trim());
                                     startActivity(in);
                                     tvBarcodeTitle.setVisibility(View.GONE);
                                     tvBarcodeValue.setVisibility(View.GONE);
@@ -290,7 +290,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                                             dialog.cancel();
                                             Intent in = new Intent(CommonToolhawkScanActivity.this, QuickCountActivity.class);
                                             in.putExtra("taskType", "new");
-                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString());
+                                            in.putExtra("locationCode", tvBarcodeValue.getText().toString().trim());
                                             startActivity(in);
                                             tvBarcodeTitle.setVisibility(View.GONE);
                                             tvBarcodeValue.setVisibility(View.GONE);

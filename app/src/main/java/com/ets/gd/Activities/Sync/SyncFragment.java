@@ -302,7 +302,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
 
     private void setupReceiveInventoryData() {
-
         lstReceiveInventoryRealm = DataManager.getInstance().getAllReceiveInventoryList();
         List<InventoryMoveCall> Materials = new ArrayList<InventoryMoveCall>();
         Materials.clear();

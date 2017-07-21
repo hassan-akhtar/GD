@@ -55,7 +55,6 @@ public class LoginActivity extends AppCompatActivity {
         initListeners();
     }
 
-
     private void initViews() {
         etUsername = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);

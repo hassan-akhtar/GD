@@ -40,7 +40,9 @@ import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.QuickCountAdapter;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -346,7 +348,15 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     myQuickCount.setChanged(true);
                     myQuickCount.setComplete(false);
                     myQuickCount.setStatus(taskType.toUpperCase());
-
+                    myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
+                    String format = null;
+                    try {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                        format = simpleDateFormat.format(new Date());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    myQuickCount.setQuickCountDate(format);
                     for (int i = 0; i < assetFoundList.size(); i++) {
                         QuickCountAsset myQuickAssetCount = new QuickCountAsset();
                         myQuickAssetCount.setFound(true);
@@ -413,10 +423,24 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                         myQuickCount.setChanged(true);
                                         myQuickCount.setComplete(true);
                                         myQuickCount.setStatus(taskType.toUpperCase());
+                                        myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
 
+
+                                        String format = null;
+                                        try {
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                                            format = simpleDateFormat.format(new Date());
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        myQuickCount.setQuickCountDate(format);
+                                        if (null != etsLocation.getCustomer()) {
+                                            myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
+                                        }
                                         for (int i = 0; i < assetFoundList.size(); i++) {
                                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
                                             myQuickAssetCount.setFound(true);
+                                            myQuickAssetCount.setUnExpected(false);
                                             myQuickAssetCount.setAssetID(assetFoundList.get(i).getID());
                                             myQuickAssetCount.setAssetCode(assetFoundList.get(i).getCode());
                                             myQuickCountAssets.add(myQuickAssetCount);
@@ -424,7 +448,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
                                         for (int i = 0; i < assetUnExpectedList.size(); i++) {
                                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
-                                            myQuickAssetCount.setFound(true);
+                                            myQuickAssetCount.setFound(false);
+                                            myQuickAssetCount.setUnExpected(true);
                                             myQuickAssetCount.setAssetID(assetUnExpectedList.get(i).getID());
                                             myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
                                             myQuickCountAssets.add(myQuickAssetCount);
@@ -443,13 +468,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                 } else {
                                     new AlertDialog.Builder(QuickCountActivity.this)
                                             .setTitle("Quick Count")
-                                            .setMessage(toolhawkEquipment.getCode() + " doesn't belong to" + tvLocName.getText().toString() + ", do you want to Continue?")
+                                            .setMessage(toolhawkEquipment.getCode() + " doesn't belong to " + tvLocName.getText().toString() + ", do you want to Continue?")
                                             .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     if (!assetUnExpectedList.contains(toolhawkEquipment)) {
                                                         assetUnExpectedList.add(toolhawkEquipment);
                                                         tvUnExpected.setText("" + assetUnExpectedList.size());
-
                                                         etBarcode.setText("");
                                                         hideKeyboard();
                                                     } else {
@@ -538,7 +562,15 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                         myQuickCount.setChanged(true);
                         myQuickCount.setComplete(true);
                         myQuickCount.setStatus(taskType.toUpperCase());
-
+                        myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
+                        String format = null;
+                        try {
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                            format = simpleDateFormat.format(new Date());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        myQuickCount.setQuickCountDate(format);
                         for (int i = 0; i < assetFoundList.size(); i++) {
                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
                             myQuickAssetCount.setFound(true);
@@ -556,7 +588,9 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                             myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
                             myQuickCountAssets.add(myQuickAssetCount);
                         }
-
+                        if (null != etsLocation.getCustomer()) {
+                            myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
+                        }
                         myQuickCount.setQuickCountAssets(myQuickCountAssets);
                         DataManager.getInstance().saveQuickCountResult(myQuickCount);
 

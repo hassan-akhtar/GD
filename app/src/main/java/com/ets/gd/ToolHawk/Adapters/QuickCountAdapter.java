@@ -40,7 +40,8 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
         myViewHolder = holder;
         ToolhawkEquipment asset = assetList.get(position);
         holder.tvName.setText("" + asset.getCode());
-        holder.tvAssetCode.setText("" + asset.getID());
+        holder.tvAssetCode.setVisibility(View.GONE);
+        holder.txtAssetCode.setVisibility(View.GONE);
         if (null!=asset.getETSLocation()) {
             holder.tvLocCode.setText("" + asset.getETSLocation().getCode());
         }else {
@@ -69,12 +70,13 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvName, tvAssetCode, tvLocCode, tvParent;
+        private TextView tvName, tvAssetCode ,txtAssetCode, tvLocCode, tvParent;
 
         public MyViewHolder(View view) {
             super(view);
             tvName = (TextView) view.findViewById(R.id.tvName);
             tvAssetCode = (TextView) view.findViewById(R.id.tvAssetCode);
+            txtAssetCode = (TextView) view.findViewById(R.id.txtAssetCode);
             tvLocCode = (TextView) view.findViewById(R.id.tvLocCode);
             tvParent = (TextView) view.findViewById(R.id.tvParent);
         }
