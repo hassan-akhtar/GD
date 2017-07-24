@@ -348,10 +348,10 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     myQuickCount.setChanged(true);
                     myQuickCount.setComplete(false);
                     myQuickCount.setStatus(taskType.toUpperCase());
-                    myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
+                    myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                     String format = null;
                     try {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
                         format = simpleDateFormat.format(new Date());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -423,12 +423,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                         myQuickCount.setChanged(true);
                                         myQuickCount.setComplete(true);
                                         myQuickCount.setStatus(taskType.toUpperCase());
-                                        myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
+                                        myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
 
                                         String format = null;
                                         try {
-                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
                                             format = simpleDateFormat.format(new Date());
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -562,10 +562,10 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                         myQuickCount.setChanged(true);
                         myQuickCount.setComplete(true);
                         myQuickCount.setStatus(taskType.toUpperCase());
-                        myQuickCount.setUserId(sharedPreferencesManager.getString(SharedPreferencesManager.LOGGED_IN_USERID));
+                        myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                         String format = null;
                         try {
-                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd-hh-mm-ss");
+                            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
                             format = simpleDateFormat.format(new Date());
                         } catch (Exception e) {
                             e.printStackTrace();

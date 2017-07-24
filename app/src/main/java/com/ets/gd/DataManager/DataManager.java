@@ -1136,7 +1136,7 @@ public class DataManager {
     }
 
     public List<ToolhawkEquipment> getAllToolhawkEquipmentForLocation(String code) {
-        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code).findAll().sort("Code");
+        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", code, Case.INSENSITIVE).findAll().sort("Code");
 
         List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
         return copied;
