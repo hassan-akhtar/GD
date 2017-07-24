@@ -120,7 +120,7 @@ public class ToolhawkDashboardFragmentNew extends Fragment {
                     thTasksImages[i] = R.drawable.ic_quickcount;
                 } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().contains("out")) {
                     thTasksImages[i] = R.drawable.ic_checkout;
-                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().contains("in")) {
+                } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("ch") && sortOrderToolHawkList.get(i).getName().toString().toLowerCase().contains("in") ) {
                     thTasksImages[i] = R.drawable.ic_checkin;
                 } else if (sortOrderToolHawkList.get(i).getName().toString().toLowerCase().startsWith("mov")) {
                     thTasksImages[i] = R.drawable.ic_move_op;

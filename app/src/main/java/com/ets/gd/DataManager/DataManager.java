@@ -1126,7 +1126,6 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
     }
 
-
     public ToolhawkEquipment getToolhawkContainerEquipment(String barcodeID) {
         return realm.where(ToolhawkEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).equalTo("IsContainer", true).findFirst();
     }
