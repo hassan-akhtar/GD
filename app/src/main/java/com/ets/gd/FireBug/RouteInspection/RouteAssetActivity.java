@@ -108,7 +108,9 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
 
         for (RouteAsset routeAsset : assetList) {
             FireBugEquipment eq = DataManager.getInstance().getEquipmentByID(routeAsset.getEquipmentID());
-            equipmentList.add(eq);
+            if (!equipmentList.contains(eq)) {
+                equipmentList.add(eq);
+            }
         }
         routeAssetAdapter = new RouteAssetAdapter(RouteAssetActivity.this, equipmentList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
