@@ -180,6 +180,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     void setViewForViewAsset() {
         spLocation.setEnabled(false);
         spSite.setEnabled(false);
+        btnSearchLoc.setVisibility(View.GONE);
         spBuilding.setEnabled(false);
         spCustomer.setEnabled(false);
 
@@ -231,7 +232,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         spSite.setEnabled(false);
         spBuilding.setEnabled(false);
         spCustomer.setEnabled(false);
-        //spCustomer.setSelection(0);
+        btnSearchLoc.setVisibility(View.VISIBLE);
 
     }
 
