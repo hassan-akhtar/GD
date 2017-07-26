@@ -347,7 +347,9 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
 
                 case R.id.btnAsset: {
                     fireBugEquipment = DataManager.getInstance().getEquipment(tvBarcodeValue.getText().toString());
-                    currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+                    if (null!=DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString())) {
+                        currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
+                    }
 
                     if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment)) {
 

@@ -106,8 +106,8 @@ public class FirstTimeSyncActicity extends AppCompatActivity implements MyCallBa
                     e.printStackTrace();
                 }
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
-                if (null != responseDTO) {
-                    if (null != syncGetResponseDTO && null!=syncGetResponseDTO.getLstCustomerData()  && 0 != syncGetResponseDTO.getLstCustomerData().size()) {
+                if (null != syncGetResponseDTO) {
+                    if ( null!=syncGetResponseDTO.getLstCustomerData()  && 0 != syncGetResponseDTO.getLstCustomerData().size()) {
                         DataManager.getInstance().deleteRealm();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
                         sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, getIntent().getStringExtra("customerCode"));
