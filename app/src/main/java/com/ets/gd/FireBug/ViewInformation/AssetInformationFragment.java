@@ -194,14 +194,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size()+1; i++) {
             if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spDeviceType.setSelection(i);
                 break;
             }
         }
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size(); i++) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size()+1; i++) {
             if (fireBugEquipment.getManufacturers().getCode().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
                 posManufacturer = i;

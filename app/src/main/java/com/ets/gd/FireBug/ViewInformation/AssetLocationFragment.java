@@ -1,24 +1,37 @@
 package com.ets.gd.FireBug.ViewInformation;
 
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
+import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Models.Barcode;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
@@ -33,7 +46,7 @@ import java.util.List;
 import io.realm.RealmList;
 
 
-public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener {
+public class AssetLocationFragment extends Fragment implements Spinner.OnItemSelectedListener, BarcodeScan {
 
 
     public static Spinner spLocation, spCustomer;
@@ -52,8 +65,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     String[] locations;
     String[] customers;
     Customer customer;
-    public static String customerName ;
+    public static String customerName;
     List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
+    Button btnSearchLoc;
+    private static final int CAMERA_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+
 
     public AssetLocationFragment() {
     }
@@ -80,6 +97,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         letLocationID = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
         tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
+        btnSearchLoc = (Button) rootView.findViewById(R.id.btnSearchLoc);
         letLocationID.setVisibility(View.INVISIBLE);
         tvLocationID.setVisibility(View.INVISIBLE);
 
@@ -192,7 +210,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
         spLocation.setEnabled(false);
-        if (null!=fireBugEquipment.getLocation()) {
+        if (null != fireBugEquipment.getLocation()) {
             for (int i = 0; i < locations.length; i++) {
                 if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                     spLocation.setSelection(i);
@@ -220,6 +238,15 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     private void initListeners() {
         spLocation.setOnItemSelectedListener(this);
         spCustomer.setOnItemSelectedListener(this);
+
+        btnSearchLoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkCameraPermission();
+            }
+        });
+
+
     }
 
 
@@ -230,7 +257,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         switch (viewID) {
             case R.id.spLocation: {
                 posLoc = position;
-                int selectedSiteID=0;
+                int selectedSiteID = 0;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
                     for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size() + 1; i++) {
@@ -240,27 +267,27 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                             for (int k = 0; k < sites.length; k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(sites[k].toString().toLowerCase())) {
                                     spSite.setText(sites[k].toString());
-                                    selectedSiteID=DataManager.getInstance().getLocation(strSelectedState).getSite().getID();
+                                    selectedSiteID = DataManager.getInstance().getLocation(strSelectedState).getSite().getID();
                                     break;
                                 }
                             }
 
 
-                                allBuilding.clear();
-                                if (0!=selectedSiteID) {
-                                    allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(selectedSiteID);
-                                }
-                                if (null!=allBuilding) {
-                                    int sizeBuilding = allBuilding.size() ;
-                                    buildings = new String[sizeBuilding];
+                            allBuilding.clear();
+                            if (0 != selectedSiteID) {
+                                allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(selectedSiteID);
+                            }
+                            if (null != allBuilding) {
+                                int sizeBuilding = allBuilding.size();
+                                buildings = new String[sizeBuilding];
 
-                                    for (int l = 0; l < allBuilding.size(); l++) {
-                                        buildings[l] = allBuilding.get(l).getCode();
-                                    }
-                                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
-                                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                    spBuilding.setAdapter(dataAdapterBuilding);
+                                for (int l = 0; l < allBuilding.size(); l++) {
+                                    buildings[l] = allBuilding.get(l).getCode();
                                 }
+                                ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
+                                dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                spBuilding.setAdapter(dataAdapterBuilding);
+                            }
 
 
                             for (int j = 0; j < buildings.length; j++) {
@@ -325,7 +352,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 buildings = new String[sizeBuilding];
 
                 for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                    buildings[i ] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
+                    buildings[i] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
                 }
                 ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
                 dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -333,7 +360,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
 
                 int size = syncCustomer.getLstLocations().size() + 1;
-                String[] locations = new String[size];
+                 locations = new String[size];
 
                 for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
                     locations[i + 1] = syncCustomer.getLstLocations().get(i).getCode();
@@ -349,8 +376,139 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         }
     }
 
+
+    private void checkCameraPermission() {
+
+        if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
+            BarcodeScanActivity.barcodeScan = this;
+            Intent in = new Intent(getActivity(), BarcodeScanActivity.class);
+            in.putExtra("taskType", "searchLoc");
+            startActivity(in);
+        } else {
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Need Storage Permission");
+                    builder.setMessage("This app needs storage permission.");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
+                    //Previously Permission Request was cancelled with 'Dont Ask Again',
+                    // Redirect to Settings after showing Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                            Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+                            intent.setData(uri);
+                            startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                            Toast.makeText(getActivity(), "Go to Permissions to Grant Camera permission", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    //just request the permission
+                    ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                }
+
+            } else {
+                BarcodeScanActivity.barcodeScan = this;
+                Intent in = new Intent(getActivity(), BarcodeScanActivity.class);
+                in.putExtra("taskType", "searchLoc");
+                startActivity(in);
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == CAMERA_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
+                BarcodeScanActivity.barcodeScan = this;
+                Intent in = new Intent(getActivity(), BarcodeScanActivity.class);
+                in.putExtra("taskType", "searchLoc");
+                startActivity(in);
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CAMERA)) {
+                    //Show Information about why you need the permission
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Camera Permission");
+                    builder.setMessage("This app needs permission to use camera");
+                    builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                        }
+                    });
+                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    builder.show();
+                } else {
+                    sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN, true);
+                    Toast.makeText(getActivity(), "Unable to get Permission", Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @Override
+    public void BarcodeScanned(Barcode barcode) {
+        String message = barcode.getMessage();
+        boolean found = false;
+        for (int i = 0; i < locations.length; i++) {
+            if (message.toLowerCase().equals(locations[i].toLowerCase())) {
+                spLocation.setSelection(i);
+                found = true;
+            }
+        }
+
+        if (!found) {
+            showToast("Location not found!");
+            spLocation.setSelection(0);
+            spSite.setSelection(0);
+            spBuilding.setSelection(0);
+        }
+
+    }
+
+
+    void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }

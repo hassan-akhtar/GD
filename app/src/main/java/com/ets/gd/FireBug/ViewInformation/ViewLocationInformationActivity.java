@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,7 +23,6 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Building;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -55,10 +52,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
+
     String[] sites;
     String[] buildings;
     String[] customers;
+    String[] locations;
     Button btnViewAllAssets;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +85,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
+
         barCodeID = getIntent().getStringExtra("barCode");
         customerName = getIntent().getStringExtra("customerName");
         compName = getIntent().getStringExtra("compName");
@@ -108,7 +109,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         realmSyncGetResponse = DataManager.getInstance().getSyncRealmGetResponseDTO();
         int size = realmSyncGetResponseDTO.getLstLocations().size() + 1;
-        String[] locations = new String[size];
+        locations = new String[size];
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
             locations[i + 1] = realmSyncGetResponseDTO.getLstLocations().get(i).getCode();
@@ -244,8 +245,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spCustomer.setEnabled(true);
         btnViewAllAssets.setVisibility(View.GONE);
         //spCustomer.setSelection(0);
-
-
     }
 
     private void initListeners() {
@@ -328,6 +327,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         imm2.hideSoftInputFromWindow(
                 spBuilding.getWindowToken(), 0);
     }
+
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {
@@ -335,6 +335,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     finish();
                     break;
                 }
+
 
                 case R.id.btnViewAllAssets: {
                     String locCode = tvLocationID.getText().toString();
@@ -396,6 +397,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
                     break;
                 }
+
             }
         }
 
@@ -408,15 +410,15 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
             showToast("Please select a company");
         } else if ("".equals(spSite.getText().toString().trim())) {
             showToast("Please select a site");
-        } else if (null==DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
+        } else if (null == DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
             showToast("Please select a valid site");
         } else if ("".equals(spBuilding.getText().toString().trim())) {
             showToast("Please select a building");
-        } else if (null==DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
+        } else if (null == DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString())) {
             showToast("Please select a valid building");
-        }else if (DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID()!=DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()).getSiteID()) {
-            showToast("This Building doesn't belong to "+spSite.getText().toString());
-        }else {
+        } else if (DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID() != DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()).getSiteID()) {
+            showToast("This Building doesn't belong to " + spSite.getText().toString());
+        } else {
 
             return true;
         }
@@ -525,4 +527,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
+
 }

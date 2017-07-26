@@ -173,8 +173,19 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                 }
             }
         }
+        if (null!=DataManager.getInstance().getLocationSite(spSite.getText().toString())) {
+            allBuilding = DataManager.getInstance().getAllETSBuildingsBySiteID(DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID());
+            int sizeBuilding = allBuilding.size();
+            buildings = new String[sizeBuilding];
 
-        for (int i = 0; i < allBuilding.size() + 1; i++) {
+            for (int i = 0; i < allBuilding.size(); i++) {
+                buildings[i] = allBuilding.get(i).getCode();
+            }
+            ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ToolhawkLocationActivity.this, android.R.layout.simple_list_item_1, buildings);
+            dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spBuilding.setAdapter(dataAdapterBuilding);
+        }
+        for (int i = 0; i < allBuilding.size(); i++) {
             if (null != DataManager.getInstance().getBuilding(etsLocation.getBuildingID())) {
                 if (DataManager.getInstance().getBuilding(etsLocation.getBuildingID()).getCode().toLowerCase().equals(buildings[i].toString().toLowerCase())) {
                     spBuilding.setText(buildings[i].toString());

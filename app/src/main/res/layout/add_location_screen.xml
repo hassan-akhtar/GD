@@ -71,6 +71,17 @@
                     android:layout_marginRight="23dp"
                     android:background="@drawable/sp_bg_new"
                     android:paddingBottom="10dp" />
+
+                <Button
+                    android:id="@+id/btnSearchLoc"
+                    android:layout_width="32dp"
+                    android:layout_marginTop="7dp"
+                    android:layout_height="32dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="16dp"
+                    android:background="@color/colorPrimary"
+                    android:drawableTop="@drawable/rsz_ic_scan"
+                    android:paddingTop="4dp" />
             </RelativeLayout>
 
 

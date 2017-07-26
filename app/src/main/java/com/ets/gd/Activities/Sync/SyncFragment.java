@@ -843,7 +843,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                 List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
-                    if (!"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
+                    if (null!=InspectionDatess.get(j).getDueDate() && !"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
                         InspectionDates inspectionDates = new InspectionDates();
                         inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
@@ -897,7 +897,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                 List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
-                    if (!"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
+                    if (null!=InspectionDatess.get(j).getDueDate() && !"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
                         InspectionDates inspectionDates = new InspectionDates();
                         inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
