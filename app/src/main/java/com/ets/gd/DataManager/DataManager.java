@@ -122,18 +122,34 @@ public class DataManager {
 
 
     // For adding an asset info in DB
-    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String operation, int cusID) {
+    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId,String newLocCode,  String operation, int cusID) {
+        if (realm.isInTransaction()) {
+            realm.commitTransaction();
+        }
         realm.beginTransaction();
         MyLocation myLocation;
-        if (null != realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
-            myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
+        if (0!=Integer.parseInt(newLocId)) {
+            if (null != realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
+                myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
+            } else {
+                Locations locations = realm.where(Locations.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
+                myLocation = realm.createObject(MyLocation.class, locations.getID());
+                myLocation.setCode(locations.getCode());
+                myLocation.setDescription(locations.getDescription());
+                myLocation.setSite(locations.getSite().getID());
+                myLocation.setBuilding(locations.getBuilding().getID());
+            }
         } else {
-            Locations locations = realm.where(Locations.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
-            myLocation = realm.createObject(MyLocation.class, locations.getID());
-            myLocation.setCode(locations.getCode());
-            myLocation.setDescription(locations.getDescription());
-            myLocation.setSite(locations.getSite().getID());
-            myLocation.setBuilding(locations.getBuilding().getID());
+            if (null != realm.where(MyLocation.class).equalTo("Code", newLocCode).findFirst()) {
+                myLocation = realm.where(MyLocation.class).equalTo("Code", newLocCode).findFirst();
+            }else {
+                Locations locations = realm.where(Locations.class).equalTo("Code", newLocCode).findFirst();
+                myLocation = realm.createObject(MyLocation.class, locations.getCode());
+                myLocation.setID(locations.getID());
+                myLocation.setDescription(locations.getDescription());
+                myLocation.setSite(locations.getSite().getID());
+                myLocation.setBuilding(locations.getBuilding().getID());
+            }
         }
 
         if (operation.startsWith("m")) {
@@ -359,7 +375,7 @@ public class DataManager {
     }
 
     public List<Locations> getCustomerLocations(int ID) {
-        return realm.where(SyncCustomer.class).equalTo("CustomerId", ID).findFirst().getLstLocations();
+        return realm.where(Locations.class).equalTo("Customer.ID", ID).findAll();
     }
 
     public Site getLocationSite(String barcodeID) {
@@ -371,7 +387,23 @@ public class DataManager {
     }
 
     public Building getLocationBuilding(String barcodeID) {
-        return realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
+        if (null!=realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst()) {
+            return realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
+        } else {
+            realm.beginTransaction();
+            Building building = null;
+            FirebugBuilding firebugBuilding = realm.where(FirebugBuilding.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
+            if (null!=firebugBuilding) {
+                building = realm.createObject(Building.class,firebugBuilding.getID());
+                building.setCode(firebugBuilding.getCode());
+                building.setSiteID(firebugBuilding.getSite().getID());
+                //building.setDepartmentID(firebugBuilding.g);
+                building.setDescription(firebugBuilding.getDescription());
+            }
+            realm.commitTransaction();
+
+            return building;
+        }
     }
 
     public List<ToolhawkEquipment> getLocationEquipment(String locCOde) {

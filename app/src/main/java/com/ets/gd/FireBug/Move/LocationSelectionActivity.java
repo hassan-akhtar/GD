@@ -40,7 +40,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     String[] assetNames;
     public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet, rlTransferOptions;
-    private String taskType;
+    private String taskType,newLocCode;
     int count;
     int locID, cusID;
     SharedPreferencesManager sharedPreferencesManager;
@@ -175,10 +175,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 case R.id.rlYes: {
 
                     if (taskName.toLowerCase().startsWith("m")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "move", 0);
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID),newLocCode, "move", 0);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), "transfer",
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID),newLocCode, "transfer",
                                 DataManager.getInstance().getCustomerByCode(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME)).getID());
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Transferred!", Toast.LENGTH_LONG).show();
                     }
@@ -303,6 +303,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
+            newLocCode = message;
             locID = intent.getIntExtra("locID", 0);
             cusID = intent.getIntExtra("cusID", 0);
             tvToLoc.setText(message);

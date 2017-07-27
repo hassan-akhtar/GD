@@ -886,7 +886,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
             try {
                 locID = move.getLocID();
                 cusID = move.getCuID();
-                DataManager.getInstance().updateAssetLocationID(assetList, String.valueOf(locID), "move", 0);
+                DataManager.getInstance().updateAssetLocationID(assetList, String.valueOf(locID),move.getLocCode(), "move", 0);
                 Toast.makeText(getApplicationContext(), "Asset(s) Location Changed!", Toast.LENGTH_LONG).show();
 
                 if (null!=assetList ) {

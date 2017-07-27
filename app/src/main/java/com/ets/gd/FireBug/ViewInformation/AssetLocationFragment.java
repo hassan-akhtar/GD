@@ -31,6 +31,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -127,9 +128,9 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         RealmList<Locations> locationsRealmList = new RealmList<Locations>();
 
         for (int k = 0; k < realmSyncGetResponseDTO.getLstLocations().size(); k++) {
-            if (!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()) {
-                locationsRealmList.add(realmSyncGetResponseDTO.getLstLocations().get(k));
-            }
+            // if (!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()) {
+            locationsRealmList.add(realmSyncGetResponseDTO.getLstLocations().get(k));
+            // }
         }
 
         locations = new String[1];
@@ -197,12 +198,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
 
-
-        int size = syncCustomer.getLstLocations().size() + 1;
+        List<Locations> locationsList = DataManager.getInstance().getCustomerLocations(customer.getID());
+        int size = locationsList.size() + 1;
         String[] locations = new String[size];
 
-        for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-            locations[i + 1] = syncCustomer.getLstLocations().get(i).getCode();
+        for (int i = 0; i < locationsList.size(); i++) {
+            locations[i + 1] = locationsList.get(i).getCode();
         }
         locations[0] = "Please select a location";
         ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
@@ -215,7 +216,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
             for (int i = 0; i < locations.length; i++) {
                 if (fireBugEquipment.getLocation().getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                     spLocation.setSelection(i);
-                    tvDescprition.setText(realmSyncGetResponseDTO.getLstLocations().get(i - 1).getDescription());
+                    tvDescprition.setText(locationsList.get(i - 1).getDescription());
                     break;
                 }
             }
@@ -261,7 +262,9 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 int selectedSiteID = 0;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
-                    for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size() + 1; i++) {
+                    Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
+                    List<Locations> locationsList = DataManager.getInstance().getCustomerLocations(customer.getID());
+                    for (int i = 0; i <locationsList.size() + 1; i++) {
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
@@ -359,12 +362,12 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                 dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spBuilding.setAdapter(dataAdapterBuilding);
 
+                List<Locations> locationsList = DataManager.getInstance().getCustomerLocations(customer.getID());
+                int size = locationsList.size() + 1;
+                locations = new String[size];
 
-                int size = syncCustomer.getLstLocations().size() + 1;
-                 locations = new String[size];
-
-                for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-                    locations[i + 1] = syncCustomer.getLstLocations().get(i).getCode();
+                for (int i = 0; i < locationsList.size(); i++) {
+                    locations[i + 1] = locationsList.get(i).getCode();
                 }
                 locations[0] = "Please select a location";
                 ArrayAdapter<String> dataAdapterAgent = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, locations);
@@ -492,10 +495,44 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     public void BarcodeScanned(Barcode barcode) {
         String message = barcode.getMessage();
         boolean found = false;
+        int selectedSiteID = 0;
         for (int i = 0; i < locations.length; i++) {
             if (message.toLowerCase().equals(locations[i].toLowerCase())) {
                 spLocation.setSelection(i);
                 found = true;
+                tvDescprition.setText(DataManager.getInstance().getLocation(message).getDescription());
+                for (int k = 0; k < sites.length; k++) {
+                    if (DataManager.getInstance().getLocation(message).getSite().getCode().toLowerCase().equals(sites[k].toString().toLowerCase())) {
+                        spSite.setText(sites[k].toString());
+                        selectedSiteID = DataManager.getInstance().getLocation(message).getSite().getID();
+                        break;
+                    }
+                }
+
+
+                allBuilding.clear();
+                if (0 != selectedSiteID) {
+                    allBuilding = DataManager.getInstance().getAllFirebugSiteBuildings(selectedSiteID);
+                }
+                if (null != allBuilding) {
+                    int sizeBuilding = allBuilding.size();
+                    buildings = new String[sizeBuilding];
+
+                    for (int l = 0; l < allBuilding.size(); l++) {
+                        buildings[l] = allBuilding.get(l).getCode();
+                    }
+                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, buildings);
+                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    spBuilding.setAdapter(dataAdapterBuilding);
+                }
+
+
+                for (int j = 0; j < buildings.length; j++) {
+                    if (DataManager.getInstance().getLocation(message).getBuilding().getCode().toLowerCase().equals(buildings[j].toString().toLowerCase())) {
+                        spBuilding.setText(buildings[j].toString());
+                        break;
+                    }
+                }
             }
         }
 

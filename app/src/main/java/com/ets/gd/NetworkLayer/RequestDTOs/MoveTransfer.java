@@ -11,6 +11,7 @@ public class MoveTransfer {
     private int EquipmentID;
     private int CustomerID;
     private int LocationID;
+    private String LocationCode;
 
 
     public MoveTransfer(String action, int equipmentID, int customerID, int locationID) {
@@ -21,6 +22,14 @@ public class MoveTransfer {
     }
 
     public MoveTransfer() {
+    }
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
     }
 
     public String getAction() {

@@ -15,10 +15,18 @@ public class Equipment  {
     private int VendorID;
     private int AgentID;
     private int AssignedLocation;
+    private String AssignedLocationCode;
     private int CustomerID;
     private List<InspectionDates> InspectionDates;
     private List<Note> lstFbEquipmentNotes;
 
+    public String getAssignedLocationCode() {
+        return AssignedLocationCode;
+    }
+
+    public void setAssignedLocationCode(String assignedLocationCode) {
+        AssignedLocationCode = assignedLocationCode;
+    }
 
     public int getID() {
         return ID;

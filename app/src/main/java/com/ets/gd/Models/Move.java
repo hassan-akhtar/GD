@@ -7,7 +7,7 @@ package com.ets.gd.Models;
 
 public class Move {
 
-
+private String locCode;
     private int locID;
     private int cuID;
 
@@ -15,9 +15,18 @@ public class Move {
     public Move() {
     }
 
-    public Move(int locID, int cuID) {
+    public Move(int locID, int cuID, String locCode) {
         this.locID = locID;
         this.cuID = cuID;
+        this.locCode=locCode;
+    }
+
+    public String getLocCode() {
+        return locCode;
+    }
+
+    public void setLocCode(String locCode) {
+        this.locCode = locCode;
     }
 
     public int getLocID() {

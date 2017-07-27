@@ -11,8 +11,9 @@ import io.realm.annotations.PrimaryKey;
 public class MyLocation extends RealmObject {
 
 
-    @PrimaryKey
+
     private int ID;
+    @PrimaryKey
     private String Code;
     private String Description;
     private String Floor;

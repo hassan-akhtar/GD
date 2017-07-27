@@ -52,7 +52,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
     List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
     RealmSyncGetResponseDTO realmSyncGetResponse;
     SharedPreferencesManager sharedPreferencesManager;
-
+    Button btnSearchLoc;
     String[] sites;
     String[] buildings;
     String[] customers;
@@ -85,7 +85,8 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvDescprition = (EditText) findViewById(R.id.tvDescprition);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         btnViewAllAssets = (Button) findViewById(R.id.btnViewAllAssets);
-
+        btnSearchLoc= (Button) findViewById(R.id.btnSearchLoc);
+        btnSearchLoc.setVisibility(View.GONE);
         barCodeID = getIntent().getStringExtra("barCode");
         customerName = getIntent().getStringExtra("customerName");
         compName = getIntent().getStringExtra("compName");
