@@ -11,6 +11,7 @@ public class ToolhawkMoveDTO {
     private String MoveType;
     private int ToEquipmentID;
     private int ToLocationID;
+    private String ToLocationCode;
     private int ToJobNumberID;
     private int ConditionID;
     private int UserID;
@@ -26,6 +27,13 @@ public class ToolhawkMoveDTO {
 
     }
 
+    public String getToLocationCode() {
+        return ToLocationCode;
+    }
+
+    public void setToLocationCode(String toLocationCode) {
+        ToLocationCode = toLocationCode;
+    }
 
     public ToolhawkMoveDTO() {
 

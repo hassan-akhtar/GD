@@ -54,7 +54,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     ToolhawkEquipment toolhawkEquipment;
-    ETSLocation etsLocation;
+    ETSLocations etsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +135,7 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
                 }
 
                 case R.id.btnLocation: {
-                    etsLocation = DataManager.getInstance().getETSLocationByCode(tvBarcodeValue.getText().toString().trim());
+                    etsLocation = DataManager.getInstance().getETSLocationsByCode(tvBarcodeValue.getText().toString().trim());
                     if (null != etsLocation) {
                         Intent in = new Intent(CommonToolhawkScanActivity.this, ToolhawkLocationActivity.class);
                         in.putExtra("taskType", "view");

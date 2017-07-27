@@ -37,7 +37,7 @@ public class ToolhawkEquipment extends RealmObject {
     private boolean isAdded;
     private boolean isUpdated;
 
-    public ToolhawkEquipment(int ID, String code, String unitCost, com.ets.gd.NetworkLayer.ResponseDTOs.Department department, com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation ETSLocation, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isAdded, boolean isUpdated) {
+    public ToolhawkEquipment(int ID, String code, String unitCost, com.ets.gd.NetworkLayer.ResponseDTOs.Department department, com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation ETSLocation, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isAdded, boolean isUpdated,EquipmentLocationInfo EquipmentLocationInfo) {
         this.ID = ID;
         Code = code;
         UnitCost = unitCost;
@@ -47,6 +47,7 @@ public class ToolhawkEquipment extends RealmObject {
         Model = model;
         this.isAdded = isAdded;
         this.isUpdated = isUpdated;
+        this.EquipmentLocationInfo = EquipmentLocationInfo;
     }
 
 

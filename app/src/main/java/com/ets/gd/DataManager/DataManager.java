@@ -133,8 +133,8 @@ public class DataManager {
                 myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
             } else {
                 Locations locations = realm.where(Locations.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
-                myLocation = realm.createObject(MyLocation.class, locations.getID());
-                myLocation.setCode(locations.getCode());
+                myLocation = realm.createObject(MyLocation.class, locations.getCode());
+                myLocation.setID(locations.getID());
                 myLocation.setDescription(locations.getDescription());
                 myLocation.setSite(locations.getSite().getID());
                 myLocation.setBuilding(locations.getBuilding().getID());
@@ -431,6 +431,10 @@ public class DataManager {
         return realm.where(ETSLocation.class).equalTo("isAdded", true).findAll().sort("Code");
     }
 
+    public List<ETSLocations> getAllAddedETSLocs() {
+        return realm.where(ETSLocations.class).equalTo("isAdded", true).findAll().sort("Code");
+    }
+
     public List<Locations> getOldLocations() {
         return realm.where(Locations.class).equalTo("isAdded", false).findAll().sort("Code");
     }
@@ -559,6 +563,10 @@ public class DataManager {
         return realm.where(Building.class).equalTo("ID", ID).findFirst();
     }
 
+    public Building getBuildingByCode(String Code) {
+        return realm.where(Building.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
+    }
+
     public List<Building> getAllSiteBuildings(int SiteID) {
         RealmResults<Building> results = realm.where(Building.class).equalTo("SiteID", SiteID).findAll().sort("Code");
         List<Building> copied = realm.copyFromRealm(results);
@@ -665,6 +673,12 @@ public class DataManager {
     }
 
     public void addETSLocation(ETSLocation etslOcation) {
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(etslOcation);
+        realm.commitTransaction();
+    }
+
+    public void addETSLocation(ETSLocations etslOcation) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(etslOcation);
         realm.commitTransaction();

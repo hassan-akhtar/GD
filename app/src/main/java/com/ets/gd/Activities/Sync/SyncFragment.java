@@ -52,6 +52,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -101,7 +102,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     private List<ToolhawkEquipment> lstTHEquipmentsAdd = new ArrayList<ToolhawkEquipment>();
     private List<THEquipment> lstAddTHEquipment = new ArrayList<THEquipment>();
     private List<THEquipment> lstEditTHEquipment = new ArrayList<THEquipment>();
-    List<ETSLocation> etsLocationsList = new ArrayList<ETSLocation>();
+    List<ETSLocations> etsLocationsList = new ArrayList<ETSLocations>();
     List<ETSLoc> lstAddETSLocation = new ArrayList<ETSLoc>();
     SyncPostAddETSLocationRequestDTO syncPostAddETSLocationRequestDTO;
     SyncToolhawkTransferDTO syncToolhawkTransferDTO;
@@ -194,10 +195,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
             callSyncPostMoveService();
         } else if (sendUnitInspcall) {
             callSyncPostUnitInspectService();
-        } else if (sendToolHawkEquipmentCall) {
-            callSyncPostToolhawkEqupmentService();
         } else if (sendETSLocationCall) {
             callSyncPostETSLocationService();
+        } else if (sendToolHawkEquipmentCall) {
+            callSyncPostToolhawkEqupmentService();
         } else if (sendTransferToolhawkCall) {
             callSyncPostTHTransferService();
         } else if (sendMoveToolhawkCall) {
@@ -243,6 +244,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
             MoveInventoryCall moveInventoryCall = new MoveInventoryCall();
             moveInventoryCall.setEquipmentID(lstmoveInventoryRealm.get(i).getEquipmentID());
             moveInventoryCall.setLocationID(lstmoveInventoryRealm.get(i).getLocationID());
+            moveInventoryCall.setLocationCode(lstmoveInventoryRealm.get(i).getLocationCode());
             moveInventoryCall.setJobNumberID(lstmoveInventoryRealm.get(i).getJobNumberID());
             moveInventoryCall.setMoveType(lstmoveInventoryRealm.get(i).getMoveType());
             moveInventoryCall.setUserID(lstmoveInventoryRealm.get(i).getUserID());
@@ -308,6 +310,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         for (int i = 0; i < lstReceiveInventoryRealm.size(); i++) {
             MoveInventoryCall moveInventoryCall = new MoveInventoryCall();
             moveInventoryCall.setLocationID(lstReceiveInventoryRealm.get(i).getLocationID());
+            moveInventoryCall.setLocationCode(lstReceiveInventoryRealm.get(i).getLocationCode());
             moveInventoryCall.setJobNumberID(lstReceiveInventoryRealm.get(i).getJobNumberID());
             moveInventoryCall.setUserID(lstReceiveInventoryRealm.get(i).getUserID());
 
@@ -689,6 +692,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
             moveDTO.setMoveType(dto.getMoveType());
             moveDTO.setToEquipmentID(dto.getToEquipmentID());
             moveDTO.setToLocationID(dto.getToLocationID());
+            moveDTO.setToLocationCode(dto.getToLocationCode());
             moveDTO.setToJobNumberID(dto.getToJobNumberID());
             moveDTO.setConditionID(dto.getConditionID());
             moveDTO.setUserID(dto.getUserID());
@@ -733,16 +737,18 @@ public class SyncFragment extends Fragment implements MyCallBack {
     }
 
     void setupPostETSLocationData() {
-        etsLocationsList = DataManager.getInstance().getAllAddedETSLocations();
+        etsLocationsList = DataManager.getInstance().getAllAddedETSLocs();
 
         if (null != etsLocationsList) {
-            for (ETSLocation location : etsLocationsList) {
+            for (ETSLocations location : etsLocationsList) {
                 ETSLoc addLocation = new ETSLoc();
                 addLocation.setCode(location.getCode());
                 addLocation.setDescription(location.getDescription());
-                addLocation.setCustomerID(location.getCustomerID());
-                addLocation.setSiteID(location.getSiteID());
-                addLocation.setBuildingID(location.getBuildingID());
+                addLocation.setCustomerID(location.getCustomer().getID());
+                addLocation.setSiteID(location.getSite().getID());
+                if (null != location.getBuilding()) {
+                    addLocation.setBuildingID(location.getBuilding().getID());
+                }
                 lstAddETSLocation.add(addLocation);
             }
         }
@@ -770,6 +776,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setModelID(toolhawkEquipment.getModel().getID());
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
+                    equipment.setLocationCode(toolhawkEquipment.getETSLocation().getCode());
                 }
                 try {
                     equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
@@ -792,6 +799,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setModelID(toolhawkEquipment.getModel().getID());
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
+                    equipment.setLocationCode(toolhawkEquipment.getETSLocation().getCode());
                 }
                 try {
                     equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
@@ -981,10 +989,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostMoveService();
                     } else if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
-                    } else if (sendToolHawkEquipmentCall) {
-                        callSyncPostToolhawkEqupmentService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
+                    } else if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
                     } else if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
@@ -1036,10 +1044,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostMoveService();
                     } else if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
-                    } else if (sendToolHawkEquipmentCall) {
-                        callSyncPostToolhawkEqupmentService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
+                    } else if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
                     } else if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
@@ -1087,10 +1095,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                     if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
-                    } else if (sendToolHawkEquipmentCall) {
-                        callSyncPostToolhawkEqupmentService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
+                    } else if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
                     } else if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
@@ -1134,11 +1142,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-
-                    if (sendToolHawkEquipmentCall) {
-                        callSyncPostToolhawkEqupmentService();
-                    } else if (sendETSLocationCall) {
+                    if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
+                    } else if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
                     } else if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
@@ -1183,9 +1190,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
                     //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-                    if (sendETSLocationCall) {
-                        callSyncPostETSLocationService();
-                    } else if (sendTransferToolhawkCall) {
+                    if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
@@ -1230,7 +1235,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     CommonActions.DismissesDialog();
                     //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
-                    if (sendTransferToolhawkCall) {
+                    if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
+                    } else if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();

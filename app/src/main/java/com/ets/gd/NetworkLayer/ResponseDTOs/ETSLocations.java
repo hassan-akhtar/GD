@@ -21,7 +21,15 @@ public class ETSLocations extends RealmObject {
     private boolean isActive;
     private Site Site;
     private Building Building;
+    boolean isAdded ;
 
+    public boolean isAdded() {
+        return isAdded;
+    }
+
+    public void setAdded(boolean added) {
+        isAdded = added;
+    }
 
     public int getID() {
         return ID;

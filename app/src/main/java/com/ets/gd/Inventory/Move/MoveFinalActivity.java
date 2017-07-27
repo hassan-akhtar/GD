@@ -194,6 +194,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             }
                             if (scanType.toLowerCase().startsWith("loc")) {
                                 moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getID());
+                                moveInventory.setLocationCode(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getCode());
                                 moveInventory.setMoveType("Location");
                             }
                             moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));

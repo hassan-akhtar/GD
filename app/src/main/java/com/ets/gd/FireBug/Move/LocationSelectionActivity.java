@@ -201,7 +201,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
                         startActivity(in);
                     } else if (taskName.toLowerCase().startsWith("t")) {
                         Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
-                        in.putExtra("Loc", loc);
+                        in.putExtra("type", "transfer");
                         in.putExtra("compName", tvCompanyValue.getText().toString());
                         startActivity(in);
                     }
@@ -219,7 +219,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 case R.id.btnSelectLoction: {
                     Intent in = new Intent(LocationSelectionActivity.this, SelectLocationActivity.class);
                     in.putExtra("compName", sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME));
-                    in.putExtra("type", "move");
+                    in.putExtra("type", "transfer");
                     startActivity(in);
                     break;
                 }

@@ -32,7 +32,9 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
+import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentLocationInfo;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
@@ -338,34 +340,62 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                     if (checkValidation()) {
 
                         if (taskType.startsWith("vie")) {
+                            ETSLocation etsLocation = new ETSLocation();
+                            ETSLocations etsLoc = DataManager.getInstance().getETSLocationsByCode(spLocation.getItemAtPosition(posLoc).toString());
+                            if (null!=etsLoc) {
+                                etsLocation.setCode(etsLoc.getCode());
+                                etsLocation.setID(etsLoc.getID());
+                                etsLocation.setDescription(etsLoc.getDescription());
+                                etsLocation.setCustomerID(etsLoc.getCustomer().getID());
+                                etsLocation.setSiteID(etsLoc.getSite().getID());
+                                etsLocation.setBuildingID(etsLoc.getBuilding().getID());
+                            }
+                            EquipmentLocationInfo EquipmentLocationInfo =new EquipmentLocationInfo();
+                            EquipmentLocationInfo.setLocation(etsLoc.getCode());
                             equipment = new ToolhawkEquipment(
                                     toolhawkEquipment.getID(),
                                     tvEquipmentCode.getText().toString(),
                                     tvUnitCost.getText().toString(),
                                     DataManager.getInstance().getDepartmentByCode(spDepartment.getItemAtPosition(posDepartment).toString()),
-                                    DataManager.getInstance().getETSLocationByCode(spLocation.getItemAtPosition(posLoc).toString()),
+                                    etsLocation,
                                     DataManager.getInstance().getAssetManufacturer(spManufacturer.getItemAtPosition(posManufacturer).toString()),
                                     DataManager.getInstance().getAssetModel(spModel.getItemAtPosition(posModel).toString()),
                                     toolhawkEquipment.isAdded(),
-                                    true
+                                    true,
+                                    EquipmentLocationInfo
                             );
                             DataManager.getInstance().addToolHawkEquipment(equipment);
                             showToast("Asset Updated!");
                             sendMessage("finish");
                             finish();
                         } else {
+                            ETSLocation etsLocation = new ETSLocation();
                             ToolhawkEquipment eq = DataManager.getInstance().getToolhawkEquipment(tvEquipmentCode.getText().toString());
                             if (null == eq) {
+                                ETSLocations etsLoc = DataManager.getInstance().getETSLocationsByCode(spLocation.getItemAtPosition(posLoc).toString());
+                                if (null!=etsLoc) {
+                                    etsLocation.setCode(etsLoc.getCode());
+                                    etsLocation.setID(etsLoc.getID());
+                                    etsLocation.setDescription(etsLoc.getDescription());
+                                    etsLocation.setCustomerID(etsLoc.getCustomer().getID());
+                                    etsLocation.setSiteID(etsLoc.getSite().getID());
+                                    etsLocation.setBuildingID(etsLoc.getBuilding().getID());
+
+
+                                }
+                                EquipmentLocationInfo EquipmentLocationInfo =new EquipmentLocationInfo();
+                                EquipmentLocationInfo.setLocation(etsLoc.getCode());
                                 equipment = new ToolhawkEquipment(
                                         0,
                                         tvEquipmentCode.getText().toString(),
                                         tvUnitCost.getText().toString(),
                                         DataManager.getInstance().getDepartmentByCode(spDepartment.getItemAtPosition(posDepartment).toString()),
-                                        DataManager.getInstance().getETSLocationByCode(spLocation.getItemAtPosition(posLoc).toString()),
+                                        etsLocation,
                                         DataManager.getInstance().getAssetManufacturer(spManufacturer.getItemAtPosition(posManufacturer).toString()),
                                         DataManager.getInstance().getAssetModel(spModel.getItemAtPosition(posModel).toString()),
                                         true,
-                                        false
+                                        false,
+                                        EquipmentLocationInfo
                                 );
                                 DataManager.getInstance().addToolHawkEquipment(equipment);
                                 showToast("Asset Added!");

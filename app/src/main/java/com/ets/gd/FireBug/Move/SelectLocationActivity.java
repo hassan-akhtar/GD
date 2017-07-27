@@ -164,13 +164,18 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                     }
                 } else {
 
-                    if (!Loc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
+                    if (!taskType.startsWith("trans")) {
+                        if (!Loc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
+                            sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
+                            finish();
+                        } else {
+                            Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
+
+                        }
+                    } else {
                         sendMessage(String.valueOf(locList.get(position).getCode()), locList.get(position).getID());
                         finish();
-                    } else {
-                        Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
-                        Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
-
                     }
 
                 }
@@ -213,13 +218,18 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                             } else {
 
 
-                                if (!Loc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                                if (!taskType.startsWith("trans")) {
+                                    if (!Loc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                                        sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                        finish();
+                                    } else {
+                                        Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
+
+                                    }
+                                } else {
                                     sendMessage(String.valueOf(loc.getCode()), loc.getID());
                                     finish();
-                                } else {
-                                    Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
-                                    Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
-
                                 }
 
                             }
@@ -411,13 +421,18 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                         }
                     } else {
 
-                        if (!Loc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                        if (!taskType.startsWith("trans")) {
+                            if (!Loc.trim().equals(String.valueOf(loc.getCode().trim()))) {
+                                sendMessage(String.valueOf(loc.getCode()), loc.getID());
+                                finish();
+                            } else {
+                                Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
+
+                            }
+                        } else {
                             sendMessage(String.valueOf(loc.getCode()), loc.getID());
                             finish();
-                        } else {
-                            Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_SHORT).show();
-
                         }
 
                     }

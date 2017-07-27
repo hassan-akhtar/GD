@@ -26,6 +26,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -49,7 +50,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     String[] buildings;
     String[] customers;
     String taskType, barcodeID;
-    ETSLocation etsLocation;
+    ETSLocations etsLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,7 +149,7 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
     }
 
     void setViewForViewLoc() {
-        etsLocation = DataManager.getInstance().getETSLocationByCode(barcodeID);
+        etsLocation = DataManager.getInstance().getETSLocationsByCode(barcodeID);
         if (null != etsLocation) {
             tvLocationID.setText("" + etsLocation.getCode());
             tvDescprition.setText("" + etsLocation.getDescription());
@@ -165,8 +166,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         for (int i = 0; i < allSites.size() + 1; i++) {
-            if (null != DataManager.getInstance().getSiteByID(etsLocation.getSiteID())) {
-                if (DataManager.getInstance().getSiteByID(etsLocation.getSiteID()).getCode().toLowerCase().equals(sites[i].toString().toLowerCase())) {
+            if (null != etsLocation.getSite()) {
+                if (etsLocation.getSite().getCode().toLowerCase().equals(sites[i].toString().toLowerCase())) {
                     spSite.setText(sites[i].toString());
                     posSite = i;
                     break;
@@ -186,8 +187,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
             spBuilding.setAdapter(dataAdapterBuilding);
         }
         for (int i = 0; i < allBuilding.size(); i++) {
-            if (null != DataManager.getInstance().getBuilding(etsLocation.getBuildingID())) {
-                if (DataManager.getInstance().getBuilding(etsLocation.getBuildingID()).getCode().toLowerCase().equals(buildings[i].toString().toLowerCase())) {
+            if (null != etsLocation.getBuilding()) {
+                if (etsLocation.getBuilding().getCode().toLowerCase().equals(buildings[i].toString().toLowerCase())) {
                     spBuilding.setText(buildings[i].toString());
                     posBuilding = i;
                     break;
@@ -197,8 +198,8 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
 
         for (int i = 0; i < allCustomers.size() + 1; i++) {
-            if (null != DataManager.getInstance().getCustomerByID(etsLocation.getCustomerID())) {
-                if (DataManager.getInstance().getCustomerByID(etsLocation.getCustomerID()).getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
+            if (null != etsLocation.getCustomer()) {
+                if (etsLocation.getCustomer().getCode().toLowerCase().equals(spCustomer.getItemAtPosition(i).toString().toLowerCase())) {
                     spCustomer.setSelection(i);
                     posCustomer = i;
                     break;
@@ -308,10 +309,26 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
 
                 case R.id.ivTick: {
                     if (checkValidation()) {
-                        ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCodeOnly(tvLocationID.getText().toString().trim());
 
-                        if (null == etsLoc) {
-                            ETSLocation etsLocation = new ETSLocation(
+                        ETSLocations loc = DataManager.getInstance().getETSLocationsByCode(tvLocationID.getText().toString().trim());
+
+                     //   ETSLocation etsLoc = DataManager.getInstance().getETSLocationByCodeOnly(tvLocationID.getText().toString().trim());
+
+                        if (null == loc) {
+
+                            ETSLocations etsLocations = new ETSLocations();
+                            etsLocations.setID(0);
+                            etsLocations.setCode(tvLocationID.getText().toString());
+                            etsLocations.setDescription(tvDescprition.getText().toString());
+                            if (null!=DataManager.getInstance().getBuildingByCode(spBuilding.getText().toString())) {
+                                etsLocations.setDepartmentID(DataManager.getInstance().getBuildingByCode(spBuilding.getText().toString()).getDepartmentID());
+                            }
+                            etsLocations.setCustomer(DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()));
+                            etsLocations.setSite(DataManager.getInstance().getLocationSite(spSite.getText().toString()));
+                            etsLocations.setAdded(true);
+                            etsLocations.setBuilding(DataManager.getInstance().getBuildingByCode(spBuilding.getText().toString()));
+
+/*                            ETSLocation etsLocation = new ETSLocation(
                                     0,
                                     tvLocationID.getText().toString(),
                                     tvDescprition.getText().toString(),
@@ -319,12 +336,12 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                                     DataManager.getInstance().getLocationSite(spSite.getText().toString()).getID(),
                                     DataManager.getInstance().getETSBuilding(spBuilding.getText().toString()).getID(),
                                     true
-                            );
-                            DataManager.getInstance().addETSLocation(etsLocation);
+                            );*/
+                            DataManager.getInstance().addETSLocation(etsLocations);
                             showToast("ETS Location Added!");
                             finish();
                         } else {
-                            showToast("ETS with Location ID " + tvLocationID.getText().toString() + " Already Exist!");
+                            showToast("" + tvLocationID.getText().toString() + "ETS Location Already Exist!");
                         }
                     }
                     break;

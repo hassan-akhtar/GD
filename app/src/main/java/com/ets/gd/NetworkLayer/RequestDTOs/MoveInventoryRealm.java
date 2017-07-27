@@ -13,9 +13,19 @@ public class MoveInventoryRealm extends RealmObject{
     private int UserID;
     private int JobNumberID;
     private int LocationID;
+    private String LocationCode;
     boolean isIssued;
     boolean isMoved;
     boolean isReceived;
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
+    }
+
     private RealmList<InventoryMoveRealm> Materials;
 
     public int getEquipmentID() {

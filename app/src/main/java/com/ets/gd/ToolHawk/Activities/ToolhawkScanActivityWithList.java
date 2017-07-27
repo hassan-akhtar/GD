@@ -195,7 +195,7 @@ public class ToolhawkScanActivityWithList extends AppCompatActivity implements B
             depBuildingList = DataManager.getInstance().getAllBuildingsByDep(depID);
 
             for (int i = 0; i < depBuildingList.size(); i++) {
-                etsLocationsList = DataManager.getInstance().getAllBuildingETSLocations(depBuildingList.get(i).getID());
+                etsLocationsList.addAll(DataManager.getInstance().getAllBuildingETSLocations(depBuildingList.get(i).getID()));
             }
             mAdapter = new MoveAdapter(etsLocationsList, "loc", ToolhawkScanActivityWithList.this);
 

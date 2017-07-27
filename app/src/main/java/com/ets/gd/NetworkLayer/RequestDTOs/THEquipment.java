@@ -11,6 +11,7 @@ public class THEquipment {
     private String Code;
     private int DepartmentID;
     private int LocationID;
+    private String LocationCode;
     private int ManufacturerID;
     private int ModelID;
     private float UnitCost;
@@ -27,6 +28,14 @@ public class THEquipment {
     }
 
     public THEquipment() {
+    }
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
     }
 
     public int getID() {

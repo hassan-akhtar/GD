@@ -17,6 +17,16 @@ public class MoveInventoryCall{
     private int UserID;
     private int JobNumberID;
     private int LocationID;
+    private String LocationCode;
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
+    }
+
     private List<InventoryMoveCall> Materials;
 
     public int getEquipmentID() {

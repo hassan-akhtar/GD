@@ -126,6 +126,7 @@ public class ReceiveMaterialActivity extends AppCompatActivity {
                     moveInventory = new MoveInventoryRealm();
                     moveInventory.setReceived(true);
                     moveInventory.setLocationID(DataManager.getInstance().getETSLocations(tvLoc.getText().toString()).getID());
+                    moveInventory.setLocationCode(DataManager.getInstance().getETSLocations(tvLoc.getText().toString()).getCode());
                     moveInventory.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                     moveInventory.setJobNumberID(JobNumberID);
 
