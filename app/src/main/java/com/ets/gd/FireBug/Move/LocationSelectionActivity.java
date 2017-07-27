@@ -196,10 +196,12 @@ public class LocationSelectionActivity extends AppCompatActivity {
                     if (taskName.toLowerCase().startsWith("m")) {
                         Intent in = new Intent(LocationSelectionActivity.this, SelectLocationActivity.class);
                         in.putExtra("compName", tvCompanyValue.getText().toString());
+                        in.putExtra("Loc", loc);
                         in.putExtra("type", "move");
                         startActivity(in);
                     } else if (taskName.toLowerCase().startsWith("t")) {
                         Intent in = new Intent(LocationSelectionActivity.this, CustomerActivity.class);
+                        in.putExtra("Loc", loc);
                         in.putExtra("compName", tvCompanyValue.getText().toString());
                         startActivity(in);
                     }

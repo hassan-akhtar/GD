@@ -95,7 +95,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
             public void onClick(View view, int position) {
 
                 if (isSearching) {
-                    if (!customerFilteredList.get(position).getCode().toLowerCase().equals(compName)) {
+                    if (!customerFilteredList.get(position).getCode().toLowerCase().equals(compName.toLowerCase())) {
                         Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
                         sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID, customerFilteredList.get(position).getID());
                         sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, customerFilteredList.get(position).getCode());
@@ -109,7 +109,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
                         Toast.makeText(CustomerActivity.this, "Please select any other company", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    if (!customerList.get(position).getCode().toLowerCase().equals(compName)) {
+                    if (!customerList.get(position).getCode().toLowerCase().equals(compName.toLowerCase())) {
                         Intent in = new Intent(CustomerActivity.this, SelectLocationActivity.class);
                         sharedPreferencesManager.setInt(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_ID, customerList.get(position).getID());
                         sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME, customerList.get(position).getCode());

@@ -243,7 +243,7 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tvLocationID.setEnabled(true);
         spBuilding.setEnabled(true);
         spSite.setEnabled(true);
-        spCustomer.setEnabled(true);
+        spCustomer.setEnabled(false);
         btnViewAllAssets.setVisibility(View.GONE);
         //spCustomer.setSelection(0);
     }
