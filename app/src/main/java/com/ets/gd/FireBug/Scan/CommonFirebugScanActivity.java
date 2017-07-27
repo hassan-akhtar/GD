@@ -78,7 +78,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
     Context mContext;
     FireBugEquipment fireBugEquipment;
     Locations locations;
-    boolean clearAssets = true, assetViewed = false, locViewed = false;
+    boolean  assetViewed = false, locViewed = false;
     private List<Locations> currentCustomerLocationList = new ArrayList<Locations>();
     private List<FireBugEquipment> currentCustomerAssetList = new ArrayList<FireBugEquipment>();
 
@@ -289,9 +289,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                             if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
-                                    if (clearAssets) {
-                                        assetList.clear();
-                                    }
                                     etBarcode.setText("");
                                     rlBottomSheet.setVisibility(View.VISIBLE);
                                     assetList.add(fireBugEquipment);
@@ -299,7 +296,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                                     tvCount.setText("" + assetList.size());
                                     tvCountSupportText.setText("Asset Selected to TRANSFER");
                                     mAdapter.notifyDataSetChanged();
-                                    clearAssets = false;
                                 } else {
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
@@ -789,9 +785,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                 if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                     if (!assetList.contains(fireBugEquipment)) {
                         hideKeyboard();
-                        if (clearAssets) {
-                            assetList.clear();
-                        }
                         etBarcode.setText("");
                         rlBottomSheet.setVisibility(View.VISIBLE);
                         assetList.add(fireBugEquipment);
@@ -799,7 +792,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         tvCount.setText("" + assetList.size());
                         tvCountSupportText.setText("Asset Selected to Move");
                         mAdapter.notifyDataSetChanged();
-                        clearAssets = false;
                     } else {
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
@@ -819,9 +811,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
 
                 if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
                     if (!assetList.contains(fireBugEquipment)) {
-                        if (clearAssets) {
-                            assetList.clear();
-                        }
+
                         hideKeyboard();
                         etBarcode.setText("");
                         rlBottomSheet.setVisibility(View.VISIBLE);
@@ -830,7 +820,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         tvCount.setText("" + assetList.size());
                         tvCountSupportText.setText("Asset Selected to TRANSFER");
                         mAdapter.notifyDataSetChanged();
-                        clearAssets = false;
                     } else {
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
