@@ -51,14 +51,24 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/ivTick"
-            android:layout_width="wrap_content"
-            android:layout_marginRight="20dp"
-            android:layout_centerVertical="true"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_tick" />
     </RelativeLayout>
 
+    <ImageView
+        android:id="@+id/ivAdd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/ivTick"
+        android:src="@drawable/iv_add" />
+
+    <ImageView
+        android:id="@+id/ivTick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/ic_tick" />
 </RelativeLayout>

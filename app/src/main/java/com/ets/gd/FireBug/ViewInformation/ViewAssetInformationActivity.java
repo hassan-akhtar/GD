@@ -1,5 +1,6 @@
 package com.ets.gd.FireBug.ViewInformation;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAssetInformationActivity extends AppCompatActivity {
-    ImageView ivBack, ivChangeCompany, ivTick;
+    ImageView ivBack, ivChangeCompany, ivTick, ivAdd;
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue;
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -62,6 +63,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
+        ivAdd  = (ImageView) findViewById(R.id.ivAdd);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -122,6 +124,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
     private void initListeners() {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
+        ivAdd.setOnClickListener(mGlobal_OnClickListener);
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
@@ -129,6 +132,12 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.ivBack: {
                     finish();
+                    break;
+                }
+                case R.id.ivAdd: {
+                    Intent intent = getIntent();
+                    finish();
+                    startActivity(intent);
                     break;
                 }
 
@@ -208,6 +217,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                                 fireBugEquipment.isUpdated(), true);
                                         DataManager.getInstance().addEquipment(fireBugEquipment);
                                         showToast("Asset Added.");
+                                        ivAdd.setVisibility(View.VISIBLE);
                                         showToast("You can now add notes and inspection dates for this asset.");
                                         isAssetAdded = true;
                                     } catch (Exception e) {

@@ -702,8 +702,8 @@ public class DataManager {
             ETSLocations loc = realm.where(ETSLocations.class).equalTo("Code", code, Case.INSENSITIVE).findFirst();
             if (null != loc) {
                 realm.beginTransaction();
-                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
-                newLoc.setCode(loc.getCode());
+                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getCode());
+                newLoc.setID(loc.getID());
                 newLoc.setDescription(loc.getDescription());
                 newLoc.setSiteID(loc.getSite().getID());
                 newLoc.setCustomerID(loc.getCustomer().getID());

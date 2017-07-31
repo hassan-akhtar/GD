@@ -9,8 +9,9 @@ import io.realm.annotations.PrimaryKey;
  */
 
 public class ETSLocation extends RealmObject {
-    @PrimaryKey
+
     private int ID;
+    @PrimaryKey
     private String Code;
     private String Description;
     private int CustomerID;
