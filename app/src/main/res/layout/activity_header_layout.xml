@@ -61,7 +61,7 @@
         android:visibility="gone"
         android:layout_marginRight="10dp"
         android:layout_toLeftOf="@+id/ivTick"
-        android:src="@drawable/iv_add" />
+        android:src="@drawable/icon_addnew" />
 
     <ImageView
         android:id="@+id/ivTick"
