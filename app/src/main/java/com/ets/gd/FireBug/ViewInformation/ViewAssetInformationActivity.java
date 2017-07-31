@@ -152,11 +152,14 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             if ("viewAsset".equals(actionType)) {
                                 FireBugEquipment fireBugEquipmentt = null;
                                 try {
-                                    FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
-                                    Size  size = new Size();
-                                    size.setID(firebugEqSize.getID());
-                                    size.setCode(firebugEqSize.getCode());
-                                    size.setDescription(firebugEqSize.getDescription());
+                                    Size  size = null;
+                                    if (0!=AssetInformationFragment.posSize) {
+                                        FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
+                                        size = new Size();
+                                        size.setID(firebugEqSize.getID());
+                                        size.setCode(firebugEqSize.getCode());
+                                        size.setDescription(firebugEqSize.getDescription());
+                                    }
                                     fireBugEquipmentt = new FireBugEquipment(
                                             size,
                                             fireBugEquipment.getID(),
@@ -210,11 +213,14 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         customer = DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getItemAtPosition(AssetLocationFragment.posCustomer).toString());
                                         Locations locations = DataManager.getInstance().getAssetLocations(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString());
                                         MyLocation myLocation = new MyLocation(locations.getID(), locations.getCode(), locations.getDescription(), customer.getID(), locations.getSite().getID(), locations.getBuilding().getID());
-                                        FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
-                                        Size  size = new Size();
-                                        size.setID(firebugEqSize.getID());
-                                        size.setCode(firebugEqSize.getCode());
-                                        size.setDescription(firebugEqSize.getDescription());
+                                        Size  size = null;
+                                        if (0!=AssetInformationFragment.posSize) {
+                                            FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
+                                            size = new Size();
+                                            size.setID(firebugEqSize.getID());
+                                            size.setCode(firebugEqSize.getCode());
+                                            size.setDescription(firebugEqSize.getDescription());
+                                        }
                                         fireBugEquipment = new FireBugEquipment(
                                                 size,
                                                 0,
@@ -236,7 +242,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         isAssetAdded = true;
                                     } catch (Exception e) {
                                         e.printStackTrace();
-                                        showToast("Asset not saved..");
+                                        showToast("Asset not saved.");
                                     }
                                 }else{
                                         isAssetAdded = false;

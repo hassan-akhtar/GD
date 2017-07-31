@@ -152,7 +152,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -171,6 +171,15 @@
                 android:textColor="@android:color/white"
                 android:textSize="12sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnSearchLoc"
+                android:layout_marginLeft="20dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@color/colorPrimary"
+                android:drawableTop="@drawable/rsz_ic_scan"
+                android:paddingTop="1dp" />
         </LinearLayout>
 
 
