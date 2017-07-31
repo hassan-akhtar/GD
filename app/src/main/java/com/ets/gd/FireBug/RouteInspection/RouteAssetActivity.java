@@ -28,6 +28,7 @@ import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
@@ -52,6 +53,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     static RouteAssetAdapter routeAssetAdapter;
     SharedPreferencesManager sharedPreferencesManager;
     int cusID;
+    Button btnSearchAsset;
     List<RouteInspection> routeInspections;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -82,6 +84,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         tvBarcodeTitle = (TextView) findViewById(R.id.tvBarcodeTitle);
         tvBarcodeValue = (TextView) findViewById(R.id.tvBarcodeValue);
         btnCross = (Button) findViewById(R.id.btnCross);
+        btnSearchAsset = (Button) findViewById(R.id.btnSearchAsset);
         btnScan = (Button) findViewById(R.id.btnScan);
         etBarcode = (EditText) findViewById(R.id.etBarcode);
         tvBarcodeTitle.setVisibility(View.GONE);
@@ -123,7 +126,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     private void initListeners() {
         // btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
-
+        btnSearchAsset.setOnClickListener(mGlobal_OnClickListener);
 
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteAssetActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
@@ -196,6 +199,13 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     finish();
                 }
                 break;
+
+
+                case R.id.btnSearchAsset: {
+                    checkCameraPermission();
+                }
+                break;
+
             }
         }
 
@@ -309,6 +319,57 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
 
     @Override
     public void BarcodeScanned(Barcode barcode) {
+        String message = barcode.getMessage();
+        FireBugEquipment fbEqScanned = DataManager.getInstance().getEquipment(message);
+        boolean isFound = false;
+        int pos = 0;
+        if (null != fbEqScanned) {
+            for (int i = 0; i < assetList.size(); i++) {
+                FireBugEquipment loc = DataManager.getInstance().getEquipmentByID(assetList.get(i).getEquipmentID());
 
+
+                if (loc.getCode().toLowerCase().equals(fbEqScanned.getCode().toLowerCase())) {
+                    isFound = true;
+                    pos = i;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                boolean isHydro = false;
+                FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(pos).getEquipmentID());
+                routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(pos).getRouteID());
+                if (null != routeInspections && routeInspections.get(0).isHydro()) {
+                    isHydro = true;
+                }
+                if (!fireBugEquipment.isRouteUnitInspected() || isHydro) {
+                    RouteAssetInspectionActivity.routeAsset = null;
+                    RouteAssetInspectionActivity.routeAsset = assetList.get(pos);
+                    Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
+                    in.putExtra("compName", tvCompanyName.getText().toString());
+                    in.putExtra("tag", "" + equipmentList.get(pos).getCode());
+                    in.putExtra("loc", tvLocName.getText().toString());
+                    in.putExtra("routeName", tvRouteName.getText().toString());
+                    in.putExtra("deviceTypeID", assetList.get(pos).getDeviceTypeID());
+                    in.putExtra("deviceType", equipmentList.get(pos).getModel().getCode());
+                    in.putExtra("cusID", cusID);
+                    in.putExtra("equipmentID", equipmentList.get(pos).getID());
+                    in.putExtra("desp", equipmentList.get(pos).getManufacturer().getCode());
+                    in.putExtra("RouteID", assetList.get(pos).getRouteID());
+                    in.putExtra("AssetCount", tvAssetCount.getText().toString());
+                    in.putExtra("LocCount", tvLocCount.getText().toString());
+                    startActivity(in);
+                } else {
+                    Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                showToast("Asset not Found in "+tvLocName.getText().toString() );
+            }
+        } else {
+            showToast("No Asset Found!");
+        }
+    }
+    void showToast(String msg) {
+        Toast.makeText(RouteAssetActivity.this, msg, Toast.LENGTH_LONG).show();
     }
 }

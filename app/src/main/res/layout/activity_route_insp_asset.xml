@@ -177,7 +177,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/btnSearchLoc"
+                android:id="@+id/btnSearchAsset"
                 android:layout_width="32dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
