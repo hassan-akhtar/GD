@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +54,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     public static Spinner spLocation, spCustomer;
     AutoCompleteTextView spSite, spBuilding;
     View rootView;
-    public static EditText tvDescprition, tvLocationID;
+    public static EditText tvDescprition, tvLocationID, tvTagIDCopy;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
     // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
@@ -66,6 +67,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     String[] locations;
     String[] customers;
     Customer customer;
+    RelativeLayout rlTagid;
     public static String customerName;
     List<FirebugBuilding> allBuilding = new ArrayList<FirebugBuilding>();
     Button btnSearchLoc;
@@ -98,11 +100,15 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         letLocationID = (TextInputLayout) rootView.findViewById(R.id.letLocationID);
         tvDescprition = (EditText) rootView.findViewById(R.id.tvDescprition);
         tvLocationID = (EditText) rootView.findViewById(R.id.tvLocationID);
+        rlTagid = (RelativeLayout) rootView.findViewById(R.id.rlTagid);
+        tvTagIDCopy = (EditText) rootView.findViewById(R.id.tvEquipmentCodeCopy);
         btnSearchLoc = (Button) rootView.findViewById(R.id.btnSearchLoc);
         letLocationID.setVisibility(View.INVISIBLE);
         tvLocationID.setVisibility(View.INVISIBLE);
+        rlTagid.setVisibility(View.VISIBLE);
 
-        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1
+                ) {
             spCustomer.setBackgroundColor(Color.parseColor("#ffffff"));
             spSite.setBackgroundColor(Color.parseColor("#ffffff"));
             spLocation.setBackgroundColor(Color.parseColor("#ffffff"));

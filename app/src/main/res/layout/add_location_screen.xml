@@ -11,10 +11,40 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
+            <RelativeLayout
+                android:id="@+id/rlTagid"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/ltvTagID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/TextLabel">
+
+                    <EditText
+                        android:id="@+id/tvEquipmentCodeCopy"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:enabled="false"
+                        android:layout_marginRight="20dp"
+                        android:hint="@string/txt_tagID"
+                        android:imeOptions="actionDone"
+                        android:singleLine="true"
+                        android:maxLines="1"
+                        android:paddingLeft="12dp" />
+                </android.support.design.widget.TextInputLayout>
+
+
+            </RelativeLayout>
 
 
             <RelativeLayout
                 android:id="@+id/lCusID"
+                android:layout_below="@+id/rlTagid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp">

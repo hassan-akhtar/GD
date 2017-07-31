@@ -360,51 +360,55 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
                     } else {
 
-                        new AlertDialog.Builder(MoveAssetActivity.this)
-                                .setTitle("Move")
-                                .setMessage("Are you sure you want to move " + equipmentList.size() + " asset(s) to " + moveCode + " ?")
-                                .setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
+                        if (!tvFromLoc.getText().toString().toLowerCase().equals(tvToLoc.getText().toString().toLowerCase())) {
+                            new AlertDialog.Builder(MoveAssetActivity.this)
+                                    .setTitle("Move")
+                                    .setMessage("Are you sure you want to move " + equipmentList.size() + " asset(s) to " + moveCode + " ?")
+                                    .setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
 
-                                        for (int i = 0; i < equipmentList.size(); i++) {
-                                            ToolhawkMove toolhawkMove = new ToolhawkMove();
-                                            toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
+                                            for (int i = 0; i < equipmentList.size(); i++) {
+                                                ToolhawkMove toolhawkMove = new ToolhawkMove();
+                                                toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
 
-                                            if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
-                                                toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
-                                                toolhawkMove.setMoveType("Equipment");
-                                            } else {
-                                                toolhawkMove.setToEquipmentID(0);
+                                                if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
+                                                    toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
+                                                    toolhawkMove.setMoveType("Equipment");
+                                                } else {
+                                                    toolhawkMove.setToEquipmentID(0);
+                                                }
+                                                if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
+                                                    toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
+                                                    toolhawkMove.setToLocationCode(DataManager.getInstance().getETSLocationByCode(moveCode).getCode());
+                                                    toolhawkMove.setMoveType("Location");
+                                                } else {
+                                                    toolhawkMove.setToLocationID(0);
+                                                }
+                                                if (null != DataManager.getInstance().getJobNumber(moveCode)) {
+                                                    toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
+                                                    toolhawkMove.setMoveType("JobNumber");
+                                                } else {
+                                                    toolhawkMove.setToJobNumberID(0);
+                                                }
+                                                toolhawkMove.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                                                equipmentToMoveList.add(toolhawkMove);
                                             }
-                                            if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
-                                                toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
-                                                toolhawkMove.setToLocationCode(DataManager.getInstance().getETSLocationByCode(moveCode).getCode());
-                                                toolhawkMove.setMoveType("Location");
-                                            } else {
-                                                toolhawkMove.setToLocationID(0);
-                                            }
-                                            if (null != DataManager.getInstance().getJobNumber(moveCode)) {
-                                                toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
-                                                toolhawkMove.setMoveType("JobNumber");
-                                            } else {
-                                                toolhawkMove.setToJobNumberID(0);
-                                            }
-                                            toolhawkMove.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
-                                            equipmentToMoveList.add(toolhawkMove);
+
+                                            DataManager.getInstance().saveSyncToolhawkMoveData(equipmentToMoveList);
+                                            showToast("Move Complete!");
+                                            sendMessage("finish");
+                                            finish();
                                         }
-
-                                        DataManager.getInstance().saveSyncToolhawkMoveData(equipmentToMoveList);
-                                        showToast("Move Complete!");
-                                        sendMessage("finish");
-                                        finish();
-                                    }
-                                })
-                                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        // do nothing
-                                    }
-                                })
-                                .show();
+                                    })
+                                    .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    })
+                                    .show();
+                        } else {
+                            showToast("You cannot move to same location");
+                        }
 
                     }
                     break;

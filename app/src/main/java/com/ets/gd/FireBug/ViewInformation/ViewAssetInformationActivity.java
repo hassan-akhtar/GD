@@ -215,6 +215,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         showToast("Asset not saved..");
                                     }
                                 }else{
+                                        isAssetAdded = false;
                                         showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                                 }
                                 }
@@ -255,8 +256,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                     DataManager.getInstance().addUpdateAssetInspecDates(AssetInformationFragment.tvTagID.getText().toString(), new InspectionDates(
                                             InspectionDatesFragment.tvDaily.getText().toString().trim(),
                                             InspectionDatesFragment.tvWeekly.getText().toString().trim(),
-                                            InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
                                             InspectionDatesFragment.tvMonthly.getText().toString().trim(),
+                                            InspectionDatesFragment.tvQuarterly.getText().toString().trim(),
                                             InspectionDatesFragment.tvSemiAnnual.getText().toString().trim(),
                                             InspectionDatesFragment.tvAnnual.getText().toString().trim(),
                                             InspectionDatesFragment.tvFiveYears.getText().toString().trim(),

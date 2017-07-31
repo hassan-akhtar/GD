@@ -8,6 +8,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -178,6 +180,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     void setViewForViewAsset() {
 
         tvTagID.setText("" + fireBugEquipment.getCode());
+        AssetLocationFragment.tvTagIDCopy.setText(tvTagID.getText().toString());
         tvTagID.setEnabled(false);
         if (null != fireBugEquipment.getSerialNo()) {
             tvSrNo.setText(fireBugEquipment.getSerialNo());
@@ -316,6 +319,18 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             }
         });
 
+
+        tvTagID.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {   //Convert the Text to String
+
+                AssetLocationFragment.tvTagIDCopy.setText(tvTagID.getText().toString());
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+        });
     }
 
     public void hideKeyboard() {
