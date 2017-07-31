@@ -3,6 +3,7 @@ package com.ets.gd.Activities.Login;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -11,11 +12,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Activities.Sync.DeviceRegistrationActivity;
+import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
@@ -38,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername, etPassword;
     private Button btnLogin;
     private CommonActions ca;
+    ImageView imgLogo;
     ToggleButton tbSync;
     SharedPreferencesManager sharedPreferencesManager;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
@@ -59,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.etEmail);
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        imgLogo = (ImageView) findViewById(R.id.imageView5);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
         etUsername.requestFocus();
 
@@ -88,6 +93,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void initListeners() {
         btnLogin.setOnClickListener(mGlobal_OnClickListener);
+        imgLogo.setOnClickListener(mGlobal_OnClickListener);
     }
 
 
@@ -152,6 +158,11 @@ public class LoginActivity extends AppCompatActivity {
                         }
 
                     }
+                    break;
+                }
+
+                case R.id.imageView5: {
+                    openUrlInExternalBrowser(Constants.URL_GENERAL_DATA);
                     break;
                 }
             }
@@ -222,6 +233,12 @@ public class LoginActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
+
+    void openUrlInExternalBrowser(String url) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse(url));
+        startActivity(browserIntent);
+    }
 
     public static final String md5(final String s) {
         //final String MD5 = "54686F6D-6173-4D63-446F-6E616C64";

@@ -12,6 +12,9 @@ public class Constants {
 
     public static final String URL_BASE = BASE_URL_UAT;
 
+
+    public static final String URL_GENERAL_DATA = "https://www.general-data.com";
+
     //  Callback Keys Firebug
     public static final int RESPONSE_LOGIN = 0;
     public static final int RESPONSE_CUSTOMERS = 1;
