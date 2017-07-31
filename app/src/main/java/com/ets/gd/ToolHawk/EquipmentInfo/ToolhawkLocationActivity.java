@@ -326,7 +326,16 @@ public class ToolhawkLocationActivity extends AppCompatActivity implements Spinn
                             etsLocations.setCustomer(DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()));
                             etsLocations.setSite(DataManager.getInstance().getLocationSite(spSite.getText().toString()));
                             etsLocations.setAdded(true);
-                            etsLocations.setBuilding(DataManager.getInstance().getBuildingByCode(spBuilding.getText().toString()));
+                            ETSBuilding etsBuilding = DataManager.getInstance().getETSBuilding(spBuilding.getText().toString());
+                            Building building  = new Building();
+                            if(null!=etsBuilding){
+                                building.setID(etsBuilding.getID());
+                                building.setCode(etsBuilding.getCode());
+                                building.setDescription(etsBuilding.getDescription());
+                                building.setDepartmentID(etsBuilding.getDepartment().getID());
+                                building.setSiteID(etsBuilding.getSite().getID());
+                            }
+                            etsLocations.setBuilding(building);
 
 /*                            ETSLocation etsLocation = new ETSLocation(
                                     0,
