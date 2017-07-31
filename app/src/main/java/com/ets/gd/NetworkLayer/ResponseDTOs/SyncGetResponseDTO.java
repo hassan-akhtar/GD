@@ -27,6 +27,7 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<SortOrderInventory>  InventoryMenuSortOrder;
     RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
+    RealmList<FirebugEqSize>  lstSizes;
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
         return lstFbEquipmentNotes;
@@ -34,6 +35,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public RealmList<FirebugEqSize> getLstSizes() {
+        return lstSizes;
+    }
+
+    public void setLstSizes(RealmList<FirebugEqSize> lstSizes) {
+        this.lstSizes = lstSizes;
     }
 
     public RealmList<DeviceType> getLstDeviceType() {

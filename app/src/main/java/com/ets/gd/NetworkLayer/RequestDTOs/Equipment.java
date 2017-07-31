@@ -13,6 +13,7 @@ public class Equipment  {
     private String SerialNo;
     private String ManufacturerDate;
     private int VendorID;
+    private int SizeID;
     private int AgentID;
     private int AssignedLocation;
     private String AssignedLocationCode;
@@ -26,6 +27,14 @@ public class Equipment  {
 
     public void setAssignedLocationCode(String assignedLocationCode) {
         AssignedLocationCode = assignedLocationCode;
+    }
+
+    public int getSizeID() {
+        return SizeID;
+    }
+
+    public void setSizeID(int sizeID) {
+        SizeID = sizeID;
     }
 
     public int getID() {

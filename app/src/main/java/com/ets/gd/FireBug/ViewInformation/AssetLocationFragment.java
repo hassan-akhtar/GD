@@ -186,6 +186,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     void setViewForViewAsset() {
         spLocation.setEnabled(false);
+        tvTagIDCopy.setText(AssetInformationFragment.tvTagID.getText().toString());
         spSite.setEnabled(false);
         btnSearchLoc.setVisibility(View.GONE);
         spBuilding.setEnabled(false);

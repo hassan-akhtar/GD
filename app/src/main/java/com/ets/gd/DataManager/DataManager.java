@@ -28,6 +28,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
@@ -615,6 +616,11 @@ public class DataManager {
         return realm.where(DeviceType.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
+
+    public FirebugEqSize getAssetSize(String Code) {
+        return realm.where(FirebugEqSize.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
+    }
+
     // For getting asset all assets from DB
     public MyLocation getAssetLocation(String Code) {
         return realm.where(MyLocation.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
@@ -941,6 +947,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setInventoryMenuSortOrder(obj.getInventoryMenuSortOrder());
                 realmSyncGetResponseDTO.setFireBugMenuSortOrder(obj.getFireBugMenuSortOrder());
                 realmSyncGetResponseDTO.setToolHawkMenuSortOrder(obj.getToolHawkMenuSortOrder());
+                realmSyncGetResponseDTO.setLstSizes(obj.getLstSizes());
                 realm.copyToRealmOrUpdate(realmSyncGetResponseDTO);
             }
         });

@@ -21,8 +21,10 @@ import com.ets.gd.Models.RealmSyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -150,7 +152,13 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             if ("viewAsset".equals(actionType)) {
                                 FireBugEquipment fireBugEquipmentt = null;
                                 try {
+                                    FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
+                                    Size  size = new Size();
+                                    size.setID(firebugEqSize.getID());
+                                    size.setCode(firebugEqSize.getCode());
+                                    size.setDescription(firebugEqSize.getDescription());
                                     fireBugEquipmentt = new FireBugEquipment(
+                                            size,
                                             fireBugEquipment.getID(),
                                             AssetInformationFragment.tvTagID.getText().toString(),
                                             AssetInformationFragment.tvSrNo.getText().toString().trim(),
@@ -202,7 +210,13 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         customer = DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getItemAtPosition(AssetLocationFragment.posCustomer).toString());
                                         Locations locations = DataManager.getInstance().getAssetLocations(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString());
                                         MyLocation myLocation = new MyLocation(locations.getID(), locations.getCode(), locations.getDescription(), customer.getID(), locations.getSite().getID(), locations.getBuilding().getID());
+                                        FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
+                                        Size  size = new Size();
+                                        size.setID(firebugEqSize.getID());
+                                        size.setCode(firebugEqSize.getCode());
+                                        size.setDescription(firebugEqSize.getDescription());
                                         fireBugEquipment = new FireBugEquipment(
+                                                size,
                                                 0,
                                                 AssetInformationFragment.tvTagID.getText().toString(),
                                                 AssetInformationFragment.tvSrNo.getText().toString().trim(),

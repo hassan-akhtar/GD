@@ -173,12 +173,45 @@
                     android:paddingLeft="12dp" />
             </android.support.design.widget.TextInputLayout>
 
+
             <RelativeLayout
-                android:id="@+id/rlVendor"
+                android:id="@+id/rlSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/lMfgDate"
                 android:layout_marginTop="3dp">
+
+
+                <TextView
+                    android:id="@+id/tvLableSize"
+                    android:visibility="visible"
+                    android:layout_marginLeft="30dp"
+                    android:text="Size"
+                    android:textSize="12sp"
+                    android:textColor="@color/blueDark"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+
+                <Spinner
+                    android:id="@+id/spSize"
+                    android:layout_below="@+id/tvLableSize"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="23dp"
+                    android:layout_marginRight="23dp"
+                    android:background="@drawable/sp_bg_new"
+                    android:paddingBottom="10dp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlVendor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/rlSize"
+                android:layout_marginTop="17dp">
 
 
                 <TextView

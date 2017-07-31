@@ -32,6 +32,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<SortOrderInventory>  InventoryMenuSortOrder;
     RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
+    RealmList<FirebugEqSize>  lstSizes;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -39,6 +40,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<FirebugEqSize> getLstSizes() {
+        return lstSizes;
+    }
+
+    public void setLstSizes(RealmList<FirebugEqSize> lstSizes) {
+        this.lstSizes = lstSizes;
     }
 
     public RealmList<com.ets.gd.NetworkLayer.ResponseDTOs.Material> getLstMaterials() {

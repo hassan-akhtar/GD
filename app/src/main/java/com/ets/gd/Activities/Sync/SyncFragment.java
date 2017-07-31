@@ -835,6 +835,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setManufacturerID(fireBugEquipment.getManufacturer().getID());
                 equipment.setModelID(fireBugEquipment.getModel().getID());
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
+                if (null!=fireBugEquipment.getSize()) {
+                    equipment.setSizeID(fireBugEquipment.getSize().getID());
+                }
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
                 if (null != fireBugEquipment.getVendorCode()) {
                     equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
@@ -889,6 +892,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setDeviceTypeID(fireBugEquipment.getDeviceType().getID());
                 equipment.setManufacturerID(fireBugEquipment.getManufacturer().getID());
                 equipment.setModelID(fireBugEquipment.getModel().getID());
+                if (null!=fireBugEquipment.getSize()) {
+                    equipment.setSizeID(fireBugEquipment.getSize().getID());
+                }
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
 
