@@ -344,6 +344,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                             EquipmentLocationInfo EquipmentLocationInfo =null;
                             ETSLocations etsLoc = DataManager.getInstance().getETSLocationsByCode(spLocation.getItemAtPosition(posLoc).toString());
                             if (null!=etsLoc) {
+                               etsLocation = new ETSLocation();
                                 etsLocation.setCode(etsLoc.getCode());
                                 etsLocation.setID(etsLoc.getID());
                                 etsLocation.setDescription(etsLoc.getDescription());
