@@ -93,7 +93,7 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                         startActivity(in);
 
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please enter your Customer ID", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Please enter your Server URL!", Toast.LENGTH_LONG).show();
                     }
                     break;
                 }

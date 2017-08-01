@@ -8,11 +8,20 @@ public class MyInspectionDates extends RealmObject {
 
     private int ID;
     private int EquipmentID;
+    private String EquipmentCode;
     private String InspectionType;
     private String DueDate;
 
     public int getID() {
         return ID;
+    }
+
+    public String getEquipmentCode() {
+        return EquipmentCode;
+    }
+
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public void setID(int ID) {

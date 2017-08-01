@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.R;
@@ -47,7 +48,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
     public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0, posSize = 0;
-
+    boolean updateDates = false;
 
     public AssetInformationFragment() {
         // Required empty public constructor
@@ -209,15 +210,15 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size()+1; i++) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size() + 1; i++) {
             if (fireBugEquipment.getDeviceType().getCode().toLowerCase().equals(spDeviceType.getItemAtPosition(i).toString().toLowerCase())) {
                 spDeviceType.setSelection(i);
                 break;
             }
         }
 
-        if (null!=fireBugEquipment.getSize()) {
-            for (int i = 0; i < realmSyncGetResponseDTO.getLstSizes().size()+1; i++) {
+        if (null != fireBugEquipment.getSize()) {
+            for (int i = 0; i < realmSyncGetResponseDTO.getLstSizes().size() + 1; i++) {
                 if (fireBugEquipment.getSize().getCode().toLowerCase().equals(spSize.getItemAtPosition(i).toString().toLowerCase())) {
                     spSize.setSelection(i);
                     break;
@@ -226,7 +227,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
 
-        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size()+1; i++) {
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size() + 1; i++) {
             if (fireBugEquipment.getManufacturers().getCode().toLowerCase().equals(spManufacturer.getItemAtPosition(i).toString().toLowerCase())) {
                 spManufacturer.setSelection(i);
                 posManufacturer = i;
@@ -272,8 +273,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         }
 
 
-        if (null!=fireBugEquipment.getVendorCode()) {
-            for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size()+1; i++) {
+        if (null != fireBugEquipment.getVendorCode()) {
+            for (int i = 0; i < realmSyncGetResponseDTO.getLstVendorCodes().size() + 1; i++) {
                 if (fireBugEquipment.getVendorCode().getCode().toLowerCase().equals(spVendor.getItemAtPosition(i).toString().toLowerCase())) {
                     spVendor.setSelection(i);
                     break;
@@ -281,8 +282,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             }
         }
 
-        if (null!=fireBugEquipment.getAgentType()) {
-            for (int i = 1; i < realmSyncGetResponseDTO.getLstAgentTypes().size()+1; i++) {
+        if (null != fireBugEquipment.getAgentType()) {
+            for (int i = 1; i < realmSyncGetResponseDTO.getLstAgentTypes().size() + 1; i++) {
                 if (fireBugEquipment.getAgentType().getCode().toLowerCase().equals(spAgent.getItemAtPosition(i).toString().toLowerCase())) {
                     spAgent.setSelection(i);
                     break;
@@ -294,6 +295,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
 
     void setViewForVAddAsset() {
+        updateDates = true;
         tvTagID.setText("");
         tvTagID.setEnabled(true);
         tvSrNo.setText("");
@@ -348,12 +350,15 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
                 AssetLocationFragment.tvTagIDCopy.setText(tvTagID.getText().toString());
             }
+
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
             }
         });
+
     }
 
     public void hideKeyboard() {
@@ -410,7 +415,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                         e.printStackTrace();
                     }
                 } else {
-                  //  tvLableDeviceType.setVisibility(View.VISIBLE);
+                    //  tvLableDeviceType.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -420,14 +425,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posManufacturer = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                 //   tvLableManufacturer.setVisibility(View.GONE);
+                    //   tvLableManufacturer.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
-                 //   tvLableManufacturer.setVisibility(View.VISIBLE);
+                } else {
+                    //   tvLableManufacturer.setVisibility(View.VISIBLE);
                 }
 
                 if (0 != posManufacturer) {
@@ -473,14 +478,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posModel = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                  //  tvLableModel.setVisibility(View.GONE);
+                    //  tvLableModel.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else{
-                   // tvLableModel.setVisibility(View.VISIBLE);
+                } else {
+                    // tvLableModel.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -491,14 +496,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posVendor = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                 //   tvLableVendor.setVisibility(View.GONE);
+                    //   tvLableVendor.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }else {
-                  //  tvLableVendor.setVisibility(View.VISIBLE);
+                } else {
+                    //  tvLableVendor.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -510,10 +515,10 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {
-                       // tvLableAgentType.setVisibility(View.GONE);
+                        // tvLableAgentType.setVisibility(View.GONE);
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    }else{
-                       // tvLableAgentType.setVisibility(View.VISIBLE);
+                    } else {
+                        // tvLableAgentType.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -529,7 +534,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                     if (0 == position) {
                         // tvLableAgentType.setVisibility(View.GONE);
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
-                    }else{
+                    } else {
                         // tvLableAgentType.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
@@ -546,7 +551,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
     }
 
+
+
     void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
+
+
+
 }

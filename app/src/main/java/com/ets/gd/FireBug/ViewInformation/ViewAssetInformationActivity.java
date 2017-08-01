@@ -18,6 +18,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.AgentType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -28,7 +29,9 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ViewAssetInformationActivity extends AppCompatActivity {
@@ -65,7 +68,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         ivChangeCompany = (ImageView) findViewById(R.id.ivChangeCompany);
-        ivAdd  = (ImageView) findViewById(R.id.ivAdd);
+        ivAdd = (ImageView) findViewById(R.id.ivAdd);
         tvCompanyValue = (TextView) findViewById(R.id.tvCompanyValue);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -152,8 +155,8 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             if ("viewAsset".equals(actionType)) {
                                 FireBugEquipment fireBugEquipmentt = null;
                                 try {
-                                    Size  size = null;
-                                    if (0!=AssetInformationFragment.posSize) {
+                                    Size size = null;
+                                    if (0 != AssetInformationFragment.posSize) {
                                         FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
                                         size = new Size();
                                         size.setID(firebugEqSize.getID());
@@ -174,12 +177,13 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                             DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
                                             DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
                                             true, fireBugEquipment.isAdded());
+                                    DataManager.getInstance().addEquipment(fireBugEquipmentt);
                                     showToast("Asset Updated.");
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                     showToast("Asset not Updated.");
                                 }
-                                DataManager.getInstance().addEquipment(fireBugEquipmentt);
+
                             } else {
                                 tabLayout.getTabAt(1).select();
                                 showToast("Please enter location for asset!");
@@ -191,71 +195,72 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                         if ("viewAsset".equals(actionType)) {
                             showToast("Asset's Location can't be Updated");
                         } else {
-                            if(checkValidationAddAsset())  {
+                            if (checkValidationAddAsset()) {
                                 List<FireBugEquipment> fireBugEquipmentList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getSelectedItem().toString()).getID());
                                 FireBugEquipment equipment = DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString());
                                 boolean exists = false;
 
-                          //  if (fireBugEquipment == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString())) {
+                                //  if (fireBugEquipment == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString())) {
                                 if (checkValidationAddAssetLocation()) {
 
-                                    if (null!=equipment) {
-                                        for(FireBugEquipment eq : fireBugEquipmentList){
-                                            if(eq.getCode().equals(equipment.getCode())){
+                                    if (null != equipment) {
+                                        for (FireBugEquipment eq : fireBugEquipmentList) {
+                                            if (eq.getCode().equals(equipment.getCode())) {
                                                 exists = true;
                                                 break;
                                             }
                                         }
                                     }
                                     if (!exists) {
-                                    FireBugEquipment fireBugEquipment = new FireBugEquipment();
-                                    try {
-                                        customer = DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getItemAtPosition(AssetLocationFragment.posCustomer).toString());
-                                        Locations locations = DataManager.getInstance().getAssetLocations(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString());
-                                        MyLocation myLocation = new MyLocation(locations.getID(), locations.getCode(), locations.getDescription(), customer.getID(), locations.getSite().getID(), locations.getBuilding().getID());
-                                        Size  size = null;
-                                        if (0!=AssetInformationFragment.posSize) {
-                                            FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
-                                            size = new Size();
-                                            size.setID(firebugEqSize.getID());
-                                            size.setCode(firebugEqSize.getCode());
-                                            size.setDescription(firebugEqSize.getDescription());
+                                        FireBugEquipment fireBugEquipment = new FireBugEquipment();
+                                        try {
+                                            customer = DataManager.getInstance().getCustomerByCode(AssetLocationFragment.spCustomer.getItemAtPosition(AssetLocationFragment.posCustomer).toString());
+                                            Locations locations = DataManager.getInstance().getAssetLocations(AssetLocationFragment.spLocation.getItemAtPosition(AssetLocationFragment.posLoc).toString());
+                                            MyLocation myLocation = new MyLocation(locations.getID(), locations.getCode(), locations.getDescription(), customer.getID(), locations.getSite().getID(), locations.getBuilding().getID());
+                                            Size size = null;
+                                            if (0 != AssetInformationFragment.posSize) {
+                                                FirebugEqSize firebugEqSize = DataManager.getInstance().getAssetSize(AssetInformationFragment.spSize.getItemAtPosition(AssetInformationFragment.posSize).toString());
+                                                size = new Size();
+                                                size.setID(firebugEqSize.getID());
+                                                size.setCode(firebugEqSize.getCode());
+                                                size.setDescription(firebugEqSize.getDescription());
+                                            }
+                                            fireBugEquipment = new FireBugEquipment(
+                                                    size,
+                                                    0,
+                                                    AssetInformationFragment.tvTagID.getText().toString(),
+                                                    AssetInformationFragment.tvSrNo.getText().toString().trim(),
+                                                    AssetInformationFragment.tvMfgDate.getText().toString().trim(),
+                                                    DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
+                                                    customer,
+                                                    DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
+                                                    myLocation,
+                                                    DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
+                                                    DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
+                                                    DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
+                                                    fireBugEquipment.isUpdated(), true);
+                                            DataManager.getInstance().addEquipment(fireBugEquipment);
+                                            showToast("Asset Added.");
+                                            updateInspectionDates(DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString()), AssetInformationFragment.tvMfgDate.getText().toString().trim());
+                                            ivAdd.setVisibility(View.VISIBLE);
+                                            showToast("You can now add notes and inspection dates for this asset.");
+                                            isAssetAdded = true;
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            showToast("Asset not saved.");
                                         }
-                                        fireBugEquipment = new FireBugEquipment(
-                                                size,
-                                                0,
-                                                AssetInformationFragment.tvTagID.getText().toString(),
-                                                AssetInformationFragment.tvSrNo.getText().toString().trim(),
-                                                AssetInformationFragment.tvMfgDate.getText().toString().trim(),
-                                                DataManager.getInstance().getAssetAgentType(AssetInformationFragment.spAgent.getItemAtPosition(AssetInformationFragment.posAgent).toString()),
-                                                customer,
-                                                DataManager.getInstance().getAssetDeviceType(AssetInformationFragment.spDeviceType.getItemAtPosition(AssetInformationFragment.posDeviceType).toString()),
-                                                myLocation,
-                                                DataManager.getInstance().getAssetManufacturer(AssetInformationFragment.spManufacturer.getItemAtPosition(AssetInformationFragment.posManufacturer).toString()),
-                                                DataManager.getInstance().getAssetVendorCode(AssetInformationFragment.spVendor.getItemAtPosition(AssetInformationFragment.posVendor).toString()),
-                                                DataManager.getInstance().getAssetModel(AssetInformationFragment.spModel.getItemAtPosition(AssetInformationFragment.posModel).toString()),
-                                                fireBugEquipment.isUpdated(), true);
-                                        DataManager.getInstance().addEquipment(fireBugEquipment);
-                                        showToast("Asset Added.");
-                                        ivAdd.setVisibility(View.VISIBLE);
-                                        showToast("You can now add notes and inspection dates for this asset.");
-                                        isAssetAdded = true;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        showToast("Asset not saved.");
-                                    }
-                                }else{
+                                    } else {
                                         isAssetAdded = false;
                                         showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
+                                    }
                                 }
-                                }
-                          //  } else {
-                           //     showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
-                           // }
-                        }else{
+                                //  } else {
+                                //     showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
+                                // }
+                            } else {
                                 tabLayout.getTabAt(0).select();
                             }
-                    }
+                        }
 
 
                     } else if (2 == tabLayout.getSelectedTabPosition()) {
@@ -263,12 +268,12 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                             if (checkValidationAddAssetNote()) {
                                 int ID = 0;
 
-                                if( null!=fireBugEquipment && 0!=fireBugEquipment.getID()){
+                                if (null != fireBugEquipment && 0 != fireBugEquipment.getID()) {
                                     ID = fireBugEquipment.getID();
                                 }
 
 
-                                DataManager.getInstance().addUpdateAssetNote(ID,AssetInformationFragment.tvTagID.getText().toString(), sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
+                                DataManager.getInstance().addUpdateAssetNote(ID, AssetInformationFragment.tvTagID.getText().toString(), sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID), newNotesList);
                                 if ("viewAsset".equals(actionType)) {
                                     showToast("Asset's Note(s) Updated");
                                 } else {
@@ -316,6 +321,27 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
 
     };
 
+    void updateInspectionDates(FireBugEquipment equipment, String mfgDate) {
+        if (mfgDate.equals("MM/DD/YYYY")) {
+            String format = null;
+            try {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+                format = simpleDateFormat.format(new Date());
+                mfgDate = format;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        if (null != equipment.getAgentType()) {
+            DataManager.getInstance().addAssetInspecDatesForAgentType(equipment,mfgDate);
+        }
+
+    }
+
+
+
     private boolean checkValidationAddAsset() {
         if ("".equals(AssetInformationFragment.tvTagID.getText().toString().trim())) {
             showToast("Please enter Tag ID");
@@ -343,7 +369,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
             showToast("Please select company");
         } else if (0 == AssetLocationFragment.posLoc) {
             showToast("Please select Location ID");
-        }  else {
+        } else {
             return true;
         }
 

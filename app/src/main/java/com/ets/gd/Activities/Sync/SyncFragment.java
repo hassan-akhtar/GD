@@ -854,14 +854,24 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
 
-                List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
+                List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getCode());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
                     if (null != InspectionDatess.get(j).getDueDate() && !"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
                         InspectionDates inspectionDates = new InspectionDates();
                         inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
                         inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
-                        InspectionDates.add(inspectionDates);
+                        boolean ifexists = false;
+                        for(int i=0;i<InspectionDates.size();i++){
+                            if(InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())){
+                                ifexists = true;
+                                break;
+                            }
+                        }
+
+                        if(!ifexists){
+                            InspectionDates.add(inspectionDates);
+                        }
                     }
                 }
                 equipment.setInspectionDates(InspectionDates);
@@ -912,14 +922,24 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
 
-                List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getID());
+                List<MyInspectionDates> InspectionDatess = DataManager.getInstance().getEquipmentInspectionDates(fireBugEquipment.getCode());
                 for (int j = 0; j < InspectionDatess.size(); j++) {
                     if (null != InspectionDatess.get(j).getDueDate() && !"MM/DD/YYYY".equals(InspectionDatess.get(j).getDueDate())) {
                         InspectionDates inspectionDates = new InspectionDates();
                         inspectionDates.setEquipmentID(InspectionDatess.get(j).getEquipmentID());
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
                         inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
-                        InspectionDates.add(inspectionDates);
+                        boolean ifexists = false;
+                        for(int i=0;i<InspectionDates.size();i++){
+                            if(InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())){
+                                ifexists = true;
+                                break;
+                            }
+                        }
+
+                        if(!ifexists){
+                            InspectionDates.add(inspectionDates);
+                        }
                     }
                 }
                 equipment.setInspectionDates(InspectionDates);

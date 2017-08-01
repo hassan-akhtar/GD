@@ -259,9 +259,9 @@ public class DataManager {
             @Override
             public void execute(Realm realm) {
                 FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
-                RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", fireBugEquipment.getID()).findAll();
+                RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentCode", fireBugEquipment.getCode()).findAll();
                 RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
-                if (0 != results.size()) {
+                if (0 != results.size() && results.size()==10) {
                     results.get(0).setDueDate(inspectionNewDates.getDaily());
                     results.get(1).setDueDate(inspectionNewDates.getWeekly());
                     results.get(2).setDueDate(inspectionNewDates.getMonthly());
@@ -278,6 +278,7 @@ public class DataManager {
                     MyInspectionDates myInspectionDaily = realm.createObject(MyInspectionDates.class);
                     myInspectionDaily.setID(0);
                     myInspectionDaily.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionDaily.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionDaily.setDueDate(inspectionNewDates.getDaily());
                     myInspectionDaily.setInspectionType("Daily");
                     res.add(myInspectionDaily);
@@ -285,6 +286,7 @@ public class DataManager {
                     MyInspectionDates myInspectionWeekly = realm.createObject(MyInspectionDates.class);
                     myInspectionWeekly.setID(0);
                     myInspectionWeekly.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionWeekly.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionWeekly.setDueDate(inspectionNewDates.getWeekly());
                     myInspectionWeekly.setInspectionType("Weekly");
                     res.add(myInspectionWeekly);
@@ -292,6 +294,7 @@ public class DataManager {
                     MyInspectionDates myInspectionMonthly = realm.createObject(MyInspectionDates.class);
                     myInspectionMonthly.setID(0);
                     myInspectionMonthly.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionMonthly.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionMonthly.setDueDate(inspectionNewDates.getMonthly());
                     myInspectionMonthly.setInspectionType("Monthly");
                     res.add(myInspectionMonthly);
@@ -299,12 +302,14 @@ public class DataManager {
                     MyInspectionDates myInspectionQuaterly = realm.createObject(MyInspectionDates.class);
                     myInspectionQuaterly.setID(0);
                     myInspectionQuaterly.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionQuaterly.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionQuaterly.setDueDate(inspectionNewDates.getQuaterly());
                     myInspectionQuaterly.setInspectionType("Quarterly");
                     res.add(myInspectionQuaterly);
 
                     MyInspectionDates myInspectionSemiAnnual = realm.createObject(MyInspectionDates.class);
                     myInspectionSemiAnnual.setID(0);
+                    myInspectionSemiAnnual.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionSemiAnnual.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSemiAnnual.setDueDate(inspectionNewDates.getSemiAnnual());
                     myInspectionSemiAnnual.setInspectionType("6 Months");
@@ -313,6 +318,7 @@ public class DataManager {
                     MyInspectionDates myInspectionAnnual = realm.createObject(MyInspectionDates.class);
                     myInspectionAnnual.setID(0);
                     myInspectionAnnual.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionAnnual.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionAnnual.setDueDate(inspectionNewDates.getAnnual());
                     myInspectionAnnual.setInspectionType("Annual");
                     res.add(myInspectionAnnual);
@@ -320,12 +326,14 @@ public class DataManager {
                     MyInspectionDates myInspectionFiveYear = realm.createObject(MyInspectionDates.class);
                     myInspectionFiveYear.setID(0);
                     myInspectionFiveYear.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionFiveYear.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionFiveYear.setDueDate(inspectionNewDates.getFiveYear());
                     myInspectionFiveYear.setInspectionType("5 Years");
                     res.add(myInspectionFiveYear);
 
                     MyInspectionDates myInspectionSixYear = realm.createObject(MyInspectionDates.class);
                     myInspectionSixYear.setID(0);
+                    myInspectionSixYear.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionSixYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSixYear.setDueDate(inspectionNewDates.getSixYear());
                     myInspectionSixYear.setInspectionType("6 Years");
@@ -333,6 +341,7 @@ public class DataManager {
 
                     MyInspectionDates myInspectionTenYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTenYears.setID(0);
+                    myInspectionTenYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTenYears.setEquipmentID(fireBugEquipment.getID());
                     myInspectionTenYears.setDueDate(inspectionNewDates.getTenYear());
                     myInspectionTenYears.setInspectionType("10 Years");
@@ -341,10 +350,11 @@ public class DataManager {
 
                     MyInspectionDates myInspectionTwelveYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTwelveYears.setID(0);
+                    myInspectionTwelveYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTwelveYears.setEquipmentID(fireBugEquipment.getID());
                     myInspectionTwelveYears.setDueDate(inspectionNewDates.getTwelveYear());
                     myInspectionTwelveYears.setInspectionType("12 Years");
-                    res.add(myInspectionTenYears);
+                    res.add(myInspectionTwelveYears);
 
 
                 }
@@ -356,6 +366,71 @@ public class DataManager {
         });
 
     }
+
+
+    public void addAssetInspecDatesForAgentType(final FireBugEquipment fireBugEquipment, final String mfgDate) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
+
+
+                if (fireBugEquipment.getAgentType().isFiveYear()) {
+                    MyInspectionDates myInspectionFiveYear = realm.createObject(MyInspectionDates.class);
+                    myInspectionFiveYear.setID(0);
+                    myInspectionFiveYear.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionFiveYear.setEquipmentCode(fireBugEquipment.getCode());
+                    myInspectionFiveYear.setDueDate(addYearsToDate(mfgDate,5));
+                    myInspectionFiveYear.setInspectionType("5 Years");
+                    res.add(myInspectionFiveYear);
+                }
+
+                if (fireBugEquipment.getAgentType().isSixYear()) {
+                    MyInspectionDates myInspectionSixYear = realm.createObject(MyInspectionDates.class);
+                    myInspectionSixYear.setID(0);
+                    myInspectionSixYear.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionSixYear.setEquipmentCode(fireBugEquipment.getCode());
+                    myInspectionSixYear.setDueDate(addYearsToDate(mfgDate,6));
+                    myInspectionSixYear.setInspectionType("6 Years");
+                    res.add(myInspectionSixYear);
+                }
+
+
+                if (fireBugEquipment.getAgentType().isTenYear()) {
+                    MyInspectionDates myInspectionTenYears = realm.createObject(MyInspectionDates.class);
+                    myInspectionTenYears.setID(0);
+                    myInspectionTenYears.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionTenYears.setDueDate(addYearsToDate(mfgDate,10));
+                    myInspectionTenYears.setEquipmentCode(fireBugEquipment.getCode());
+                    myInspectionTenYears.setInspectionType("10 Years");
+                    res.add(myInspectionTenYears);
+                }
+
+
+                if (fireBugEquipment.getAgentType().isTwelveYear()) {
+                    MyInspectionDates myInspectionTwelveYears = realm.createObject(MyInspectionDates.class);
+                    myInspectionTwelveYears.setID(0);
+                    myInspectionTwelveYears.setEquipmentID(fireBugEquipment.getID());
+                    myInspectionTwelveYears.setDueDate(addYearsToDate(mfgDate,12));
+                    myInspectionTwelveYears.setEquipmentCode(fireBugEquipment.getCode());
+                    myInspectionTwelveYears.setInspectionType("12 Years");
+                    res.add(myInspectionTwelveYears);
+                }
+
+
+                fireBugEquipment.setInspectionDates(res);
+            }
+        });
+
+    }
+
+    String addYearsToDate(String mfgDate, int years) {
+        String[] str = mfgDate.split("/");
+        int newYear = Integer.parseInt(str[2]) + years;
+        return str[0] + "/" + str[1] + "/" + newYear;
+    }
+
 
 
     public boolean doesLocationExist(String barcodeID) {
@@ -839,9 +914,9 @@ public class DataManager {
         return copied;
     }
 
-    public List<MyInspectionDates> getEquipmentInspectionDates(int EquipmentID) {
+    public List<MyInspectionDates> getEquipmentInspectionDates(String EquipmentCode) {
 
-        RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentID", EquipmentID).findAll();
+        RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentCode", EquipmentCode).findAll();
         List<MyInspectionDates> copied = realm.copyFromRealm(results);
         return copied;
     }
