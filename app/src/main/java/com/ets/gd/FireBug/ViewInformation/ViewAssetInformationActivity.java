@@ -24,6 +24,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.R;
@@ -33,6 +34,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import io.realm.RealmList;
 
 public class ViewAssetInformationActivity extends AppCompatActivity {
     ImageView ivBack, ivChangeCompany, ivTick, ivAdd;
@@ -163,7 +166,9 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         size.setCode(firebugEqSize.getCode());
                                         size.setDescription(firebugEqSize.getDescription());
                                     }
+
                                     fireBugEquipmentt = new FireBugEquipment(
+                                            fireBugEquipment.getInspectionDates(),
                                             size,
                                             fireBugEquipment.getID(),
                                             AssetInformationFragment.tvTagID.getText().toString(),
@@ -226,6 +231,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                                 size.setDescription(firebugEqSize.getDescription());
                                             }
                                             fireBugEquipment = new FireBugEquipment(
+                                                    null,
                                                     size,
                                                     0,
                                                     AssetInformationFragment.tvTagID.getText().toString(),

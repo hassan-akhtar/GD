@@ -1,9 +1,11 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 public class RouteAsset extends RealmObject {
 
+    @PrimaryKey
     private int ID;
     private int Quantity;
     private int LocationID;
@@ -12,6 +14,7 @@ public class RouteAsset extends RealmObject {
     private String InspectionType;
     private int RouteLocationID;
     private int DeviceTypeID;
+    private boolean isInspected;
 
     public int getID() {
         return ID;
@@ -23,6 +26,14 @@ public class RouteAsset extends RealmObject {
 
     public int getQuantity() {
         return Quantity;
+    }
+
+    public boolean isInspected() {
+        return isInspected;
+    }
+
+    public void setInspected(boolean inspected) {
+        isInspected = inspected;
     }
 
     public void setQuantity(int quantity) {

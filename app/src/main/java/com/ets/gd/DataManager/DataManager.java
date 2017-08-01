@@ -29,8 +29,10 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Images;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
+import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -43,10 +45,12 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderFireBug;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderInventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderToolHawk;
@@ -63,6 +67,7 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import io.realm.annotations.PrimaryKey;
 
 public class DataManager {
 
@@ -123,13 +128,13 @@ public class DataManager {
 
 
     // For adding an asset info in DB
-    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId,String newLocCode,  String operation, int cusID) {
+    public void updateAssetLocationID(final List<FireBugEquipment> assetList, final String newLocId, String newLocCode, String operation, int cusID) {
         if (realm.isInTransaction()) {
             realm.commitTransaction();
         }
         realm.beginTransaction();
         MyLocation myLocation;
-        if (0!=Integer.parseInt(newLocId)) {
+        if (0 != Integer.parseInt(newLocId)) {
             if (null != realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst()) {
                 myLocation = realm.where(MyLocation.class).equalTo("ID", Integer.parseInt(newLocId)).findFirst();
             } else {
@@ -143,7 +148,7 @@ public class DataManager {
         } else {
             if (null != realm.where(MyLocation.class).equalTo("Code", newLocCode).findFirst()) {
                 myLocation = realm.where(MyLocation.class).equalTo("Code", newLocCode).findFirst();
-            }else {
+            } else {
                 Locations locations = realm.where(Locations.class).equalTo("Code", newLocCode).findFirst();
                 myLocation = realm.createObject(MyLocation.class, locations.getCode());
                 myLocation.setID(locations.getID());
@@ -261,7 +266,7 @@ public class DataManager {
                 FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
                 RealmResults<MyInspectionDates> results = realm.where(MyInspectionDates.class).equalTo("EquipmentCode", fireBugEquipment.getCode()).findAll();
                 RealmList<MyInspectionDates> res = new RealmList<MyInspectionDates>();
-                if (0 != results.size() && results.size()==10) {
+                if (0 != results.size() && results.size() == 10) {
                     results.get(0).setDueDate(inspectionNewDates.getDaily());
                     results.get(1).setDueDate(inspectionNewDates.getWeekly());
                     results.get(2).setDueDate(inspectionNewDates.getMonthly());
@@ -381,7 +386,7 @@ public class DataManager {
                     myInspectionFiveYear.setID(0);
                     myInspectionFiveYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionFiveYear.setEquipmentCode(fireBugEquipment.getCode());
-                    myInspectionFiveYear.setDueDate(addYearsToDate(mfgDate,5));
+                    myInspectionFiveYear.setDueDate(addYearsToDate(mfgDate, 5));
                     myInspectionFiveYear.setInspectionType("5 Years");
                     res.add(myInspectionFiveYear);
                 }
@@ -391,7 +396,7 @@ public class DataManager {
                     myInspectionSixYear.setID(0);
                     myInspectionSixYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSixYear.setEquipmentCode(fireBugEquipment.getCode());
-                    myInspectionSixYear.setDueDate(addYearsToDate(mfgDate,6));
+                    myInspectionSixYear.setDueDate(addYearsToDate(mfgDate, 6));
                     myInspectionSixYear.setInspectionType("6 Years");
                     res.add(myInspectionSixYear);
                 }
@@ -401,7 +406,7 @@ public class DataManager {
                     MyInspectionDates myInspectionTenYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTenYears.setID(0);
                     myInspectionTenYears.setEquipmentID(fireBugEquipment.getID());
-                    myInspectionTenYears.setDueDate(addYearsToDate(mfgDate,10));
+                    myInspectionTenYears.setDueDate(addYearsToDate(mfgDate, 10));
                     myInspectionTenYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTenYears.setInspectionType("10 Years");
                     res.add(myInspectionTenYears);
@@ -412,7 +417,7 @@ public class DataManager {
                     MyInspectionDates myInspectionTwelveYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTwelveYears.setID(0);
                     myInspectionTwelveYears.setEquipmentID(fireBugEquipment.getID());
-                    myInspectionTwelveYears.setDueDate(addYearsToDate(mfgDate,12));
+                    myInspectionTwelveYears.setDueDate(addYearsToDate(mfgDate, 12));
                     myInspectionTwelveYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTwelveYears.setInspectionType("12 Years");
                     res.add(myInspectionTwelveYears);
@@ -430,7 +435,6 @@ public class DataManager {
         int newYear = Integer.parseInt(str[2]) + years;
         return str[0] + "/" + str[1] + "/" + newYear;
     }
-
 
 
     public boolean doesLocationExist(String barcodeID) {
@@ -463,14 +467,14 @@ public class DataManager {
     }
 
     public Building getLocationBuilding(String barcodeID) {
-        if (null!=realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst()) {
+        if (null != realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst()) {
             return realm.where(Building.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
         } else {
             realm.beginTransaction();
             Building building = null;
             FirebugBuilding firebugBuilding = realm.where(FirebugBuilding.class).equalTo("Code", barcodeID, Case.INSENSITIVE).findFirst();
-            if (null!=firebugBuilding) {
-                building = realm.createObject(Building.class,firebugBuilding.getID());
+            if (null != firebugBuilding) {
+                building = realm.createObject(Building.class, firebugBuilding.getID());
                 building.setCode(firebugBuilding.getCode());
                 building.setSiteID(firebugBuilding.getSite().getID());
                 //building.setDepartmentID(firebugBuilding.g);
@@ -743,6 +747,26 @@ public class DataManager {
     public void addEquipment(FireBugEquipment fireBugEquipment) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(fireBugEquipment);
+/*        FireBugEquipment fbEq = realm.createObject(FireBugEquipment.class,fireBugEquipment.getCode());
+        fbEq.setID(fireBugEquipment.getID());
+        fbEq.setSerialNo(fireBugEquipment.getSerialNo());
+        fbEq.setManufacturerDate(fireBugEquipment.getManufacturerDate());
+        fbEq.setAgentType(fireBugEquipment.getAgentType());
+        fbEq.setCustomer(fireBugEquipment.getCustomer());
+        fbEq.setDeviceType(fireBugEquipment.getDeviceType());
+        fbEq.setLocation(fireBugEquipment.getLocation());
+        fbEq.setManufacturer(fireBugEquipment.getManufacturer());
+        fbEq.setManufacturerDate(fireBugEquipment.getManufacturerDate());
+        fbEq.setUpdated(fireBugEquipment.isUpdated());
+        fbEq.setAdded(fireBugEquipment.isAdded());
+        fbEq.setMoved(fireBugEquipment.isMoved());
+        fbEq.setTransferred(fireBugEquipment.isTransferred());
+        fbEq.setUnitInspected(fireBugEquipment.isUnitInspected());
+        fbEq.setRouteUnitInspected(fireBugEquipment.isRouteUnitInspected());
+        fbEq.setSize(fireBugEquipment.getSize());
+        fbEq.setVendorCode(fireBugEquipment.getVendorCode());
+        fbEq.setModel(fireBugEquipment.getModel());
+        fbEq.setInspectionDates(fireBugEquipment.getInspectionDates());*/
         realm.commitTransaction();
     }
 
@@ -828,9 +852,9 @@ public class DataManager {
     public void updateInventoryQuantity(int materialID, int locID, int quantity) {
         Inventory inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("LocationID", locID).findFirst();
 
-       if(null== inventory){
-           inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("EquipmentID", locID).findFirst();
-       }
+        if (null == inventory) {
+            inventory = realm.where(Inventory.class).equalTo("MaterialID", materialID).equalTo("EquipmentID", locID).findFirst();
+        }
         realm.beginTransaction();
         inventory.setQuantity(inventory.getQuantity() - quantity);
         realm.copyToRealmOrUpdate(inventory);
@@ -900,9 +924,9 @@ public class DataManager {
     }
 
 
-    public List<EquipmentNote> getAllNotes(int EquipmentID) {
+    public List<EquipmentNote> getAllNotes(String EquipmentCode) {
 
-        RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentID", EquipmentID).findAll();
+        RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentCode", EquipmentCode).findAll();
         List<EquipmentNote> copied = realm.copyFromRealm(results);
         return copied;
     }
@@ -1098,14 +1122,31 @@ public class DataManager {
     }
 
 
-    public List<UnitinspectionResult> getUnitinspectionResults(){
+    public List<UnitinspectionResult> getUnitinspectionResults() {
         return realm.where(UnitinspectionResult.class).findAll();
     }
 
-    public List<RouteAsset> getRouteAssets(){
+    public List<RouteAsset> getRouteAssets() {
         return realm.where(RouteAsset.class).findAll();
     }
 
+    public RouteAsset getRouteAsset(int eqID, int routeID, String inspType) {
+        return realm.where(RouteAsset.class).equalTo("EquipmentID",eqID).equalTo("RouteID",routeID).equalTo("InspectionType",inspType).findFirst();
+    }
+
+
+    public List<RouteAsset> getAllLocationRouteAssets(int locID, int RouteID) {
+        return realm.where(RouteAsset.class).equalTo("RouteID", RouteID).equalTo("LocationID", locID).findAll();
+    }
+
+
+    public void updateAssetRouteAssetInspectionStatus(int routeAssetID) {
+        realm.beginTransaction();
+        RouteAsset assett = realm.where(RouteAsset.class).equalTo("ID", routeAssetID).findFirst();
+        assett.setInspected(true);
+        realm.copyToRealmOrUpdate(assett);
+        realm.commitTransaction();
+    }
 
     public void saveUnitInspectionResults(final UnitinspectionResult inspectionResult) {
 
@@ -1118,6 +1159,7 @@ public class DataManager {
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
                 unitinspectionResult.setResult(inspectionResult.isResult());
+                unitinspectionResult.setRouteAssetID(inspectionResult.getRouteAssetID());
                 unitinspectionResult.setRouteID(inspectionResult.getRouteID());
                 unitinspectionResult.setNewLocationID(inspectionResult.getNewLocationID());
                 unitinspectionResult.setNewEquipmentID(inspectionResult.getNewEquipmentID());

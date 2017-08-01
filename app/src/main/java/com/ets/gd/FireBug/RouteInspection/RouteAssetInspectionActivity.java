@@ -245,26 +245,26 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                         List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
 
-                        if (isHydro) {
-                            for (UnitinspectionResult obj : unitinspectionResults) {
+                        //   if (isHydro) {
+                        for (UnitinspectionResult obj : unitinspectionResults) {
 
-                                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
-                                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                                    alreadyInspectedLocally = true;
-                                    break;
-                                }
+                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                                    spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                                alreadyInspectedLocally = true;
+                                break;
                             }
-
-                            for (RouteAsset obj : routeAssetList) {
-
-                                if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
-                                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                                    alreadyInspectedFromWeb = false;
-                                    break;
-                                }
-                            }
-
                         }
+
+                        for (RouteAsset obj : routeAssetList) {
+
+                            if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
+                                    spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                                alreadyInspectedFromWeb = false;
+                                break;
+                            }
+                        }
+
+                        // }
 
 
                         if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
@@ -307,7 +307,10 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                                 }
                             }
                             inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-
+                            RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(),RouteID,spInspType.getItemAtPosition(posInspType).toString());
+                            if (null!=rouAsset) {
+                                inspectionResult.setRouteAssetID(rouAsset.getID());
+                            }
                             DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                             showToast("Inspection completed Successfully");
                             //sendMessage("finish");
@@ -430,7 +433,10 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-
+        RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(),RouteID,spInspType.getItemAtPosition(posInspType).toString());
+        if (null!=rouAsset) {
+            inspectionResult.setRouteAssetID(rouAsset.getID());
+        }
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
         //sendMessage("finish");
@@ -547,26 +553,26 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
             List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
             List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
-            if (isHydro) {
-                for (UnitinspectionResult obj : unitinspectionResults) {
+            //if (isHydro) {
+            for (UnitinspectionResult obj : unitinspectionResults) {
 
-                    if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
-                            spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                        alreadyInspectedLocally = true;
-                        break;
-                    }
+                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                    alreadyInspectedLocally = true;
+                    break;
                 }
-
-                for (RouteAsset obj : routeAssetList) {
-
-                    if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
-                            spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
-                        alreadyInspectedFromWeb = false;
-                        break;
-                    }
-                }
-
             }
+
+            for (RouteAsset obj : routeAssetList) {
+
+                if (obj.getEquipmentID() == DataManager.getInstance().getEquipment(tvAssetName.getText().toString()).getID() &&
+                        spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
+                    alreadyInspectedFromWeb = false;
+                    break;
+                }
+            }
+
+            //}
             if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
                 showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
             } else {

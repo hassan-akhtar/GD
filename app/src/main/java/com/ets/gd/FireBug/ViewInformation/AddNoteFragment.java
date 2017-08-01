@@ -81,7 +81,7 @@ public class AddNoteFragment extends Fragment {
     void setViewForViewAsset() {
         lstNotes.clear();
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
-        lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getID());
+        lstNotes = DataManager.getInstance().getAllNotes(fireBugEquipment.getCode());
 
         for(int i=0 ; i<lstNotes.size();i++){
             if (null!=lstNotes.get(i).getModifiedTime()) {

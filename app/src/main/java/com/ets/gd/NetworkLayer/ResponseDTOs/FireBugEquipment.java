@@ -35,7 +35,8 @@ public class FireBugEquipment  extends RealmObject {
     private RealmList<MyInspectionDates> InspectionDates;
     private RealmList<InspectionResult> InspectionResults;
 
-    public FireBugEquipment(String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model) {
+    public FireBugEquipment( String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model) {
+
         Code = code;
         SerialNo = serialNo;
         ManufacturerDate = manufacturerDate;
@@ -48,7 +49,8 @@ public class FireBugEquipment  extends RealmObject {
         Model = model;
     }
 
-    public FireBugEquipment(Size size, int ID, String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isUpdated, boolean isAdded) {
+    public FireBugEquipment(RealmList<MyInspectionDates> InspectionDates ,Size size, int ID, String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isUpdated, boolean isAdded) {
+        this.InspectionDates = InspectionDates;
         this.Size = size;
         this.ID = ID;
         Code = code;

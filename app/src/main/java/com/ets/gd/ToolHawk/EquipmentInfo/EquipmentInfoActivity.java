@@ -538,6 +538,12 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             case R.id.spModel: {
                 posModel = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
+                Model model = DataManager.getInstance().getAssetModel(strSelectedState);
+                if (null!=model && null!=model.getUnitCost()) {
+                    tvUnitCost.setText(""+model.getUnitCost());
+                }else {
+                    tvUnitCost.setText("");
+                }
                 if (0 == position) {
                     //  tvLableModel.setVisibility(View.GONE);
                     try {
