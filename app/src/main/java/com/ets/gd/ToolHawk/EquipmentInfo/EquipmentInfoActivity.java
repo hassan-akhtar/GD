@@ -340,7 +340,8 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                     if (checkValidation()) {
 
                         if (taskType.startsWith("vie")) {
-                            ETSLocation etsLocation = new ETSLocation();
+                            ETSLocation etsLocation = null;
+                            EquipmentLocationInfo EquipmentLocationInfo =null;
                             ETSLocations etsLoc = DataManager.getInstance().getETSLocationsByCode(spLocation.getItemAtPosition(posLoc).toString());
                             if (null!=etsLoc) {
                                 etsLocation.setCode(etsLoc.getCode());
@@ -349,10 +350,18 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 etsLocation.setCustomerID(etsLoc.getCustomer().getID());
                                 etsLocation.setSiteID(etsLoc.getSite().getID());
                                 etsLocation.setBuildingID(etsLoc.getBuilding().getID());
+
+                                EquipmentLocationInfo =new EquipmentLocationInfo();
+                                EquipmentLocationInfo.setLocationType("Location");
+                                EquipmentLocationInfo.setLocation(etsLoc.getCode());
                             }
-                            EquipmentLocationInfo EquipmentLocationInfo =new EquipmentLocationInfo();
-                            EquipmentLocationInfo.setLocationType("Location");
-                            EquipmentLocationInfo.setLocation(etsLoc.getCode());
+
+
+                            if(null==EquipmentLocationInfo){
+                                if (null!=toolhawkEquipment && null!=toolhawkEquipment.getEquipmentLocationInfo()) {
+                                    EquipmentLocationInfo = toolhawkEquipment.getEquipmentLocationInfo();
+                                }
+                            }
                             equipment = new ToolhawkEquipment(
                                     toolhawkEquipment.getID(),
                                     tvEquipmentCode.getText().toString(),
