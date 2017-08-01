@@ -44,6 +44,7 @@ import com.ets.gd.Models.CheckInOutEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
+import com.ets.gd.NetworkLayer.ResponseDTOs.MobileUser;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
 import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
@@ -346,7 +347,10 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
                             if (!"".equals(etReturnDate.getText().toString().trim())) {
                                 syncPostCheckOutRequestDTO = new CheckOut();
-                                syncPostCheckOutRequestDTO.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                                MobileUser user = DataManager.getInstance().getMobileUser(returningUser);
+                                if (null!=user) {
+                                    syncPostCheckOutRequestDTO.setUserID(user.getID());
+                                }
                                 if (isUser) {
                                     syncPostCheckOutRequestDTO.setCheckOutType("User");
                                 } else {
@@ -372,7 +376,10 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
                         } else {
                             syncPostCheckInRequestDTO = new CheckIn();
-                            syncPostCheckInRequestDTO.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                            MobileUser user = DataManager.getInstance().getMobileUser(returningUser);
+                            if (null!=user) {
+                                syncPostCheckInRequestDTO.setUserID(user.getID());
+                            }
                             if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
                                 syncPostCheckInRequestDTO.setJobNumberID(DataManager.getInstance().getJobNumber(JobNumber).getID());
                             } else {

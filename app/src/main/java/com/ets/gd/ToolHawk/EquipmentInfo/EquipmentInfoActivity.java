@@ -160,7 +160,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         if (taskType.startsWith("vie")) {
 
 
-            if (null != toolhawkEquipment.getEquipmentLocationInfo() && toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("loc")) {
+            if (null != toolhawkEquipment.getEquipmentLocationInfo() && null!=toolhawkEquipment.getEquipmentLocationInfo().getLocationType() && toolhawkEquipment.getEquipmentLocationInfo().getLocationType().toLowerCase().startsWith("loc")) {
                 if (null != locList) {
                     int sizeLocations = locList.size() + 1;
                     locations = new String[sizeLocations];
@@ -351,6 +351,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 etsLocation.setBuildingID(etsLoc.getBuilding().getID());
                             }
                             EquipmentLocationInfo EquipmentLocationInfo =new EquipmentLocationInfo();
+                            EquipmentLocationInfo.setLocationType("Location");
                             EquipmentLocationInfo.setLocation(etsLoc.getCode());
                             equipment = new ToolhawkEquipment(
                                     toolhawkEquipment.getID(),
@@ -384,6 +385,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
                                 }
                                 EquipmentLocationInfo EquipmentLocationInfo =new EquipmentLocationInfo();
+                                EquipmentLocationInfo.setLocationType("Location");
                                 EquipmentLocationInfo.setLocation(etsLoc.getCode());
                                 equipment = new ToolhawkEquipment(
                                         0,
@@ -538,12 +540,18 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             case R.id.spModel: {
                 posModel = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
-                Model model = DataManager.getInstance().getAssetModel(strSelectedState);
-                if (null!=model && null!=model.getUnitCost()) {
-                    tvUnitCost.setText(""+model.getUnitCost());
-                }else {
-                    tvUnitCost.setText("");
+
+
+                if (!taskType.startsWith("vie")) {
+                    Model model = DataManager.getInstance().getAssetModel(strSelectedState);
+                    if (null!=model && null!=model.getUnitCost()) {
+                        tvUnitCost.setText(""+model.getUnitCost());
+                    }else {
+                        tvUnitCost.setText("");
+                    }
                 }
+
+
                 if (0 == position) {
                     //  tvLableModel.setVisibility(View.GONE);
                     try {
