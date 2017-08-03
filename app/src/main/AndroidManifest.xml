@@ -149,7 +149,8 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".Inventory.Receive.ReceiveMaterialActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".ToolHawk.EquipmentInfo.ToolHawkNotesActivity"></activity>
     </application>
 
 </manifest>

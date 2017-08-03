@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -50,6 +51,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     List<MaintenanceCategory> lstCategory = new ArrayList<MaintenanceCategory>();
     String[] categories;
     String[] actions;
+    LinearLayout llNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +66,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     }
 
     private void initViews() {
-
+        llNotes = (LinearLayout) findViewById(R.id.llNotes);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         tvAssetID = (TextView) findViewById(R.id.tvAssetID);
@@ -136,6 +138,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     private void initListeners() {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         tvSave.setOnClickListener(mGlobal_OnClickListener);
+        llNotes.setOnClickListener(mGlobal_OnClickListener);
         tvCancel.setOnClickListener(mGlobal_OnClickListener);
         etMaintDate.setOnClickListener(mGlobal_OnClickListener);
         spAction.setOnItemSelectedListener(this);
@@ -166,6 +169,11 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
         ivTick.setVisibility(View.GONE);
     }
 
+    private void showKeyboardForNote() {
+        etNote.requestFocus();
+        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+    }
 
     public void hideKeyboard() {
         getWindow().setSoftInputMode(
@@ -191,6 +199,10 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
                     break;
                 }
 
+                case R.id.llNotes: {
+                    showKeyboardForNote();
+                    break;
+                }
 
                 case R.id.etMaintDate: {
                     hideKeyboard();

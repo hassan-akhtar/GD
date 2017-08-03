@@ -1,5 +1,6 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -36,8 +37,10 @@ public class ToolhawkEquipment extends RealmObject {
     private Parent Parent;
     private boolean isAdded;
     private boolean isUpdated;
+    private RealmList<EquipmentNoteTH> ToolHawkEquipmentNotes;
 
-    public ToolhawkEquipment(int ID, String code, String unitCost, com.ets.gd.NetworkLayer.ResponseDTOs.Department department, com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation ETSLocation, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isAdded, boolean isUpdated,EquipmentLocationInfo EquipmentLocationInfo) {
+    public ToolhawkEquipment( int ID, String code, String unitCost, com.ets.gd.NetworkLayer.ResponseDTOs.Department department, com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation ETSLocation, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isAdded, boolean isUpdated,EquipmentLocationInfo EquipmentLocationInfo) {
+
         this.ID = ID;
         Code = code;
         UnitCost = unitCost;
@@ -50,9 +53,16 @@ public class ToolhawkEquipment extends RealmObject {
         this.EquipmentLocationInfo = EquipmentLocationInfo;
     }
 
-
     public ToolhawkEquipment() {
 
+    }
+
+    public RealmList<EquipmentNoteTH> getToolHawkEquipmentNotes() {
+        return ToolHawkEquipmentNotes;
+    }
+
+    public void setToolHawkEquipmentNotes(RealmList<EquipmentNoteTH> toolHawkEquipmentNotes) {
+        ToolHawkEquipmentNotes = toolHawkEquipmentNotes;
     }
 
     public int getID() {

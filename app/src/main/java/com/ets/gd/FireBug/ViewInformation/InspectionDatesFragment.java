@@ -101,7 +101,18 @@ public class InspectionDatesFragment extends Fragment {
             InspectionDates = fireBugEquipment.getInspectionDates();
             if (null != InspectionDates && 0 != InspectionDates.size()) {
 
-                if (!InspectionDates.get(0).getDueDate().contains("/")) {
+                boolean containsSlash = false;
+
+                for(int i = 0 ;i>InspectionDates.size();i++){
+                    if (null != InspectionDates.get(i).getDueDate()) {
+                        if(InspectionDates.get(i).getDueDate().contains("/")){
+                            containsSlash=true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!containsSlash) {
                     try {
                         if (null != InspectionDates.get(0).getDueDate()) {
                             String[] separated = InspectionDates.get(0).getDueDate().split("T");

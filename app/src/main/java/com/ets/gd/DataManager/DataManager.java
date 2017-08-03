@@ -26,6 +26,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
@@ -252,6 +253,40 @@ public class DataManager {
                 }
 
                 ViewAssetInformationActivity.newNotesList.clear();
+
+            }
+        });
+
+    }
+
+
+    public void addUpdateTHAssetNote(final int equipmentID, final String equipmentCode, final int customerID, final List<EquipmentNoteTH> noteList) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                SyncCustomer realmSyncGetResponse = realm.where(SyncCustomer.class).equalTo("CustomerId", customerID).findFirst();
+                //RealmResults<EquipmentNote> oldList = realm.where(EquipmentNote.class).equalTo("EquipmentID",equipmentID).findAll();
+                // RealmList<EquipmentNote> res = new RealmList<EquipmentNote>();
+                // res.addAll(oldList);
+                //RealmList<EquipmentNote> newItems = new RealmList<EquipmentNote>();
+
+                for (int i = 0; i < noteList.size(); i++) {
+                    EquipmentNoteTH equipmentNote = realm.createObject(EquipmentNoteTH.class);
+                    equipmentNote.setNote(noteList.get(i).getNote());
+                    equipmentNote.setEquipmentID(equipmentID);
+                    equipmentNote.setEquipmentCode(equipmentCode);
+                    equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
+                    equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
+                    // newItems.add(equipmentNote);
+                }
+
+                if (0 != noteList.size()) {
+                    ToolhawkEquipment toolhawkEquipment = realm.where(ToolhawkEquipment.class).equalTo("Code", equipmentCode).findFirst();
+                    //res.addAll(newItems);
+                    toolhawkEquipment.setUpdated(true);
+                    // realmSyncGetResponse.setLstFbEquipmentNotes(res);
+                }
 
             }
         });
@@ -831,8 +866,8 @@ public class DataManager {
             ETSLocations loc = realm.where(ETSLocations.class).equalTo("ID", ID).findFirst();
             if (null != loc) {
                 realm.beginTransaction();
-                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getID());
-                newLoc.setCode(loc.getCode());
+                ETSLocation newLoc = realm.createObject(ETSLocation.class, loc.getCode());
+                newLoc.setID(loc.getID());
                 newLoc.setDescription(loc.getDescription());
                 newLoc.setSiteID(loc.getSite().getID());
                 newLoc.setBuildingID(loc.getBuilding().getID());
@@ -931,10 +966,33 @@ public class DataManager {
         return copied;
     }
 
+    public List<EquipmentNoteTH> getAllTHNotes(String EquipmentCode) {
+
+        RealmResults<EquipmentNoteTH> results = realm.where(EquipmentNoteTH.class).equalTo("EquipmentCode", EquipmentCode).findAll();
+        List<EquipmentNoteTH> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
+    public void deleteAllTHNotes(String EquipmentCode) {
+        realm.beginTransaction();
+        realm.where(EquipmentNoteTH.class).equalTo("EquipmentCode", EquipmentCode).findAll().deleteAllFromRealm();
+        realm.commitTransaction();
+
+    }
+
     public List<EquipmentNote> getAllNotesByCode(String EquipmentCode) {
 
         RealmResults<EquipmentNote> results = realm.where(EquipmentNote.class).equalTo("EquipmentCode", EquipmentCode).findAll();
         List<EquipmentNote> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
+    public List<EquipmentNoteTH> getAllTHNotesByCode(String EquipmentCode) {
+
+        RealmResults<EquipmentNoteTH> results = realm.where(EquipmentNoteTH.class).equalTo("EquipmentCode", EquipmentCode).findAll();
+        List<EquipmentNoteTH> copied = realm.copyFromRealm(results);
         return copied;
     }
 
@@ -1131,7 +1189,7 @@ public class DataManager {
     }
 
     public RouteAsset getRouteAsset(int eqID, int routeID, String inspType) {
-        return realm.where(RouteAsset.class).equalTo("EquipmentID",eqID).equalTo("RouteID",routeID).equalTo("InspectionType",inspType).findFirst();
+        return realm.where(RouteAsset.class).equalTo("EquipmentID", eqID).equalTo("RouteID", routeID).equalTo("InspectionType", inspType).findFirst();
     }
 
 

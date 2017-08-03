@@ -54,6 +54,7 @@ import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
@@ -784,6 +785,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     e.printStackTrace();
                 }
 
+                List<EquipmentNoteTH> lstNotes = DataManager.getInstance().getAllTHNotesByCode(toolhawkEquipment.getCode());
+                equipment.setToolHawkEquipmentNotes(lstNotes);
+
+
                 lstEditTHEquipment.add(equipment);
             }
         }
@@ -806,7 +811,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
                 }
-
+                List<EquipmentNoteTH> lstNotes = DataManager.getInstance().getAllTHNotesByCode(toolhawkEquipment.getCode());
+                equipment.setToolHawkEquipmentNotes(lstNotes);
                 lstAddTHEquipment.add(equipment);
             }
         }

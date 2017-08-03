@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context="com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity">
 
 
@@ -104,19 +105,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvLableLocation"
                     android:layout_centerHorizontal="true"
-                    android:layout_toLeftOf="@+id/btnSearchLoc"
                     android:layout_marginLeft="23dp"
                     android:layout_marginRight="7dp"
+                    android:layout_toLeftOf="@+id/btnSearchLoc"
                     android:background="@drawable/sp_bg_new"
                     android:paddingBottom="10dp" />
 
                 <Button
                     android:id="@+id/btnSearchLoc"
                     android:layout_width="32dp"
-                    android:layout_marginTop="13dp"
                     android:layout_height="32dp"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="16dp"
+                    android:layout_marginTop="13dp"
                     android:background="@color/colorPrimary"
                     android:drawableTop="@drawable/rsz_ic_scan"
                     android:paddingTop="4dp" />
@@ -201,14 +202,40 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:inputType="numberDecimal"
                     android:hint="Unit Cost"
                     android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
                     android:maxLines="1"
                     android:paddingLeft="12dp"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
 
+            <RelativeLayout
+                android:id="@+id/rlAddViewNotes"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lSrNo"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/tvNote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Add/View Notes"
+                    android:textColor="@color/blueDark" />
+
+                <View
+                    android:layout_width="110dp"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tvNote"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:background="@color/blueDark" />
+            </RelativeLayout>
         </RelativeLayout>
 
     </ScrollView>

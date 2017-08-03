@@ -1,5 +1,9 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
+
+import java.util.List;
+
 /**
  * Created by hakhtar on 6/6/2017.
  * General Data
@@ -15,6 +19,7 @@ public class THEquipment {
     private int ManufacturerID;
     private int ModelID;
     private float UnitCost;
+    private List<EquipmentNoteTH> ToolHawkEquipmentNotes;
 
 
     public THEquipment(int ID, String code, int departmentID, int locationID, int manufacturerID, int modelID, float unitCost) {
@@ -25,6 +30,14 @@ public class THEquipment {
         ManufacturerID = manufacturerID;
         ModelID = modelID;
         UnitCost = unitCost;
+    }
+
+    public List<EquipmentNoteTH> getToolHawkEquipmentNotes() {
+        return ToolHawkEquipmentNotes;
+    }
+
+    public void setToolHawkEquipmentNotes(List<EquipmentNoteTH> toolHawkEquipmentNotes) {
+        ToolHawkEquipmentNotes = toolHawkEquipmentNotes;
     }
 
     public THEquipment() {
