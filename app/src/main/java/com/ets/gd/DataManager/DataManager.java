@@ -1012,6 +1012,13 @@ public class DataManager {
     }
 
     // For getting asset all locations from DB
+    public List<Locations> getAllLocationsByCustomer(int CustomerID) {
+        RealmResults<Locations> results = realm.where(Locations.class).equalTo("Customer.ID",CustomerID).findAllSorted("Code");
+        List<Locations> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    // For getting asset all locations from DB
     public List<Locations> getAllCompanyLocations(int compCode) {
         return realm.where(Locations.class).equalTo("Customer.ID", compCode).findAll().sort("Code");
     }

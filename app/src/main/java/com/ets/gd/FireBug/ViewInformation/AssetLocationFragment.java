@@ -275,6 +275,20 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
                             spLocation.setSelection(i);
                             tvDescprition.setText(DataManager.getInstance().getLocation(strSelectedState).getDescription());
+
+                            List<Locations> listLocs= DataManager.getInstance().getAllLocationsByCustomer(customer.getID());
+
+                            int sizeSite = listLocs.size();
+
+                            sites = new String[sizeSite];
+
+                            for (int j = 0; j < listLocs.size(); j++) {
+                                sites[j] = listLocs.get(j).getSite().getCode();
+                            }
+                            ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, sites);
+                            dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spSite.setAdapter(dataAdapterSIte);
+
                             for (int k = 0; k < sites.length; k++) {
                                 if (DataManager.getInstance().getLocation(strSelectedState).getSite().getCode().toLowerCase().equals(sites[k].toString().toLowerCase())) {
                                     spSite.setText(sites[k].toString());
