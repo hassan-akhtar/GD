@@ -1,6 +1,7 @@
 package com.ets.gd.NetworkLayer.Service;
 
 
+import com.ets.gd.NetworkLayer.RequestDTOs.ChangeRouteStatusDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
@@ -62,6 +63,8 @@ public interface GSDService {
     void postSyncIssueInventory(SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO , MyCallBack callback);
 
     void postSyncReceiveInventory(SyncPostMoveInventoryRequestDTO syncPostMoveInventoryRequestDTO , MyCallBack callback);
+
+    void changeRouteStatusCall(ChangeRouteStatusDTO changeRouteStatusDTO , MyCallBack callback);
 
 
 }

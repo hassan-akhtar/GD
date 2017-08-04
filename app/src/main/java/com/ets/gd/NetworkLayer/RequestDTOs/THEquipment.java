@@ -14,6 +14,7 @@ public class THEquipment {
     private int ID;
     private String Code;
     private int DepartmentID;
+    private int CategoryID;
     private int LocationID;
     private String LocationCode;
     private int ManufacturerID;
@@ -30,6 +31,14 @@ public class THEquipment {
         ManufacturerID = manufacturerID;
         ModelID = modelID;
         UnitCost = unitCost;
+    }
+
+    public int getCategoryID() {
+        return CategoryID;
+    }
+
+    public void setCategoryID(int categoryID) {
+        CategoryID = categoryID;
     }
 
     public List<EquipmentNoteTH> getToolHawkEquipmentNotes() {

@@ -3,6 +3,7 @@ package com.ets.gd.NetworkLayer.Service;
 
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.Models.MoveInventoryCall;
+import com.ets.gd.NetworkLayer.RequestDTOs.ChangeRouteStatusDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckInForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOutForCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
@@ -135,6 +136,11 @@ public interface GSDRESTService {
     @POST(Constants.URL_SYNC_POST_RECEIVE)
     public void postSyncReceiveInventory(@Body List<MoveInventoryCall> lstmoveInventory,
                                        Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
+
+    // Sync post data request location
+    @POST(Constants.URL_SYNC_POST_CHANGE_ROUTE_STATUS)
+    public void changeRouteStatusCall(@Body ChangeRouteStatusDTO changeRouteStatusDTO,
+                                      Callback<List<SyncPostEquipment>> syncGetResponseDTOCallback);
 
 }
 

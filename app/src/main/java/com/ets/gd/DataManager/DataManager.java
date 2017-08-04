@@ -1072,6 +1072,16 @@ public class DataManager {
         return copied;
     }
 
+
+    // For getting asset all assets from DB
+    public List<Routes> getAllInspectedRoutes() {
+        RealmResults<Routes> results = realm.where(Routes.class).equalTo("isCompleted", true).findAll();
+
+        List<Routes> copied = realm.copyFromRealm(results);
+
+        return copied;
+    }
+
     public List<PermissionType> getRolePermissionsByUserName(String UserName) {
 
         return realm.where(MobileUser.class).equalTo("UserName", UserName).findFirst().getRolePermissions();

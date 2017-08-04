@@ -21,6 +21,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.InventoryMoveCall;
 import com.ets.gd.Models.MoveInventoryCall;
 import com.ets.gd.NetworkLayer.RequestDTOs.AddLocation;
+import com.ets.gd.NetworkLayer.RequestDTOs.ChangeRouteStatusDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.ETSLoc;
@@ -59,6 +60,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncGetResponseDTO;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncPostEquipmentResponseDTO;
@@ -93,7 +95,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SyncPostAddLocationRequestDTO syncPostAddLocationRequestDTO;
     boolean sendEquipmentCall = false, sendLocationcall = false, sendMovecall = false, sendUnitInspcall = false, sendToolHawkEquipmentCall = false, sendETSLocationCall = false;
     boolean sendTransferToolhawkCall = false, sendMoveToolhawkCall = false, sendQuickCountCall = false, sendMaintenanceCall = false, sendCheckInCall = false, sendCheckOutCall = false;
-    boolean sendMoveInventoryCall = false, sendIssueInventoryCall = false, sendReceiveInventoryCall = false;
+    boolean sendMoveInventoryCall = false, sendIssueInventoryCall = false, sendReceiveInventoryCall = false, sendRouteStatusCall;
     MoveTransferRequestDTO moveTransferRequestDTO;
     List<MoveTransfer> lstMoveEquipment = new ArrayList<MoveTransfer>();
     List<FireBugEquipment> lstAllAssets = new ArrayList<FireBugEquipment>();
@@ -131,6 +133,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
     SyncPostMoveInventoryRequestDTO syncPostReceiveInventoryRequestDTO;
     List<MoveInventoryRealm> lstReceiveInventoryRealm = new ArrayList<MoveInventoryRealm>();
     List<MoveInventoryCall> lstReceiveInventory = new ArrayList<MoveInventoryCall>();
+
+    List<Routes> lstRoutes = new ArrayList<Routes>();
+    ChangeRouteStatusDTO changeRouteStatusDTO;
 
     public SyncFragment() {
     }
@@ -176,6 +181,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         setupPostAddedLocationsData();
         setupPostMoveAssetData();
         setupPostInspectAssetData();
+        setupChangeRouteStatusData();
         setupPostAddUpdateToolhawkEquipmentData();
         setupPostETSLocationData();
         setupPostTHTransferData();
@@ -196,6 +202,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
             callSyncPostMoveService();
         } else if (sendUnitInspcall) {
             callSyncPostUnitInspectService();
+        } else if (sendRouteStatusCall) {
+            callSyncPostRouteStatusService();
         } else if (sendETSLocationCall) {
             callSyncPostETSLocationService();
         } else if (sendToolHawkEquipmentCall) {
@@ -223,6 +231,22 @@ public class SyncFragment extends Fragment implements MyCallBack {
             // showToast("No data found for syncing");
             callSyncGetService();
         }
+    }
+
+    private void setupChangeRouteStatusData() {
+
+        lstRoutes = DataManager.getInstance().getAllInspectedRoutes();
+        List<Integer> routeIDs = new ArrayList<Integer>();
+
+        for (int i = 0; i < lstRoutes.size(); i++) {
+            routeIDs.add(lstRoutes.get(i).getID());
+        }
+        changeRouteStatusDTO = new ChangeRouteStatusDTO(Constants.RESPONSE_SYNC_POST_CHANGE_ROUTE_STATUS, "INSPECTED", routeIDs);
+
+        if (0 != routeIDs.size()) {
+            sendRouteStatusCall = true;
+        }
+
     }
 
     private void setupCheckOutData() {
@@ -391,6 +415,17 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
     }
 
+
+    private void callSyncPostRouteStatusService() {
+
+        CommonActions.showProgressDialog(getActivity());
+        tvSyncInProgress.setText("Sync in progress...");
+        GSDServiceFactory.getService(getActivity()).changeRouteStatusCall(
+                changeRouteStatusDTO, this
+        );
+
+
+    }
 
     private void callSyncPostUnitInspectService() {
 
@@ -772,6 +807,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 THEquipment equipment = new THEquipment();
                 equipment.setID(toolhawkEquipment.getID());
                 equipment.setCode(toolhawkEquipment.getCode());
+                if (null != toolhawkEquipment.getCategory()) {
+                    equipment.setCategoryID(toolhawkEquipment.getCategory().getID());
+                }
                 equipment.setDepartmentID(toolhawkEquipment.getDepartment().getID());
                 equipment.setManufacturerID(toolhawkEquipment.getManufacturer().getID());
                 equipment.setModelID(toolhawkEquipment.getModel().getID());
@@ -798,6 +836,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
             for (ToolhawkEquipment toolhawkEquipment : lstTHEquipmentsAdd) {
                 THEquipment equipment = new THEquipment();
                 equipment.setID(0);
+                if (null != toolhawkEquipment.getCategory()) {
+                    equipment.setCategoryID(toolhawkEquipment.getCategory().getID());
+                }
                 equipment.setCode(toolhawkEquipment.getCode());
                 equipment.setDepartmentID(toolhawkEquipment.getDepartment().getID());
                 equipment.setManufacturerID(toolhawkEquipment.getManufacturer().getID());
@@ -841,7 +882,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setManufacturerID(fireBugEquipment.getManufacturer().getID());
                 equipment.setModelID(fireBugEquipment.getModel().getID());
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
-                if (null!=fireBugEquipment.getSize()) {
+                if (null != fireBugEquipment.getSize()) {
                     equipment.setSizeID(fireBugEquipment.getSize().getID());
                 }
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
@@ -868,14 +909,14 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
                         inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
                         boolean ifexists = false;
-                        for(int i=0;i<InspectionDates.size();i++){
-                            if(InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())){
+                        for (int i = 0; i < InspectionDates.size(); i++) {
+                            if (InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())) {
                                 ifexists = true;
                                 break;
                             }
                         }
 
-                        if(!ifexists){
+                        if (!ifexists) {
                             InspectionDates.add(inspectionDates);
                         }
                     }
@@ -908,7 +949,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 equipment.setDeviceTypeID(fireBugEquipment.getDeviceType().getID());
                 equipment.setManufacturerID(fireBugEquipment.getManufacturer().getID());
                 equipment.setModelID(fireBugEquipment.getModel().getID());
-                if (null!=fireBugEquipment.getSize()) {
+                if (null != fireBugEquipment.getSize()) {
                     equipment.setSizeID(fireBugEquipment.getSize().getID());
                 }
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
@@ -936,14 +977,14 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         inspectionDates.setDueDate(InspectionDatess.get(j).getDueDate());
                         inspectionDates.setInspectionType(InspectionDatess.get(j).getInspectionType());
                         boolean ifexists = false;
-                        for(int i=0;i<InspectionDates.size();i++){
-                            if(InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())){
+                        for (int i = 0; i < InspectionDates.size(); i++) {
+                            if (InspectionDates.get(i).getInspectionType().equals(inspectionDates.getInspectionType())) {
                                 ifexists = true;
                                 break;
                             }
                         }
 
-                        if(!ifexists){
+                        if (!ifexists) {
                             InspectionDates.add(inspectionDates);
                         }
                     }
@@ -1021,6 +1062,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostMoveService();
                     } else if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
+                    } else if (sendRouteStatusCall) {
+                        callSyncPostRouteStatusService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
                     } else if (sendToolHawkEquipmentCall) {
@@ -1076,6 +1119,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         callSyncPostMoveService();
                     } else if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
+                    } else if (sendRouteStatusCall) {
+                        callSyncPostRouteStatusService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
                     } else if (sendToolHawkEquipmentCall) {
@@ -1127,6 +1172,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
                     if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
+                    } else if (sendRouteStatusCall) {
+                        callSyncPostRouteStatusService();
                     } else if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
                     } else if (sendToolHawkEquipmentCall) {
@@ -1170,6 +1217,56 @@ public class SyncFragment extends Fragment implements MyCallBack {
             break;
 
             case Constants.RESPONSE_SYNC_POST_INSPECT_EQUIPMENT: {
+                SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
+                if (null != syncPostEquipmentResponseDTO) {
+                    CommonActions.DismissesDialog();
+                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
+                    if (sendRouteStatusCall) {
+                        callSyncPostRouteStatusService();
+                    } else if (sendETSLocationCall) {
+                        callSyncPostETSLocationService();
+                    } else if (sendToolHawkEquipmentCall) {
+                        callSyncPostToolhawkEqupmentService();
+                    } else if (sendTransferToolhawkCall) {
+                        callSyncPostTHTransferService();
+                    } else if (sendMoveToolhawkCall) {
+                        callSyncPostTHMoveService();
+                    } else if (sendQuickCountCall) {
+                        callSyncPostQuickCountService();
+                    } else if (sendMaintenanceCall) {
+                        callSyncPostMaintenanceService();
+                    } else if (sendCheckInCall) {
+                        callSyncPostCheckInService();
+                    } else if (sendCheckOutCall) {
+                        callSyncPostCheckOutService();
+                    } else if (sendMoveInventoryCall) {
+                        callSyncPostMoveInventoryService();
+                    } else if (sendIssueInventoryCall) {
+                        callSyncPostIssueInventoryService();
+                    } else if (sendReceiveInventoryCall) {
+                        callSyncPostReceiveInventoryService();
+                    } else {
+                        DataManager.getInstance().deleteRealm();
+                        callSyncGetService();
+                    }
+
+                } else {
+                    CommonActions.DismissesDialog();
+                    new AlertDialog.Builder(getActivity())
+                            .setTitle(R.string.txt_login)
+                            .setMessage("Something went wrong!")
+                            .setNegativeButton(getString(R.string.txt_close), new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                }
+                            })
+                            .show();
+                }
+            }
+            break;
+
+
+            case Constants.RESPONSE_SYNC_POST_CHANGE_ROUTE_STATUS: {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();

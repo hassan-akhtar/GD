@@ -433,7 +433,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 }
                             }
                             equipment = new ToolhawkEquipment(
-                                    categoryList.get(posCategory),
+                                    categoryList.get(posCategory-1),
                                     toolhawkEquipment.getID(),
                                     tvEquipmentCode.getText().toString(),
                                     tvUnitCost.getText().toString(),
@@ -470,7 +470,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 EquipmentLocationInfo.setLocation(etsLoc.getCode());
 
                                 equipment = new ToolhawkEquipment(
-                                        categoryList.get(posCategory),
+                                        categoryList.get(posCategory-1),
                                         0,
                                         tvEquipmentCode.getText().toString(),
                                         tvUnitCost.getText().toString(),

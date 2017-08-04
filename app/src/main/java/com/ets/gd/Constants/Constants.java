@@ -38,6 +38,7 @@ public class Constants {
     public static final int RESPONSE_SYNC_POST_MOVE_INVENTORY = 15;
     public static final int RESPONSE_SYNC_POST_ISSUE = 16;
     public static final int RESPONSE_SYNC_POST_RECEIVE = 17;
+    public static final int RESPONSE_SYNC_POST_CHANGE_ROUTE_STATUS = 18;
 
 
     // Urls Firebug
@@ -47,6 +48,8 @@ public class Constants {
     public static final String URL_SYNC_POST_ADD_LOCATION = "/Services/Services/Mobile/CreateFbLocations";
     public static final String URL_SYNC_POST_MOVE_TRANSFER = "/Services/Services/Mobile/MoveOrTransferEquipments";
     public static final String URL_SYNC_POST_INSPECT_EQUIPMENT = "/Services/Services/Mobile/InspectEquipments";
+    public static final String URL_SYNC_POST_CHANGE_ROUTE_STATUS = "/Services/Services/Mobile/ChangeRouteStatus";
+
 
     // Urls Toolhawk
     public static final String URL_SYNC_POST_TOOLHAWK_EQUIPMENT = "/Services/Services/Mobile/CreateToolHawkEquipment";
