@@ -331,7 +331,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             tbTitleBottom.setText("Equipment Info");
             tvEquipmentCode.setEnabled(false);
             spDepartment.setEnabled(false);
-            spCategory.setEnabled(false);
+            spCategory.setEnabled(true);
             spLocation.setEnabled(false);
             tvEquipmentCode.setText("" + toolhawkEquipment.getCode());
             if (null != toolhawkEquipment.getUnitCost()) {
@@ -432,8 +432,13 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                     EquipmentLocationInfo = toolhawkEquipment.getEquipmentLocationInfo();
                                 }
                             }
+                            Category category = new Category();
+
+                            if(0!=posCategory){
+                                category = categoryList.get(posCategory-1);
+                            }
                             equipment = new ToolhawkEquipment(
-                                    categoryList.get(posCategory-1),
+                                    category,
                                     toolhawkEquipment.getID(),
                                     tvEquipmentCode.getText().toString(),
                                     tvUnitCost.getText().toString(),
@@ -469,8 +474,13 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 EquipmentLocationInfo.setLocationType("Location");
                                 EquipmentLocationInfo.setLocation(etsLoc.getCode());
 
+                                Category category = new Category();
+
+                                if(0!=posCategory){
+                                    category = categoryList.get(posCategory-1);
+                                }
                                 equipment = new ToolhawkEquipment(
-                                        categoryList.get(posCategory-1),
+                                        category,
                                         0,
                                         tvEquipmentCode.getText().toString(),
                                         tvUnitCost.getText().toString(),
@@ -517,9 +527,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         } else if (taskType.toLowerCase().startsWith("add") &&
                 0 == posLoc) {
             showToast("Please select a Location");
-        } else if (0 == posCategory) {
-            showToast("Please select a Category");
-        } else if (0 == posManufacturer) {
+        }  else if (0 == posManufacturer) {
             showToast("Please select a Manufacturer");
         } else if (0 == posModel) {
             showToast("Please select a Model");
