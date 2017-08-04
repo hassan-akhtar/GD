@@ -22,9 +22,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -43,7 +41,6 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
@@ -60,6 +57,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
     List<Department> depList = new ArrayList<Department>();
     List<ETSLocations> locList = new ArrayList<ETSLocations>();
     List<Category> categoryList = new ArrayList<Category>();
+    List<Category> categoryListNew = new ArrayList<Category>();
     List<Manufacturer> manuList = new ArrayList<Manufacturer>();
     int posDepartment, posManufacturer, posModel, posLoc, posCategory;
     Button btnSearchLoc;
@@ -67,6 +65,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
     private static final int REQUEST_PERMISSION_SETTING = 101;
     SharedPreferencesManager sharedPreferencesManager;
     String[] locations;
+    String[] categories;
     ImageView ivAdd;
     RelativeLayout rlAddViewNotes;
 
@@ -111,6 +110,11 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         locList = DataManager.getInstance().getAllETSLocations();
         categoryList = DataManager.getInstance().getAllCategories();
 
+        for(int i=0;i<categoryList.size();i++){
+            if(null!=categoryList.get(i).getCode()){
+                categoryListNew.add(categoryList.get(i));
+            }
+        }
         if (null != DataManager.getInstance().getSyncGetResponse()) {
             manuList = DataManager.getInstance().getSyncGetResponse().getLstManufacturers();
         }
@@ -143,12 +147,12 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         }
 
 
-        if (null != categoryList) {
-            int sizeCategory = categoryList.size() + 1;
-            String[] categories = new String[sizeCategory];
+        if (null != categoryListNew) {
+            int sizeCategory = categoryListNew.size() + 1;
+            categories = new String[sizeCategory];
             categories[0] = "Please select a Category";
-            for (int i = 0; i < categoryList.size(); i++) {
-                categories[i + 1] = categoryList.get(i).getCode();
+            for (int i = 0; i < categoryListNew.size(); i++) {
+                categories[i + 1] = categoryListNew.get(i).getCode();
             }
 
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -157,7 +161,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             spCategory.setAdapter(dataAdapterDeviceType);
 
             if (taskType.startsWith("vie")) {
-                for (int i = 0; i < categoryList.size() + 1; i++) {
+                for (int i = 0; i < categoryListNew.size() + 1; i++) {
                     if (null != toolhawkEquipment.getCategory()) {
                         if (toolhawkEquipment.getCategory().getCode().toLowerCase().equals(spCategory.getItemAtPosition(i).toString().toLowerCase())) {
                             spCategory.setSelection(i);
@@ -435,7 +439,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                             Category category = new Category();
 
                             if(0!=posCategory){
-                                category = categoryList.get(posCategory-1);
+                                category = categoryListNew.get(posCategory-1);
                             }
                             equipment = new ToolhawkEquipment(
                                     category,
@@ -477,7 +481,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 Category category = new Category();
 
                                 if(0!=posCategory){
-                                    category = categoryList.get(posCategory-1);
+                                    category = categoryListNew.get(posCategory-1);
                                 }
                                 equipment = new ToolhawkEquipment(
                                         category,
