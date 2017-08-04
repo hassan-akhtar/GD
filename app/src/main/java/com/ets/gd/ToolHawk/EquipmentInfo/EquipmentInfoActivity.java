@@ -34,6 +34,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Department;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
@@ -55,11 +56,12 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
     String taskType, barcodeID;
     ImageView ivBack, ivTick;
     ToolhawkEquipment toolhawkEquipment;
-    Spinner spDepartment, spLocation, spManufacturer, spModel;
+    Spinner spDepartment, spLocation, spManufacturer, spModel, spCategory;
     List<Department> depList = new ArrayList<Department>();
     List<ETSLocations> locList = new ArrayList<ETSLocations>();
+    List<Category> categoryList = new ArrayList<Category>();
     List<Manufacturer> manuList = new ArrayList<Manufacturer>();
-    int posDepartment, posManufacturer, posModel, posLoc;
+    int posDepartment, posManufacturer, posModel, posLoc, posCategory;
     Button btnSearchLoc;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -88,6 +90,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         ivAdd = (ImageView) findViewById(R.id.ivAdd);
         tvUnitCost = (TextView) findViewById(R.id.tvUnitCost);
         spDepartment = (Spinner) findViewById(R.id.spDepartment);
+        spCategory = (Spinner) findViewById(R.id.spCategory);
         spLocation = (Spinner) findViewById(R.id.spLocation);
         spManufacturer = (Spinner) findViewById(R.id.spManufacturer);
         spModel = (Spinner) findViewById(R.id.spModel);
@@ -106,6 +109,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         toolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(barcodeID);
         depList = DataManager.getInstance().getAllDepartments();
         locList = DataManager.getInstance().getAllETSLocations();
+        categoryList = DataManager.getInstance().getAllCategories();
 
         if (null != DataManager.getInstance().getSyncGetResponse()) {
             manuList = DataManager.getInstance().getSyncGetResponse().getLstManufacturers();
@@ -138,6 +142,33 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
         }
 
+
+        if (null != categoryList) {
+            int sizeCategory = categoryList.size() + 1;
+            String[] categories = new String[sizeCategory];
+            categories[0] = "Please select a Category";
+            for (int i = 0; i < categoryList.size(); i++) {
+                categories[i + 1] = categoryList.get(i).getCode();
+            }
+
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            ArrayAdapter<String> dataAdapterDeviceType = new ArrayAdapter<String>(EquipmentInfoActivity.this, android.R.layout.simple_spinner_item, categories);
+            dataAdapterDeviceType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spCategory.setAdapter(dataAdapterDeviceType);
+
+            if (taskType.startsWith("vie")) {
+                for (int i = 0; i < categoryList.size() + 1; i++) {
+                    if (null != toolhawkEquipment.getCategory()) {
+                        if (toolhawkEquipment.getCategory().getCode().toLowerCase().equals(spCategory.getItemAtPosition(i).toString().toLowerCase())) {
+                            spCategory.setSelection(i);
+                            posCategory = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+        }
 
         if (null != manuList) {
             int sizeManufacturers = manuList.size() + 1;
@@ -241,9 +272,19 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         ivTick.setOnClickListener(mGlobal_OnClickListener);
         btnSearchLoc.setOnClickListener(mGlobal_OnClickListener);
         spDepartment.setOnItemSelectedListener(this);
+        spCategory.setOnItemSelectedListener(this);
         spLocation.setOnItemSelectedListener(this);
         spManufacturer.setOnItemSelectedListener(this);
         spModel.setOnItemSelectedListener(this);
+
+
+        spCategory.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard();
+                return false;
+            }
+        });
 
         spDepartment.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -290,6 +331,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             tbTitleBottom.setText("Equipment Info");
             tvEquipmentCode.setEnabled(false);
             spDepartment.setEnabled(false);
+            spCategory.setEnabled(false);
             spLocation.setEnabled(false);
             tvEquipmentCode.setText("" + toolhawkEquipment.getCode());
             if (null != toolhawkEquipment.getUnitCost()) {
@@ -302,6 +344,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
             tbTitleBottom.setText("Add Equipment");
             btnSearchLoc.setVisibility(View.VISIBLE);
             spDepartment.setEnabled(true);
+            spCategory.setEnabled(true);
             spLocation.setEnabled(true);
             tvEquipmentCode.setEnabled(true);
         }
@@ -343,7 +386,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
                 case R.id.rlAddViewNotes: {
                     Intent in = new Intent(EquipmentInfoActivity.this, ToolHawkNotesActivity.class);
-                        in.putExtra("eqCode", tvEquipmentCode.getText().toString());
+                    in.putExtra("eqCode", tvEquipmentCode.getText().toString());
                     in.putExtra("taskType", taskType);
                     startActivity(in);
                     break;
@@ -390,6 +433,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 }
                             }
                             equipment = new ToolhawkEquipment(
+                                    categoryList.get(posCategory),
                                     toolhawkEquipment.getID(),
                                     tvEquipmentCode.getText().toString(),
                                     tvUnitCost.getText().toString(),
@@ -424,7 +468,9 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 EquipmentLocationInfo EquipmentLocationInfo = new EquipmentLocationInfo();
                                 EquipmentLocationInfo.setLocationType("Location");
                                 EquipmentLocationInfo.setLocation(etsLoc.getCode());
+
                                 equipment = new ToolhawkEquipment(
+                                        categoryList.get(posCategory),
                                         0,
                                         tvEquipmentCode.getText().toString(),
                                         tvUnitCost.getText().toString(),
@@ -439,6 +485,7 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
                                 DataManager.getInstance().addToolHawkEquipment(equipment);
                                 Toast.makeText(EquipmentInfoActivity.this, "Asset Added!", Toast.LENGTH_SHORT).show();
                                 showToast("You can add Note(s) for this Asset!");
+                                ivAdd.setVisibility(View.VISIBLE);
                                 rlAddViewNotes.setVisibility(View.VISIBLE);
                             } else {
                                 showToast("Asset with Equipment ID " + tvEquipmentCode.getText().toString() + " Already Exist!");
@@ -470,6 +517,8 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
         } else if (taskType.toLowerCase().startsWith("add") &&
                 0 == posLoc) {
             showToast("Please select a Location");
+        } else if (0 == posCategory) {
+            showToast("Please select a Category");
         } else if (0 == posManufacturer) {
             showToast("Please select a Manufacturer");
         } else if (0 == posModel) {
@@ -607,6 +656,24 @@ public class EquipmentInfoActivity extends AppCompatActivity implements Spinner.
 
             case R.id.spLocation: {
                 posLoc = position;
+                String strSelectedState = parent.getItemAtPosition(position).toString();
+                if (0 == position) {
+                    //   tvLableVendor.setVisibility(View.GONE);
+                    try {
+                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //  tvLableVendor.setVisibility(View.VISIBLE);
+                }
+
+            }
+            break;
+
+
+            case R.id.spCategory: {
+                posCategory = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
                     //   tvLableVendor.setVisibility(View.GONE);

@@ -103,7 +103,7 @@ public class InspectionDatesFragment extends Fragment {
 
                 boolean containsSlash = false;
 
-                for(int i = 0 ;i>InspectionDates.size();i++){
+                for(int i = 0 ;i<InspectionDates.size();i++){
                     if (null != InspectionDates.get(i).getDueDate()) {
                         if(InspectionDates.get(i).getDueDate().contains("/")){
                             containsSlash=true;

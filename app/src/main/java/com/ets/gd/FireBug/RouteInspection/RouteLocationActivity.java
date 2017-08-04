@@ -26,6 +26,7 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.RouteCompleted;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -34,6 +35,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
+import com.squareup.okhttp.Route;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,7 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
     RouteInspLocAdapter routeInspLocAdapter;
     List<RouteLocation> locationList = new ArrayList<>();
     SharedPreferencesManager sharedPreferencesManager;
+    public static RouteCompleted routeCompleted;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +89,7 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
         tvLocCount.setText("" + route.getRouteLocations().size());
         routeInspLocAdapter = new RouteInspLocAdapter(RouteLocationActivity.this, locationList);
         tvCompanyName.setText(compName);
-        ivTick.setVisibility(View.GONE);
+        // ivTick.setVisibility(View.GONE);
     }
 
     private void initObj() {
@@ -100,6 +103,7 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
 
     private void initListeners() {
         ivBack.setOnClickListener(mGlobal_OnClickListener);
+        ivTick.setOnClickListener(mGlobal_OnClickListener);
         btnSearchLoc.setOnClickListener(mGlobal_OnClickListener);
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteLocationActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
@@ -153,20 +157,20 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
             List<UnitinspectionResult> unitinspectionResults = new ArrayList<>();
             assetList = locationList.get(pos - 1).getRouteAssets();
             unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
-            if (0 != unitinspectionResults.size() && 0!=assetList.size() ) {
+            if (0 != unitinspectionResults.size() && 0 != assetList.size()) {
                 List<Integer> routeAssetIDs = new ArrayList<>();
                 for (int i = 0; i < unitinspectionResults.size(); i++) {
                     routeAssetIDs.add(unitinspectionResults.get(i).getRouteAssetID());
                 }
-                        for (int j = 0; j < assetList.size(); j++) {
-                            if (!routeAssetIDs.contains(assetList.get(j).getID())) {
-                                areAllAssetsInspected = false;
-                                break;
-                            }
-                        }
+                for (int j = 0; j < assetList.size(); j++) {
+                    if (!routeAssetIDs.contains(assetList.get(j).getID())) {
+                        areAllAssetsInspected = false;
+                        break;
+                    }
+                }
 
 
-            } else  if (0 == unitinspectionResults.size() && 0!=assetList.size() ) {
+            } else if (0 == unitinspectionResults.size() && 0 != assetList.size()) {
                 areAllAssetsInspected = false;
             }
 
@@ -191,6 +195,17 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
                     finish();
                     break;
                 }
+
+                case R.id.ivTick: {
+
+                    if (null != DataManager.getInstance().getRoute(tvRouteName.getText().toString())) {
+                        DataManager.getInstance().markRouteComplete(tvRouteName.getText().toString());
+                        routeCompleted.routeCompleted(tvRouteName.getText().toString());
+                        finish();
+                    }
+                    break;
+                }
+
 
                 case R.id.btnSearchLoc: {
                     checkCameraPermission();

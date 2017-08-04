@@ -51,7 +51,11 @@ import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import io.realm.RealmList;
@@ -83,7 +87,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
     CheckIn syncPostCheckInRequestDTO;
     CheckOut syncPostCheckOutRequestDTO;
     RealmList<CheckInOutEquipment> equipmentIDList = new RealmList<CheckInOutEquipment>();
-
+    int DaysDue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +177,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
     private void initObj() {
         hideKeyboard();
+        DaysDue = DataManager.getInstance().getSyncGetResponse().getDueDays();
         sharedPreferencesManager = new SharedPreferencesManager(CheckoutAssetActivity.this);
         mContext = this;
         mAdapter = new ScannedAssetsToolhawkAdapter(CheckoutAssetActivity.this, equipmentList);
@@ -316,6 +321,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                         if (tbTitleBottom.getText().toString().toLowerCase().contains("out")) {
                             tvAssetTextandCount.setText("Checking out " + equipmentList.size() + " Asset(s)");
                             etReturnDate.setVisibility(View.VISIBLE);
+                            etReturnDate.setText(""+addDaysDueToCurrentDate());
                         } else {
                             etReturnDate.setVisibility(View.GONE);
                             tvAssetTextandCount.setText("Checking In " + equipmentList.size() + " Asset(s)");
@@ -348,7 +354,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             if (!"".equals(etReturnDate.getText().toString().trim())) {
                                 syncPostCheckOutRequestDTO = new CheckOut();
                                 MobileUser user = DataManager.getInstance().getMobileUser(returningUser);
-                                if (null!=user) {
+                                if (null != user) {
                                     syncPostCheckOutRequestDTO.setUserID(user.getID());
                                 }
                                 if (isUser) {
@@ -364,7 +370,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                                     equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
                                 }
                                 syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
-                                syncPostCheckOutRequestDTO.setDueDate(""+etReturnDate.getText().toString().trim());
+                                syncPostCheckOutRequestDTO.setDueDate("" + etReturnDate.getText().toString().trim());
                                 DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
                                 showToast("Check Out Complete!");
                                 sendMessage("finish");
@@ -377,7 +383,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                         } else {
                             syncPostCheckInRequestDTO = new CheckIn();
                             MobileUser user = DataManager.getInstance().getMobileUser(returningUser);
-                            if (null!=user) {
+                            if (null != user) {
                                 syncPostCheckInRequestDTO.setUserID(user.getID());
                             }
                             if (null != DataManager.getInstance().getJobNumber(JobNumber)) {
@@ -402,6 +408,15 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
 
     };
 
+
+    String addDaysDueToCurrentDate() {
+        SimpleDateFormat sdf;
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, DaysDue);
+        sdf = new SimpleDateFormat("MM/dd/yyyy");
+        Date resultdate = new Date(c.getTimeInMillis());
+        return sdf.format(resultdate);
+    }
 
     private void sendMessage(String msg) {
         Log.d("sender", "Broadcasting message");

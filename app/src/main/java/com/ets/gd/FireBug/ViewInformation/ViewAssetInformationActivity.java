@@ -167,8 +167,14 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         size.setDescription(firebugEqSize.getDescription());
                                     }
 
+                                    RealmList<MyInspectionDates> inspectionDates = new RealmList<>();
+                                    List<MyInspectionDates> inspectionDatesList = DataManager.getInstance().getEquipmentInspectionDates(AssetInformationFragment.tvTagID.getText().toString());
+                                    if (0!=inspectionDatesList.size()) {
+                                        inspectionDates.addAll(inspectionDatesList);
+                                    }
+
                                     fireBugEquipmentt = new FireBugEquipment(
-                                            fireBugEquipment.getInspectionDates(),
+                                            inspectionDates,
                                             size,
                                             fireBugEquipment.getID(),
                                             AssetInformationFragment.tvTagID.getText().toString(),

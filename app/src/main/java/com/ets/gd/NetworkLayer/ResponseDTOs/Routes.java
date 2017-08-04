@@ -20,6 +20,7 @@ public class Routes extends RealmObject implements Serializable {
     private String ModifiedBy;
     private String ModifiedTime;
     private int  CustomerID;
+    private boolean isCompleted;
     private RealmList<RouteInspection> RouteInspections;
     private RealmList<RouteEquipment> RouteEquipments;
     private RealmList<RouteLocation> RouteLocations;
@@ -34,6 +35,14 @@ public class Routes extends RealmObject implements Serializable {
 
     public void setID(int ID) {
         this.ID = ID;
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public String getCode() {

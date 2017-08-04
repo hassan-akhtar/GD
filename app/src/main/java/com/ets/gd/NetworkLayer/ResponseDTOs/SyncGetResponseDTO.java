@@ -28,6 +28,7 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
     RealmList<FirebugEqSize>  lstSizes;
+    private int DueDays;
 
     public RealmList<EquipmentNote> getLstFbEquipmentNotes() {
         return lstFbEquipmentNotes;
@@ -35,6 +36,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public int getDueDays() {
+        return DueDays;
+    }
+
+    public void setDueDays(int dueDays) {
+        DueDays = dueDays;
     }
 
     public RealmList<FirebugEqSize> getLstSizes() {

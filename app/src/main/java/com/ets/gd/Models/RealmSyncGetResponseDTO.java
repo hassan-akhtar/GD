@@ -33,6 +33,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
     RealmList<FirebugEqSize>  lstSizes;
+    private int DueDays;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -40,6 +41,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public int getDueDays() {
+        return DueDays;
+    }
+
+    public void setDueDays(int dueDays) {
+        DueDays = dueDays;
     }
 
     public RealmList<FirebugEqSize> getLstSizes() {

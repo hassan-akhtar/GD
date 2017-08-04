@@ -18,6 +18,7 @@ public class UnitinspectionResult extends RealmObject {
     private int NewEquipmentID;
     private String ReplaceType;
     private int routeAssetID;
+    private boolean isCompleted;
     private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
     public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
@@ -32,6 +33,14 @@ public class UnitinspectionResult extends RealmObject {
     }
 
     public UnitinspectionResult() {
+    }
+
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(boolean completed) {
+        isCompleted = completed;
     }
 
     public int getRouteAssetID() {

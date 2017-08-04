@@ -30,10 +30,8 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Images;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionDue;
 import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionOverDue;
-import com.ets.gd.NetworkLayer.ResponseDTOs.InspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Inventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -46,12 +44,10 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderFireBug;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderInventory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderToolHawk;
@@ -68,7 +64,6 @@ import io.realm.Case;
 import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
 
 public class DataManager {
 
@@ -1003,7 +998,6 @@ public class DataManager {
         return copied;
     }
 
-
     // For getting asset all locations from DB
     public List<Locations> getAllLocations() {
         RealmResults<Locations> results = realm.where(Locations.class).findAllSorted("ID");
@@ -1071,7 +1065,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Routes> getAllInspectionRoutes(int customerID) {
-        RealmResults<Routes> results = realm.where(Routes.class).equalTo("CustomerID", customerID).findAll();
+        RealmResults<Routes> results = realm.where(Routes.class).equalTo("CustomerID", customerID).equalTo("isCompleted", false).findAll();
 
         List<Routes> copied = realm.copyFromRealm(results);
 
@@ -1091,6 +1085,7 @@ public class DataManager {
             public void execute(Realm realm) {
                 RealmSyncGetResponseDTO realmSyncGetResponseDTO = new RealmSyncGetResponseDTO();
                 realmSyncGetResponseDTO.setID(0);
+                realmSyncGetResponseDTO.setDueDays(obj.getDueDays());
                 realmSyncGetResponseDTO.setMobileDashboard(obj.getMobileDashboard());
                 realmSyncGetResponseDTO.setLstCustomerData(obj.getLstCustomerData());
                 realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
@@ -1193,6 +1188,21 @@ public class DataManager {
 
     public List<RouteAsset> getRouteAssets() {
         return realm.where(RouteAsset.class).findAll();
+    }
+
+    public Routes getRoute(String code) {
+        return realm.where(Routes.class).equalTo("Code",code).findFirst();
+    }
+
+
+    public void markRouteComplete(String code) {
+
+        realm.beginTransaction();
+        Routes route = realm.where(Routes.class).equalTo("Code",code).findFirst();
+        route.setCompleted(true);
+        realm.commitTransaction();
+
+
     }
 
     public RouteAsset getRouteAsset(int eqID, int routeID, String inspType) {
@@ -1408,6 +1418,12 @@ public class DataManager {
     public List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> getAllETSLocations() {
         RealmResults<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> results = realm.where(com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations.class).findAll().sort("Code");
         List<com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+    public List<Category> getAllCategories() {
+        RealmResults<Category> results = realm.where(Category.class).findAll().sort("Code");
+        List<Category> copied = realm.copyFromRealm(results);
         return copied;
     }
 
