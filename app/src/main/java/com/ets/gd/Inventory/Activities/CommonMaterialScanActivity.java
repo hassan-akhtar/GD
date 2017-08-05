@@ -16,8 +16,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,19 +27,10 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
-import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
-import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Material;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.EquipmentInfo.EquipmentInfoActivity;
-import com.ets.gd.ToolHawk.EquipmentInfo.ToolhawkLocationActivity;
-import com.ets.gd.ToolHawk.Maintenance.MaintenanceActivity;
-import com.ets.gd.ToolHawk.QuickCount.QuickCountActivity;
-import com.ets.gd.ToolHawk.Transfer.TransferActivity;
 import com.ets.gd.Utils.SharedPreferencesManager;
-
-import java.util.List;
 
 public class CommonMaterialScanActivity extends AppCompatActivity implements BarcodeScan {
 

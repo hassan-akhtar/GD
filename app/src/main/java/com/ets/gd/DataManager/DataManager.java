@@ -520,6 +520,15 @@ public class DataManager {
         return realm.where(ToolhawkEquipment.class).equalTo("ETSLocation.Code", locCOde, Case.INSENSITIVE).findAll();
     }
 
+
+    public List<ToolhawkEquipment> getTHEquipmentChilds(String eqCode) {
+
+        RealmResults<ToolhawkEquipment> results =  realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", eqCode, Case.INSENSITIVE).findAll();
+        List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
+        return copied;
+    }
+
+
     public void addNewLocation(Locations location) {
         realm.beginTransaction();
         realm.copyToRealm(location);

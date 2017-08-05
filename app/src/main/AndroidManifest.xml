@@ -115,7 +115,7 @@
             android:name=".ToolHawk.Move.MoveActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ToolHawk.QuickCount.QuickCountActivity"
+            android:name=".ToolHawk.QuickCount.LocationQuickCountActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ToolHawk.Transfer.TransferActivity"
@@ -150,7 +150,12 @@
         <activity
             android:name=".Inventory.Receive.ReceiveMaterialActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ToolHawk.EquipmentInfo.ToolHawkNotesActivity"></activity>
+        <activity android:name=".ToolHawk.EquipmentInfo.ToolHawkNotesActivity"
+            android:screenOrientation="portrait"></activity>
+
+        <activity
+            android:name=".ToolHawk.QuickCount.EquipmentQuickCountActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

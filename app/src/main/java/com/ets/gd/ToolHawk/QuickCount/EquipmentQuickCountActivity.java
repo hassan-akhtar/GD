@@ -6,13 +6,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +31,7 @@ import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
+import com.ets.gd.Interfaces.EquipmentQuickCountCompleted;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCountAsset;
@@ -47,12 +48,12 @@ import java.util.List;
 
 import io.realm.RealmList;
 
-public class QuickCountActivity extends AppCompatActivity implements BarcodeScan {
+public class EquipmentQuickCountActivity extends AppCompatActivity implements BarcodeScan {
 
 
     TextView tbTitleTop, tbTitleBottom, tvAssetOtherInfo, tvLocName, tvBarcodeTitle, tvUnderText, tvBarcodeValue;
     TextView tvUnExpected, tvExpected, tvFound;
-    String taskType, locationCode;
+    String taskType, eqCode;
     Button btnCross, btnScan;
     LinearLayout llbtns;
     EditText etBarcode;
@@ -66,11 +67,14 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetFoundList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetUnExpectedList = new ArrayList<ToolhawkEquipment>();
-    ETSLocations etsLocation;
+    //ETSLocations etsLocation;
+    ToolhawkEquipment parentToolhawkEquipment;
     ToolhawkEquipment toolhawkEquipment;
     private List<QuickCountAsset> QuickCountAssets = new ArrayList<QuickCountAsset>();
     QuickCount orgQuickCount;
     boolean newAfterSaveComplete = false;
+    public static EquipmentQuickCountCompleted equipmentQuickCountCompleted;
+    int assetPos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,16 +112,17 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         tvUnderText = (TextView) findViewById(R.id.tvUnderText);
 
         taskType = getIntent().getStringExtra("taskType");
-        locationCode = getIntent().getStringExtra("locationCode");
+        assetPos = getIntent().getIntExtra("pos",0);
+        eqCode = getIntent().getStringExtra("eqCode");
         newAfterSaveComplete = getIntent().getBooleanExtra("newAfterSaveComplete", false);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Quick Count");
 
-        etsLocation = DataManager.getInstance().getETSLocationsByCode(locationCode);
+        parentToolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(eqCode);
 
-        if (null != etsLocation) {
-            tvLocName.setText("" + etsLocation.getCode());
-            tvAssetOtherInfo.setText("" + etsLocation.getDescription());
+        if (null != parentToolhawkEquipment) {
+            tvLocName.setText("" + parentToolhawkEquipment.getCode());
+            tvAssetOtherInfo.setText("" + parentToolhawkEquipment.getETSLocation().getCode());
         }
 
         if (taskType.toLowerCase().startsWith("new")) {
@@ -129,8 +134,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     }
 
     private void initObj() {
-        sharedPreferencesManager = new SharedPreferencesManager(QuickCountActivity.this);
-        orgQuickCount = DataManager.getInstance().getQuickCount(etsLocation.getCode());
+        sharedPreferencesManager = new SharedPreferencesManager(EquipmentQuickCountActivity.this);
+        orgQuickCount = DataManager.getInstance().getQuickCount(parentToolhawkEquipment.getCode());
     }
 
 
@@ -139,7 +144,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         ivTick.setOnClickListener(mGlobal_OnClickListener);
 
-        rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(QuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
+        rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(EquipmentQuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
                 // showToast("" + assetList.get(position).getCode());
@@ -169,8 +174,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         assetFoundList.clear();
         assetUnExpectedList.clear();
 
-        if (null != DataManager.getInstance().getQuickCountAssetList(locationCode)) {
-            QuickCountAssets = DataManager.getInstance().getQuickCountAssetList(locationCode).getQuickCountAssets();
+        if (null != DataManager.getInstance().getQuickCountAssetList(eqCode)) {
+            QuickCountAssets = DataManager.getInstance().getQuickCountAssetList(eqCode).getQuickCountAssets();
         }
 
         for (int i = 0; i < QuickCountAssets.size(); i++) {
@@ -183,7 +188,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                 }
             }
         }
-        List<ToolhawkEquipment> list = DataManager.getInstance().getLocationEquipment(locationCode);
+        List<ToolhawkEquipment> list = DataManager.getInstance().getTHEquipmentChilds(eqCode);
         if (null != list) {
 
             for (int j = 0; j < list.size(); j++) {
@@ -197,8 +202,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
         tvExpected.setText("" + expectedCount);
         tvFound.setText("" + assetFoundList.size());
         tvUnExpected.setText("" + assetUnExpectedList.size());
-        mAdapter = new QuickCountAdapter(QuickCountActivity.this, assetList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(QuickCountActivity.this);
+        mAdapter = new QuickCountAdapter(EquipmentQuickCountActivity.this, assetList, "eq");
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(EquipmentQuickCountActivity.this);
         rvQuickCount.setLayoutManager(mLayoutManager);
         rvQuickCount.setItemAnimator(new DefaultItemAnimator());
         rvQuickCount.setAdapter(mAdapter);
@@ -209,10 +214,10 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
     private void setupAssetListForNewCount() {
         assetFoundList.clear();
         assetUnExpectedList.clear();
-        assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(locationCode);
+        assetList = DataManager.getInstance().getTHEquipmentChilds(eqCode);
         tvExpected.setText("" + assetList.size());
-        mAdapter = new QuickCountAdapter(QuickCountActivity.this, assetList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(QuickCountActivity.this);
+        mAdapter = new QuickCountAdapter(EquipmentQuickCountActivity.this, assetList, "eq");
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(EquipmentQuickCountActivity.this);
         rvQuickCount.setLayoutManager(mLayoutManager);
         rvQuickCount.setItemAnimator(new DefaultItemAnimator());
         rvQuickCount.setAdapter(mAdapter);
@@ -224,21 +229,21 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
         if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION)) {
             BarcodeScanActivity.barcodeScan = this;
-            Intent in = new Intent(QuickCountActivity.this, BarcodeScanActivity.class);
+            Intent in = new Intent(EquipmentQuickCountActivity.this, BarcodeScanActivity.class);
             in.putExtra("taskType", taskType);
             startActivity(in);
         } else {
-            if (ActivityCompat.checkSelfPermission(QuickCountActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(QuickCountActivity.this, Manifest.permission.CAMERA)) {
+            if (ActivityCompat.checkSelfPermission(EquipmentQuickCountActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(EquipmentQuickCountActivity.this, Manifest.permission.CAMERA)) {
                     //Show Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(QuickCountActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EquipmentQuickCountActivity.this);
                     builder.setTitle("Need Storage Permission");
                     builder.setMessage("This app needs storage permission.");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            ActivityCompat.requestPermissions(QuickCountActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                            ActivityCompat.requestPermissions(EquipmentQuickCountActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -251,7 +256,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                 } else if (sharedPreferencesManager.getBoolean(SharedPreferencesManager.IS_NEVER_ASK_AGAIN)) {
                     //Previously Permission Request was cancelled with 'Dont Ask Again',
                     // Redirect to Settings after showing Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(QuickCountActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EquipmentQuickCountActivity.this);
                     builder.setTitle("Camera Permission");
                     builder.setMessage("This app needs permission to use camera");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
@@ -274,12 +279,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     builder.show();
                 } else {
                     //just request the permission
-                    ActivityCompat.requestPermissions(QuickCountActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
+                    ActivityCompat.requestPermissions(EquipmentQuickCountActivity.this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CONSTANT);
                 }
 
             } else {
                 BarcodeScanActivity.barcodeScan = this;
-                Intent in = new Intent(QuickCountActivity.this, BarcodeScanActivity.class);
+                Intent in = new Intent(EquipmentQuickCountActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", taskType);
                 startActivity(in);
             }
@@ -294,20 +299,20 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 sharedPreferencesManager.setBoolean(SharedPreferencesManager.IS_CAMERA_PERMISSION, true);
                 BarcodeScanActivity.barcodeScan = this;
-                Intent in = new Intent(QuickCountActivity.this, BarcodeScanActivity.class);
+                Intent in = new Intent(EquipmentQuickCountActivity.this, BarcodeScanActivity.class);
                 in.putExtra("taskType", taskType);
                 startActivity(in);
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(QuickCountActivity.this, Manifest.permission.CAMERA)) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(EquipmentQuickCountActivity.this, Manifest.permission.CAMERA)) {
                     //Show Information about why you need the permission
-                    AlertDialog.Builder builder = new AlertDialog.Builder(QuickCountActivity.this);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EquipmentQuickCountActivity.this);
                     builder.setTitle("Camera Permission");
                     builder.setMessage("This app needs permission to use camera");
                     builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
-                            ActivityCompat.requestPermissions(QuickCountActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
+                            ActivityCompat.requestPermissions(EquipmentQuickCountActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, CAMERA_PERMISSION_CONSTANT);
                         }
                     });
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -341,10 +346,10 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     } else {
                         myQuickCount.setID(0);
                     }
-                    if (null != etsLocation.getCustomer()) {
-                        myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
+                    if (0 != parentToolhawkEquipment.getETSLocation().getCustomerID()) {
+                        myQuickCount.setCustomerID(parentToolhawkEquipment.getETSLocation().getCustomerID());
                     }
-                    myQuickCount.setAssetCode(etsLocation.getCode());
+                    myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                     myQuickCount.setChanged(true);
                     myQuickCount.setComplete(false);
                     myQuickCount.setStatus(taskType.toUpperCase());
@@ -382,6 +387,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
                     showToast("Quick Count Saved!");
                     sendMessage("finish");
+                    equipmentQuickCountCompleted.EquipmentQuickCountComplete(toolhawkEquipment,assetPos);
                     finish();
                     break;
                 }
@@ -419,7 +425,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                         } else {
                                             myQuickCount.setID(0);
                                         }
-                                        myQuickCount.setAssetCode(etsLocation.getCode());
+                                        myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                                         myQuickCount.setChanged(true);
                                         myQuickCount.setComplete(true);
                                         myQuickCount.setStatus(taskType.toUpperCase());
@@ -434,8 +440,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                                             e.printStackTrace();
                                         }
                                         myQuickCount.setQuickCountDate(format);
-                                        if (null != etsLocation.getCustomer()) {
-                                            myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
+                                        if (0 != parentToolhawkEquipment.getETSLocation().getCustomerID()) {
+                                            myQuickCount.setCustomerID(parentToolhawkEquipment.getETSLocation().getCustomerID());
                                         }
                                         for (int i = 0; i < assetFoundList.size(); i++) {
                                             QuickCountAsset myQuickAssetCount = new QuickCountAsset();
@@ -462,11 +468,12 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
 
                                         showToast("Quick Count Complete!");
                                         sendMessage("finish");
+                                        equipmentQuickCountCompleted.EquipmentQuickCountComplete(toolhawkEquipment,assetPos);
                                         finish();
                                     }
 
                                 } else {
-                                    new AlertDialog.Builder(QuickCountActivity.this)
+                                    new AlertDialog.Builder(EquipmentQuickCountActivity.this)
                                             .setTitle("Quick Count")
                                             .setMessage(toolhawkEquipment.getCode() + " doesn't belong to " + tvLocName.getText().toString() + ", do you want to Continue?")
                                             .setPositiveButton("YES", new DialogInterface.OnClickListener() {
@@ -558,7 +565,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                         } else {
                             myQuickCount.setID(orgQuickCount.getID());
                         }
-                        myQuickCount.setAssetCode(etsLocation.getCode());
+                        myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                         myQuickCount.setChanged(true);
                         myQuickCount.setComplete(true);
                         myQuickCount.setStatus(taskType.toUpperCase());
@@ -588,8 +595,8 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                             myQuickAssetCount.setAssetCode(assetUnExpectedList.get(i).getCode());
                             myQuickCountAssets.add(myQuickAssetCount);
                         }
-                        if (null != etsLocation.getCustomer()) {
-                            myQuickCount.setCustomerID(etsLocation.getCustomer().getID());
+                        if (0 != parentToolhawkEquipment.getETSLocation().getCustomerID()) {
+                            myQuickCount.setCustomerID(parentToolhawkEquipment.getETSLocation().getCustomerID());
                         }
                         myQuickCount.setQuickCountAssets(myQuickCountAssets);
                         DataManager.getInstance().saveQuickCountResult(myQuickCount);
@@ -600,7 +607,7 @@ public class QuickCountActivity extends AppCompatActivity implements BarcodeScan
                     }
 
                 } else {
-                    new AlertDialog.Builder(QuickCountActivity.this)
+                    new AlertDialog.Builder(EquipmentQuickCountActivity.this)
                             .setTitle("Quick Count")
                             .setMessage(toolhawkEquipment.getCode() + " doesn't belong to " + tvLocName.getText().toString() + ", do you want to Continue?")
                             .setPositiveButton("YES", new DialogInterface.OnClickListener() {

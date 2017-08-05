@@ -19,6 +19,7 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
 
     private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     Context mContext;
+    String code;
     MyViewHolder myViewHolder;
 
     public QuickCountAdapter(Context context, List<ToolhawkEquipment> assetList) {
@@ -26,6 +27,12 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
         this.mContext = context;
     }
 
+
+    public QuickCountAdapter(Context context, List<ToolhawkEquipment> assetList, String code) {
+        this.code = code;
+        this.assetList = assetList;
+        this.mContext = context;
+    }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,16 +49,24 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
         holder.tvName.setText("" + asset.getCode());
         holder.tvAssetCode.setVisibility(View.GONE);
         holder.txtAssetCode.setVisibility(View.GONE);
-        if (null!=asset.getETSLocation()) {
-            holder.tvLocCode.setText("" + asset.getETSLocation().getCode());
-        }else {
-            holder.tvLocCode.setText("N/A" );
+        if (null!=code && !"eq".equals(code)) {
+            if (null!=asset.getETSLocation()) {
+                holder.tvLocCode.setText("" + asset.getETSLocation().getCode());
+            }else {
+                holder.tvLocCode.setText("N/A" );
+            }
+        }else{
+            if (null!=asset.getEquipmentLocationInfo()) {
+                holder.tvLocCode.setText("" + asset.getEquipmentLocationInfo().getLocation());
+            }else {
+                holder.tvLocCode.setText("N/A" );
+            }
         }
-       // if (asset.isParent()) {
-        //    holder.tvParent.setText("YES");
-       // } else {
+        if (asset.isContainer()) {
+            holder.tvParent.setText("YES");
+        } else {
             holder.tvParent.setText("NO");
-       // }
+        }
 
     }
 
