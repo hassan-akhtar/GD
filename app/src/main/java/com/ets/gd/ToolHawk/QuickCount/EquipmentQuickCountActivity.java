@@ -351,6 +351,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
                     }
                     myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                     myQuickCount.setChanged(true);
+                    myQuickCount.setCountType("Equipment");
                     myQuickCount.setComplete(false);
                     myQuickCount.setStatus(taskType.toUpperCase());
                     myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
@@ -428,6 +429,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
                                         myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                                         myQuickCount.setChanged(true);
                                         myQuickCount.setComplete(true);
+                                        myQuickCount.setCountType("Equipment");
                                         myQuickCount.setStatus(taskType.toUpperCase());
                                         myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
@@ -567,6 +569,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
                         }
                         myQuickCount.setAssetCode(parentToolhawkEquipment.getCode());
                         myQuickCount.setChanged(true);
+                        myQuickCount.setCountType("Equipment");
                         myQuickCount.setComplete(true);
                         myQuickCount.setStatus(taskType.toUpperCase());
                         myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));

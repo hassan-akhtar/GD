@@ -348,6 +348,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                     }
                     myQuickCount.setAssetCode(etsLocation.getCode());
                     myQuickCount.setChanged(true);
+                    myQuickCount.setCountType("Location");
                     myQuickCount.setComplete(false);
                     myQuickCount.setStatus(taskType.toUpperCase());
                     myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
@@ -425,6 +426,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                                             myQuickCount.setAssetCode(etsLocation.getCode());
                                             myQuickCount.setChanged(true);
                                             myQuickCount.setComplete(true);
+                                            myQuickCount.setCountType("Location");
                                             myQuickCount.setStatus(taskType.toUpperCase());
                                             myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
@@ -499,6 +501,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                                                             myQuickCount.setAssetCode(etsLocation.getCode());
                                                             myQuickCount.setChanged(true);
                                                             myQuickCount.setComplete(true);
+                                                            myQuickCount.setCountType("Location");
                                                             myQuickCount.setStatus(taskType.toUpperCase());
                                                             myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
@@ -642,6 +645,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                             }
                             myQuickCount.setAssetCode(etsLocation.getCode());
                             myQuickCount.setChanged(true);
+                            myQuickCount.setCountType("Location");
                             myQuickCount.setComplete(true);
                             myQuickCount.setStatus(taskType.toUpperCase());
                             myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
@@ -713,6 +717,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                                             }
                                             myQuickCount.setAssetCode(etsLocation.getCode());
                                             myQuickCount.setChanged(true);
+                                            myQuickCount.setCountType("Location");
                                             myQuickCount.setComplete(true);
                                             myQuickCount.setStatus(taskType.toUpperCase());
                                             myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
@@ -827,6 +832,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
             }
             myQuickCount.setAssetCode(etsLocation.getCode());
             myQuickCount.setChanged(true);
+            myQuickCount.setCountType("Location");
             myQuickCount.setComplete(true);
             myQuickCount.setStatus(taskType.toUpperCase());
             myQuickCount.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
