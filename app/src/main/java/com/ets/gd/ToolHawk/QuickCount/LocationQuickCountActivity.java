@@ -473,7 +473,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                                         final int finalAssetPos = assetPos;
                                         new AlertDialog.Builder(LocationQuickCountActivity.this)
                                                 .setTitle("Quick Count")
-                                                .setMessage(toolhawkEquipment.getCode() + " is a Parent do you want to Count the childern(s)?")
+                                                .setMessage(toolhawkEquipment.getCode() + " is a Parent do you want to Count the childern?")
                                                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                                     public void onClick(DialogInterface dialog, int which) {
                                                         setInterfaceEquipmentQuickCountComplete();
@@ -689,7 +689,7 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                         final int finalAssetPos = assetPos;
                         new AlertDialog.Builder(LocationQuickCountActivity.this)
                                 .setTitle("Quick Count")
-                                .setMessage(toolhawkEquipment.getCode() + " is a Parent do you want to Count the childern(s)?")
+                                .setMessage(toolhawkEquipment.getCode() + " is a Parent do you want to Count the childern?")
                                 .setPositiveButton("YES", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         setInterfaceEquipmentQuickCountComplete();
