@@ -1,7 +1,5 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 

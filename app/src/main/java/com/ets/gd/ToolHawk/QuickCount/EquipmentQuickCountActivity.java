@@ -52,7 +52,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
 
 
     TextView tbTitleTop, tbTitleBottom, tvAssetOtherInfo, tvLocName, tvBarcodeTitle, tvUnderText, tvBarcodeValue;
-    TextView tvUnExpected, tvExpected, tvFound;
+    TextView tvUnExpected, tvExpected, tvFound,tvInspectTitle;
     String taskType, eqCode;
     Button btnCross, btnScan;
     LinearLayout llbtns;
@@ -98,6 +98,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
         tvUnExpected = (TextView) findViewById(R.id.tvUnExpected);
         tvExpected = (TextView) findViewById(R.id.tvExpected);
         tvFound = (TextView) findViewById(R.id.tvFound);
+        tvInspectTitle = (TextView) findViewById(R.id.tvInspectTitle);
         tvLocName = (TextView) findViewById(R.id.tvLocNameInspect);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -117,6 +118,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
         newAfterSaveComplete = getIntent().getBooleanExtra("newAfterSaveComplete", false);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Quick Count");
+        tvInspectTitle.setText("ASSET");
 
         parentToolhawkEquipment = DataManager.getInstance().getToolhawkEquipment(eqCode);
 
@@ -388,7 +390,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
 
                     showToast("Quick Count Saved!");
                     sendMessage("finish");
-                    equipmentQuickCountCompleted.EquipmentQuickCountComplete(toolhawkEquipment,assetPos);
+                    equipmentQuickCountCompleted.EquipmentQuickCountComplete(parentToolhawkEquipment,assetPos);
                     finish();
                     break;
                 }
@@ -470,7 +472,7 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
 
                                         showToast("Quick Count Complete!");
                                         sendMessage("finish");
-                                        equipmentQuickCountCompleted.EquipmentQuickCountComplete(toolhawkEquipment,assetPos);
+                                        equipmentQuickCountCompleted.EquipmentQuickCountComplete(parentToolhawkEquipment,assetPos);
                                         finish();
                                     }
 
