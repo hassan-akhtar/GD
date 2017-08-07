@@ -523,7 +523,7 @@ public class DataManager {
 
     public List<ToolhawkEquipment> getTHEquipmentChilds(String eqCode) {
 
-        RealmResults<ToolhawkEquipment> results =  realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", eqCode, Case.INSENSITIVE).findAll();
+        RealmResults<ToolhawkEquipment> results = realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", eqCode, Case.INSENSITIVE).findAll();
         List<ToolhawkEquipment> copied = realm.copyFromRealm(results);
         return copied;
     }
@@ -1016,7 +1016,7 @@ public class DataManager {
 
     // For getting asset all locations from DB
     public List<Locations> getAllLocationsByCustomer(int CustomerID) {
-        RealmResults<Locations> results = realm.where(Locations.class).equalTo("Customer.ID",CustomerID).findAllSorted("Code");
+        RealmResults<Locations> results = realm.where(Locations.class).equalTo("Customer.ID", CustomerID).findAllSorted("Code");
         List<Locations> copied = realm.copyFromRealm(results);
         return copied;
     }
@@ -1062,6 +1062,11 @@ public class DataManager {
             return customer;
         }
 
+    }
+
+    // For getting asset all assets from DB
+    public SyncCustomer getFirstSyncCustomer() {
+        return realm.where(SyncCustomer.class).findFirst();
     }
 
 
@@ -1210,14 +1215,14 @@ public class DataManager {
     }
 
     public Routes getRoute(String code) {
-        return realm.where(Routes.class).equalTo("Code",code).findFirst();
+        return realm.where(Routes.class).equalTo("Code", code).findFirst();
     }
 
 
     public void markRouteComplete(String code) {
 
         realm.beginTransaction();
-        Routes route = realm.where(Routes.class).equalTo("Code",code).findFirst();
+        Routes route = realm.where(Routes.class).equalTo("Code", code).findFirst();
         route.setCompleted(true);
         realm.commitTransaction();
 

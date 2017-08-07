@@ -470,8 +470,12 @@ public class DashboardFragment extends Fragment {
                             BaseActivity.refreshMainViewByNew(new CustomerFragment());
                         } else {
                             BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
-                            if (null != DataManager.getInstance().getParentCompany()) {
-                                EventBus.getDefault().post(DataManager.getInstance().getParentCompany().getCode());
+                            if (null != DataManager.getInstance().getFirstSyncCustomer()) {
+                                if (0!=DataManager.getInstance().getFirstSyncCustomer().getCustomerId()) {
+                                    if (null!=DataManager.getInstance().getCustomerByID(DataManager.getInstance().getFirstSyncCustomer().getCustomerId())) {
+                                        EventBus.getDefault().post(DataManager.getInstance().getCustomerByID(DataManager.getInstance().getFirstSyncCustomer().getCustomerId()).getCode());
+                                    }
+                                }
                             }
 
                         }
