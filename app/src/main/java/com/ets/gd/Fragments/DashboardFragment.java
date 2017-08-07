@@ -307,7 +307,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initObj() {
-
+        BaseActivity.currentFragment = new DashboardFragment();
         ca = new CommonActions(getActivity());
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
