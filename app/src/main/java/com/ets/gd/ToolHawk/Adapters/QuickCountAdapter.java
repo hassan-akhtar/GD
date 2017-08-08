@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Models.ToolhawkAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ToolhawkEquipment;
 import com.ets.gd.R;
@@ -49,20 +50,23 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
         holder.tvName.setText("" + asset.getCode());
         holder.tvAssetCode.setVisibility(View.GONE);
         holder.txtAssetCode.setVisibility(View.GONE);
-        if (null!=code && !"eq".equals(code)) {
-            if (null!=asset.getETSLocation()) {
+        if (null != code && !"eq".equals(code)) {
+            if (null != asset.getETSLocation()) {
                 holder.tvLocCode.setText("" + asset.getETSLocation().getCode());
-            }else {
-                holder.tvLocCode.setText("N/A" );
+            } else {
+                holder.tvLocCode.setText("N/A");
             }
-        }else{
-            if (null!=asset.getEquipmentLocationInfo()) {
+        } else {
+            if (null != asset.getEquipmentLocationInfo()) {
                 holder.tvLocCode.setText("" + asset.getEquipmentLocationInfo().getLocation());
-            }else {
-                holder.tvLocCode.setText("N/A" );
+            } else {
+                holder.tvLocCode.setText("N/A");
             }
         }
-        if (asset.isContainer()) {
+
+        ToolhawkEquipment equipment = DataManager.getInstance().isAssetParent(asset.getCode());
+
+        if (null != equipment) {
             holder.tvParent.setText("YES");
         } else {
             holder.tvParent.setText("NO");
@@ -85,7 +89,7 @@ public class QuickCountAdapter extends RecyclerView.Adapter<QuickCountAdapter.My
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvName, tvAssetCode ,txtAssetCode, tvLocCode, tvParent;
+        private TextView tvName, tvAssetCode, txtAssetCode, tvLocCode, tvParent;
 
         public MyViewHolder(View view) {
             super(view);

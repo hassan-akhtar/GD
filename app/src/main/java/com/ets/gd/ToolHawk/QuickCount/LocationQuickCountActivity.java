@@ -408,7 +408,8 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
                             }
                             if (!assetFoundList.contains(toolhawkEquipment)) {
                                 if (isfound) {
-                                    if (!toolhawkEquipment.isContainer()) {
+                                    ToolhawkEquipment equipment = DataManager.getInstance().isAssetParent(toolhawkEquipment.getCode());
+                                    if (null==equipment) {
                                         mAdapter.removeAt(assetPos);
                                         showToast("Asset Found!");
                                         assetFoundList.add(toolhawkEquipment);
@@ -628,7 +629,8 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
             }
             if (!assetFoundList.contains(toolhawkEquipment)) {
                 if (isfound) {
-                    if (!toolhawkEquipment.isContainer()) {
+                    ToolhawkEquipment equipment = DataManager.getInstance().isAssetParent(toolhawkEquipment.getCode());
+                    if (null==equipment) {
                         mAdapter.removeAt(assetPos);
                         showToast("Asset Found!");
                         assetFoundList.add(toolhawkEquipment);

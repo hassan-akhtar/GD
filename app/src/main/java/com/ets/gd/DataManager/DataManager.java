@@ -115,6 +115,11 @@ public class DataManager {
     }
 
 
+
+    public ToolhawkEquipment isAssetParent(String equipCode) {
+         return realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", equipCode).findFirst();
+    }
+
     public void updateAssetRouteInspectionStatus(int equipID) {
         realm.beginTransaction();
         FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", equipID).findFirst();
