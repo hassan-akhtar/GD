@@ -672,7 +672,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
             }
         }
 
-
         moveTransferRequestDTO = new MoveTransferRequestDTO(Constants.RESPONSE_SYNC_POST_MOVE_TRANSFER,
                 String.valueOf(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID)),
                 lstMoveEquipment);
