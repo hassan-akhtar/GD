@@ -203,7 +203,7 @@
                         android:layout_weight="1.5"
                         android:textSize="15sp"
                         android:background="@drawable/et_bottom_line"
-                        android:hint="03/14/2017"
+                        android:hint="MM/DD/YYY"
                         android:paddingBottom="10dp" />
                 </LinearLayout>
 

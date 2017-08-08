@@ -84,7 +84,6 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
         tvAssetID.setText("" + assetID);
         tbTitleTop.setText("Toolhawk");
         tbTitleBottom.setText("Maintenance");
-        etMaintDate.setText("MM/DD/YYYY");
         etMaintDate.setTextColor(Color.GRAY);
 
 /*        ColorStateList colorStateList = new ColorStateList(
@@ -278,7 +277,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
         } else if ("".equals(etPrice.getText().toString().trim())) {
             showToast("Please enter unit cost");
         } else if ("".equals(etMaintDate.getText().toString().trim())) {
-            showToast("Please select Manufacturer date");
+            showToast("Please select Maintenance date");
         } else {
             return true;
         }
