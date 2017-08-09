@@ -255,6 +255,7 @@ public class BaseActivity extends AppCompatActivity
 
 
     private void displayView(int position) {
+
         Fragment fragment = null;
         title = getString(R.string.app_name);
         rolePermissions = DataManager.getInstance().getRolePermissionsByUserName(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_USERNAME));
