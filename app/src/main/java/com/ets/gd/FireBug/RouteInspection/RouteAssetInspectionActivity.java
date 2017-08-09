@@ -55,7 +55,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     TextView tvAssetCount, tvLocCount, tvRouteName, tvLocName, tvInspectedAssets, tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
-    String compName, tag, loc, desp, deviceType, location, assetCount, locCount, routeName;
+    String compName, tag, loc, desp, deviceType, location, assetCount, locCount, routeName, equipmentCode;
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
@@ -126,6 +126,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         loc = getIntent().getStringExtra("loc");
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
+        equipmentCode = getIntent().getStringExtra("equipmentCode");
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
         RouteID = getIntent().getIntExtra("RouteID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
@@ -248,7 +249,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                         //   if (isHydro) {
                         for (UnitinspectionResult obj : unitinspectionResults) {
 
-                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipment(obj.getEquipmentID()).getCode().toLowerCase()) &&
                                     spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                                 alreadyInspectedLocally = true;
                                 break;
@@ -273,7 +274,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
 
                             UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                            inspectionResult.setEquipmentID(equipmentID);
+                            inspectionResult.setEquipmentID(equipmentCode);
                             DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
                             RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
                             inspectionResult.setReplaced(false);
@@ -396,7 +397,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-        inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setEquipmentID(equipmentCode);
         DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
         RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
         inspectionResult.setReplaced(true);
@@ -556,7 +557,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
             //if (isHydro) {
             for (UnitinspectionResult obj : unitinspectionResults) {
 
-                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipment(obj.getEquipmentID()).getCode().toLowerCase()) &&
                         spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                     alreadyInspectedLocally = true;
                     break;

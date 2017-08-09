@@ -337,7 +337,7 @@ public class GSDServiceImpl implements GSDService {
             CheckInForCall checkInForCall = new CheckInForCall();
             checkInForCall.setUserID(checkIn.getCheckInList().get(i).getUserID());
             checkInForCall.setJobNumberID(checkIn.getCheckInList().get(i).getJobNumberID());
-             List<Integer> EquipmentID =  new ArrayList<Integer>();
+             List<String> EquipmentID =  new ArrayList<String>();
             for (int j=0;j<checkIn.getCheckInList().get(i).getEquipmentID().size();j++) {
                 EquipmentID.add(checkIn.getCheckInList().get(i).getEquipmentID().get(j).getEquipmentID());
             }
@@ -376,7 +376,7 @@ public class GSDServiceImpl implements GSDService {
             checkOutForCall.setCheckOutType(checkOut.getCheckOutList().get(i).getCheckOutType());
             checkOutForCall.setJobNumberID(checkOut.getCheckOutList().get(i).getJobNumberID());
             checkOutForCall.setDueDate(checkOut.getCheckOutList().get(i).getDueDate());
-            List<Integer> EquipmentID =  new ArrayList<Integer>();
+            List<String> EquipmentID =  new ArrayList<String>();
             for (int j=0;j<checkOut.getCheckOutList().get(i).getEquipmentID().size();j++) {
                 EquipmentID.add(checkOut.getCheckOutList().get(i).getEquipmentID().get(j).getEquipmentID());
             }

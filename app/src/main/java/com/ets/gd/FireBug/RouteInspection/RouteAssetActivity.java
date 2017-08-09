@@ -149,6 +149,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     in.putExtra("deviceType", equipmentList.get(position).getModel().getCode());
                     in.putExtra("cusID", cusID);
                     in.putExtra("equipmentID", equipmentList.get(position).getID());
+                    in.putExtra("equipmentCode", equipmentList.get(position).getCode());
                     in.putExtra("desp", equipmentList.get(position).getManufacturer().getCode());
                     in.putExtra("RouteID", assetList.get(position).getRouteID());
                     in.putExtra("AssetCount", tvAssetCount.getText().toString());
@@ -354,6 +355,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     in.putExtra("deviceType", equipmentList.get(pos).getModel().getCode());
                     in.putExtra("cusID", cusID);
                     in.putExtra("equipmentID", equipmentList.get(pos).getID());
+                    in.putExtra("equipmentCode", equipmentList.get(pos).getCode());
                     in.putExtra("desp", equipmentList.get(pos).getManufacturer().getCode());
                     in.putExtra("RouteID", assetList.get(pos).getRouteID());
                     in.putExtra("AssetCount", tvAssetCount.getText().toString());
