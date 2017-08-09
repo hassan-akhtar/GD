@@ -134,7 +134,7 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
 
                 case R.id.tvTransfer: {
 
-                    toolhawkEquipment = new ToolhawkTransferDTO(theq.getID(),DataManager.getInstance().getDepartmentByCode(spDep.getItemAtPosition(posDepartment).toString()).getID(),
+                    toolhawkEquipment = new ToolhawkTransferDTO(theq.getCode(),DataManager.getInstance().getDepartmentByCode(spDep.getItemAtPosition(posDepartment).toString()).getID(),
                             DataManager.getInstance().getETSLocationsByCode(spLoc.getItemAtPosition(posLoc).toString()).getID());
                     DataManager.getInstance().saveResultTransferToolhawk(toolhawkEquipment);
                     showToast("Transfer Complete!");

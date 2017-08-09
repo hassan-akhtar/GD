@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 public class EquipmentMaintenance  extends RealmObject{
 
     private int ID;
-    private int EquipmentID;
+    private String EquipmentCode;
     private int MaintenanceCategoryID;
     private int MaintenanceActionID;
     private String Cost;
@@ -25,12 +25,12 @@ public class EquipmentMaintenance  extends RealmObject{
         this.ID = ID;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentID() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentID(String equipmentID) {
+        EquipmentCode = equipmentID;
     }
 
     public int getMaintenanceCategoryID() {

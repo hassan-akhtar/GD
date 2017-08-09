@@ -9,20 +9,20 @@ import io.realm.RealmObject;
 
 public class CheckInOutEquipment extends RealmObject {
 
-    private int equipmentID;
+    private String equipmentCode;
 
     public CheckInOutEquipment() {
     }
 
-    public CheckInOutEquipment(int equipmentID) {
-        this.equipmentID = equipmentID;
+    public CheckInOutEquipment(String equipmentID) {
+        this.equipmentCode = equipmentID;
     }
 
-    public int getEquipmentID() {
-        return equipmentID;
+    public String getEquipmentID() {
+        return equipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        this.equipmentID = equipmentID;
+    public void setEquipmentID(String equipmentID) {
+        this.equipmentCode = equipmentID;
     }
 }

@@ -51,7 +51,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
-    String compName, tag, loc, desp, deviceType, location;
+    String compName, tag, loc, desp, deviceType, location, equipmentCode;
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
@@ -125,6 +125,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
         equipmentID = getIntent().getIntExtra("equipmentID", 0);
+        equipmentCode  = getIntent().getStringExtra("equipmentCode");
         tvCompanyValue.setText("" + compName);
         tvAssetName.setText("" + tag);
         tvAssetOtherInfo.setText("" + desp + ", " + deviceType + ", " + location);
@@ -201,7 +202,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     if (checkValidation(isFail)) {
 
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                        inspectionResult.setEquipmentID(equipmentID);
+                        inspectionResult.setEquipmentID(equipmentCode);
                         inspectionResult.setReplaced(false);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
@@ -310,7 +311,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-        inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setEquipmentID(equipmentCode);
         inspectionResult.setReplaced(true);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);

@@ -15,7 +15,7 @@ public class CheckOutForCall  {
     private int UserID;
     private int JobNumberID;
     private String DueDate;
-    private List<Integer> equipmentIDList;
+    private List<String> equipmentCodeList;
 
     public CheckOutForCall() {
     }
@@ -52,11 +52,11 @@ public class CheckOutForCall  {
         DueDate = dueDate;
     }
 
-    public List<Integer> getEquipmentIDList() {
-        return equipmentIDList;
+    public List<String> getEquipmentIDList() {
+        return equipmentCodeList;
     }
 
-    public void setEquipmentIDList(List<Integer> equipmentIDList) {
-        this.equipmentIDList = equipmentIDList;
+    public void setEquipmentIDList(List<String> equipmentIDList) {
+        this.equipmentCodeList = equipmentIDList;
     }
 }

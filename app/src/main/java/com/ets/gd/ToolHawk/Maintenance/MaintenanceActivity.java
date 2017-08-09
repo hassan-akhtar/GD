@@ -219,7 +219,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
                         equipmentMaintenance.setID(0);
 
                         if (null != DataManager.getInstance().getToolhawkEquipment(assetID)) {
-                            equipmentMaintenance.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(assetID).getID());
+                            equipmentMaintenance.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(assetID).getCode());
                         }
 
                         if (null != DataManager.getInstance().getMaintenanceCategory(spCategory.getItemAtPosition(posCategory).toString())) {

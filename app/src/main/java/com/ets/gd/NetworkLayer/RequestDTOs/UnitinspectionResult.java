@@ -7,7 +7,7 @@ import io.realm.RealmObject;
 
 public class UnitinspectionResult extends RealmObject {
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private String InspectionType;
     private String InspectionDate;
     private Boolean isReplaced;
@@ -21,8 +21,8 @@ public class UnitinspectionResult extends RealmObject {
     private boolean isCompleted;
     private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
-    public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
-        EquipmentID = equipmentID;
+    public UnitinspectionResult(String EqCode, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
+        EquipmentCode = EqCode;
         InspectionType = inspectionType;
         InspectionDate = inspectionDate;
         UserId = userId;
@@ -99,12 +99,12 @@ public class UnitinspectionResult extends RealmObject {
         ReplaceType = replaceType;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentID() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentID(String EqCode) {
+        EquipmentCode = EqCode;
     }
 
     public String getInspectionType() {

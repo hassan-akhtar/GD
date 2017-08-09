@@ -367,7 +367,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                                 }
 
                                 for (int i = 0; i < equipmentList.size(); i++) {
-                                    equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                    equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getCode()));
                                 }
                                 syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
                                 syncPostCheckOutRequestDTO.setDueDate("" + etReturnDate.getText().toString().trim());
@@ -392,7 +392,7 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             }
 
                             for (int i = 0; i < equipmentList.size(); i++) {
-                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getCode()));
                             }
                             syncPostCheckInRequestDTO.setEquipmentID(equipmentIDList);
                             DataManager.getInstance().saveCheckInResult(syncPostCheckInRequestDTO);

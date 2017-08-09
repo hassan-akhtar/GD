@@ -652,7 +652,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     MoveTransfer equipment = new MoveTransfer();
                     equipment.setAction("Move");
                     equipment.setCustomerID(asset.getCustomer().getID());
-                    equipment.setEquipmentID(asset.getID());
+                    equipment.setEquipmentID(asset.getCode());
                     equipment.setLocationID(asset.getLocation().getID());
                     equipment.setLocationCode(asset.getLocation().getCode());
                     lstMoveEquipment.add(equipment);
@@ -664,7 +664,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     MoveTransfer equipment = new MoveTransfer();
                     equipment.setAction("Transfer");
                     equipment.setCustomerID(asset.getCustomer().getID());
-                    equipment.setEquipmentID(asset.getID());
+                    equipment.setEquipmentID(asset.getCode());
                     equipment.setLocationID(asset.getLocation().getID());
                     equipment.setLocationCode(asset.getLocation().getCode());
                     lstMoveEquipment.add(equipment);

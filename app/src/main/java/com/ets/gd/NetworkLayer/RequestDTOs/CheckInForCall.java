@@ -11,7 +11,7 @@ public class CheckInForCall {
 
     private int UserID;
     private int JobNumberID ;
-    private List<Integer> equipmentIDList;
+    private List<String> equipmentCodeList;
 
     public CheckInForCall() {
     }
@@ -33,11 +33,11 @@ public class CheckInForCall {
         this.JobNumberID  = jobNumberID;
     }
 
-    public List<Integer> getEquipmentIDList() {
-        return equipmentIDList;
+    public List<String> getEquipmentIDList() {
+        return equipmentCodeList;
     }
 
-    public void setEquipmentIDList(List<Integer> equipmentIDList) {
-        this.equipmentIDList = equipmentIDList;
+    public void setEquipmentIDList(List<String> equipmentIDList) {
+        this.equipmentCodeList = equipmentIDList;
     }
 }

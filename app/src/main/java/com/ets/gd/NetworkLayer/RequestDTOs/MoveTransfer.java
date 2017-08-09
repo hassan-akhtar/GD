@@ -8,15 +8,15 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 public class MoveTransfer {
 
     private String Action;
-    private int EquipmentID;
+    private String EquipmentCode;
     private int CustomerID;
     private int LocationID;
     private String LocationCode;
 
 
-    public MoveTransfer(String action, int equipmentID, int customerID, int locationID) {
+    public MoveTransfer(String action, String EqCode, int customerID, int locationID) {
         Action = action;
-        EquipmentID = equipmentID;
+        EquipmentCode = EqCode;
         CustomerID = customerID;
         LocationID = locationID;
     }
@@ -40,12 +40,12 @@ public class MoveTransfer {
         Action = action;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentID() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentID(String EqCode) {
+        EquipmentCode = EqCode;
     }
 
     public int getCustomerID() {

@@ -257,7 +257,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
                             currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment)) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
@@ -271,9 +271,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                                hideKeyboard();
-                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
                             } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -286,7 +283,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
                             currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) ) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     hideKeyboard();
                                     etBarcode.setText("");
@@ -300,9 +297,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                                hideKeyboard();
-                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
                             } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -315,7 +309,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                             fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString());
                             currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                            if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) ) {
                                 if (!assetList.contains(fireBugEquipment)) {
                                     assetList.clear();
                                     etBarcode.setText("");
@@ -329,9 +323,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                                     hideKeyboard();
                                     Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                                 }
-                            } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                                hideKeyboard();
-                                Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
                             } else {
                                 hideKeyboard();
                                 Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -396,6 +387,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         }
                         in.putExtra("deviceTypeID", DeviceTypeID);
                         in.putExtra("equipmentID", assetList.get(0).getID());
+                        in.putExtra("equipmentCode", assetList.get(0).getCode());
                     }
                     in.putExtra("compName", compName);
                     in.putExtra("deviceType", "" + assetList.get(0).getModel().getCode());
@@ -782,7 +774,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                 fireBugEquipment = DataManager.getInstance().getEquipment(message);
                 currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) ) {
                     if (!assetList.contains(fireBugEquipment)) {
                         hideKeyboard();
                         etBarcode.setText("");
@@ -796,9 +788,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                     }
-                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                    hideKeyboard();
-                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from MOVE operation!", Toast.LENGTH_LONG).show();
                 } else {
                     hideKeyboard();
                     Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -809,7 +798,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                 fireBugEquipment = DataManager.getInstance().getEquipment(message);
                 currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) ) {
                     if (!assetList.contains(fireBugEquipment)) {
 
                         hideKeyboard();
@@ -824,9 +813,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                     }
-                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                    hideKeyboard();
-                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from TRANSFER operation!", Toast.LENGTH_LONG).show();
                 } else {
                     hideKeyboard();
                     Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();
@@ -836,7 +822,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                 fireBugEquipment = DataManager.getInstance().getEquipment(message);
                 currentCustomerAssetList = DataManager.getInstance().getCompanyEquipments(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
-                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && !fireBugEquipment.isAdded()) {
+                if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment)) {
                     if (!assetList.contains(fireBugEquipment)) {
                         assetList.clear();
                         etBarcode.setText("");
@@ -851,9 +837,6 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         hideKeyboard();
                         Toast.makeText(getApplicationContext(), "Asset Already Added!", Toast.LENGTH_LONG).show();
                     }
-                } else if (0 != currentCustomerAssetList.size() && currentCustomerAssetList.contains(fireBugEquipment) && fireBugEquipment.isAdded()) {
-                    hideKeyboard();
-                    Toast.makeText(getApplicationContext(), "Asset newly Added you need to sync first from INSPECT operation!", Toast.LENGTH_LONG).show();
                 } else {
                     hideKeyboard();
                     Toast.makeText(getApplicationContext(), "Asset Not found!", Toast.LENGTH_LONG).show();

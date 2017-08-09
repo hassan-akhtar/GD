@@ -6,25 +6,25 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
  */
 
 public class TransferToolhawk {
-    private int EquipmentID;
+    private String EquipmentCode;
     private int DepartmentID;
     private int LocationID;
 
 
     public TransferToolhawk() {
     }
-    public TransferToolhawk(int equipmentID, int departmentID, int locationID) {
-        EquipmentID = equipmentID;
+    public TransferToolhawk(String EqCode, int departmentID, int locationID) {
+        EquipmentCode = EqCode;
         DepartmentID = departmentID;
         LocationID = locationID;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentID() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentID(String EqCode) {
+        EquipmentCode = EqCode;
     }
 
     public int getDepartmentID() {

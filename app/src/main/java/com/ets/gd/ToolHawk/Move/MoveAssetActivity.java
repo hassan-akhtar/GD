@@ -369,13 +369,11 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
 
                                             for (int i = 0; i < equipmentList.size(); i++) {
                                                 ToolhawkMove toolhawkMove = new ToolhawkMove();
-                                                toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
+                                                toolhawkMove.setEquipmentID(equipmentList.get(i).getCode());
 
                                                 if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
-                                                    toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
+                                                    toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getCode());
                                                     toolhawkMove.setMoveType("Equipment");
-                                                } else {
-                                                    toolhawkMove.setToEquipmentID(0);
                                                 }
                                                 if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
                                                     toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());

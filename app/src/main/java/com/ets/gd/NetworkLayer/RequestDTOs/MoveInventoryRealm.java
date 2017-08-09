@@ -7,7 +7,7 @@ import io.realm.RealmObject;
 
 public class MoveInventoryRealm extends RealmObject{
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private String MoveType;
     private String IssueType;
     private int UserID;
@@ -28,12 +28,12 @@ public class MoveInventoryRealm extends RealmObject{
 
     private RealmList<InventoryMoveRealm> Materials;
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentID() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentID(String equipmentID) {
+        EquipmentCode = equipmentID;
     }
 
     public String getMoveType() {
