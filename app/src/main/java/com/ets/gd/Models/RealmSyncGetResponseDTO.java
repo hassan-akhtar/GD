@@ -1,7 +1,9 @@
 package com.ets.gd.Models;
 
 import com.ets.gd.NetworkLayer.ResponseDTOs.*;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Condition;
 import com.ets.gd.NetworkLayer.ResponseDTOs.JobNumber;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
@@ -15,6 +17,8 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<AllCustomers> lstCustomers;
     RealmList<SyncCustomer> lstCustomerData;
     RealmList<DeviceType> lstDeviceType;
+    RealmList<Condition> lstTHConditions;
+    RealmList<Rating> lstRatings;
     RealmList<Manufacturer> lstManufacturers;
     RealmList<Model> lstModels;
     RealmList<VendorCode> lstVendorCodes;
@@ -41,6 +45,22 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<Condition> getLstTHConditions() {
+        return lstTHConditions;
+    }
+
+    public void setLstTHConditions(RealmList<Condition> lstTHConditions) {
+        this.lstTHConditions = lstTHConditions;
+    }
+
+    public RealmList<Rating> getLstRatings() {
+        return lstRatings;
+    }
+
+    public void setLstRatings(RealmList<Rating> lstRatings) {
+        this.lstRatings = lstRatings;
     }
 
     public int getDueDays() {

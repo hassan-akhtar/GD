@@ -9,6 +9,8 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     RealmList<AllCustomers> lstCustomers;
     RealmList<SyncCustomer> lstCustomerData;
+    RealmList<Condition> lstTHConditions;
+    RealmList<Rating> lstRatings;
     RealmList<DeviceType> lstDeviceType;
     RealmList<Manufacturer> lstManufacturers;
     RealmList<Model> lstModels;
@@ -36,6 +38,22 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public RealmList<Condition> getLstTHConditions() {
+        return lstTHConditions;
+    }
+
+    public void setLstTHConditions(RealmList<Condition> lstTHConditions) {
+        this.lstTHConditions = lstTHConditions;
+    }
+
+    public RealmList<Rating> getLstRatings() {
+        return lstRatings;
+    }
+
+    public void setLstRatings(RealmList<Rating> lstRatings) {
+        this.lstRatings = lstRatings;
     }
 
     public int getDueDays() {

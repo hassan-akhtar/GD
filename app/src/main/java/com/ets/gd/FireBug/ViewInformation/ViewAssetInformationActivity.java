@@ -26,6 +26,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.FirebugEqSize;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Size;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -167,6 +168,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         size.setDescription(firebugEqSize.getDescription());
                                     }
 
+
+                                    Rating rating = DataManager.getInstance().getRating(AssetInformationFragment.spRating.getItemAtPosition(AssetInformationFragment.posRating).toString());
+
+
+
                                     RealmList<MyInspectionDates> inspectionDates = new RealmList<>();
                                     List<MyInspectionDates> inspectionDatesList = DataManager.getInstance().getEquipmentInspectionDates(AssetInformationFragment.tvTagID.getText().toString());
                                     if (0!=inspectionDatesList.size()) {
@@ -174,6 +180,7 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                     }
 
                                     fireBugEquipmentt = new FireBugEquipment(
+                                            rating,
                                             inspectionDates,
                                             size,
                                             fireBugEquipment.getID(),
@@ -236,7 +243,11 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                                 size.setCode(firebugEqSize.getCode());
                                                 size.setDescription(firebugEqSize.getDescription());
                                             }
+
+                                            Rating rating = DataManager.getInstance().getRating(AssetInformationFragment.spRating.getItemAtPosition(AssetInformationFragment.posRating).toString());
+
                                             fireBugEquipment = new FireBugEquipment(
+                                                    rating,
                                                     null,
                                                     size,
                                                     0,

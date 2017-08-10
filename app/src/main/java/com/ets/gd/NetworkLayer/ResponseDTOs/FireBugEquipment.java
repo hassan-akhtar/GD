@@ -5,7 +5,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 
-public class FireBugEquipment  extends RealmObject {
+public class FireBugEquipment extends RealmObject {
 
     private int ID;
     @PrimaryKey
@@ -49,8 +49,9 @@ public class FireBugEquipment  extends RealmObject {
         Model = model;
     }
 
-    public FireBugEquipment(RealmList<MyInspectionDates> InspectionDates ,Size size, int ID, String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isUpdated, boolean isAdded) {
+    public FireBugEquipment(Rating Rating,RealmList<MyInspectionDates> InspectionDates, Size size, int ID, String code, String serialNo, String manufacturerDate, com.ets.gd.NetworkLayer.ResponseDTOs.AgentType agentType, com.ets.gd.NetworkLayer.ResponseDTOs.Customer customer, com.ets.gd.NetworkLayer.ResponseDTOs.DeviceType deviceType, MyLocation location, com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer manufacturer, com.ets.gd.NetworkLayer.ResponseDTOs.VendorCode vendorCode, com.ets.gd.NetworkLayer.ResponseDTOs.Model model, boolean isUpdated, boolean isAdded) {
         this.InspectionDates = InspectionDates;
+        this.Rating = Rating;
         this.Size = size;
         this.ID = ID;
         Code = code;
@@ -115,7 +116,8 @@ public class FireBugEquipment  extends RealmObject {
         isAdded = added;
     }
 
-    public FireBugEquipment(){}
+    public FireBugEquipment() {
+    }
 
     public boolean isUnitInspected() {
         return isUnitInspected;

@@ -44,6 +44,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Model;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyInspectionDates;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MyLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
+import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
@@ -744,6 +745,11 @@ public class DataManager {
         return realm.where(FirebugEqSize.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
     }
 
+
+    public Rating getRating(String Code) {
+        return realm.where(Rating.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
+    }
+
     // For getting asset all assets from DB
     public MyLocation getAssetLocation(String Code) {
         return realm.where(MyLocation.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
@@ -1117,6 +1123,8 @@ public class DataManager {
                 realmSyncGetResponseDTO.setDueDays(obj.getDueDays());
                 realmSyncGetResponseDTO.setMobileDashboard(obj.getMobileDashboard());
                 realmSyncGetResponseDTO.setLstCustomerData(obj.getLstCustomerData());
+                realmSyncGetResponseDTO.setLstTHConditions(obj.getLstTHConditions());
+                realmSyncGetResponseDTO.setLstRatings(obj.getLstRatings());
                 realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
                 realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
                 realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
