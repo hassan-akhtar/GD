@@ -421,7 +421,7 @@ public class DataManager {
                     myInspectionFiveYear.setID(0);
                     myInspectionFiveYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionFiveYear.setEquipmentCode(fireBugEquipment.getCode());
-                    myInspectionFiveYear.setDueDate(addYearsToDate(mfgDate, 5));
+                    myInspectionFiveYear.setDueDate(addYearsToDate(mfgDate, 0));
                     myInspectionFiveYear.setInspectionType("5 Years");
                     res.add(myInspectionFiveYear);
                 }
@@ -431,7 +431,7 @@ public class DataManager {
                     myInspectionSixYear.setID(0);
                     myInspectionSixYear.setEquipmentID(fireBugEquipment.getID());
                     myInspectionSixYear.setEquipmentCode(fireBugEquipment.getCode());
-                    myInspectionSixYear.setDueDate(addYearsToDate(mfgDate, 6));
+                    myInspectionSixYear.setDueDate(addYearsToDate(mfgDate, 0));
                     myInspectionSixYear.setInspectionType("6 Years");
                     res.add(myInspectionSixYear);
                 }
@@ -441,7 +441,7 @@ public class DataManager {
                     MyInspectionDates myInspectionTenYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTenYears.setID(0);
                     myInspectionTenYears.setEquipmentID(fireBugEquipment.getID());
-                    myInspectionTenYears.setDueDate(addYearsToDate(mfgDate, 10));
+                    myInspectionTenYears.setDueDate(addYearsToDate(mfgDate, 0));
                     myInspectionTenYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTenYears.setInspectionType("10 Years");
                     res.add(myInspectionTenYears);
@@ -452,7 +452,7 @@ public class DataManager {
                     MyInspectionDates myInspectionTwelveYears = realm.createObject(MyInspectionDates.class);
                     myInspectionTwelveYears.setID(0);
                     myInspectionTwelveYears.setEquipmentID(fireBugEquipment.getID());
-                    myInspectionTwelveYears.setDueDate(addYearsToDate(mfgDate, 12));
+                    myInspectionTwelveYears.setDueDate(addYearsToDate(mfgDate, 0));
                     myInspectionTwelveYears.setEquipmentCode(fireBugEquipment.getCode());
                     myInspectionTwelveYears.setInspectionType("12 Years");
                     res.add(myInspectionTwelveYears);
