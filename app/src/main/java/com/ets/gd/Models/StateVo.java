@@ -1,6 +1,6 @@
 package com.ets.gd.Models;
 
-public class StateVO {
+class StateVO {
     private String title;
     private boolean selected;
 
