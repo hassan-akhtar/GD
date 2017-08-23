@@ -201,6 +201,8 @@ public class BaseActivity extends AppCompatActivity
                     .beginTransaction()
                     .replace(R.id.container_body,
                             new InventoryDashboardFragment()).commit();
+            tbTitleTop.setText("ETS");
+            tbTitleBottom.setText("Inventory");
         } else if (fragment instanceof SyncFragment) {
             //searchMenuItem.setVisible(false);
             fragmentManager

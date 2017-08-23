@@ -2,63 +2,73 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@android:color/white"
+    android:padding="16dp"
     tools:context="com.ets.gd.Fragments.DeviceInfoFragment">
 
     <RelativeLayout
         android:layout_width="280dp"
-        android:layout_marginTop="10dp"
-        android:layout_height="wrap_content">
-    <TextView
-        android:id="@+id/tvDeviceID"
-        android:textColor="@color/blueDark"
-        android:textStyle="bold"
-        android:textSize="17sp"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="0b11ABOH-13A-Djasdasdjjasddd-jh asg356546fdgdss" />
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:id="@+id/tvDeviceIdTitle"
+            android:layout_width="wrap_content"
+            android:text="Device ID:"
+            android:textStyle="bold"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvDeviceID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvDeviceIdTitle"
+            android:layout_marginTop="3dp"
+            android:text="0b11ABOH-13A-Djasdasdjjasddd-jh asg356546fdgdss"
+            android:textColor="@color/blueDark"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
     </RelativeLayout>
 
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:layout_height="wrap_content">
+        android:layout_marginBottom="50dp">
 
         <TextView
             android:id="@+id/tv1"
 
             android:layout_width="wrap_content"
-            android:textColor="@color/veryLightGrey"
-            android:textSize="17sp"
             android:layout_height="wrap_content"
-            android:text="Please call Data Support at:"/>
+            android:text="Please call Data Support at:"
+            android:textColor="@color/veryLightGrey"
+            android:textSize="17sp" />
 
         <TextView
             android:id="@+id/tv2"
-            android:textStyle="bold"
-            android:layout_below="@+id/tv1"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv1"
+            android:text="320-1155-3216"
             android:textColor="@color/greyLight"
             android:textSize="19sp"
-            android:layout_height="wrap_content"
-            android:text="320-1155-3216"/>
+            android:textStyle="bold" />
 
 
         <TextView
             android:id="@+id/tv3"
-            android:layout_below="@+id/tv2"
             android:layout_width="wrap_content"
-            android:textColor="@color/veryLightGrey"
-            android:textSize="17sp"
             android:layout_height="wrap_content"
-            android:text="For Registration key."/>
+            android:layout_below="@+id/tv2"
+            android:text="For Registration key."
+            android:textColor="@color/veryLightGrey"
+            android:textSize="17sp" />
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>
