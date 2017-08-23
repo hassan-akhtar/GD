@@ -12,10 +12,18 @@ public class EquipmentMaintenance  extends RealmObject{
     private String MaintenanceDate;
     private boolean UpdateLastServiceDate;
     private String Note;
+    private int userID;
 
     public EquipmentMaintenance() {
     }
 
+    public int getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
     public int getID() {
         return ID;

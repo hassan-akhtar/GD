@@ -32,7 +32,9 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
+import com.ets.gd.Utils.SharedPreferencesManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     String[] categories;
     String[] actions;
     LinearLayout llNotes;
+    SharedPreferencesManager sharedPreferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
     }
 
     private void initObj() {
+        sharedPreferencesManager = new SharedPreferencesManager(MaintenanceActivity.this);
 
         lstMaintenanceAction = DataManager.getInstance().getAllActions();
         lstCategory = DataManager.getInstance().getAllMaintenanceCategory();
@@ -233,6 +237,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
 
 
                         equipmentMaintenance.setCost("" + etPrice.getText().toString());
+                        equipmentMaintenance.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                         equipmentMaintenance.setMaintenanceDate("" + etMaintDate.getText().toString());
                         equipmentMaintenance.setNote("" + etNote.getText().toString());
                         if (cbUpdateServiceDate.isChecked()) {
