@@ -783,9 +783,18 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Model> getModelFromManufacturerIDFirebug(int id) {
-        return realm.where(Model.class).equalTo("Manufacturer", id).equalTo("IsGen" +
-                "eric", true).findAll().sort("Code");
+        RealmResults<Model> results =  realm.where(Model.class).equalTo("Manufacturer", id).findAll().sort("Code");
+        List<Model> copied = realm.copyFromRealm(results);
+        return copied;
     }
+
+
+    // For getting asset all assets from DB
+    public List<Model> getAllModelsFirebug() {
+        return realm.where(Model.class).findAll().sort("Code");
+
+    }
+
 
     // For getting asset all assets from DB
     public void addEquipment(FireBugEquipment fireBugEquipment) {

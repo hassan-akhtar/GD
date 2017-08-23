@@ -217,6 +217,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             moveInventory.setIssued(true);
                             if (scanType.toLowerCase().startsWith("con")) {
                                 moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                                moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                                 moveInventory.setIssueType("Equipment");
                             }
                             if (scanType.toLowerCase().startsWith("use")) {
