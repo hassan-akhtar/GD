@@ -81,12 +81,20 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
         tbTitleBottom.setText("Route Inspection");
         compName = getIntent().getStringExtra("compName");
         cusID = getIntent().getIntExtra("cusID", 0);
-        locationList = route.getRouteLocations();
+
+        for (int i=0;i<route.getRouteLocations().size() ;i++){
+            if (null!=route.getRouteLocations().get(i).getRouteAssets()) {
+                if(0!=route.getRouteLocations().get(i).getRouteAssets().size()){
+                    locationList.add(route.getRouteLocations().get(i));
+                }
+            }
+        }
+
         tvRouteName.setText(route.getCode());
         tvDesc.setText(route.getDescription());
         tvRouteType.setText(route.getRouteType());
         taskType = "Route Inspection";
-        tvLocCount.setText("" + route.getRouteLocations().size());
+        tvLocCount.setText("" + locationList.size());
         routeInspLocAdapter = new RouteInspLocAdapter(RouteLocationActivity.this, locationList);
         tvCompanyName.setText(compName);
         // ivTick.setVisibility(View.GONE);

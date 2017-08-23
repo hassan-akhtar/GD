@@ -144,16 +144,16 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         if (1 < asset.size()) {
             btnViewAllAssets.setVisibility(View.VISIBLE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode() + ",...");
+            tvAssetsNames.setText(asset.get(0).getCode() + ",...");
         } else {
             btnViewAllAssets.setVisibility(View.GONE);
-            tvAssetsNames.setText(asset.get(0).getManufacturers().getCode());
+            tvAssetsNames.setText(asset.get(0).getCode());
         }
 
         assetNames = new String[asset.size()];
 
         for (int i = 0; i < asset.size(); i++) {
-            assetNames[i] = asset.get(i).getManufacturers().getCode() + ", " + asset.get(i).getModel().getCode();
+            assetNames[i] = asset.get(i).getCode();
         }
 
 

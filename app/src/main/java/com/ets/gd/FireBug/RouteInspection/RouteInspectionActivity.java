@@ -15,6 +15,7 @@ import com.ets.gd.Adapters.RouteInspectionAdapter;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.RouteCompleted;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.R;
 
@@ -73,7 +74,16 @@ public class RouteInspectionActivity extends AppCompatActivity implements RouteC
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteInspectionActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (0 != routesList.get(position).getRouteLocations().size()) {
+
+                List<RouteLocation> locationList = new ArrayList<>();
+                for (int i=0;i<routesList.get(position).getRouteLocations().size() ;i++){
+                    if (null!=routesList.get(position).getRouteLocations().get(i).getRouteAssets()) {
+                        if(0!=routesList.get(position).getRouteLocations().get(i).getRouteAssets().size()){
+                            locationList.add(routesList.get(position).getRouteLocations().get(i));
+                        }
+                    }
+                }
+                if (0 != locationList.size()) {
                     setRouteCompleteInterface();
                     RouteLocationActivity.route = null;
                     RouteLocationActivity.route = routesList.get(position);
