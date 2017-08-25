@@ -3,9 +3,9 @@ package com.ets.gd.FireBug.Customer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,10 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Move.SelectLocationActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
@@ -72,7 +72,6 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
         tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
-       // ivTick.setVisibility(View.GONE);
         ivTick.setImageDrawable(getResources().getDrawable(R.drawable.green_search_glass));
     }
 
@@ -132,20 +131,17 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
         }));
 
 
-
-
-
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                
+
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-                if("".equals(s.toString())){
-                    isSearching=false;
+                if ("".equals(s.toString())) {
+                    isSearching = false;
                     customerFilteredList.clear();
                     companiesCount.setText("" + customerList.size());
                     customerAdapter = new CustomerAdapter(CustomerActivity.this, customerList);
@@ -154,7 +150,7 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
                     rvCustomers.setLayoutManager(mLayoutManager);
                     rvCustomers.setItemAnimator(new DefaultItemAnimator());
                     customerAdapter.notifyDataSetChanged();
-                }else{
+                } else {
                     isSearching = true;
                     updateAdapterForSearchKey(s.toString());
                 }
@@ -177,37 +173,37 @@ public class CustomerActivity extends AppCompatActivity implements MyCallBack {
 
     public void showKeyboard() {
         etSearch.requestFocus();
-        InputMethodManager imm = (InputMethodManager)   getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
     }
 
-    public  void updateAdapterForSearchKey(String query){
+    public void updateAdapterForSearchKey(String query) {
         query = query.toString().toLowerCase();
-        
-            customerFilteredList.clear();
-            for (int i = 0; i < customerList.size(); i++) {
 
-                final String name = customerList.get(i).getCode().toLowerCase();
-                if (name.startsWith(query)) {
-                    customerFilteredList.add(customerList.get(i));
-                }
-            }
+        customerFilteredList.clear();
+        for (int i = 0; i < customerList.size(); i++) {
 
-            if (0 == customerFilteredList.size()) {
-                companiesCount.setText("0");
-                customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
-                rvCustomers.setAdapter(customerAdapter);
-                customerAdapter.notifyDataSetChanged();  // data set changed
-            } else {
-                companiesCount.setText(""+customerFilteredList.size());
-                rvCustomers.setLayoutManager(new LinearLayoutManager(CustomerActivity.this));
-                customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
-                rvCustomers.setAdapter(customerAdapter);
-                customerAdapter.notifyDataSetChanged();  // data set changed
+            final String name = customerList.get(i).getCode().toLowerCase();
+            if (name.startsWith(query)) {
+                customerFilteredList.add(customerList.get(i));
             }
-        
+        }
+
+        if (0 == customerFilteredList.size()) {
+            companiesCount.setText("0");
+            customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
+            rvCustomers.setAdapter(customerAdapter);
+            customerAdapter.notifyDataSetChanged();  // data set changed
+        } else {
+            companiesCount.setText("" + customerFilteredList.size());
+            rvCustomers.setLayoutManager(new LinearLayoutManager(CustomerActivity.this));
+            customerAdapter = new CustomerAdapter(CustomerActivity.this, customerFilteredList);
+            rvCustomers.setAdapter(customerAdapter);
+            customerAdapter.notifyDataSetChanged();  // data set changed
+        }
+
     }
-    
+
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {
         public void onClick(final View v) {
             switch (v.getId()) {

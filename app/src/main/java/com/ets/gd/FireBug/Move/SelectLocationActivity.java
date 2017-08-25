@@ -27,9 +27,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Adapters.ScannedAssetsAdapter;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Interfaces.LocationMoved;
@@ -44,7 +44,7 @@ import java.util.List;
 
 import io.realm.RealmList;
 
-public class SelectLocationActivity extends AppCompatActivity implements BarcodeScan{
+public class SelectLocationActivity extends AppCompatActivity implements BarcodeScan {
 
 
     ImageView ivBack, ivChangeCompany, ivTick;
@@ -106,7 +106,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
         assetLoc = getIntent().getStringExtra("assetLoc");
         Loc = getIntent().getStringExtra("Loc");
         cusID = getIntent().getIntExtra("cusID", 0);
-        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE,taskType);
+        sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_SELECT_LOC_TYPE, taskType);
         tvCompanyValue.setText(location);
         hideKeyboard();
         tvBarcodeTitle.setVisibility(View.GONE);
@@ -129,9 +129,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
         locationsRealmList = DataManager.getInstance().getAllCompanyLocations(DataManager.getInstance().getCustomerByCode(tvCompanyValue.getText().toString()).getID());
 
         for (int k = 0; k < locationsRealmList.size(); k++) {
-           // if (!locationsRealmList.get(k).isAdded()) {
-                locList.add(locationsRealmList.get(k));
-            //}
+            locList.add(locationsRealmList.get(k));
         }
 
         if (0 == locList.size()) {
@@ -155,7 +153,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
 
                 if (taskType.startsWith("ins")) {
                     if (!assetLoc.trim().equals(String.valueOf(locList.get(position).getCode().trim()))) {
-                        locationMoved.MoveLocation(new Move(locList.get(position).getID(),cusID,locList.get(position).getCode()));
+                        locationMoved.MoveLocation(new Move(locList.get(position).getID(), cusID, locList.get(position).getCode()));
                         finish();
                     } else {
                         Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
@@ -206,9 +204,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                         if (null != loc) {
                             if (taskType.startsWith("ins")) {
                                 if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
-                                    //sendMessage(String.valueOf(loc.getCode()), loc.getID());
-
-                                    locationMoved.MoveLocation(new Move(loc.getID(),cusID,loc.getCode()));
+                                    locationMoved.MoveLocation(new Move(loc.getID(), cusID, loc.getCode()));
                                     finish();
                                 } else {
                                     Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
@@ -324,7 +320,6 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
     }
 
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -363,38 +358,10 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
             }
         }
     }
+
     private final BroadcastReceiver mBarcodeBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           /* String message = intent.getStringExtra("message");
-            String task = intent.getStringExtra("taskType");
-            if (task.startsWith("loc")) {
-
-                try {
-                    Locations loc = DataManager.getInstance().getLocation(message);
-                    if (null != loc) {
-                        if (taskType.startsWith("ins")) {
-                            if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
-                                sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                                finish();
-                            } else {
-                                Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();
-                                Toast.makeText(SelectLocationActivity.this, "Please select any other location", Toast.LENGTH_LONG).show();
-
-                            }
-                        } else {
-                            sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                            finish();
-                        }
-
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Location not found", Toast.LENGTH_LONG).show();
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "Invalid Int (barcode)", Toast.LENGTH_LONG).show();
-                }
-            }*/
 
         }
     };
@@ -411,8 +378,7 @@ public class SelectLocationActivity extends AppCompatActivity implements Barcode
                 if (null != loc) {
                     if (taskType.startsWith("ins")) {
                         if (!assetLoc.trim().equals(String.valueOf(loc.getCode().trim()))) {
-                          //  sendMessage(String.valueOf(loc.getCode()), loc.getID());
-                            locationMoved.MoveLocation(new Move(loc.getID(),cusID,loc.getCode()));
+                            locationMoved.MoveLocation(new Move(loc.getID(), cusID, loc.getCode()));
                             finish();
                         } else {
                             Toast.makeText(SelectLocationActivity.this, "You can not select same location", Toast.LENGTH_SHORT).show();

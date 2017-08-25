@@ -1,9 +1,5 @@
 package com.ets.gd.Adapters;
 
-/**
- * Created by hakhtar on 5/4/2016.
- */
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.ets.gd.Models.NavDrawerItem;
 import com.ets.gd.R;

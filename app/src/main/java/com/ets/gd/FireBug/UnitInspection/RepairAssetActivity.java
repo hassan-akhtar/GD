@@ -136,7 +136,6 @@ public class RepairAssetActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Repairs.",Toast.LENGTH_SHORT).show();
                     }
-                    // sendMessage(tagId+" "+repairSelection);
 
                     break;
                 }
@@ -162,7 +161,6 @@ public class RepairAssetActivity extends AppCompatActivity {
                     } else {
                         Toast.makeText(getApplicationContext(),"No Asset(s) found in " +tvCompanyValue.getText().toString()+" Spares.",Toast.LENGTH_SHORT).show();
                     }
-                    // sendMessage(tagId+" "+repairSelection);
 
                     break;
                 }

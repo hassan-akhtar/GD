@@ -329,16 +329,6 @@ public class InspectionDatesFragment extends Fragment {
 
             }
         }
-/*        tvDaily.setText("MM/DD/YYYY");
-        tvWeekly.setText("MM/DD/YYYY");
-        tvMonthly.setText("MM/DD/YYYY");
-        tvQuarterly.setText("MM/DD/YYYY");
-        tvSemiAnnual.setText("MM/DD/YYYY");
-        tvAnnual.setText("MM/DD/YYYY");
-        tvFiveYears.setText("MM/DD/YYYY");
-        tvSixYears.setText("MM/DD/YYYY");
-        tvTenYears.setText("MM/DD/YYYY");
-        tvTwelveYears.setText("MM/DD/YYYY");*/
 
     }
 

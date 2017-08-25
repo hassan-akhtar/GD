@@ -97,7 +97,6 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
         tvLocCount.setText("" + locationList.size());
         routeInspLocAdapter = new RouteInspLocAdapter(RouteLocationActivity.this, locationList);
         tvCompanyName.setText(compName);
-        // ivTick.setVisibility(View.GONE);
     }
 
     private void initObj() {

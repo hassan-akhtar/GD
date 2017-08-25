@@ -29,15 +29,22 @@ import com.ets.gd.NetworkLayer.RequestDTOs.Equipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionDates;
 import com.ets.gd.NetworkLayer.RequestDTOs.MoveInventoryRealm;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransfer;
+import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.Note;
 import com.ets.gd.NetworkLayer.RequestDTOs.QuickCount;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckInRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncCheckOutRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddETSLocationRequestDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentMaintenanceDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostMoveInventoryRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostQuickCountRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostToolhawkMoveDTO;
+import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.SyncToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.THEquipment;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMove;
@@ -45,14 +52,6 @@ import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkMoveDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.ToolhawkTransferDTO;
 import com.ets.gd.NetworkLayer.RequestDTOs.TransferToolhawk;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
-import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransfer;
-import com.ets.gd.NetworkLayer.RequestDTOs.MoveTransferRequestDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.Note;
-import com.ets.gd.NetworkLayer.RequestDTOs.SyncGetDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostAddLocationRequestDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostEquipmentRequestDTO;
-import com.ets.gd.NetworkLayer.RequestDTOs.SyncPostUnitInspectionRequestDTO;
-import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
@@ -441,185 +440,107 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
     void callSyncPostEqupmentService() {
 
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncEquipment(
                 syncPostEquipmentRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostTHTransferService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncToolhawkTransfer(
                 syncToolhawkTransferDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostTHMoveService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncToolhawkMove(
                 syncPostToolhawkMoveDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostQuickCountService() {
 
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncQuickCount(
                 syncPostQuickCountRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostMaintenanceService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncMaintenace(
                 syncPostEquipmentMaintenanceDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostCheckInService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncCheckIn(
                 syncCheckInRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostCheckOutService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncCheckOut(
                 syncCheckOutRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostMoveInventoryService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncMoveInventory(
                 syncPostMoveInventoryRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostIssueInventoryService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncIssueInventory(
                 syncPostIssueInventoryRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
     void callSyncPostReceiveInventoryService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncReceiveInventory(
                 syncPostReceiveInventoryRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     void callSyncPostToolhawkEqupmentService() {
-
-        //if (0 != lstEditEquipment.size() || 0 != lstAddEquipment.size()) {
         CommonActions.showProgressDialog(getActivity());
-        // Toast.makeText(getActivity(), "Sync Post Initiated", Toast.LENGTH_LONG).show();
         tvSyncInProgress.setText("Sync in progress...");
         GSDServiceFactory.getService(getActivity()).postSyncToolhawkEquipment(
                 syncPostTHEquipmentRequestDTO, this
         );
-        //} else {
-        //     tvSyncInProgress.setText("No data found for syncing");
-        //      showToast("No data found for syncing");
-        //  }
     }
 
 
     private void initListeners() {
     }
 
-    void showToast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
-    }
 
     void setCurrentDateAndTime() {
 
@@ -961,10 +882,8 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     equipment.setAgentID(fireBugEquipment.getAgentType().getID());
                 }
 
-                // if (null==fireBugEquipment.getLocation().getID()) {
                 equipment.setAssignedLocation(fireBugEquipment.getLocation().getID());
                 equipment.setAssignedLocationCode(fireBugEquipment.getLocation().getCode());
-                //  }
                 equipment.setCustomerID(fireBugEquipment.getCustomer().getID());
                 List<InspectionDates> InspectionDates = new ArrayList<InspectionDates>();
 
@@ -1054,8 +973,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    // lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-                    //Toast.makeText(getActivity(), "Sync Post Complete", Toast.LENGTH_LONG).show();
 
                     if (sendMovecall) {
                         callSyncPostMoveService();
@@ -1110,7 +1027,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendEquipmentCall) {
                         callSyncPostEqupmentService();
 
@@ -1167,7 +1083,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendUnitInspcall) {
                         callSyncPostUnitInspectService();
@@ -1219,7 +1134,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendRouteStatusCall) {
                         callSyncPostRouteStatusService();
                     } else if (sendETSLocationCall) {
@@ -1269,7 +1183,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendETSLocationCall) {
                         callSyncPostETSLocationService();
                     } else if (sendToolHawkEquipmentCall) {
@@ -1317,7 +1230,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendTransferToolhawkCall) {
                         callSyncPostTHTransferService();
                     } else if (sendMoveToolhawkCall) {
@@ -1361,7 +1273,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
 
                     if (sendToolHawkEquipmentCall) {
                         callSyncPostToolhawkEqupmentService();
@@ -1409,7 +1320,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendMoveToolhawkCall) {
                         callSyncPostTHMoveService();
                     } else if (sendQuickCountCall) {
@@ -1452,7 +1362,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendQuickCountCall) {
                         callSyncPostQuickCountService();
                     } else if (sendMaintenanceCall) {
@@ -1491,8 +1400,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //  lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-
                     if (sendMaintenanceCall) {
                         callSyncPostMaintenanceService();
                     } else if (sendCheckInCall) {
@@ -1528,9 +1435,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-
-
                     if (sendCheckInCall) {
                         callSyncPostCheckInService();
                     } else if (sendCheckOutCall) {
@@ -1566,9 +1470,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-
-
                     if (sendCheckOutCall) {
                         callSyncPostCheckOutService();
                     } else if (sendMoveInventoryCall) {
@@ -1602,8 +1503,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
-
                     if (sendMoveInventoryCall) {
                         callSyncPostMoveInventoryService();
                     } else if (sendIssueInventoryCall) {
@@ -1636,7 +1535,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendIssueInventoryCall) {
                         callSyncPostIssueInventoryService();
                     } else if (sendReceiveInventoryCall) {
@@ -1665,7 +1563,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //   lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     if (sendReceiveInventoryCall) {
                         callSyncPostReceiveInventoryService();
                     } else {
@@ -1693,7 +1590,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 SyncPostEquipmentResponseDTO syncPostEquipmentResponseDTO = (SyncPostEquipmentResponseDTO) responseDTO;
                 if (null != syncPostEquipmentResponseDTO) {
                     CommonActions.DismissesDialog();
-                    //    lstSyncPostEquipmentResults.addAll(syncPostEquipmentResponseDTO.getSyncPostEquipments());
                     DataManager.getInstance().deleteRealm();
                     callSyncGetService();
 
@@ -1718,7 +1614,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     if (null != syncGetResponseDTO && null == responseDTO.getErrorMsg()) {
 
                         tvSyncInProgress.setText("Sync Complete!");
-                        // Toast.makeText(getActivity(), "Sync Get Complete!", Toast.LENGTH_LONG).show();
 
                         itemList = new String[lstSyncPostEquipmentResults.size() + 1];
 
@@ -1737,7 +1632,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                         CommonActions.DismissesDialog();
                         DataManager.getInstance().deleteRealm();
                         DataManager.getInstance().saveSyncGetResponse(syncGetResponseDTO);
-                        //  sharedPreferencesManager.setInt(SharedPreferencesManager.LOGGED_IN_USERID, syncGetResponseDTO.getCustomerId());
                         setCurrentDateAndTime();
                         showSyncResults();
                     } else {

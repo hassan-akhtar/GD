@@ -56,7 +56,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
     View rootView;
     public static EditText tvDescprition, tvLocationID, tvTagIDCopy;
     private TextInputLayout letLocationID, lLocationID, lDescprition;
-    // Asset asset;
     SharedPreferencesManager sharedPreferencesManager;
     public static int posLoc = 0, posSite = 0, posBuilding = 0, posCustomer = 0;
     FireBugEquipment fireBugEquipment;
@@ -118,7 +117,6 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
 
     private void initObj() {
         sharedPreferencesManager = new SharedPreferencesManager(getActivity());
-        //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         fireBugEquipment = ((ViewAssetInformationActivity) getActivity()).getEquipment();
 
         if (!"addAsset".equals(getActivity().getIntent().getStringExtra("action"))) {
@@ -134,9 +132,7 @@ public class AssetLocationFragment extends Fragment implements Spinner.OnItemSel
         RealmList<Locations> locationsRealmList = new RealmList<Locations>();
 
         for (int k = 0; k < realmSyncGetResponseDTO.getLstLocations().size(); k++) {
-            // if (!realmSyncGetResponseDTO.getLstLocations().get(k).isAdded()) {
             locationsRealmList.add(realmSyncGetResponseDTO.getLstLocations().get(k));
-            // }
         }
 
         locations = new String[1];

@@ -144,7 +144,6 @@ public class LocationQuickCountActivity extends AppCompatActivity implements Bar
         rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(LocationQuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                // showToast("" + assetList.get(position).getCode());
             }
 
             @Override

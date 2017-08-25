@@ -12,10 +12,10 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NoteAdapterToolHawk extends RecyclerView.Adapter<NoteAdapterToolHawk.MyViewHolder>{
+public class NoteAdapterToolHawk extends RecyclerView.Adapter<NoteAdapterToolHawk.MyViewHolder> {
     List<EquipmentNoteTH> lvNotes = new ArrayList<EquipmentNoteTH>();
 
-    public NoteAdapterToolHawk(List<EquipmentNoteTH> lvNotes ) {
+    public NoteAdapterToolHawk(List<EquipmentNoteTH> lvNotes) {
         this.lvNotes = lvNotes;
     }
 
@@ -41,10 +41,11 @@ public class NoteAdapterToolHawk extends RecyclerView.Adapter<NoteAdapterToolHaw
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView noteTitle, noteDescription;
+
         public MyViewHolder(View view) {
             super(view);
             noteTitle = (TextView) view.findViewById(R.id.noteTitle);
-            noteDescription =(TextView) view.findViewById(R.id.noteDescription);
+            noteDescription = (TextView) view.findViewById(R.id.noteDescription);
         }
     }
 }

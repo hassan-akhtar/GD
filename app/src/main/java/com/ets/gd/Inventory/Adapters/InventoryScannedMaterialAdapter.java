@@ -18,9 +18,6 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hakhtar on 5/5/2016.
- */
 public class InventoryScannedMaterialAdapter extends RecyclerView.Adapter<InventoryScannedMaterialAdapter.MyViewHolder> {
 
     private List<Material> materialList = new ArrayList<Material>();

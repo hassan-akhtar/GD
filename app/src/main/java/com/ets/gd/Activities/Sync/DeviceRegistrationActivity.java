@@ -3,10 +3,9 @@ package com.ets.gd.Activities.Sync;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.Activities.Login.LoginActivity;
 import com.ets.gd.NetworkLayer.Service.GSDServiceFactory;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -43,7 +41,7 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
         etCustomerID = (EditText) findViewById(R.id.etCustomerID);
         btnNext = (Button) findViewById(R.id.btnNext);
         tvDeviceID = (TextView) findViewById(R.id.tvDeviceID);
-        tbTitleBottom  = (TextView) findViewById(R.id.tbTitleBottom);
+        tbTitleBottom = (TextView) findViewById(R.id.tbTitleBottom);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tbTitleTop = (TextView) findViewById(R.id.tbTitleTop);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -82,10 +80,10 @@ public class DeviceRegistrationActivity extends AppCompatActivity {
                     if (!"".equals(etCustomerID.getText().toString().trim())) {
 
                         String baseUrl = etCustomerID.getText().toString().trim();
-                        if(!baseUrl.endsWith("/")){
-                            baseUrl = baseUrl+"/";
+                        if (!baseUrl.endsWith("/")) {
+                            baseUrl = baseUrl + "/";
                         }
-                        sharedPreferencesManager.setString(SharedPreferencesManager.BASE_URL,baseUrl);
+                        sharedPreferencesManager.setString(SharedPreferencesManager.BASE_URL, baseUrl);
                         GSDServiceFactory.setService();
                         GSDServiceFactory.getService(DeviceRegistrationActivity.this);
                         Intent in = new Intent(DeviceRegistrationActivity.this, FirstTimeSyncActicity.class);

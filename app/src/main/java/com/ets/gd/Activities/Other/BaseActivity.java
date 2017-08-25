@@ -24,17 +24,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Activities.Login.LoginActivity;
+import com.ets.gd.Activities.Sync.SyncFragment;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.Customer.CustomerFragment;
+import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.DashboardFragment;
 import com.ets.gd.Fragments.DeviceInfoFragment;
-import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Inventory.Fragments.InventoryDashboardFragment;
-import com.ets.gd.Activities.Sync.SyncFragment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
-import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.R;
+import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragment;
 import com.ets.gd.ToolHawk.Fragments.ToolhawkDashboardFragmentNew;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -269,8 +269,8 @@ public class BaseActivity extends AppCompatActivity
                 break;
             case 1:
                 boolean accessFireBug = false;
-                for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("FireBug")){
+                for (int i = 0; i < rolePermissions.size(); i++) {
+                    if (rolePermissions.get(i).getValue().equals("FireBug")) {
                         accessFireBug = true;
                     }
                 }
@@ -283,8 +283,8 @@ public class BaseActivity extends AppCompatActivity
                     } else {
                         BaseActivity.refreshMainViewByNew(new FirebugDashboardFragment());
                         if (null != DataManager.getInstance().getFirstSyncCustomer()) {
-                            if (0!=DataManager.getInstance().getFirstSyncCustomer().getCustomerId()) {
-                                if (null!=DataManager.getInstance().getCustomerByID(DataManager.getInstance().getFirstSyncCustomer().getCustomerId())) {
+                            if (0 != DataManager.getInstance().getFirstSyncCustomer().getCustomerId()) {
+                                if (null != DataManager.getInstance().getCustomerByID(DataManager.getInstance().getFirstSyncCustomer().getCustomerId())) {
                                     EventBus.getDefault().post(DataManager.getInstance().getCustomerByID(DataManager.getInstance().getFirstSyncCustomer().getCustomerId()).getCode());
                                 }
                             }
@@ -301,8 +301,8 @@ public class BaseActivity extends AppCompatActivity
 
             case 2:
                 boolean accessToolhawk = false;
-                for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("ToolHawk")){
+                for (int i = 0; i < rolePermissions.size(); i++) {
+                    if (rolePermissions.get(i).getValue().equals("ToolHawk")) {
                         accessToolhawk = true;
                     }
                 }
@@ -321,8 +321,8 @@ public class BaseActivity extends AppCompatActivity
 
             case 3:
                 boolean accessInventory = false;
-                for(int i=0;i<rolePermissions.size();i++){
-                    if( rolePermissions.get(i).getValue().equals("Inventory")){
+                for (int i = 0; i < rolePermissions.size(); i++) {
+                    if (rolePermissions.get(i).getValue().equals("Inventory")) {
                         accessInventory = true;
                     }
                 }

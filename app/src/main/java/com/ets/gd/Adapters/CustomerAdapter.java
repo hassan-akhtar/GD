@@ -7,18 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ets.gd.Models.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.R;
 
 import java.util.List;
 
-public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder>{
+public class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.MyViewHolder> {
     private List<AllCustomers> customerList;
     private final Context mContext;
     private RecyclerView.ViewHolder viewHolder;
 
-    public CustomerAdapter( Context context, List<AllCustomers> customerList) {
+    public CustomerAdapter(Context context, List<AllCustomers> customerList) {
         this.customerList = customerList;
         this.mContext = context;
     }

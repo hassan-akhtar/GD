@@ -115,9 +115,8 @@ public class DataManager {
     }
 
 
-
     public ToolhawkEquipment isAssetParent(String equipCode) {
-         return realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", equipCode).findFirst();
+        return realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", equipCode).findFirst();
     }
 
     public void updateAssetRouteInspectionStatus(int equipID) {
@@ -180,19 +179,6 @@ public class DataManager {
         realm.commitTransaction();
     }
 
-
-//    // For adding an asset location in DB
-//    void AddAssetLocation( final String tagID, final Location obj){
-//
-//        realm.executeTransaction(new Realm.Transaction() {
-//            @Override
-//            public void execute(Realm realm) {
-//                realm.where(Asset.class).contains("tagID",tagID).;
-//                asset.setLocation(obj);
-//            }
-//        });
-//    }
-
     public Asset getAsset(String barcodeID) {
         return realm.where(Asset.class).equalTo("tagID", barcodeID).findFirst();
     }
@@ -230,11 +216,6 @@ public class DataManager {
             @Override
             public void execute(Realm realm) {
                 SyncCustomer realmSyncGetResponse = realm.where(SyncCustomer.class).equalTo("CustomerId", customerID).findFirst();
-                //RealmResults<EquipmentNote> oldList = realm.where(EquipmentNote.class).equalTo("EquipmentID",equipmentID).findAll();
-                // RealmList<EquipmentNote> res = new RealmList<EquipmentNote>();
-                // res.addAll(oldList);
-                //RealmList<EquipmentNote> newItems = new RealmList<EquipmentNote>();
-
                 for (int i = 0; i < noteList.size(); i++) {
                     EquipmentNote equipmentNote = realm.createObject(EquipmentNote.class);
                     equipmentNote.setNote(noteList.get(i).getNote());
@@ -242,14 +223,11 @@ public class DataManager {
                     equipmentNote.setEquipmentCode(equipmentCode);
                     equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
                     equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
-                    // newItems.add(equipmentNote);
                 }
 
                 if (0 != noteList.size()) {
                     FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("ID", equipmentID).findFirst();
-                    //res.addAll(newItems);
                     fireBugEquipment.setUpdated(true);
-                    // realmSyncGetResponse.setLstFbEquipmentNotes(res);
                 }
 
                 ViewAssetInformationActivity.newNotesList.clear();
@@ -266,11 +244,6 @@ public class DataManager {
             @Override
             public void execute(Realm realm) {
                 SyncCustomer realmSyncGetResponse = realm.where(SyncCustomer.class).equalTo("CustomerId", customerID).findFirst();
-                //RealmResults<EquipmentNote> oldList = realm.where(EquipmentNote.class).equalTo("EquipmentID",equipmentID).findAll();
-                // RealmList<EquipmentNote> res = new RealmList<EquipmentNote>();
-                // res.addAll(oldList);
-                //RealmList<EquipmentNote> newItems = new RealmList<EquipmentNote>();
-
                 for (int i = 0; i < noteList.size(); i++) {
                     EquipmentNoteTH equipmentNote = realm.createObject(EquipmentNoteTH.class);
                     equipmentNote.setNote(noteList.get(i).getNote());
@@ -278,14 +251,12 @@ public class DataManager {
                     equipmentNote.setEquipmentCode(equipmentCode);
                     equipmentNote.setModifiedTime(noteList.get(i).getModifiedTime());
                     equipmentNote.setModifiedBy(noteList.get(i).getModifiedBy());
-                    // newItems.add(equipmentNote);
+
                 }
 
                 if (0 != noteList.size()) {
                     ToolhawkEquipment toolhawkEquipment = realm.where(ToolhawkEquipment.class).equalTo("Code", equipmentCode).findFirst();
-                    //res.addAll(newItems);
                     toolhawkEquipment.setUpdated(true);
-                    // realmSyncGetResponse.setLstFbEquipmentNotes(res);
                 }
 
             }
@@ -512,7 +483,6 @@ public class DataManager {
                 building = realm.createObject(Building.class, firebugBuilding.getID());
                 building.setCode(firebugBuilding.getCode());
                 building.setSiteID(firebugBuilding.getSite().getID());
-                //building.setDepartmentID(firebugBuilding.g);
                 building.setDescription(firebugBuilding.getDescription());
             }
             realm.commitTransaction();
@@ -783,7 +753,7 @@ public class DataManager {
 
     // For getting asset all assets from DB
     public List<Model> getModelFromManufacturerIDFirebug(int id) {
-        RealmResults<Model> results =  realm.where(Model.class).equalTo("Manufacturer", id).findAll().sort("Code");
+        RealmResults<Model> results = realm.where(Model.class).equalTo("Manufacturer", id).findAll().sort("Code");
         List<Model> copied = realm.copyFromRealm(results);
         return copied;
     }
@@ -800,26 +770,6 @@ public class DataManager {
     public void addEquipment(FireBugEquipment fireBugEquipment) {
         realm.beginTransaction();
         realm.copyToRealmOrUpdate(fireBugEquipment);
-/*        FireBugEquipment fbEq = realm.createObject(FireBugEquipment.class,fireBugEquipment.getCode());
-        fbEq.setID(fireBugEquipment.getID());
-        fbEq.setSerialNo(fireBugEquipment.getSerialNo());
-        fbEq.setManufacturerDate(fireBugEquipment.getManufacturerDate());
-        fbEq.setAgentType(fireBugEquipment.getAgentType());
-        fbEq.setCustomer(fireBugEquipment.getCustomer());
-        fbEq.setDeviceType(fireBugEquipment.getDeviceType());
-        fbEq.setLocation(fireBugEquipment.getLocation());
-        fbEq.setManufacturer(fireBugEquipment.getManufacturer());
-        fbEq.setManufacturerDate(fireBugEquipment.getManufacturerDate());
-        fbEq.setUpdated(fireBugEquipment.isUpdated());
-        fbEq.setAdded(fireBugEquipment.isAdded());
-        fbEq.setMoved(fireBugEquipment.isMoved());
-        fbEq.setTransferred(fireBugEquipment.isTransferred());
-        fbEq.setUnitInspected(fireBugEquipment.isUnitInspected());
-        fbEq.setRouteUnitInspected(fireBugEquipment.isRouteUnitInspected());
-        fbEq.setSize(fireBugEquipment.getSize());
-        fbEq.setVendorCode(fireBugEquipment.getVendorCode());
-        fbEq.setModel(fireBugEquipment.getModel());
-        fbEq.setInspectionDates(fireBugEquipment.getInspectionDates());*/
         realm.commitTransaction();
     }
 

@@ -105,7 +105,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
     private void initObj() {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        //asset = ((ViewAssetInformationActivity) getActivity()).getAsset();
         sharedPreferencesManager = new SharedPreferencesManager(ViewLocationInformationActivity.this);
         realmSyncGetResponseDTO = DataManager.getInstance().getSyncGetResponseDTO(sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID));
         realmSyncGetResponse = DataManager.getInstance().getSyncRealmGetResponseDTO();
@@ -160,14 +159,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_list_item_1, sites);
         dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSite.setAdapter(dataAdapterSIte);
-
-        // int sizeBuilding = allBuilding.size() + 1;
-
-//        for (int i = 0; i < allBuilding.size(); i++) {
-//            buildings[i + 1] = allBuilding.get(i).getCode();
-//        }
-
-
         actionType = getIntent().getStringExtra("action");
         if ("viewLoc".equals(actionType)) {
             ivTick.setVisibility(View.GONE);
@@ -235,8 +226,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         tbTitleBottom.setText("Add Location");
         tvLocationID.setText("");
         tvDescprition.setText("");
-        // spSite.setSelection(0);
-        // spBuilding.setSelection(0);
         spLocation.setVisibility(View.GONE);
         tvLableLocation.setVisibility(View.GONE);
         tvDescprition.setEnabled(true);
@@ -245,7 +234,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
         spSite.setEnabled(true);
         spCustomer.setEnabled(false);
         btnViewAllAssets.setVisibility(View.GONE);
-        //spCustomer.setSelection(0);
     }
 
     private void initListeners() {
@@ -367,28 +355,13 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                             }
                         }
                         if (!exists) {
-//                            DataManager.getInstance().addLocation(
-//
-//                                    new Location(tvLocationID.getText().toString().trim(),
-//                                            tvDescprition.getText().toString().trim(),spSite.getItemAtPosition(posSite).toString(),
-//                                            spBuilding.getItemAtPosition(posBuilding).toString(),"Shelf")
-//                            );
                             Locations locations = new Locations(tvLocationID.getText().toString(),
                                     tvDescprition.getText().toString(),
                                     DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString()),
-                                    // DataManager.getInstance().getLocationSite(tvSite.getText().toString().trim()),
-                                    //  DataManager.getInstance().getLocationBuilding(tvBuilding.getText().toString().trim()
+
                                     DataManager.getInstance().getLocationSite(spSite.getText().toString()),
                                     DataManager.getInstance().getLocationBuilding(spBuilding.getText().toString()), true);
                             DataManager.getInstance().addNewLocation(locations);
-//                        MyLocation myLocation = new MyLocation(
-//                                tvLocationID.getText().toString(),
-//                                tvDescprition.getText().toString(),
-//                                sharedPreferencesManager.getInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID),
-//                                DataManager.getInstance().getLocationSite(spSite.getItemAtPosition(posSite).toString()).getID(),
-//                                DataManager.getInstance().getLocationBuilding(spBuilding.getItemAtPosition(posBuilding).toString()).getID());
-//
-//                        DataManager.getInstance().addNewLocation(myLocation);
                             Toast.makeText(getApplicationContext(), "Location Added!", Toast.LENGTH_LONG).show();
                             finish();
                         } else {
@@ -446,8 +419,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
 
                 }
 
-
-                //   if (position != 0) {
                 if (null != DataManager.getInstance().getLocation(strSelectedState)) {
                     for (int i = 0; i < realmSyncGetResponseDTO.getLstLocations().size(); i++) {
                         if (DataManager.getInstance().getLocation(strSelectedState).getCode().toLowerCase().equals(spLocation.getItemAtPosition(i).toString().toLowerCase())) {
@@ -474,7 +445,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                 } else {
                     setViewForAddLoc();
                 }
-                //  }
 
 
             }
@@ -493,31 +463,6 @@ public class ViewLocationInformationActivity extends AppCompatActivity implement
                     e.printStackTrace();
                 }
 
-//                if(0!=posCustomer){
-//                    Customer customer = DataManager.getInstance().getCustomerByCode(spCustomer.getItemAtPosition(posCustomer).toString());
-//                    SyncCustomer syncCustomer = DataManager.getInstance().getSyncGetResponseDTO(customer.getID());
-//                    int sizeSite = syncCustomer.getLstLocations().size() + 1;
-//                    sites = new String[sizeSite];
-//
-//                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-//                        sites[i + 1] = syncCustomer.getLstLocations().get(i).getSite().getCode();
-//                    }
-//                    sites[0] = "Please select a site";
-//                    ArrayAdapter<String> dataAdapterSIte = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, sites);
-//                    dataAdapterSIte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spSite.setAdapter(dataAdapterSIte);
-//
-//                    int sizeBuilding = syncCustomer.getLstLocations().size() + 1;
-//                    buildings = new String[sizeBuilding];
-//
-//                    for (int i = 0; i < syncCustomer.getLstLocations().size(); i++) {
-//                        buildings[i + 1] = syncCustomer.getLstLocations().get(i).getBuilding().getCode();
-//                    }
-//                    buildings[0] = "Please select a building";
-//                    ArrayAdapter<String> dataAdapterBuilding = new ArrayAdapter<String>(ViewLocationInformationActivity.this, android.R.layout.simple_spinner_item, buildings);
-//                    dataAdapterBuilding.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                    spBuilding.setAdapter(dataAdapterBuilding);
-//                }
             }
             break;
 

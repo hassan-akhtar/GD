@@ -34,21 +34,21 @@ public class RouteInspectionAdapter extends RecyclerView.Adapter<RouteInspection
         holder.tvDesc.setText(routesList.get(position).getDescription());
         holder.tvRouteTypeValue.setText(routesList.get(position).getRouteType());
         List<RouteLocation> locationList = new ArrayList<>();
-        for (int i=0;i<routesList.get(position).getRouteLocations().size() ;i++){
-            if (null!=routesList.get(position).getRouteLocations().get(i).getRouteAssets()) {
-                if(0!=routesList.get(position).getRouteLocations().get(i).getRouteAssets().size()){
+        for (int i = 0; i < routesList.get(position).getRouteLocations().size(); i++) {
+            if (null != routesList.get(position).getRouteLocations().get(i).getRouteAssets()) {
+                if (0 != routesList.get(position).getRouteLocations().get(i).getRouteAssets().size()) {
                     locationList.add(routesList.get(position).getRouteLocations().get(i));
                 }
             }
         }
 
-        holder.tvLocCount.setText(""+locationList.size());
+        holder.tvLocCount.setText("" + locationList.size());
 
-        int assetsSize = 0 ;
-        for (RouteLocation routeLocation:routesList.get(position).getRouteLocations() ){
+        int assetsSize = 0;
+        for (RouteLocation routeLocation : routesList.get(position).getRouteLocations()) {
             assetsSize += routeLocation.getRouteAssets().size();
         }
-        holder.tvAssetCount.setText(""+assetsSize);
+        holder.tvAssetCount.setText("" + assetsSize);
     }
 
     @Override

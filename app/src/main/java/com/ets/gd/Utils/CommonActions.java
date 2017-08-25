@@ -1,9 +1,5 @@
 package com.ets.gd.Utils;
 
-/**
- * Created by hakhtar on 5/4/2016.
- */
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -96,7 +92,6 @@ public class CommonActions {
     }
 
     public Date stringToDate(String date) {
-        //mm/dd/yyyy
         SimpleDateFormat format = new SimpleDateFormat("mm/dd/yyyy", Locale.US);
         Date convertedDate = null;
         try {

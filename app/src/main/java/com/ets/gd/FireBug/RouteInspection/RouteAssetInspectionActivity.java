@@ -7,9 +7,9 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.Log;
 import android.view.Gravity;
@@ -26,9 +26,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.UnitInspection.ReplaceAssetActivity;
 import com.ets.gd.Adapters.CheckBoxGroupView;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.UnitInspection.ReplaceAssetActivity;
 import com.ets.gd.Interfaces.AssetReplaced;
 import com.ets.gd.Models.Replace;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
@@ -209,8 +209,6 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
         for (int i = 0; i < deviceTypeStatusCodes.size(); i++) {
             AppCompatCheckBox cb = new AppCompatCheckBox(this);
-            // cb.setHighlightColor(getResources().getColor(R.color.colorAccent));
-            // cb.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             cb.setSupportButtonTintList(colorStateList);
             cb.setTag(i);
             statusCodesDescList.add(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
@@ -244,8 +242,6 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                         List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
                         List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
-
-                        //   if (isHydro) {
                         for (UnitinspectionResult obj : unitinspectionResults) {
 
                             if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
@@ -263,8 +259,6 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                                 break;
                             }
                         }
-
-                        // }
 
 
                         if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
@@ -307,13 +301,12 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                                 }
                             }
                             inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-                            RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(),RouteID,spInspType.getItemAtPosition(posInspType).toString());
-                            if (null!=rouAsset) {
+                            RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
+                            if (null != rouAsset) {
                                 inspectionResult.setRouteAssetID(rouAsset.getID());
                             }
                             DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                             showToast("Inspection completed Successfully");
-                            //sendMessage("finish");
                             finish();
                         }
                     }
@@ -433,13 +426,12 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-        RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(),RouteID,spInspType.getItemAtPosition(posInspType).toString());
-        if (null!=rouAsset) {
+        RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
+        if (null != rouAsset) {
             inspectionResult.setRouteAssetID(rouAsset.getID());
         }
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
-        //sendMessage("finish");
         finish();
     }
 
@@ -553,7 +545,6 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
             List<UnitinspectionResult> unitinspectionResults = DataManager.getInstance().getUnitinspectionResults();
             List<RouteAsset> routeAssetList = DataManager.getInstance().getRouteAssets();
 
-            //if (isHydro) {
             for (UnitinspectionResult obj : unitinspectionResults) {
 
                 if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
@@ -572,7 +563,6 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                 }
             }
 
-            //}
             if (alreadyInspectedLocally || alreadyInspectedFromWeb) {
                 showToast(tvAssetName.getText().toString() + " is Already Inspected for " + spInspType.getItemAtPosition(posInspType));
             } else {

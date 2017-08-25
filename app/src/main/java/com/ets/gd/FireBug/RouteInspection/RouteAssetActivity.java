@@ -5,12 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,14 +21,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Adapters.RouteAssetAdapter;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
@@ -124,7 +123,6 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     }
 
     private void initListeners() {
-        // btnScan.setOnClickListener(mGlobal_OnClickListener);
         ivBack.setOnClickListener(mGlobal_OnClickListener);
         btnSearchAsset.setOnClickListener(mGlobal_OnClickListener);
 
@@ -363,12 +361,13 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
                 }
             } else {
-                showToast("Asset not Found in "+tvLocName.getText().toString() );
+                showToast("Asset not Found in " + tvLocName.getText().toString());
             }
         } else {
             showToast("No Asset Found!");
         }
     }
+
     void showToast(String msg) {
         Toast.makeText(RouteAssetActivity.this, msg, Toast.LENGTH_LONG).show();
     }

@@ -67,7 +67,6 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
     private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetFoundList = new ArrayList<ToolhawkEquipment>();
     private List<ToolhawkEquipment> assetUnExpectedList = new ArrayList<ToolhawkEquipment>();
-    //ETSLocations etsLocation;
     ToolhawkEquipment parentToolhawkEquipment;
     ToolhawkEquipment toolhawkEquipment;
     private List<QuickCountAsset> QuickCountAssets = new ArrayList<QuickCountAsset>();
@@ -149,7 +148,6 @@ public class EquipmentQuickCountActivity extends AppCompatActivity implements Ba
         rvQuickCount.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(EquipmentQuickCountActivity.this, rvQuickCount, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                // showToast("" + assetList.get(position).getCode());
             }
 
             @Override

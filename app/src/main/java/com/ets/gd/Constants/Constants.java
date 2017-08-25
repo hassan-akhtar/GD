@@ -57,13 +57,13 @@ public class Constants {
     public static final String URL_SYNC_POST_TOOLHAWK_TRANSFER = "/Services/Services/Mobile/TransferToolHawkEquipment";
     public static final String URL_SYNC_POST_TOOLHAWK_MOVE = "/Services/Services/Mobile/MoveToolHawkEquipment";
     public static final String URL_SYNC_POST_QUICK_COUNT = "/Services/Services/Mobile/QuickCount";
-    public static final String URL_SYNC_POST_MAINTENANCE  = "/Services/Services/Mobile/ToolHawkEquipmentMaintenance";
-    public static final String URL_SYNC_POST_CHECKOUT  = "/Services/Services/Mobile/CheckOutToolHawkEquipment";
-    public static final String URL_SYNC_POST_CHECKIN  = "/Services/Services/Mobile/CheckInToolHawkEquipment";
+    public static final String URL_SYNC_POST_MAINTENANCE = "/Services/Services/Mobile/ToolHawkEquipmentMaintenance";
+    public static final String URL_SYNC_POST_CHECKOUT = "/Services/Services/Mobile/CheckOutToolHawkEquipment";
+    public static final String URL_SYNC_POST_CHECKIN = "/Services/Services/Mobile/CheckInToolHawkEquipment";
 
 
     // Urls Inventory
-    public static final String URL_SYNC_POST_MOVE_INVENTORY  = "/Services/Services/Mobile/MoveInventory";
+    public static final String URL_SYNC_POST_MOVE_INVENTORY = "/Services/Services/Mobile/MoveInventory";
     public static final String URL_SYNC_POST_ISSUE = "/Services/Services/Mobile/IssueInventory";
     public static final String URL_SYNC_POST_RECEIVE = "/Services/Services/Mobile/ReceiveInventory";
 }

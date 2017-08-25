@@ -9,19 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
-import com.ets.gd.Models.Asset;
-import com.ets.gd.Models.Location;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
 import com.ets.gd.R;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hakhtar on 5/5/2016.
- */
 public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdapter.MyViewHolder> {
 
     private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
@@ -57,36 +51,34 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
             FireBugEquipment asset = assetList.get(position);
 
             holder.tvTag.setText("Tag: " + asset.getCode());
-            if (null!=asset.getLocation()) {
+            if (null != asset.getLocation()) {
                 holder.tvLocation.setText("Location: " + asset.getLocation().getCode());
             }
 
 
-            if(null!=asset.getManufacturers() && null != asset.getModel()) {
+            if (null != asset.getManufacturers() && null != asset.getModel()) {
                 holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
-            }else if (null==asset.getManufacturers() && null != asset.getModel()) {
-                holder.tvName.setText( asset.getModel().getCode());
-            }else if (null!=asset.getManufacturers() && null == asset.getModel()) {
-                holder.tvName.setText( asset.getManufacturers().getCode());
-            }else  {
+            } else if (null == asset.getManufacturers() && null != asset.getModel()) {
+                holder.tvName.setText(asset.getModel().getCode());
+            } else if (null != asset.getManufacturers() && null == asset.getModel()) {
+                holder.tvName.setText(asset.getManufacturers().getCode());
+            } else {
                 holder.tvName.setText("N/A");
             }
 
-            if(null!=asset.getManufacturers()) {
+            if (null != asset.getManufacturers()) {
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
                         .buildRound(asset.getManufacturers().getCode().substring(0, 1).toUpperCase(), mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
-            }else{
+            } else {
                 drawable = TextDrawable.builder()
                         .beginConfig()
                         .endConfig()
                         .buildRound("N/A", mContext.getResources().getColor(R.color.colorPrimaryDark));
                 holder.ivSelectableImage.setImageDrawable(drawable);
             }
-
-
 
 
         } else {
@@ -99,7 +91,7 @@ public class ScannedAssetsAdapter extends RecyclerView.Adapter<ScannedAssetsAdap
                 holder.tvLocation.setText(loc.getFloor());
             }
 
-            holder.tvName.setText(""+loc.getCode());
+            holder.tvName.setText("" + loc.getCode());
             drawable = TextDrawable.builder()
                     .beginConfig()
                     .endConfig()

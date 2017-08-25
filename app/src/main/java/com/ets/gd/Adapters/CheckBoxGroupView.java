@@ -4,13 +4,9 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 import android.widget.GridLayout;
-import android.widget.GridView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 public class CheckBoxGroupView extends GridLayout {
 
@@ -21,7 +17,7 @@ public class CheckBoxGroupView extends GridLayout {
     }
 
     public void put(CheckBox checkBox) {
-        checkboxes.add( checkBox);
+        checkboxes.add(checkBox);
         invalidate();
         requestLayout();
     }
@@ -30,22 +26,22 @@ public class CheckBoxGroupView extends GridLayout {
         // TODO: Remove items from ArrayList
     }
 
-    public List<?> getCheckboxesChecked(){
+    public List<?> getCheckboxesChecked() {
 
         List<CheckBox> checkeds = new ArrayList<>();
-        for (CheckBox c : checkboxes){
-            if(c.isChecked())
+        for (CheckBox c : checkboxes) {
+            if (c.isChecked())
                 checkeds.add(c);
         }
 
         return checkeds;
     }
 
-    public List<Object> getCheckedIds(){
+    public List<Object> getCheckedIds() {
 
         List<Object> checkeds = new ArrayList<>();
-        for (CheckBox c : checkboxes){
-            if(c.isChecked())
+        for (CheckBox c : checkboxes) {
+            if (c.isChecked())
                 checkeds.add(c.getTag());
         }
         return checkeds;
@@ -55,7 +51,7 @@ public class CheckBoxGroupView extends GridLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-        for(CheckBox c: checkboxes) {
+        for (CheckBox c : checkboxes) {
             addView(c);
         }
 

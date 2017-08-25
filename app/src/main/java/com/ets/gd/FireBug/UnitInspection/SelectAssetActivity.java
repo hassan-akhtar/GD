@@ -99,7 +99,6 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
         tvBarcodeTitle.setVisibility(View.GONE);
         tvBarcodeValue.setVisibility(View.GONE);
         btnCross.setVisibility(View.GONE);
-        //setupLocList();
         mAdapter = new ScannedAssetsAdapter(getApplicationContext(), assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rlLocs.setLayoutManager(mLayoutManager);
@@ -119,10 +118,6 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
         rlLocs.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(SelectAssetActivity.this, rlLocs, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-//                Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-//                in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-//                in.putExtra("tagID",assetList.get(position).getCode());
-//                startActivity(in);
                 sendMessage(assetList.get(position).getCode() + " " + repairSelection);
                 ReplaceAssetActivity.newLocID = assetList.get(position).getLocation().getID();
                 ReplaceAssetActivity.newEquipID = assetList.get(position).getID();
@@ -151,10 +146,6 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
                     } else {
                         FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipment(etBarcode.getText().toString().toString());
                         if (null != fireBugEquipment) {
-//                            Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-//                            in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-//                            in.putExtra("tagID",fireBugEquipment.getCode());
-//                            startActivity(in);
                             sendMessage(fireBugEquipment.getCode() + " " + repairSelection);
                             ReplaceAssetActivity.newLocID = fireBugEquipment.getLocation().getID();
                             ReplaceAssetActivity.newEquipID = fireBugEquipment.getID();
@@ -205,10 +196,6 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
                 ReplaceAssetActivity.newEquipID = fireBugEquipment.getID();
                 sendMessage(fireBugEquipment.getCode() + " " + repairSelection);
                 finish();
-//                    Intent in = new Intent(SelectAssetActivity.this,RepairAssetActivity.class);
-//                    in.putExtra("compName",tvCompanyValue.getText().toString().trim());
-//                    in.putExtra("tagID",fireBugEquipment.getCode());
-//                    startActivity(in);
 
             } else {
                 Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();

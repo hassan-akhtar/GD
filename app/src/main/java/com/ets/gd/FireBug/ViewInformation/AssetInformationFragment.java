@@ -40,11 +40,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     public static Spinner spDeviceType, spManufacturer, spVendor, spAgent, spModel, spSize;
     View rootView;
     TextView tvLableDeviceType, tvLableManufacturer, tvLableModel, tvLableVendor, tvLableAgentType;
-    //Asset asset;
     public static EditText tvTagID, tvSrNo, tvMfgDate;
     private TextInputLayout ltvTagID, lModel, lSrNo, lMfgDate;
     FireBugEquipment fireBugEquipment;
-    //SyncCustomer realmSyncGetResponseDTO;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
     public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0, posSize = 0;
@@ -408,14 +406,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posDeviceType = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //tvLableDeviceType.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    //  tvLableDeviceType.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -425,14 +421,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posManufacturer = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //   tvLableManufacturer.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    //   tvLableManufacturer.setVisibility(View.VISIBLE);
                 }
 
                 if (0 != posManufacturer) {
@@ -451,7 +445,6 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                             dataAdapterModel.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spModel.setAdapter(dataAdapterModel);
                         } else {
-                            // showToast("No Models found for selected Manufacturer");
                             String[] models = new String[1];
                             models[0] = "Please select a model";
                             ArrayAdapter<String> dataAdapterModel = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, models);
@@ -478,14 +471,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posModel = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //  tvLableModel.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    // tvLableModel.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -496,14 +487,12 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 posVendor = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //   tvLableVendor.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    //  tvLableVendor.setVisibility(View.VISIBLE);
                 }
 
             }
@@ -515,10 +504,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {
-                        // tvLableAgentType.setVisibility(View.GONE);
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } else {
-                        // tvLableAgentType.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -532,10 +519,8 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 try {
                     if (0 == position) {
-                        // tvLableAgentType.setVisibility(View.GONE);
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } else {
-                        // tvLableAgentType.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

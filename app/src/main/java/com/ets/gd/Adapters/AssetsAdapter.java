@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import com.ets.gd.R;
 
-public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.MyViewHolder>{
+public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.MyViewHolder> {
     String[] fbTasks;
     int[] fbTasksImages;
     private RecyclerView.ViewHolder viewHolder;
 
-    public AssetsAdapter( String[] fbTasks, int[] fbTasksImages ) {
+    public AssetsAdapter(String[] fbTasks, int[] fbTasksImages) {
         this.fbTasks = fbTasks;
-        this.fbTasksImages =fbTasksImages;
+        this.fbTasksImages = fbTasksImages;
     }
 
     @Override
@@ -43,10 +43,11 @@ public class AssetsAdapter extends RecyclerView.Adapter<AssetsAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView code;
         private ImageView ivIcon;
+
         public MyViewHolder(View view) {
             super(view);
             code = (TextView) view.findViewById(R.id.tvTaskName);
-            ivIcon =(ImageView) view.findViewById(R.id.ivIcon);
+            ivIcon = (ImageView) view.findViewById(R.id.ivIcon);
         }
     }
 }

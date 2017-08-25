@@ -177,7 +177,6 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
                 posDepartment = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //tvLableDeviceType.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
@@ -209,14 +208,12 @@ public class TransferActivity extends AppCompatActivity implements Spinner.OnIte
                 posLoc = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
-                    //   tvLableVendor.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
-                    //  tvLableVendor.setVisibility(View.VISIBLE);
                 }
 
             }

@@ -589,24 +589,6 @@ public class CommonToolhawkScanActivity extends AppCompatActivity implements Bar
             ETSLocations etsLocation = DataManager.getInstance().getETSLocationsByCode(message);
 
             if (null != etsLocation) {
-     /*           List<ToolhawkEquipment> assetList = DataManager.getInstance().getAllToolhawkEquipmentForLocation(etsLocation.getCode());
-                if (null != assetList && 0 != assetList.size()) {
-                    Intent in = new Intent(CommonToolhawkScanActivity.this, LocationQuickCountActivity.class);
-                    in.putExtra("taskType", "new");
-                    in.putExtra("locationCode", message);
-                    startActivity(in);
-                    tvBarcodeTitle.setVisibility(View.GONE);
-                    tvBarcodeValue.setVisibility(View.GONE);
-                    ivInfo.setVisibility(View.VISIBLE);
-                    tvUnderText.setVisibility(View.VISIBLE);
-                    llbtns.setVisibility(View.GONE);
-                    tvBarcodeValue.setText("");
-                    etBarcode.setVisibility(View.VISIBLE);
-                    etBarcode.setText("");
-                    btnCross.setVisibility(View.GONE);
-                } else {
-                    showToast("No Equipment(s) Found in " + etsLocation.getCode());
-                }*/
 
                 showViewForQuickCountAfterScan(message);
             } else {

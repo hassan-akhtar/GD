@@ -102,7 +102,6 @@ public class ReplaceAssetActivity extends AppCompatActivity {
                 }
 
                 case R.id.rlYes: {
-                    //sendMessage("replace",replaceType,newLocID , newEquipID );
                     assetReplaced.AssetReplaced(new Replace("replace",replaceType,newLocID , newEquipID ));
                     finish();
                     break;

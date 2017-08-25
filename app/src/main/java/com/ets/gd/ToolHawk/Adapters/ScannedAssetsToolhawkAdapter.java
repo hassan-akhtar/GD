@@ -17,9 +17,6 @@ import com.ets.gd.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hakhtar on 5/5/2016.
- */
 public class ScannedAssetsToolhawkAdapter extends RecyclerView.Adapter<ScannedAssetsToolhawkAdapter.MyViewHolder> {
 
     private List<ToolhawkEquipment> assetList = new ArrayList<ToolhawkEquipment>();

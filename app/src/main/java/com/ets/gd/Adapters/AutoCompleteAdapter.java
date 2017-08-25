@@ -1,14 +1,14 @@
 package com.ets.gd.Adapters;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
@@ -94,9 +94,9 @@ public class AutoCompleteAdapter extends ArrayAdapter<String> implements Filtera
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
 
-            if(results.values!=null){
+            if (results.values != null) {
                 fullList = (ArrayList<String>) results.values;
-            }else{
+            } else {
                 fullList = new ArrayList<String>();
             }
             if (results.count > 0) {

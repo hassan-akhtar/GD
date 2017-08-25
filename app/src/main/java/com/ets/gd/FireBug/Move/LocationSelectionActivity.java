@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +20,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.Customer.CustomerActivity;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Customer.CustomerActivity;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -40,7 +40,7 @@ public class LocationSelectionActivity extends AppCompatActivity {
     String[] assetNames;
     public static String[] locationNames;
     RelativeLayout rlYes, rlNo, rlBottomSheet, rlTransferOptions;
-    private String taskType,newLocCode;
+    private String taskType, newLocCode;
     int count;
     int locID, cusID;
     SharedPreferencesManager sharedPreferencesManager;
@@ -129,10 +129,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
 
         if (1 < locationNames.length) {
             btnViewAllLocations.setVisibility(View.VISIBLE);
-            if (loc.length()<17) {
+            if (loc.length() < 17) {
                 tvFromLoc.setText(loc + " in " + tvCompanyValue.getText().toString() + ",...");
-            }else{
-                tvFromLoc.setText(loc.substring(0,15)+ "..." + " in " + tvCompanyValue.getText().toString() + ",...");
+            } else {
+                tvFromLoc.setText(loc.substring(0, 15) + "..." + " in " + tvCompanyValue.getText().toString() + ",...");
             }
 
         } else {
@@ -175,10 +175,10 @@ public class LocationSelectionActivity extends AppCompatActivity {
                 case R.id.rlYes: {
 
                     if (taskName.toLowerCase().startsWith("m")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID),newLocCode, "move", 0);
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), newLocCode, "move", 0);
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Moved!", Toast.LENGTH_LONG).show();
                     } else if (taskName.toLowerCase().startsWith("t")) {
-                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID),newLocCode, "transfer",
+                        DataManager.getInstance().updateAssetLocationID(asset, String.valueOf(locID), newLocCode, "transfer",
                                 DataManager.getInstance().getCustomerByCode(sharedPreferencesManager.getString(SharedPreferencesManager.CURRENT_TRANSFER_CUSTOMER_NAME)).getID());
                         Toast.makeText(getApplicationContext(), "Asset(s) Successfully Transferred!", Toast.LENGTH_LONG).show();
                     }

@@ -14,11 +14,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Activities.Other.BaseActivity;
 import com.ets.gd.Adapters.CustomerAdapter;
 import com.ets.gd.Constants.Constants;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Fragments.FirebugDashboardFragment;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.AllCustomers;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ResponseDTO;
@@ -36,8 +36,8 @@ public class CustomerFragment extends Fragment implements MyCallBack {
 
     private View rootView;
     private static RecyclerView rvCustomers;
-    private static  CustomerAdapter customerAdapter;
-    static  TextView companiesCount;
+    private static CustomerAdapter customerAdapter;
+    static TextView companiesCount;
     static List<AllCustomers> customerList;
     static List<AllCustomers> filteredCustomerList = new ArrayList<AllCustomers>();
     SharedPreferencesManager sharedPreferencesManager;
@@ -60,7 +60,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
 
     private void initViews() {
         rvCustomers = (RecyclerView) rootView.findViewById(R.id.rvCustomers);
-        companiesCount  = (TextView) rootView.findViewById(R.id.tvCompCount);
+        companiesCount = (TextView) rootView.findViewById(R.id.tvCompCount);
     }
 
     private void initObj() {
@@ -84,7 +84,7 @@ public class CustomerFragment extends Fragment implements MyCallBack {
                     sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, filteredCustomerList.get(position).getCode());
                     EventBus.getDefault().post(filteredCustomerList.get(position).getCode());
                 } else {
-                   sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, customerList.get(position).getID());
+                    sharedPreferencesManager.setInt(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_ID, customerList.get(position).getID());
                     sharedPreferencesManager.setString(SharedPreferencesManager.AFTER_SYNC_CUSTOMER_CODE, customerList.get(position).getCode());
                     EventBus.getDefault().post(customerList.get(position).getCode());
                 }
@@ -101,10 +101,10 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     @Override
     public void onResume() {
         super.onResume();
-        getActivity().invalidateOptionsMenu() ;
+        getActivity().invalidateOptionsMenu();
     }
 
-    public  void updateAdapterForSearchKey(String query){
+    public void updateAdapterForSearchKey(String query) {
         query = query.toString().toLowerCase();
 
         if (!"refresh".equals(query)) {
@@ -123,14 +123,14 @@ public class CustomerFragment extends Fragment implements MyCallBack {
                 rvCustomers.setAdapter(customerAdapter);
                 customerAdapter.notifyDataSetChanged();  // data set changed
             } else {
-                companiesCount.setText(""+filteredCustomerList.size());
+                companiesCount.setText("" + filteredCustomerList.size());
                 rvCustomers.setLayoutManager(new LinearLayoutManager(getActivity()));
                 customerAdapter = new CustomerAdapter(getActivity(), filteredCustomerList);
                 rvCustomers.setAdapter(customerAdapter);
                 customerAdapter.notifyDataSetChanged();  // data set changed
             }
         } else {
-            companiesCount.setText(""+customerList.size());
+            companiesCount.setText("" + customerList.size());
             rvCustomers.setLayoutManager(new LinearLayoutManager(getActivity()));
             customerAdapter = new CustomerAdapter(getActivity(), customerList);
             rvCustomers.setAdapter(customerAdapter);
@@ -139,25 +139,9 @@ public class CustomerFragment extends Fragment implements MyCallBack {
     }
 
     void getCustomersCall() {
-       /* Customer customer = new Customer();
-        customer.setCode("Bow wow Animal Hospital");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("DSI");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Hiltop Daycare");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Spring Valley");
-        customerList.add(customer);
-        customer = new Customer();
-        customer.setCode("Bruce and Co. Traders");
-        customerList.add(customer);*/
-
         customerList = DataManager.getInstance().getAllCustomerList();
-        customerAdapter = new CustomerAdapter(getActivity(),customerList);
-        companiesCount.setText(""+customerList.size());
+        customerAdapter = new CustomerAdapter(getActivity(), customerList);
+        companiesCount.setText("" + customerList.size());
         rvCustomers.setAdapter(customerAdapter);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         rvCustomers.setLayoutManager(mLayoutManager);

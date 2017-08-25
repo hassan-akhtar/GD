@@ -56,7 +56,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     TextView etStatusCode;
     RelativeLayout rlCodes;
     int posInspType, posInspectionResult, deviceTypeID, equipmentID;
-    //CheckBox cbBracket, cbNozzel, cbDamaged, cbOperational, cbHose, cbRecharge, cbAccessible, cbTag;
     List<DeviceTypeStatusCodes> deviceTypeStatusCodes;
     List<String> statusCodesDescList = new ArrayList<String>();
     CheckBoxGroupView cbGroup;
@@ -74,14 +73,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
 
     private void initViews() {
-/*        cbBracket = (CheckBox) findViewById(R.id.cbBracket);
-        cbNozzel = (CheckBox) findViewById(R.id.cbNozzel);
-        cbDamaged = (CheckBox) findViewById(R.id.cbDamaged);
-        cbOperational = (CheckBox) findViewById(R.id.cbOperational);
-        cbHose = (CheckBox) findViewById(R.id.cbHose);
-        cbRecharge = (CheckBox) findViewById(R.id.cbRecharge);
-        cbAccessible = (CheckBox) findViewById(R.id.cbAccessible);
-        cbTag = (CheckBox) findViewById(R.id.cbTag);*/
         cbGroup = (CheckBoxGroupView) findViewById(R.id.cbGroup);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -161,8 +152,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
         for (int i = 0; i < deviceTypeStatusCodes.size(); i++) {
             AppCompatCheckBox cb = new AppCompatCheckBox(this);
-            // cb.setHighlightColor(getResources().getColor(R.color.colorAccent));
-            // cb.setBackgroundColor(getResources().getColor(R.color.colorAccent));
             cb.setSupportButtonTintList(colorStateList);
             cb.setTag(i);
             statusCodesDescList.add(deviceTypeStatusCodes.get(i).getStatusCode().getDescription());
@@ -179,14 +168,6 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         etStatusCode.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
-       /* cbBracket.setOnCheckedChangeListener(this);
-        cbNozzel.setOnCheckedChangeListener(this);
-        cbDamaged.setOnCheckedChangeListener(this);
-        cbOperational.setOnCheckedChangeListener(this);
-        cbHose.setOnCheckedChangeListener(this);
-        cbRecharge.setOnCheckedChangeListener(this);
-        cbAccessible.setOnCheckedChangeListener(this);
-        cbTag.setOnCheckedChangeListener(this);*/
     }
 
     final View.OnClickListener mGlobal_OnClickListener = new View.OnClickListener() {

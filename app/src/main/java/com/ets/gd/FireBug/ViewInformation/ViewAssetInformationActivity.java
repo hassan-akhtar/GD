@@ -211,7 +211,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                 FireBugEquipment equipment = DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString());
                                 boolean exists = false;
 
-                                //  if (fireBugEquipment == DataManager.getInstance().getEquipment(AssetInformationFragment.tvTagID.getText().toString())) {
                                 if (checkValidationAddAssetLocation()) {
 
                                     if (null != equipment) {
@@ -266,9 +265,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
                                         showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
                                     }
                                 }
-                                //  } else {
-                                //     showToast("Asset with tag Id: " + AssetInformationFragment.tvTagID.getText().toString().trim() + " Already exists.");
-                                // }
                             } else {
                                 tabLayout.getTabAt(0).select();
                             }
@@ -364,9 +360,6 @@ public class ViewAssetInformationActivity extends AppCompatActivity {
         } else if (0 == AssetInformationFragment.posModel) {
             showToast("Please select a Model");
         }
-/*        else if ("MM/DD/YYYY".equals(AssetInformationFragment.tvMfgDate.getText().toString().trim())) {
-            showToast("Please select Manufacturer date");
-        } */
 
         else {
             return true;
