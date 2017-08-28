@@ -14,15 +14,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.Adapters.RouteAssetAdapter;
 import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.FireBug.Move.LocationSelectionActivity;
 import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
@@ -49,10 +54,12 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     private List<FireBugEquipment> equipmentList = new ArrayList<FireBugEquipment>();
     RecyclerView rvRouteInspection;
     List<RouteAsset> assetList = new ArrayList<>();
+    List<RouteAsset> assetListMultiple = new ArrayList<>();
     FireBugEquipment fireBugEquipment;
     static RouteAssetAdapter routeAssetAdapter;
     SharedPreferencesManager sharedPreferencesManager;
     int cusID;
+    String[] assetNames;
     Button btnSearchAsset;
     List<RouteInspection> routeInspections;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
@@ -139,7 +146,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                 boolean isInspected = false;
                 RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(assetList.get(position).getID());
                 if (null != routeInspRecord) {
-                    isInspected=true;
+                    isInspected = true;
                 }
                 if (!isInspected || isHydro) {
                     RouteAssetInspectionActivity.routeAsset = null;
@@ -325,7 +332,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
     public void BarcodeScanned(Barcode barcode) {
         String message = barcode.getMessage();
         FireBugEquipment fbEqScanned = DataManager.getInstance().getEquipment(message);
-        boolean isFound = false;
+        boolean isFound = false, isMultiple = false;
         int pos = 0;
         if (null != fbEqScanned) {
             for (int i = 0; i < assetList.size(); i++) {
@@ -337,39 +344,69 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                     pos = i;
                     break;
                 }
+
+
             }
 
+
             if (isFound) {
-                boolean isHydro = false;
-                FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(pos).getEquipmentID());
-                routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(pos).getRouteID());
-                // if (null != routeInspections && routeInspections.get(0).isHydro()) {
-                //      isHydro = true;
-                //  }
-                boolean isInspected = false;
-                RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(assetList.get(pos).getID());
-                if (null != routeInspRecord) {
-                    isInspected=true;
+                assetListMultiple.clear();
+                int count = 0;
+                for (int i = 0; i < assetList.size(); i++) {
+                    FireBugEquipment loc = DataManager.getInstance().getEquipmentByID(assetList.get(i).getEquipmentID());
+                    if (loc.getCode().toLowerCase().equals(fbEqScanned.getCode().toLowerCase())) {
+                        count = count + 1;
+                        assetListMultiple.add(assetList.get(i));
+                    }
                 }
-                if (!isInspected || isHydro) {
-                    RouteAssetInspectionActivity.routeAsset = null;
-                    RouteAssetInspectionActivity.routeAsset = assetList.get(pos);
-                    Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
-                    in.putExtra("compName", tvCompanyName.getText().toString());
-                    in.putExtra("tag", "" + equipmentList.get(pos).getCode());
-                    in.putExtra("loc", tvLocName.getText().toString());
-                    in.putExtra("routeName", tvRouteName.getText().toString());
-                    in.putExtra("deviceTypeID", assetList.get(pos).getDeviceTypeID());
-                    in.putExtra("deviceType", equipmentList.get(pos).getModel().getCode());
-                    in.putExtra("cusID", cusID);
-                    in.putExtra("equipmentID", equipmentList.get(pos).getID());
-                    in.putExtra("desp", equipmentList.get(pos).getManufacturer().getCode());
-                    in.putExtra("RouteID", assetList.get(pos).getRouteID());
-                    in.putExtra("AssetCount", tvAssetCount.getText().toString());
-                    in.putExtra("LocCount", tvLocCount.getText().toString());
-                    startActivity(in);
+                if (count > 1) {
+                    isMultiple = true;
+                }
+
+                if (!isMultiple) {
+                    boolean isHydro = false;
+                    FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(pos).getEquipmentID());
+                    routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(pos).getRouteID());
+                    // if (null != routeInspections && routeInspections.get(0).isHydro()) {
+                    //      isHydro = true;
+                    //  }
+                    boolean isInspected = false;
+                    RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(assetList.get(pos).getID());
+                    if (null != routeInspRecord) {
+                        isInspected = true;
+                    }
+                    if (!isInspected || isHydro) {
+                        RouteAssetInspectionActivity.routeAsset = null;
+                        RouteAssetInspectionActivity.routeAsset = assetList.get(pos);
+                        Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
+                        in.putExtra("compName", tvCompanyName.getText().toString());
+                        in.putExtra("tag", "" + equipmentList.get(pos).getCode());
+                        in.putExtra("loc", tvLocName.getText().toString());
+                        in.putExtra("routeName", tvRouteName.getText().toString());
+                        in.putExtra("deviceTypeID", assetList.get(pos).getDeviceTypeID());
+                        in.putExtra("deviceType", equipmentList.get(pos).getModel().getCode());
+                        in.putExtra("cusID", cusID);
+                        in.putExtra("equipmentID", equipmentList.get(pos).getID());
+                        in.putExtra("desp", equipmentList.get(pos).getManufacturer().getCode());
+                        in.putExtra("RouteID", assetList.get(pos).getRouteID());
+                        in.putExtra("AssetCount", tvAssetCount.getText().toString());
+                        in.putExtra("LocCount", tvLocCount.getText().toString());
+                        startActivity(in);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
+                    }
                 } else {
-                    Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
+                    assetNames = new String[assetListMultiple.size()];
+
+                    for (int i = 0; i < assetListMultiple.size(); i++) {
+                        assetNames[i] = assetListMultiple.get(i).getInspectionType();
+                    }
+                    if (null != DataManager.getInstance().getEquipmentByID(assetListMultiple.get(0).getEquipmentID())) {
+                        FireBugEquipment fEq = DataManager.getInstance().getEquipmentByID(assetListMultiple.get(0).getEquipmentID());
+                        showAssetList(fEq.getCode());
+                    }
+
+
                 }
             } else {
                 showToast("Asset not Found in " + tvLocName.getText().toString());
@@ -377,6 +414,85 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         } else {
             showToast("No Asset Found!");
         }
+    }
+
+    void showAssetList(String code) {
+        showToast("Multiple Assets Found!");
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, assetNames);
+        LayoutInflater li = LayoutInflater.from(RouteAssetActivity.this);
+        View dialogView = li.inflate(R.layout.assets_view_all, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                RouteAssetActivity.this);
+        alertDialogBuilder.setTitle("Select Inspection type for " + code);
+        alertDialogBuilder.setView(dialogView);
+        final ListView listAssets = (ListView) dialogView
+                .findViewById(R.id.lvAssets);
+
+
+        listAssets.setAdapter(adapter);
+        alertDialogBuilder
+                .setCancelable(false)
+                .setNegativeButton("CANCEL",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int id) {
+                                dialog.cancel();
+                            }
+                        });
+        final AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        listAssets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                alertDialog.cancel();
+                boolean isInspected = false;
+
+                RouteAsset routeAsset = null;
+                FireBugEquipment equipment = null;
+                for (int i = 0; i < assetListMultiple.size(); i++) {
+
+                    if (assetNames[position].toLowerCase().equals(assetListMultiple.get(i).getInspectionType().toLowerCase())) {
+                        routeAsset = assetListMultiple.get(i);
+                        break;
+                    }
+                }
+
+                RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(routeAsset.getID());
+                if (null != routeInspRecord) {
+                    isInspected = true;
+                }
+
+                if (null!=routeAsset) {
+                    equipment = DataManager.getInstance().getEquipmentByID(routeAsset.getEquipmentID());
+                }
+
+                if (null!=equipment) {
+                    if (!isInspected) {
+                        RouteAssetInspectionActivity.routeAsset = null;
+                        RouteAssetInspectionActivity.routeAsset = routeAsset;
+                        Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
+                        in.putExtra("compName", tvCompanyName.getText().toString());
+                        in.putExtra("tag", "" + equipment.getCode());
+                        in.putExtra("loc", tvLocName.getText().toString());
+                        in.putExtra("routeName", tvRouteName.getText().toString());
+                        in.putExtra("deviceTypeID", routeAsset.getDeviceTypeID());
+                        in.putExtra("deviceType", equipment.getModel().getCode());
+                        in.putExtra("cusID", cusID);
+                        in.putExtra("equipmentID", equipment.getID());
+                        in.putExtra("desp", equipment.getManufacturer().getCode());
+                        in.putExtra("RouteID", routeAsset.getRouteID());
+                        in.putExtra("AssetCount", tvAssetCount.getText().toString());
+                        in.putExtra("LocCount", tvLocCount.getText().toString());
+                        startActivity(in);
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "This Asset is Already Inspected", Toast.LENGTH_LONG).show();
+                    }
+                }
+            }
+        });
     }
 
     void showToast(String msg) {
