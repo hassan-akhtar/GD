@@ -25,6 +25,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSBuilding;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.ETSLocations;
+import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentLocationInfo;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNote;
 import com.ets.gd.NetworkLayer.ResponseDTOs.EquipmentNoteTH;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
@@ -747,11 +748,9 @@ public class DataManager {
     }
 
 
-
-                public Rating getRating(String Code) {
-                return realm.where(Rating.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
-          }
-
+    public Rating getRating(String Code) {
+        return realm.where(Rating.class).equalTo("Code", Code, Case.INSENSITIVE).findFirst();
+    }
 
 
     // For getting asset all assets from DB
@@ -1190,6 +1189,34 @@ public class DataManager {
 
     public Routes getRoute(String code) {
         return realm.where(Routes.class).equalTo("Code", code).findFirst();
+    }
+
+    public void updateEquipmentLocationInfo(String code, String locationType, String location, int ID) {
+
+        realm.beginTransaction();
+        ToolhawkEquipment eq = realm.where(ToolhawkEquipment.class).equalTo("Code", code).findFirst();
+        if (null != eq) {
+            EquipmentLocationInfo equipmentLocationInfo = realm.createObject(EquipmentLocationInfo.class);
+            equipmentLocationInfo.setLocationType(locationType);
+            equipmentLocationInfo.setLocation(location);
+            if (locationType.toLowerCase().startsWith("eq")) {
+                eq.setETSLocation(null);
+                equipmentLocationInfo.setEquipmentID(ID);
+            }
+            if (locationType.toLowerCase().startsWith("jo")) {
+                eq.setETSLocation(null);
+                equipmentLocationInfo.setJobNumberID(ID);
+            }
+            if (locationType.toLowerCase().startsWith("lo")) {
+               eq.setETSLocation(getETSLocationByCode(location));
+                equipmentLocationInfo.setLocationID(ID);
+            }
+
+            eq.setEquipmentLocationInfo(equipmentLocationInfo);
+        }
+        realm.commitTransaction();
+
+
     }
 
 

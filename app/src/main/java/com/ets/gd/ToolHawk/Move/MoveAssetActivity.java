@@ -372,12 +372,14 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                                 toolhawkMove.setEquipmentID(equipmentList.get(i).getID());
 
                                                 if (null != DataManager.getInstance().getToolhawkEquipment(moveCode)) {
+                                                    DataManager.getInstance().updateEquipmentLocationInfo(equipmentList.get(i).getCode(),"Equipment","Eqpt ID:"+DataManager.getInstance().getToolhawkEquipment(moveCode).getCode(),DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
                                                     toolhawkMove.setToEquipmentID(DataManager.getInstance().getToolhawkEquipment(moveCode).getID());
                                                     toolhawkMove.setMoveType("Equipment");
                                                 } else {
                                                     toolhawkMove.setToEquipmentID(0);
                                                 }
                                                 if (null != DataManager.getInstance().getETSLocationByCode(moveCode)) {
+                                                    DataManager.getInstance().updateEquipmentLocationInfo(equipmentList.get(i).getCode(),"Location",DataManager.getInstance().getETSLocationByCode(moveCode).getCode(),DataManager.getInstance().getETSLocationByCode(moveCode).getID());
                                                     toolhawkMove.setToLocationID(DataManager.getInstance().getETSLocationByCode(moveCode).getID());
                                                     toolhawkMove.setToLocationCode(DataManager.getInstance().getETSLocationByCode(moveCode).getCode());
                                                     toolhawkMove.setMoveType("Location");
@@ -385,6 +387,7 @@ public class MoveAssetActivity extends AppCompatActivity implements BarcodeScan 
                                                     toolhawkMove.setToLocationID(0);
                                                 }
                                                 if (null != DataManager.getInstance().getJobNumber(moveCode)) {
+                                                    DataManager.getInstance().updateEquipmentLocationInfo(equipmentList.get(i).getCode(),"Job Number","J.No:"+DataManager.getInstance().getJobNumber(moveCode).getCode(),DataManager.getInstance().getJobNumber(moveCode).getID());
                                                     toolhawkMove.setToJobNumberID(DataManager.getInstance().getJobNumber(moveCode).getID());
                                                     toolhawkMove.setMoveType("JobNumber");
                                                 } else {
