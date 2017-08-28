@@ -37,7 +37,7 @@ import java.util.List;
 
 public class AssetInformationFragment extends Fragment implements Spinner.OnItemSelectedListener {
 
-    public static Spinner spDeviceType, spManufacturer, spVendor, spAgent, spModel, spSize;
+    public static Spinner spDeviceType, spManufacturer, spVendor, spAgent, spModel, spSize, spRating;
     View rootView;
     TextView tvLableDeviceType, tvLableManufacturer, tvLableModel, tvLableVendor, tvLableAgentType;
     public static EditText tvTagID, tvSrNo, tvMfgDate;
@@ -45,7 +45,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     FireBugEquipment fireBugEquipment;
     RealmSyncGetResponseDTO realmSyncGetResponseDTO;
     SharedPreferencesManager sharedPreferencesManager;
-    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0, posSize = 0;
+    public static int posDeviceType = 0, posManufacturer = 0, posVendor = 0, posAgent = 0, posModel = 0, posSize = 0, posRating = 0;
     boolean updateDates = false;
 
     public AssetInformationFragment() {
@@ -73,6 +73,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         spAgent = (Spinner) rootView.findViewById(R.id.spAgent);
         spModel = (Spinner) rootView.findViewById(R.id.spModel);
         spSize = (Spinner) rootView.findViewById(R.id.spSize);
+        spRating = (Spinner) rootView.findViewById(R.id.spRating);
         tvLableDeviceType = (TextView) rootView.findViewById(R.id.tvLableDepartment);
         tvLableManufacturer = (TextView) rootView.findViewById(R.id.tvLableManufacturer);
         tvLableModel = (TextView) rootView.findViewById(R.id.tvLableModel);
@@ -112,12 +113,14 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         int sizeVendors = realmSyncGetResponseDTO.getLstVendorCodes().size() + 1;
         int sizeAgents = realmSyncGetResponseDTO.getLstAgentTypes().size() + 1;
         int sizeSize = realmSyncGetResponseDTO.getLstSizes().size() + 1;
+        int sizeRating = realmSyncGetResponseDTO.getLstRatings().size() + 1;
 
         String[] deviceTypes = new String[sizeDeviceType];
         String[] manufacturers = new String[sizeManufacturers];
         String[] vendors = new String[sizeVendors];
         String[] agents = new String[sizeAgents];
         String[] sizes = new String[sizeSize];
+        String[] ratings = new String[sizeRating];
 
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstDeviceType().size(); i++) {
@@ -141,13 +144,17 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
             sizes[i + 1] = realmSyncGetResponseDTO.getLstSizes().get(i).getCode();
         }
 
+        for (int i = 0; i < realmSyncGetResponseDTO.getLstRatings().size(); i++) {
+            ratings[i + 1] = realmSyncGetResponseDTO.getLstRatings().get(i).getCode();
+        }
+
         deviceTypes[0] = "Please select a device type";
         manufacturers[0] = "Please select a manufacturer";
 
         vendors[0] = "Please select a vendor";
         agents[0] = "Please select a agent";
         sizes[0] = "Please select a size";
-
+        ratings[0] = "Please select a rating";
 
         ViewAssetInformationActivity.currentFragment = new AssetInformationFragment();
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
@@ -178,6 +185,11 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         ArrayAdapter<String> dataAdapterSize = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, sizes);
         dataAdapterSize.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spSize.setAdapter(dataAdapterSize);
+
+
+        ArrayAdapter<String> dataAdapterRating = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, ratings);
+        dataAdapterRating.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spRating.setAdapter(dataAdapterRating);
 
         if ("viewAsset".equals(ViewAssetInformationActivity.actionType)) {
             setViewForViewAsset();
@@ -223,6 +235,17 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
                 }
             }
         }
+
+        if (null != fireBugEquipment.getRating()) {
+                        for (int i = 0; i < realmSyncGetResponseDTO.getLstRatings().size() + 1; i++) {
+                                if (fireBugEquipment.getRating().getCode().toLowerCase().equals(spRating.getItemAtPosition(i).toString().toLowerCase())) {
+                                        spRating.setSelection(i);
+                                        break;
+                                    }
+                            }
+                   }
+
+
 
 
         for (int i = 0; i < realmSyncGetResponseDTO.getLstManufacturers().size() + 1; i++) {
@@ -315,6 +338,7 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
         spAgent.setOnItemSelectedListener(this);
         spSize.setOnItemSelectedListener(this);
         spModel.setOnItemSelectedListener(this);
+        spRating.setOnItemSelectedListener(this);
         tvMfgDate.setOnClickListener(mGlobal_OnClickListener);
 
         tvMfgDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -528,6 +552,23 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
 
             }
             break;
+
+                                case R.id.spRating: {
+                                posRating = position;
+                                String strSelectedState = parent.getItemAtPosition(position).toString();
+                                try {
+                                        if (0 == position) {
+                                                // tvLableAgentType.setVisibility(View.GONE);
+                                                        ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
+                                            } else {
+                                                // tvLableAgentType.setVisibility(View.VISIBLE);
+                                                    }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    }
+                        break;
         }
     }
 
@@ -537,11 +578,9 @@ public class AssetInformationFragment extends Fragment implements Spinner.OnItem
     }
 
 
-
     void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
-
 
 
 }

@@ -805,6 +805,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != fireBugEquipment.getSize()) {
                     equipment.setSizeID(fireBugEquipment.getSize().getID());
                 }
+
+                if (null != fireBugEquipment.getRating()) {
+                    equipment.setRatingID(fireBugEquipment.getRating().getID());
+                }
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
                 if (null != fireBugEquipment.getVendorCode()) {
                     equipment.setVendorID(fireBugEquipment.getVendorCode().getID());
@@ -872,6 +876,10 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != fireBugEquipment.getSize()) {
                     equipment.setSizeID(fireBugEquipment.getSize().getID());
                 }
+                if (null != fireBugEquipment.getRating()) {
+                    equipment.setRatingID(fireBugEquipment.getRating().getID());
+                }
+
                 equipment.setSerialNo(fireBugEquipment.getSerialNo());
                 equipment.setManufacturerDate(fireBugEquipment.getManufacturerDate());
 
@@ -1610,6 +1618,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
 
             case Constants.RESPONSE_SYNC_GET:
                 SyncGetResponseDTO syncGetResponseDTO = (SyncGetResponseDTO) responseDTO;
+                sharedPreferencesManager.setBoolean(SharedPreferencesManager.SYNC_STATE, false);
                 if (responseDTO != null) {
                     if (null != syncGetResponseDTO && null == responseDTO.getErrorMsg()) {
 
@@ -1659,6 +1668,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         }
 
     }
+
 
     private void callSyncPostMoveService() {
         CommonActions.showProgressDialog(getActivity());

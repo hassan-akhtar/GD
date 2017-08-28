@@ -34,6 +34,8 @@ public class RealmSyncGetResponseDTO extends RealmObject {
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
     RealmList<FirebugEqSize>  lstSizes;
     private int DueDays;
+    RealmList<Condition> lstTHConditions;
+    RealmList<Rating> lstRatings;
 
     public RealmList<DeviceType> getLstDeviceType() {
         return lstDeviceType;
@@ -41,6 +43,22 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public void setLstDeviceType(RealmList<DeviceType> lstDeviceType) {
         this.lstDeviceType = lstDeviceType;
+    }
+
+    public RealmList<Condition> getLstTHConditions() {
+        return lstTHConditions;
+    }
+
+    public void setLstTHConditions(RealmList<Condition> lstTHConditions) {
+        this.lstTHConditions = lstTHConditions;
+    }
+
+    public RealmList<Rating> getLstRatings() {
+        return lstRatings;
+    }
+
+    public void setLstRatings(RealmList<Rating> lstRatings) {
+        this.lstRatings = lstRatings;
     }
 
     public int getDueDays() {

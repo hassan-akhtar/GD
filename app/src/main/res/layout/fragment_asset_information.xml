@@ -206,12 +206,46 @@
                     android:paddingBottom="10dp" />
             </RelativeLayout>
 
+
+
             <RelativeLayout
-                android:id="@+id/rlVendor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rlSize"
-                android:layout_marginTop="17dp">
+            android:id="@+id/rlRating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rlSize"
+            android:layout_marginTop="17dp">
+
+
+            <TextView
+                                android:id="@+id/tvLableRating"
+                                android:visibility="visible"
+                                android:layout_marginLeft="30dp"
+                                android:text="Rating"
+                                android:textSize="12sp"
+                                android:textColor="@color/blueDark"
+                                android:layout_marginBottom="3dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent" />
+
+
+                            <Spinner
+                                android:id="@+id/spRating"
+                                android:layout_below="@+id/tvLableRating"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="23dp"
+                                android:layout_marginRight="23dp"
+                                android:background="@drawable/sp_bg_new"
+                                android:paddingBottom="10dp" />
+                        </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlVendor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rlRating"
+                    android:layout_marginTop="17dp">
 
 
                 <TextView
