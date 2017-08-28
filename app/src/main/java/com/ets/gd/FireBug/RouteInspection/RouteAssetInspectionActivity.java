@@ -162,16 +162,16 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
             routeInspectionTypes = new String[1];
             routeInspectionTypes[0] = routeInspections.get(0).getInspectionType();
             spInspType.setEnabled(false);
-        } else if (null != routeInspections && routeInspections.get(0).isHydro()) {
+        }
+        else if (null != routeInspections && routeInspections.get(0).isHydro()) {
             isHydro = true;
-            spInspType.setEnabled(true);
-            routeInspectionTypes = new String[routeInspections.size() + 1];
-            for (int i = 0; i < routeInspections.size(); i++) {
-                routeInspectionTypes[i + 1] = routeInspections.get(i).getInspectionType();
-            }
-            routeInspectionTypes[0] = "Please select Inspection Type";
-            spInspType.setSelection(0);
-        } else {
+            routeInspectionTypes = new String[1];
+            routeInspectionTypes[0] = routeAsset.getInspectionType();
+            spInspType.setEnabled(false);
+
+
+        }
+        else {
             Toast.makeText(getApplicationContext(), "No Inspection Type Found", Toast.LENGTH_LONG).show();
         }
 
@@ -278,6 +278,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                             UnitinspectionResult inspectionResult = new UnitinspectionResult();
                             inspectionResult.setEquipmentID(equipmentID);
+                            DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
                             DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
                             RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
                             inspectionResult.setReplaced(false);
@@ -311,7 +312,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                                 }
                             }
                             inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-                            RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
+                            RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getID(),routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
                             if (null != rouAsset) {
                                 inspectionResult.setRouteAssetID(rouAsset.getID());
                             }
@@ -429,6 +430,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
         inspectionResult.setEquipmentID(equipmentID);
+        DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
         DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
         RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
         inspectionResult.setReplaced(true);
@@ -465,7 +467,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-        RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
+        RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getID(),routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
         if (null != rouAsset) {
             inspectionResult.setRouteAssetID(rouAsset.getID());
         }

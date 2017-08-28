@@ -5,6 +5,7 @@ import com.ets.gd.Models.Asset;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
+import com.ets.gd.Models.RouteInspRecord;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckIn;
 import com.ets.gd.NetworkLayer.RequestDTOs.CheckOut;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
@@ -121,6 +122,20 @@ public class DataManager {
     public ToolhawkEquipment isAssetParent(String equipCode) {
         return realm.where(ToolhawkEquipment.class).equalTo("Parent.Code", equipCode).findFirst();
     }
+
+
+
+    public void updateRouteInspRecord (int routeAssetID) {
+        realm.beginTransaction();
+        RouteInspRecord routeInspRecord = realm.createObject(RouteInspRecord.class);
+        routeInspRecord.setRouteAssetID(routeAssetID);
+        realm.commitTransaction();
+    }
+
+    public RouteInspRecord getRouteInspRecord (int routeAssetID) {
+        return realm.where(RouteInspRecord.class).equalTo("routeAssetID", routeAssetID).findFirst();
+    }
+
 
     public void updateAssetRouteInspectionStatus(int equipID) {
         realm.beginTransaction();
@@ -1248,8 +1263,8 @@ public class DataManager {
 
     }
 
-    public RouteAsset getRouteAsset(int eqID, int routeID, String inspType) {
-        return realm.where(RouteAsset.class).equalTo("EquipmentID", eqID).equalTo("RouteID", routeID).equalTo("InspectionType", inspType).findFirst();
+    public RouteAsset getRouteAsset(int ID, int eqID, int routeID, String inspType) {
+        return realm.where(RouteAsset.class).equalTo("ID", ID).equalTo("EquipmentID", eqID).equalTo("RouteID", routeID).equalTo("InspectionType", inspType).findFirst();
     }
 
 

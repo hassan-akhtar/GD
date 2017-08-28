@@ -27,6 +27,7 @@ import com.ets.gd.FireBug.Scan.BarcodeScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Models.Barcode;
+import com.ets.gd.Models.RouteInspRecord;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
@@ -110,16 +111,16 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
 
         for (RouteAsset routeAsset : assetList) {
             FireBugEquipment eq = DataManager.getInstance().getEquipmentByID(routeAsset.getEquipmentID());
-            if (!equipmentList.contains(eq)) {
-                equipmentList.add(eq);
-            }
+            //if (!equipmentList.contains(eq)) {
+            equipmentList.add(eq);
+            //}
         }
-        routeAssetAdapter = new RouteAssetAdapter(RouteAssetActivity.this, equipmentList);
+        routeAssetAdapter = new RouteAssetAdapter(RouteAssetActivity.this, equipmentList, assetList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
         rvRouteInspection.setAdapter(routeAssetAdapter);
-        RouteAssetInspectionActivity.routeLocation =routeLocation;
+        RouteAssetInspectionActivity.routeLocation = routeLocation;
     }
 
     private void initListeners() {
@@ -132,10 +133,15 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                 boolean isHydro = false;
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(position).getEquipmentID());
                 routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(position).getRouteID());
-                if (null != routeInspections && routeInspections.get(0).isHydro()) {
-                    isHydro = true;
+                // if (null != routeInspections && routeInspections.get(0).isHydro()) {
+                //    isHydro = true;
+                //}
+                boolean isInspected = false;
+                RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(assetList.get(position).getID());
+                if (null != routeInspRecord) {
+                    isInspected=true;
                 }
-                if (!fireBugEquipment.isRouteUnitInspected() || isHydro) {
+                if (!isInspected || isHydro) {
                     RouteAssetInspectionActivity.routeAsset = null;
                     RouteAssetInspectionActivity.routeAsset = assetList.get(position);
                     Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);
@@ -337,10 +343,15 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                 boolean isHydro = false;
                 FireBugEquipment fireBugEquipment = DataManager.getInstance().getEquipmentByID(assetList.get(pos).getEquipmentID());
                 routeInspections = DataManager.getInstance().getAllRouteInspectionTypes(assetList.get(pos).getRouteID());
-                if (null != routeInspections && routeInspections.get(0).isHydro()) {
-                    isHydro = true;
+                // if (null != routeInspections && routeInspections.get(0).isHydro()) {
+                //      isHydro = true;
+                //  }
+                boolean isInspected = false;
+                RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(assetList.get(pos).getID());
+                if (null != routeInspRecord) {
+                    isInspected=true;
                 }
-                if (!fireBugEquipment.isRouteUnitInspected() || isHydro) {
+                if (!isInspected || isHydro) {
                     RouteAssetInspectionActivity.routeAsset = null;
                     RouteAssetInspectionActivity.routeAsset = assetList.get(pos);
                     Intent in = new Intent(RouteAssetActivity.this, RouteAssetInspectionActivity.class);

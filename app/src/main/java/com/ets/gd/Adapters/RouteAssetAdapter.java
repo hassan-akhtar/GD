@@ -9,7 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.ets.gd.DataManager.DataManager;
+import com.ets.gd.Models.RouteInspRecord;
 import com.ets.gd.NetworkLayer.ResponseDTOs.FireBugEquipment;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.R;
 
 import java.util.ArrayList;
@@ -18,12 +21,14 @@ import java.util.List;
 public class RouteAssetAdapter extends RecyclerView.Adapter<RouteAssetAdapter.MyViewHolder> {
 
     private List<FireBugEquipment> assetList = new ArrayList<FireBugEquipment>();
+    List<RouteAsset> routeAssetList = new ArrayList<>();
     String type = "";
     TextDrawable drawable;
     Context mContext;
     MyViewHolder myViewHolder;
 
-    public RouteAssetAdapter(Context context, List<FireBugEquipment> assetList) {
+    public RouteAssetAdapter(Context context, List<FireBugEquipment> assetList,  List<RouteAsset> routeAssetList) {
+        this.routeAssetList=routeAssetList;
         this.assetList = assetList;
         this.mContext = context;
     }
@@ -42,24 +47,21 @@ public class RouteAssetAdapter extends RecyclerView.Adapter<RouteAssetAdapter.My
         if ("".equals(type)) {
             FireBugEquipment asset = assetList.get(position);
 
-            holder.tvTag.setText("Tag: " + asset.getCode());
+            holder.tvName.setText("" + asset.getCode());
             if (null != asset.getLocation()) {
                 holder.tvLocation.setText("Location: " + asset.getLocation().getCode());
             }
 
-            if (asset.isRouteUnitInspected()) {
+            RouteInspRecord routeInspRecord = DataManager.getInstance().getRouteInspRecord(routeAssetList.get(position).getID());
+            if (null!=routeInspRecord) {
                 holder.ivInspected.setVisibility(View.VISIBLE);
             }
 
 
-            if (null != asset.getManufacturers() && null != asset.getModel()) {
-                holder.tvName.setText(asset.getManufacturers().getCode() + ", " + asset.getModel().getCode());
-            } else if (null == asset.getManufacturers() && null != asset.getModel()) {
-                holder.tvName.setText(asset.getModel().getCode());
-            } else if (null != asset.getManufacturers() && null == asset.getModel()) {
-                holder.tvName.setText(asset.getManufacturers().getCode());
-            } else {
-                holder.tvName.setText("N/A");
+            if (null != asset.getManufacturers() ) {
+                holder.tvTag.setText("Mfg: " + asset.getModel().getCode());
+            }  else {
+                holder.tvName.setText("Mfg: " +"N/A");
             }
             holder.ivSelectableImage.setVisibility(View.GONE);
         }
