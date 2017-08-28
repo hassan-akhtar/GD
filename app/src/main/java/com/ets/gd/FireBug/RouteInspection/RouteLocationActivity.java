@@ -27,6 +27,7 @@ import com.ets.gd.FireBug.Scan.CommonFirebugScanActivity;
 import com.ets.gd.Fragments.FragmentDrawer;
 import com.ets.gd.Interfaces.BarcodeScan;
 import com.ets.gd.Interfaces.RouteCompleted;
+import com.ets.gd.Interfaces.RouteLocationInspectionComplete;
 import com.ets.gd.Models.Barcode;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Locations;
@@ -40,16 +41,16 @@ import com.squareup.okhttp.Route;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RouteLocationActivity extends AppCompatActivity implements BarcodeScan {
+public class RouteLocationActivity extends AppCompatActivity implements BarcodeScan, RouteLocationInspectionComplete {
 
 
     TextView tbTitleTop, tbTitleBottom, tvCompanyName, tvRouteType, tvDesc, tvRouteName, tvLocCount;
     ImageView ivBack, ivTick;
     String compName, taskType;
     Button btnSearchLoc;
-    public static Routes route;
+    Routes route;
     RecyclerView rvRouteInspection;
-    int cusID;
+    int cusID, routeID;
     private static final int CAMERA_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
     RouteInspLocAdapter routeInspLocAdapter;
@@ -81,7 +82,8 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
         tbTitleBottom.setText("Route Inspection");
         compName = getIntent().getStringExtra("compName");
         cusID = getIntent().getIntExtra("cusID", 0);
-
+        routeID= getIntent().getIntExtra("routeID", 0);
+        route =  DataManager.getInstance().getRouteByID(routeID);
         for (int i=0;i<route.getRouteLocations().size() ;i++){
             if (null!=route.getRouteLocations().get(i).getRouteAssets()) {
                 if(0!=route.getRouteLocations().get(i).getRouteAssets().size()){
@@ -100,12 +102,14 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
     }
 
     private void initObj() {
+
         sharedPreferencesManager = new SharedPreferencesManager(RouteLocationActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteLocationActivity.this);
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
         rvRouteInspection.setAdapter(routeInspLocAdapter);
         routeInspLocAdapter.notifyDataSetChanged();
+        RouteAssetInspectionActivity.routeLocationInspectionComplete=this;
     }
 
     private void initListeners() {
@@ -115,22 +119,8 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
         rvRouteInspection.addOnItemTouchListener(new FragmentDrawer.RecyclerTouchListener(RouteLocationActivity.this, rvRouteInspection, new FragmentDrawer.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (!tvRouteType.getText().toString().equals("Structured")) {
-                    if (0 != locationList.get(position).getRouteAssets().size()) {
-                        RouteAssetActivity.routeLocation = null;
-                        RouteAssetActivity.routeLocation = locationList.get(position);
-                        Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
-                        in.putExtra("compName", tvCompanyName.getText().toString());
-                        in.putExtra("locCount", "" + locationList.size());
-                        in.putExtra("cusID", cusID);
-                        in.putExtra("routeName", tvRouteName.getText().toString());
-                        startActivity(in);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
-                    }
-
-                } else {
-                    if (checkRouteTypeValidation(position)) {
+                if (1!=locationList.get(position).getIsCompleted()) {
+                    if (!tvRouteType.getText().toString().equals("Structured")) {
                         if (0 != locationList.get(position).getRouteAssets().size()) {
                             RouteAssetActivity.routeLocation = null;
                             RouteAssetActivity.routeLocation = locationList.get(position);
@@ -143,9 +133,27 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
                         } else {
                             Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
                         }
+
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please Inspect previous Location(s) first!", Toast.LENGTH_LONG).show();
+                        if (checkRouteTypeValidation(position)) {
+                            if (0 != locationList.get(position).getRouteAssets().size()) {
+                                RouteAssetActivity.routeLocation = null;
+                                RouteAssetActivity.routeLocation = locationList.get(position);
+                                Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
+                                in.putExtra("compName", tvCompanyName.getText().toString());
+                                in.putExtra("locCount", "" + locationList.size());
+                                in.putExtra("cusID", cusID);
+                                in.putExtra("routeName", tvRouteName.getText().toString());
+                                startActivity(in);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please Inspect previous Location(s) first!", Toast.LENGTH_LONG).show();
+                        }
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Location Already Inspected!", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -350,22 +358,8 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
 
             if (isFound) {
 
-                if (!tvRouteType.getText().toString().equals("Structured")) {
-                    if (0 != locationList.get(pos).getRouteAssets().size()) {
-                        RouteAssetActivity.routeLocation = null;
-                        RouteAssetActivity.routeLocation = locationList.get(pos);
-                        Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
-                        in.putExtra("compName", tvCompanyName.getText().toString());
-                        in.putExtra("locCount", "" + locationList.size());
-                        in.putExtra("cusID", cusID);
-                        in.putExtra("routeName", tvRouteName.getText().toString());
-                        startActivity(in);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-
-                    if (checkRouteTypeValidation(pos)) {
+                if (1!=locationList.get(pos).getIsCompleted()) {
+                    if (!tvRouteType.getText().toString().equals("Structured")) {
                         if (0 != locationList.get(pos).getRouteAssets().size()) {
                             RouteAssetActivity.routeLocation = null;
                             RouteAssetActivity.routeLocation = locationList.get(pos);
@@ -379,8 +373,26 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
                             Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
                         }
                     } else {
-                        Toast.makeText(getApplicationContext(), "Please Inspect previous Location(s) first!", Toast.LENGTH_LONG).show();
+
+                        if (checkRouteTypeValidation(pos)) {
+                            if (0 != locationList.get(pos).getRouteAssets().size()) {
+                                RouteAssetActivity.routeLocation = null;
+                                RouteAssetActivity.routeLocation = locationList.get(pos);
+                                Intent in = new Intent(RouteLocationActivity.this, RouteAssetActivity.class);
+                                in.putExtra("compName", tvCompanyName.getText().toString());
+                                in.putExtra("locCount", "" + locationList.size());
+                                in.putExtra("cusID", cusID);
+                                in.putExtra("routeName", tvRouteName.getText().toString());
+                                startActivity(in);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "No Route Location Assets(s) Found.", Toast.LENGTH_LONG).show();
+                            }
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Please Inspect previous Location(s) first!", Toast.LENGTH_LONG).show();
+                        }
                     }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Location Already Inspected!", Toast.LENGTH_LONG).show();
                 }
             } else {
                 showToast("Location not Found In this Route!");
@@ -392,5 +404,29 @@ public class RouteLocationActivity extends AppCompatActivity implements BarcodeS
 
     void showToast(String msg) {
         Toast.makeText(RouteLocationActivity.this, msg, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void RouteLocationInspComplete(int routeLocID) {
+
+        DataManager.getInstance().updateRouteLocationStatus(routeLocID);
+        route = DataManager.getInstance().getRouteByID(routeID);
+
+        if (null!=route) {
+            locationList.clear();
+            for (int i=0;i<route.getRouteLocations().size() ;i++){
+                if (null!=route.getRouteLocations().get(i).getRouteAssets()) {
+                    if(0!=route.getRouteLocations().get(i).getRouteAssets().size()){
+                        locationList.add(route.getRouteLocations().get(i));
+                    }
+                }
+            }
+            routeInspLocAdapter = new RouteInspLocAdapter(RouteLocationActivity.this, locationList);
+            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(RouteLocationActivity.this);
+            rvRouteInspection.setLayoutManager(mLayoutManager);
+            rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
+            rvRouteInspection.setAdapter(routeInspLocAdapter);
+            routeInspLocAdapter.notifyDataSetChanged();
+        }
     }
 }

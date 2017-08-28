@@ -85,11 +85,10 @@ public class RouteInspectionActivity extends AppCompatActivity implements RouteC
                 }
                 if (0 != locationList.size()) {
                     setRouteCompleteInterface();
-                    RouteLocationActivity.route = null;
-                    RouteLocationActivity.route = routesList.get(position);
                     Intent in = new Intent(RouteInspectionActivity.this, RouteLocationActivity.class);
                     in.putExtra("compName", tvCompanyName.getText().toString());
                     in.putExtra("cusID", routesList.get(position).getCustomerID());
+                    in.putExtra("routeID", routesList.get(position).getID());
                     startActivity(in);
                 } else {
                     Toast.makeText(getApplicationContext(), "No Route Location(s) Found.", Toast.LENGTH_LONG).show();

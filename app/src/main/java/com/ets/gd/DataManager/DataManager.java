@@ -48,6 +48,7 @@ import com.ets.gd.NetworkLayer.ResponseDTOs.PermissionType;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Rating;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Routes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Site;
 import com.ets.gd.NetworkLayer.ResponseDTOs.SortOrderFireBug;
@@ -1191,6 +1192,11 @@ public class DataManager {
         return realm.where(Routes.class).equalTo("Code", code).findFirst();
     }
 
+
+    public Routes getRouteByID(int ID) {
+        return realm.where(Routes.class).equalTo("ID", ID).findFirst();
+    }
+
     public void updateEquipmentLocationInfo(String code, String locationType, String location, int ID) {
 
         realm.beginTransaction();
@@ -1213,6 +1219,18 @@ public class DataManager {
             }
 
             eq.setEquipmentLocationInfo(equipmentLocationInfo);
+        }
+        realm.commitTransaction();
+
+
+    }
+
+    public void updateRouteLocationStatus(int routeLocID) {
+
+        realm.beginTransaction();
+        RouteLocation routeLocation = realm.where(RouteLocation.class).equalTo("ID", routeLocID).findFirst();
+        if (null != routeLocation) {
+            routeLocation.setIsCompleted(1);
         }
         realm.commitTransaction();
 

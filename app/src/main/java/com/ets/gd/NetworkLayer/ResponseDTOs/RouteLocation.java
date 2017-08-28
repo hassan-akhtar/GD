@@ -16,11 +16,20 @@ public class RouteLocation extends RealmObject implements Serializable {
     private int RouteID;
     private int LocationID;
     private int SiteID;
+    private int isCompleted;
     private int BuildingID;
     private RealmList<RouteAsset> RouteAssets;
 
     public RouteLocation() {
 
+    }
+
+    public int getIsCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(int isCompleted) {
+        this.isCompleted = isCompleted;
     }
 
     public int getID() {

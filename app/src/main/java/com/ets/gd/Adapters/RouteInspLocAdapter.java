@@ -46,7 +46,9 @@ public class RouteInspLocAdapter extends RecyclerView.Adapter<RouteInspLocAdapte
         holder.tvNumber.setText("" + pos);
         holder.tvLocCount.setText("" + locList.get(position).getRouteAssets().size());
         holder.tvPlace.setText(DataManager.getInstance().getLocationByID(locList.get(position).getLocationID()).getSite().getCode());
-
+        if (1 == locList.get(position).getIsCompleted()) {
+            holder.ivTick.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -56,7 +58,7 @@ public class RouteInspLocAdapter extends RecyclerView.Adapter<RouteInspLocAdapte
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tvNumber, tvName, tvDesc, tvPlace, tvLocCount;
+        private TextView tvNumber, tvName, tvDesc, tvPlace, tvLocCount,ivTick;
         private ImageView ivCount;
 
         public MyViewHolder(View view) {
@@ -67,6 +69,7 @@ public class RouteInspLocAdapter extends RecyclerView.Adapter<RouteInspLocAdapte
             tvPlace = (TextView) view.findViewById(R.id.tvPlace);
             tvLocCount = (TextView) view.findViewById(R.id.tvLocCount);
             ivCount = (ImageView) view.findViewById(R.id.ivCount);
+            ivTick = (TextView) view.findViewById(R.id.ivTick);
         }
     }
 }

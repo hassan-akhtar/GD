@@ -30,12 +30,14 @@ import com.ets.gd.Adapters.CheckBoxGroupView;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.FireBug.UnitInspection.ReplaceAssetActivity;
 import com.ets.gd.Interfaces.AssetReplaced;
+import com.ets.gd.Interfaces.RouteLocationInspectionComplete;
 import com.ets.gd.Models.Replace;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.ResponseDTOs.DeviceTypeStatusCodes;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteAsset;
 import com.ets.gd.NetworkLayer.ResponseDTOs.RouteInspection;
+import com.ets.gd.NetworkLayer.ResponseDTOs.RouteLocation;
 import com.ets.gd.NetworkLayer.ResponseDTOs.StatusCode;
 import com.ets.gd.R;
 import com.ets.gd.Utils.SharedPreferencesManager;
@@ -66,10 +68,16 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     boolean isFail = false;
     SharedPreferencesManager sharedPreferencesManager;
     public static RouteAsset routeAsset;
+    public static RouteLocation routeLocation;
     String[] routeInspectionTypes;
     List<RouteInspection> routeInspections;
+    List<Integer> locRouteAssetIDs =  new ArrayList<>();
+    List<Integer> insptRouteAssetIDs =  new ArrayList<>();
     boolean isHydro = false;
     int cusID;
+    List<UnitinspectionResult> lstInspectionResult;
+    boolean isLocationInspectionComplete = true;
+    public static RouteLocationInspectionComplete routeLocationInspectionComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -176,6 +184,8 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         spInspectionResult.setAdapter(dataAdapterInspectionResult);
 
         setupStatusCodes();
+
+
 
     }
 
@@ -307,6 +317,35 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                             }
                             DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                             showToast("Inspection completed Successfully");
+
+                            lstInspectionResult = DataManager.getInstance().getAllUnitInspectedAssets();
+
+                            for(int k=0;k<routeLocation.getRouteAssets().size();k++){
+                                if (0!=routeLocation.getRouteAssets().get(k).getID()) {
+                                    locRouteAssetIDs.add(routeLocation.getRouteAssets().get(k).getID());
+                                }
+                            }
+
+                            for(int k=0;k<lstInspectionResult.size();k++){
+                                if (0!=lstInspectionResult.get(k).getRouteAssetID()) {
+                                    insptRouteAssetIDs.add(lstInspectionResult.get(k).getRouteAssetID());
+                                }
+                            }
+
+                            try {
+                                for(int k=0;k<locRouteAssetIDs.size();k++){
+                                    if (!insptRouteAssetIDs.contains(locRouteAssetIDs.get(k))) {
+                                        isLocationInspectionComplete =false;
+                                        break;
+                                    }
+                                }
+
+                                if (isLocationInspectionComplete){
+                                    routeLocationInspectionComplete.RouteLocationInspComplete(routeAsset.getRouteLocationID());
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             finish();
                         }
                     }
@@ -432,6 +471,34 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         }
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
+        lstInspectionResult = DataManager.getInstance().getAllUnitInspectedAssets();
+
+        for(int k=0;k<routeLocation.getRouteAssets().size();k++){
+            if (0!=routeLocation.getRouteAssets().get(k).getID()) {
+                locRouteAssetIDs.add(routeLocation.getRouteAssets().get(k).getID());
+            }
+        }
+
+        for(int k=0;k<lstInspectionResult.size();k++){
+            if (0!=lstInspectionResult.get(k).getRouteAssetID()) {
+                insptRouteAssetIDs.add(lstInspectionResult.get(k).getRouteAssetID());
+            }
+        }
+
+        try {
+            for(int k=0;k<locRouteAssetIDs.size();k++){
+                if (!insptRouteAssetIDs.contains(locRouteAssetIDs.get(k))) {
+                    isLocationInspectionComplete =false;
+                    break;
+                }
+            }
+
+            if (isLocationInspectionComplete){
+                routeLocationInspectionComplete.RouteLocationInspComplete(routeAsset.getRouteLocationID());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         finish();
     }
 

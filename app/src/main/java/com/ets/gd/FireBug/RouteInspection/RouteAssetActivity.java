@@ -119,7 +119,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
         rvRouteInspection.setLayoutManager(mLayoutManager);
         rvRouteInspection.setItemAnimator(new DefaultItemAnimator());
         rvRouteInspection.setAdapter(routeAssetAdapter);
-
+        RouteAssetInspectionActivity.routeLocation =routeLocation;
     }
 
     private void initListeners() {
