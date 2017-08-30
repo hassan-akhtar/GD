@@ -31,6 +31,7 @@ public class FireBugEquipment  extends RealmObject {
     private Model Model;
     private int TotalDocuments;
     private int TotalNotes;
+    private boolean isScanned;
     private RealmList<Images> Images;
     private RealmList<MyInspectionDates> InspectionDates;
     private RealmList<InspectionResult> InspectionResults;
@@ -70,6 +71,14 @@ public class FireBugEquipment  extends RealmObject {
 
     public com.ets.gd.NetworkLayer.ResponseDTOs.Manufacturer getManufacturer() {
         return Manufacturer;
+    }
+
+    public boolean isScanned() {
+        return isScanned;
+    }
+
+    public void setScanned(boolean scanned) {
+        isScanned = scanned;
     }
 
     public boolean isMoved() {

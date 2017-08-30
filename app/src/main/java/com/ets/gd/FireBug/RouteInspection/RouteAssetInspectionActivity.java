@@ -58,6 +58,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
     String compName, tag, loc, desp, deviceType, location, assetCount, locCount, routeName;
+    boolean isScanned;
     LinearLayout rlBottomsheet;
     TextView etStatusCode;
     RelativeLayout rlCodes;
@@ -134,6 +135,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         loc = getIntent().getStringExtra("loc");
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
+        isScanned = getIntent().getBooleanExtra("isScanned",false);
         deviceTypeID = getIntent().getIntExtra("deviceTypeID", 0);
         RouteID = getIntent().getIntExtra("RouteID", 0);
         deviceType = getIntent().getStringExtra("deviceType");
@@ -288,6 +290,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
                             sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
                             String timeStamp = sdf.format(new Date()).toString();
                             inspectionResult.setInspectionDate(timeStamp);
+                            inspectionResult.setScanned(isScanned);
                             inspectionResult.setUserId(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                             boolean result = false;
                             if (spInspectionResult.getItemAtPosition(posInspectionResult).toString().toLowerCase().startsWith("p")) {
@@ -466,6 +469,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         inspectionResult.setNewLocationID(newLocID);
         inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
+        inspectionResult.setScanned(isScanned);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
         RouteAsset rouAsset = DataManager.getInstance().getRouteAsset(routeAsset.getID(),routeAsset.getEquipmentID(), RouteID, spInspType.getItemAtPosition(posInspType).toString());
         if (null != rouAsset) {

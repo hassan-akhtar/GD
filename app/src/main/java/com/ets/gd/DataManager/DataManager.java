@@ -397,6 +397,18 @@ public class DataManager {
     }
 
 
+    public void updateFbScanStatus(final FireBugEquipment eq) {
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                FireBugEquipment fireBugEquipment = realm.where(FireBugEquipment.class).equalTo("Code", eq.getCode(), Case.INSENSITIVE).findFirst();
+                fireBugEquipment.setScanned(true);
+            }
+        });
+
+    }
+
     public void addAssetInspecDatesForAgentType(final FireBugEquipment fireBugEquipment, final String mfgDate) {
 
         realm.executeTransaction(new Realm.Transaction() {
@@ -1292,6 +1304,7 @@ public class DataManager {
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
                 unitinspectionResult.setResult(inspectionResult.isResult());
+                unitinspectionResult.setScanned(inspectionResult.isScanned());
                 unitinspectionResult.setRouteAssetID(inspectionResult.getRouteAssetID());
                 unitinspectionResult.setRouteID(inspectionResult.getRouteID());
                 unitinspectionResult.setNewLocationID(inspectionResult.getNewLocationID());

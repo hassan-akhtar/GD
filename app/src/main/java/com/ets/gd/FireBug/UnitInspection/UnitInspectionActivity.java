@@ -59,7 +59,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     List<DeviceTypeStatusCodes> deviceTypeStatusCodes;
     List<String> statusCodesDescList = new ArrayList<String>();
     CheckBoxGroupView cbGroup;
-    boolean isFail = false;
+    boolean isFail = false, isScanned;
     SharedPreferencesManager sharedPreferencesManager;
 
     @Override
@@ -110,6 +110,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 new IntentFilter("move-complete"));
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
+        isScanned = getIntent().getBooleanExtra("isScanned",false);
         loc = getIntent().getStringExtra("loc");
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
@@ -213,7 +214,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                             }
                         }
                         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-
+                        inspectionResult.setScanned(isScanned);
                         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
                         showToast("Inspection completed Successfully");
                         sendMessage("finish");
@@ -325,7 +326,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         inspectionResult.setNewEquipmentID(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
-
+        inspectionResult.setScanned(isScanned);
         DataManager.getInstance().saveUnitInspectionResults(inspectionResult);
         showToast("Inspection completed Successfully");
         sendMessage("finish");

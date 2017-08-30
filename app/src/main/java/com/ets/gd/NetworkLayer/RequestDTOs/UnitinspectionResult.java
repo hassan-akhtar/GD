@@ -18,6 +18,7 @@ public class UnitinspectionResult extends RealmObject {
     private int NewEquipmentID;
     private String ReplaceType;
     private int routeAssetID;
+    private boolean isScanned;
     private boolean isCompleted;
     private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
@@ -33,6 +34,14 @@ public class UnitinspectionResult extends RealmObject {
     }
 
     public UnitinspectionResult() {
+    }
+
+    public boolean isScanned() {
+        return isScanned;
+    }
+
+    public void setScanned(boolean scanned) {
+        isScanned = scanned;
     }
 
     public boolean isCompleted() {

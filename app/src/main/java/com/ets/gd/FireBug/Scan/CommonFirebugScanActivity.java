@@ -389,6 +389,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                     if (null != assetList.get(0).getLocation()) {
                         in.putExtra("loc", "" + assetList.get(0).getLocation().getID());
                         in.putExtra("location", "" + assetList.get(0).getLocation().getCode());
+                        in.putExtra("isScanned",assetList.get(0).isScanned());
                         in.putExtra("desp", "" + assetList.get(0).getManufacturer().getCode());
                         int DeviceTypeID = 0;
                         if (0 != assetList.get(0).getDeviceType().getDeviceTypeStatusCodes().size()) {
@@ -710,7 +711,7 @@ public class CommonFirebugScanActivity extends AppCompatActivity implements Barc
                         etBarcode.setText("");
                         hideKeyboard();
                         rlBottomSheetUnitInsp.setVisibility(View.VISIBLE);
-
+                        DataManager.getInstance().updateFbScanStatus(fireBugEquipment);
                         sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET_LOC,fireBugEquipment.getLocation().getCode());
                         sharedPreferencesManager.setString(SharedPreferencesManager.CURRENT_INSPECTION_ASSET,fireBugEquipment.getCode());
                         assetList.add(fireBugEquipment);

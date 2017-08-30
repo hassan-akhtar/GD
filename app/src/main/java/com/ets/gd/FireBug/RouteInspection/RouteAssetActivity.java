@@ -382,6 +382,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                         in.putExtra("compName", tvCompanyName.getText().toString());
                         in.putExtra("tag", "" + equipmentList.get(pos).getCode());
                         in.putExtra("loc", tvLocName.getText().toString());
+                        in.putExtra("isScanned", true);
                         in.putExtra("routeName", tvRouteName.getText().toString());
                         in.putExtra("deviceTypeID", assetList.get(pos).getDeviceTypeID());
                         in.putExtra("deviceType", equipmentList.get(pos).getModel().getCode());
