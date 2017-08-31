@@ -481,6 +481,7 @@ public class RouteAssetActivity extends AppCompatActivity implements BarcodeScan
                         in.putExtra("deviceTypeID", routeAsset.getDeviceTypeID());
                         in.putExtra("deviceType", equipment.getModel().getCode());
                         in.putExtra("cusID", cusID);
+                        in.putExtra("isScanned", true);
                         in.putExtra("equipmentID", equipment.getID());
                         in.putExtra("desp", equipment.getManufacturer().getCode());
                         in.putExtra("RouteID", routeAsset.getRouteID());
