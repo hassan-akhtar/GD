@@ -6,7 +6,7 @@ import io.realm.RealmList;
 
 public class SyncGetResponseDTO extends ResponseDTO {
 
-
+    private String Version;
     RealmList<AllCustomers> lstCustomers;
     RealmList<SyncCustomer> lstCustomerData;
     RealmList<DeviceType> lstDeviceType;
@@ -38,6 +38,14 @@ public class SyncGetResponseDTO extends ResponseDTO {
 
     public void setLstFbEquipmentNotes(RealmList<EquipmentNote> lstFbEquipmentNotes) {
         this.lstFbEquipmentNotes = lstFbEquipmentNotes;
+    }
+
+    public String getVersion() {
+        return Version;
+    }
+
+    public void setVersion(String version) {
+        Version = version;
     }
 
     public RealmList<Condition> getLstTHConditions() {

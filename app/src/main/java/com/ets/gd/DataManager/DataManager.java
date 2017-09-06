@@ -1114,6 +1114,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstTHConditions(obj.getLstTHConditions());
                 realmSyncGetResponseDTO.setLstRatings(obj.getLstRatings());
                 realmSyncGetResponseDTO.setLstCustomers(obj.getLstCustomers());
+                realmSyncGetResponseDTO.setVersion(obj.getVersion());
                 realmSyncGetResponseDTO.setLstDeviceType(obj.getLstDeviceType());
                 realmSyncGetResponseDTO.setLstManufacturers(obj.getLstManufacturers());
                 realmSyncGetResponseDTO.setLstModels(obj.getLstModels());

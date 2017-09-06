@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText etUsername, etPassword;
     private Button btnLogin;
+    private TextView tvVersion;
     private CommonActions ca;
     ImageView imgLogo;
     ToggleButton tbSync;
@@ -64,12 +66,20 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = (EditText) findViewById(R.id.etPassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         imgLogo = (ImageView) findViewById(R.id.imageView5);
+        tvVersion = (TextView) findViewById(R.id.tvVersion);
         tbSync = (ToggleButton) findViewById(R.id.tbSync);
         etUsername.requestFocus();
 
         if (android.os.Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             etPassword.setBackgroundColor(Color.parseColor("#ffffff"));
             etUsername.setBackgroundColor(Color.parseColor("#ffffff"));
+        }
+
+        if(null!=DataManager.getInstance().getSyncGetResponse() && null!=DataManager.getInstance().getSyncGetResponse().getVersion()){
+            tvVersion.setVisibility(View.VISIBLE);
+            tvVersion.setText(""+DataManager.getInstance().getSyncGetResponse().getVersion());
+        }else {
+            tvVersion.setVisibility(View.GONE);
         }
     }
 

@@ -12,6 +12,7 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     @PrimaryKey
     int ID;
+    private String Version;
     RealmList<AllCustomers> lstCustomers;
     RealmList<SyncCustomer> lstCustomerData;
     RealmList<DeviceType> lstDeviceType;
@@ -47,6 +48,14 @@ public class RealmSyncGetResponseDTO extends RealmObject {
 
     public RealmList<Condition> getLstTHConditions() {
         return lstTHConditions;
+    }
+
+    public String getVersion() {
+        return Version;
+    }
+
+    public void setVersion(String version) {
+        Version = version;
     }
 
     public void setLstTHConditions(RealmList<Condition> lstTHConditions) {
