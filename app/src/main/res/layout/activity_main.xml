@@ -121,6 +121,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
         android:text="Version: "
+        android:textSize="12dp"
         android:contentDescription="@string/ets_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
