@@ -22,6 +22,7 @@
     <string name="txt_login">Login</string>
     <string name="msg_login_failed">User is Blocked/Unauthorized</string>
     <string name="txt_close">CLOSE</string>
+    <string name="txt_checklist">&lt;u>VIEW CHECKLIST&lt;/u></string>
     <string name="font_fontFamily_medium">sans-serif-medium</string>
     <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">

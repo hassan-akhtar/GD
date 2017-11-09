@@ -2,6 +2,7 @@ package com.ets.gd.DataManager;
 
 import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.Models.Asset;
+import com.ets.gd.Models.ChecklistModel;
 import com.ets.gd.Models.InspectionDates;
 import com.ets.gd.Models.Location;
 import com.ets.gd.Models.RealmSyncGetResponseDTO;
@@ -1122,6 +1123,7 @@ public class DataManager {
                 realmSyncGetResponseDTO.setLstFireBugBuilding(obj.getLstFireBugBuilding());
                 realmSyncGetResponseDTO.setLstJobNumber(obj.getLstJobNumber());
                 realmSyncGetResponseDTO.setLstVendorCodes(obj.getLstVendorCodes());
+                realmSyncGetResponseDTO.setLstInspectionCheckList(obj.getLstInspectionCheckList());
                 realmSyncGetResponseDTO.setLstMaintenanceAction(obj.getLstMaintenanceAction());
                 realmSyncGetResponseDTO.setLstAgentTypes(obj.getLstAgentTypes());
                 realmSyncGetResponseDTO.setLstDevices(obj.getLstDevices());
@@ -1280,6 +1282,10 @@ public class DataManager {
         return realm.where(RouteAsset.class).equalTo("ID", ID).equalTo("EquipmentID", eqID).equalTo("RouteID", routeID).equalTo("InspectionType", inspType).findFirst();
     }
 
+
+    public ChecklistModel getAssetChecklist(int ID, String inspType) {
+        return realm.where(ChecklistModel.class).equalTo("DeviceTypeID", ID).equalTo("Code", inspType).findFirst();
+    }
 
     public List<RouteAsset> getAllLocationRouteAssets(int locID, int RouteID) {
         return realm.where(RouteAsset.class).equalTo("RouteID", RouteID).equalTo("LocationID", locID).findAll();

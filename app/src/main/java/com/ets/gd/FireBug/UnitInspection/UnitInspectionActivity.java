@@ -2,6 +2,7 @@ package com.ets.gd.FireBug.UnitInspection;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
@@ -9,8 +10,10 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,6 +32,7 @@ import android.widget.Toast;
 import com.ets.gd.Adapters.CheckBoxGroupView;
 import com.ets.gd.DataManager.DataManager;
 import com.ets.gd.Interfaces.AssetReplaced;
+import com.ets.gd.Models.ChecklistModel;
 import com.ets.gd.Models.Replace;
 import com.ets.gd.NetworkLayer.RequestDTOs.UnitinspectionResult;
 import com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes;
@@ -48,7 +52,7 @@ import io.realm.RealmList;
 
 public class UnitInspectionActivity extends AppCompatActivity implements Spinner.OnItemSelectedListener, CheckBox.OnCheckedChangeListener, AssetReplaced {
 
-    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo;
+    TextView tbTitleTop, tbTitleBottom, tvCompanyValue, tvSave, tvReplace, tvCancel, tvAssetName, tvAssetOtherInfo, tvCheckList;
     ImageView ivBack, ivTick, ivChangeCompany;
     Spinner spInspType, spInspectionResult;
     String compName, tag, loc, desp, deviceType, location;
@@ -60,6 +64,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
     List<String> statusCodesDescList = new ArrayList<String>();
     CheckBoxGroupView cbGroup;
     boolean isFail = false, isScanned;
+    String strChecklist;
     SharedPreferencesManager sharedPreferencesManager;
 
     @Override
@@ -69,10 +74,15 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         initViews();
         initObj();
         initListeners();
+
     }
 
 
     private void initViews() {
+
+        tvCheckList = (TextView) findViewById(R.id.tvCheckList);
+        tvCheckList.setText(Html.fromHtml(getString(R.string.txt_checklist)));
+        tvCheckList.setVisibility(View.GONE);
         cbGroup = (CheckBoxGroupView) findViewById(R.id.cbGroup);
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivTick = (ImageView) findViewById(R.id.ivTick);
@@ -110,7 +120,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 new IntentFilter("move-complete"));
         compName = getIntent().getStringExtra("compName");
         tag = getIntent().getStringExtra("tag");
-        isScanned = getIntent().getBooleanExtra("isScanned",false);
+        isScanned = getIntent().getBooleanExtra("isScanned", false);
         loc = getIntent().getStringExtra("loc");
         location = getIntent().getStringExtra("location");
         desp = getIntent().getStringExtra("desp");
@@ -167,6 +177,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         tvReplace.setOnClickListener(mGlobal_OnClickListener);
         tvCancel.setOnClickListener(mGlobal_OnClickListener);
         etStatusCode.setOnClickListener(mGlobal_OnClickListener);
+        tvCheckList.setOnClickListener(mGlobal_OnClickListener);
         spInspType.setOnItemSelectedListener(this);
         spInspectionResult.setOnItemSelectedListener(this);
     }
@@ -178,6 +189,12 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     finish();
                     break;
                 }
+
+                case R.id.tvCheckList: {
+                    showCheckList();
+                    break;
+                }
+
 
                 case R.id.tvTransfer: {
                     if (checkValidation(isFail)) {
@@ -252,6 +269,37 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
 
     };
+
+    private void showCheckList() {
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(UnitInspectionActivity.this);
+        builder1.setTitle("Checklist");
+        builder1.setMessage("" + strChecklist);
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
+    private String getCheckList( String inspType) {
+        ChecklistModel checklistModel = DataManager.getInstance().getAssetChecklist(deviceTypeID, inspType);
+
+        if (null != checklistModel) {
+            return checklistModel.getCheckList();
+        } else {
+            return null;
+        }
+
+
+    }
+
 
     private boolean checkValidation(boolean isFail) {
         if (isFail) {
@@ -350,12 +398,21 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                 posInspType = position;
                 String strSelectedState = parent.getItemAtPosition(position).toString();
                 if (0 == position) {
+                    tvCheckList.setVisibility(View.GONE);
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.GRAY);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
+
+                   strChecklist =  getCheckList(strSelectedState.trim());
+
+                    if(null!=strChecklist){
+                        tvCheckList.setVisibility(View.VISIBLE);
+                    }else{
+                        tvCheckList.setVisibility(View.GONE);
+                    }
                     try {
                         ((TextView) parent.getChildAt(0)).setTextColor(Color.DKGRAY);
                     } catch (Exception e) {

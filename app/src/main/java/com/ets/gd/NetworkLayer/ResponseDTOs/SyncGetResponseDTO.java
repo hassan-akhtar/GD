@@ -1,6 +1,8 @@
 package com.ets.gd.NetworkLayer.ResponseDTOs;
 
 
+import com.ets.gd.Models.ChecklistModel;
+
 import io.realm.RealmList;
 
 
@@ -25,8 +27,18 @@ public class SyncGetResponseDTO extends ResponseDTO {
     RealmList<MaintenanceCategory> lstMaintenanceCategory;
     RealmList<Material> lstMaterials;
     RealmList<SortOrderInventory>  InventoryMenuSortOrder;
+    RealmList<ChecklistModel> lstInspectionCheckList;
     RealmList<SortOrderFireBug>  FireBugMenuSortOrder;
     RealmList<SortOrderToolHawk>  ToolHawkMenuSortOrder;
+
+    public RealmList<ChecklistModel> getLstInspectionCheckList() {
+        return lstInspectionCheckList;
+    }
+
+    public void setLstInspectionCheckList(RealmList<ChecklistModel> lstInspectionCheckList) {
+        this.lstInspectionCheckList = lstInspectionCheckList;
+    }
+
     RealmList<FirebugEqSize>  lstSizes;
     RealmList<Condition> lstTHConditions;
      RealmList<Rating> lstRatings;
