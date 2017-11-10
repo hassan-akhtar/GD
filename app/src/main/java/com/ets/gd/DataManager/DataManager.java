@@ -1284,7 +1284,7 @@ public class DataManager {
 
 
     public ChecklistModel getAssetChecklist(int ID, String inspType) {
-        return realm.where(ChecklistModel.class).equalTo("DeviceTypeID", ID).equalTo("Code", inspType).findFirst();
+        return realm.where(ChecklistModel.class).equalTo("DeviceTypeID", ID).equalTo("Code", inspType,Case.INSENSITIVE).findFirst();
     }
 
     public List<RouteAsset> getAllLocationRouteAssets(int locID, int RouteID) {
