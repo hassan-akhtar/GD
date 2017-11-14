@@ -7,19 +7,19 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 
 public class ToolhawkMoveDTO {
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private String MoveType;
-    private int ToEquipmentID;
+    private String ToEquipmentCode;
     private int ToLocationID;
     private String ToLocationCode;
     private int ToJobNumberID;
     private int ConditionID;
     private int UserID;
 
-    public ToolhawkMoveDTO(int equipmentID, String moveType, int toEquipmentID, int toLocationID, int toJobNumberID, int conditionID, int userID) {
-        EquipmentID = equipmentID;
+    public ToolhawkMoveDTO(String equipmentID, String moveType, String toEquipmentID, int toLocationID, int toJobNumberID, int conditionID, int userID) {
+        EquipmentCode = equipmentID;
         MoveType = moveType;
-        ToEquipmentID = toEquipmentID;
+        ToEquipmentCode = toEquipmentID;
         ToLocationID = toLocationID;
         ToJobNumberID = toJobNumberID;
         ConditionID = conditionID;
@@ -39,12 +39,12 @@ public class ToolhawkMoveDTO {
 
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentCode() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public String getMoveType() {
@@ -55,12 +55,12 @@ public class ToolhawkMoveDTO {
         MoveType = moveType;
     }
 
-    public int getToEquipmentID() {
-        return ToEquipmentID;
+    public String getToEquipmentCode() {
+        return ToEquipmentCode;
     }
 
-    public void setToEquipmentID(int toEquipmentID) {
-        ToEquipmentID = toEquipmentID;
+    public void setToEquipmentCode(String toEquipmentCode) {
+        ToEquipmentCode = toEquipmentCode;
     }
 
     public int getToLocationID() {

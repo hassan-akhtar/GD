@@ -120,7 +120,7 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
             public void onClick(View view, int position) {
                 sendMessage(assetList.get(position).getCode() + " " + repairSelection);
                 ReplaceAssetActivity.newLocID = assetList.get(position).getLocation().getID();
-                ReplaceAssetActivity.newEquipID = assetList.get(position).getID();
+                ReplaceAssetActivity.newEquipID = assetList.get(position).getCode();
                 finish();
             }
 
@@ -148,7 +148,7 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
                         if (null != fireBugEquipment) {
                             sendMessage(fireBugEquipment.getCode() + " " + repairSelection);
                             ReplaceAssetActivity.newLocID = fireBugEquipment.getLocation().getID();
-                            ReplaceAssetActivity.newEquipID = fireBugEquipment.getID();
+                            ReplaceAssetActivity.newEquipID = fireBugEquipment.getCode();
                             finish();
                         } else {
                             Toast.makeText(getApplicationContext(), "Asset not found", Toast.LENGTH_LONG).show();
@@ -193,7 +193,7 @@ public class SelectAssetActivity extends AppCompatActivity implements BarcodeSca
                 if (null!=fireBugEquipment.getLocation()) {
                     ReplaceAssetActivity.newLocID = fireBugEquipment.getLocation().getID();
                 }
-                ReplaceAssetActivity.newEquipID = fireBugEquipment.getID();
+                ReplaceAssetActivity.newEquipID = fireBugEquipment.getCode();
                 sendMessage(fireBugEquipment.getCode() + " " + repairSelection);
                 finish();
 

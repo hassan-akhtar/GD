@@ -10,13 +10,13 @@ public class Replace {
     String message;
     String replaceType;
     int newLocID ;
-    int newEqipID;
+    String newEqipCode;
 
-    public Replace(String message, String replaceType, int newLocID, int newEqipID) {
+    public Replace(String message, String replaceType, int newLocID, String newEqipID) {
         this.message = message;
         this.replaceType = replaceType;
         this.newLocID = newLocID;
-        this.newEqipID = newEqipID;
+        this.newEqipCode = newEqipID;
     }
 
     public Replace() {
@@ -46,11 +46,11 @@ public class Replace {
         this.newLocID = newLocID;
     }
 
-    public int getNewEqipID() {
-        return newEqipID;
+    public String getNewEqipCode() {
+        return newEqipCode;
     }
 
-    public void setNewEqipID(int newEqipID) {
-        this.newEqipID = newEqipID;
+    public void setNewEqipCode(String newEqipCode) {
+        this.newEqipCode = newEqipCode;
     }
 }

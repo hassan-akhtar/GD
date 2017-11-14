@@ -1,7 +1,5 @@
 package com.ets.gd.Models;
 
-import com.ets.gd.NetworkLayer.RequestDTOs.InventoryMoveRealm;
-
 import java.util.List;
 
 /**
@@ -11,7 +9,7 @@ import java.util.List;
 
 public class MoveInventoryCall{
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private String MoveType;
     private String IssueType;
     private int UserID;
@@ -29,12 +27,12 @@ public class MoveInventoryCall{
 
     private List<InventoryMoveCall> Materials;
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentCode() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public String getMoveType() {

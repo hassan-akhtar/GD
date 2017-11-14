@@ -1,13 +1,11 @@
 package com.ets.gd.NetworkLayer.RequestDTOs;
 
-import java.util.List;
-
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
 public class UnitinspectionResult extends RealmObject {
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private String InspectionType;
     private String InspectionDate;
     private Boolean isReplaced;
@@ -15,15 +13,15 @@ public class UnitinspectionResult extends RealmObject {
     private int RouteID;
     private boolean  Result;
     private int NewLocationID;
-    private int NewEquipmentID;
+    private String NewEquipmentCode;
     private String ReplaceType;
     private int routeAssetID;
     private boolean isScanned;
     private boolean isCompleted;
     private RealmList<InspectionStatusCodes> InspectionStatusCodes;
 
-    public UnitinspectionResult(int equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
-        EquipmentID = equipmentID;
+    public UnitinspectionResult(String equipmentID, String inspectionType, String inspectionDate, int userId, boolean result, RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes, int NewLocationID, String ReplaceType) {
+        EquipmentCode = equipmentID;
         InspectionType = inspectionType;
         InspectionDate = inspectionDate;
         UserId = userId;
@@ -80,12 +78,12 @@ public class UnitinspectionResult extends RealmObject {
         isReplaced = replaced;
     }
 
-    public int getNewEquipmentID() {
-        return NewEquipmentID;
+    public String getNewEquipmentCode() {
+        return NewEquipmentCode;
     }
 
-    public void setNewEquipmentID(int newEquipmentID) {
-        NewEquipmentID = newEquipmentID;
+    public void setNewEquipmentCode(String newEquipmentCode) {
+        NewEquipmentCode = newEquipmentCode;
     }
 
     public void setInspectionStatusCodes(RealmList<com.ets.gd.NetworkLayer.RequestDTOs.InspectionStatusCodes> inspectionStatusCodes) {
@@ -108,12 +106,12 @@ public class UnitinspectionResult extends RealmObject {
         ReplaceType = replaceType;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentCode() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public String getInspectionType() {

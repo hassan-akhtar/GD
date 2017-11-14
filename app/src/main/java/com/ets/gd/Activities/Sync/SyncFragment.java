@@ -266,7 +266,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         Materials.clear();
         for (int i = 0; i < lstmoveInventoryRealm.size(); i++) {
             MoveInventoryCall moveInventoryCall = new MoveInventoryCall();
-            moveInventoryCall.setEquipmentID(lstmoveInventoryRealm.get(i).getEquipmentID());
+            moveInventoryCall.setEquipmentCode(lstmoveInventoryRealm.get(i).getEquipmentCode());
             moveInventoryCall.setLocationID(lstmoveInventoryRealm.get(i).getLocationID());
             moveInventoryCall.setLocationCode(lstmoveInventoryRealm.get(i).getLocationCode());
             moveInventoryCall.setJobNumberID(lstmoveInventoryRealm.get(i).getJobNumberID());
@@ -301,7 +301,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         Materials.clear();
         for (int i = 0; i < lstIssueInventoryRealm.size(); i++) {
             MoveInventoryCall moveInventoryCall = new MoveInventoryCall();
-            moveInventoryCall.setEquipmentID(lstIssueInventoryRealm.get(i).getEquipmentID());
+            moveInventoryCall.setEquipmentCode(lstIssueInventoryRealm.get(i).getEquipmentCode());
             moveInventoryCall.setJobNumberID(lstIssueInventoryRealm.get(i).getJobNumberID());
             moveInventoryCall.setIssueType(lstIssueInventoryRealm.get(i).getIssueType());
             moveInventoryCall.setUserID(lstIssueInventoryRealm.get(i).getUserID());
@@ -573,7 +573,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     MoveTransfer equipment = new MoveTransfer();
                     equipment.setAction("Move");
                     equipment.setCustomerID(asset.getCustomer().getID());
-                    equipment.setEquipmentID(asset.getID());
+                    equipment.setEquipmentCode(asset.getCode());
                     equipment.setLocationID(asset.getLocation().getID());
                     equipment.setLocationCode(asset.getLocation().getCode());
                     lstMoveEquipment.add(equipment);
@@ -585,7 +585,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
                     MoveTransfer equipment = new MoveTransfer();
                     equipment.setAction("Transfer");
                     equipment.setCustomerID(asset.getCustomer().getID());
-                    equipment.setEquipmentID(asset.getID());
+                    equipment.setEquipmentCode(asset.getCode());
                     equipment.setLocationID(asset.getLocation().getID());
                     equipment.setLocationCode(asset.getLocation().getCode());
                     lstMoveEquipment.add(equipment);
@@ -622,7 +622,7 @@ public class SyncFragment extends Fragment implements MyCallBack {
         for (ToolhawkTransferDTO dto : lstTHTansferDto) {
 
             TransferToolhawk transferToolhawk = new TransferToolhawk();
-            transferToolhawk.setEquipmentID(dto.getEquipmentID());
+            transferToolhawk.setEquipmentCode(dto.getEquipmentCode());
             transferToolhawk.setDepartmentID(dto.getDepartmentID());
             transferToolhawk.setLocationID(dto.getLocationID());
             lstTHTansfer.add(transferToolhawk);
@@ -644,9 +644,9 @@ public class SyncFragment extends Fragment implements MyCallBack {
         for (ToolhawkMove dto : lstTHMoveDto) {
 
             ToolhawkMoveDTO moveDTO = new ToolhawkMoveDTO();
-            moveDTO.setEquipmentID(dto.getEquipmentID());
+            moveDTO.setEquipmentCode(dto.getEquipmentCode());
             moveDTO.setMoveType(dto.getMoveType());
-            moveDTO.setToEquipmentID(dto.getToEquipmentID());
+            moveDTO.setToEquipmentCode(dto.getToEquipmentCode());
             moveDTO.setToLocationID(dto.getToLocationID());
             moveDTO.setToLocationCode(dto.getToLocationCode());
             moveDTO.setToJobNumberID(dto.getToJobNumberID());

@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.Uri;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -20,7 +19,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -51,7 +49,6 @@ import com.ets.gd.ToolHawk.Adapters.ScannedAssetsToolhawkAdapter;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -367,9 +364,9 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                                 }
 
                                 for (int i = 0; i < equipmentList.size(); i++) {
-                                    equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                    equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getCode()));
                                 }
-                                syncPostCheckOutRequestDTO.setEquipmentID(equipmentIDList);
+                                syncPostCheckOutRequestDTO.setEquipmentCodes(equipmentIDList);
                                 syncPostCheckOutRequestDTO.setDueDate("" + etReturnDate.getText().toString().trim());
                                 DataManager.getInstance().saveCheckOutResult(syncPostCheckOutRequestDTO);
                                 showToast("Check Out Complete!");
@@ -392,9 +389,9 @@ public class CheckoutAssetActivity extends AppCompatActivity implements BarcodeS
                             }
 
                             for (int i = 0; i < equipmentList.size(); i++) {
-                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getID()));
+                                equipmentIDList.add(new CheckInOutEquipment(equipmentList.get(i).getCode()));
                             }
-                            syncPostCheckInRequestDTO.setEquipmentID(equipmentIDList);
+                            syncPostCheckInRequestDTO.setEquipmentCodes(equipmentIDList);
                             DataManager.getInstance().saveCheckInResult(syncPostCheckInRequestDTO);
                             showToast("Check In Complete!");
                             sendMessage("finish");

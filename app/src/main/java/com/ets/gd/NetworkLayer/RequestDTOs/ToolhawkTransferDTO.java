@@ -9,25 +9,25 @@ import io.realm.RealmObject;
 
 public class ToolhawkTransferDTO extends RealmObject{
 
-    private int EquipmentID;
+    private String EquipmentCode;
     private int DepartmentID;
     private int LocationID;
 
 
     public ToolhawkTransferDTO() {
     }
-    public ToolhawkTransferDTO(int equipmentID, int departmentID, int locationID) {
-        EquipmentID = equipmentID;
+    public ToolhawkTransferDTO(String equipmentID, int departmentID, int locationID) {
+        EquipmentCode = equipmentID;
         DepartmentID = departmentID;
         LocationID = locationID;
     }
 
-    public int getEquipmentID() {
-        return EquipmentID;
+    public String getEquipmentCode() {
+        return EquipmentCode;
     }
 
-    public void setEquipmentID(int equipmentID) {
-        EquipmentID = equipmentID;
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public int getDepartmentID() {

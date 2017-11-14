@@ -1,5 +1,6 @@
 package com.ets.gd.FireBug.UnitInspection;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -144,6 +145,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
 
     }
 
+    @SuppressLint("RestrictedApi")
     private void setupStatusCodes() {
 
 
@@ -200,7 +202,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
                     if (checkValidation(isFail)) {
 
                         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                        inspectionResult.setEquipmentID(equipmentID);
+                        inspectionResult.setEquipmentCode(tag);
                         inspectionResult.setReplaced(false);
                         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
                         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
@@ -338,9 +340,9 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         }
     };
 
-    void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
+    void saveInspectionAfterReplace(String replaceType, int newLocID, String newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-        inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setEquipmentCode(tag);
         inspectionResult.setReplaced(true);
         inspectionResult.setInspectionType(spInspType.getItemAtPosition(posInspType).toString());
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US);
@@ -371,7 +373,7 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
             }
         }
         inspectionResult.setNewLocationID(newLocID);
-        inspectionResult.setNewEquipmentID(newEquipID);
+        inspectionResult.setNewEquipmentCode(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
         inspectionResult.setScanned(isScanned);
@@ -493,7 +495,8 @@ public class UnitInspectionActivity extends AppCompatActivity implements Spinner
         String message = replace.getMessage();
         String replaceType = replace.getReplaceType();
         int newLocID = replace.getNewLocID();
-        int newEqipID = replace.getNewEqipID();
+        String newEqipID = replace.getNewEqipCode();
+
 
         if (message.startsWith("rep")) {
             saveInspectionAfterReplace(replaceType, newLocID, newEqipID);

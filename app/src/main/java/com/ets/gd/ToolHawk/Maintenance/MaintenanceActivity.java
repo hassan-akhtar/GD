@@ -22,17 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ets.gd.DataManager.DataManager;
-import com.ets.gd.FireBug.ViewInformation.AssetInformationFragment;
 import com.ets.gd.FireBug.ViewInformation.InspectionDatesFragment;
-import com.ets.gd.FireBug.ViewInformation.ViewAssetInformationActivity;
 import com.ets.gd.NetworkLayer.RequestDTOs.EquipmentMaintenance;
 import com.ets.gd.NetworkLayer.ResponseDTOs.Action;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Category;
-import com.ets.gd.NetworkLayer.ResponseDTOs.Customer;
 import com.ets.gd.NetworkLayer.ResponseDTOs.MaintenanceCategory;
-import com.ets.gd.NetworkLayer.ResponseDTOs.SyncCustomer;
 import com.ets.gd.R;
-import com.ets.gd.ToolHawk.Move.MoveAssetActivity;
 import com.ets.gd.Utils.DatePickerFragmentEditText;
 import com.ets.gd.Utils.SharedPreferencesManager;
 
@@ -223,7 +217,7 @@ public class MaintenanceActivity extends AppCompatActivity implements Spinner.On
                         equipmentMaintenance.setID(0);
 
                         if (null != DataManager.getInstance().getToolhawkEquipment(assetID)) {
-                            equipmentMaintenance.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(assetID).getID());
+                            equipmentMaintenance.setEquipmentCode(DataManager.getInstance().getToolhawkEquipment(assetID).getCode());
                         }
 
                         if (null != DataManager.getInstance().getMaintenanceCategory(spCategory.getItemAtPosition(posCategory).toString())) {

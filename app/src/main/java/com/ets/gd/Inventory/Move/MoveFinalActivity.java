@@ -189,7 +189,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                         if (taskName.toLowerCase().startsWith("m")) {
                             moveInventory.setMoved(true);
                             if (scanType.toLowerCase().startsWith("con")) {
-                                moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                                moveInventory.setEquipmentCode(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getCode());
                                 moveInventory.setMoveType("Equipment");
                             }
                             if (scanType.toLowerCase().startsWith("loc")) {
@@ -216,7 +216,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                         } else if (taskName.toLowerCase().startsWith("iss")) {
                             moveInventory.setIssued(true);
                             if (scanType.toLowerCase().startsWith("con")) {
-                                moveInventory.setEquipmentID(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getID());
+                                moveInventory.setEquipmentCode(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getCode());
                                 moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                                 moveInventory.setIssueType("Equipment");
                             }

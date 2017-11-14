@@ -185,7 +185,7 @@ public class DataManager {
         }
 
         for (FireBugEquipment asset : assetList) {
-            FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", asset.getID()).findFirst();
+            FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("Code", asset.getCode(),Case.INSENSITIVE).findFirst();
             assett.setLocation(myLocation);
             if (operation.startsWith("m")) {
                 assett.setMoved(true);
@@ -1306,7 +1306,7 @@ public class DataManager {
             @Override
             public void execute(Realm realm) {
                 UnitinspectionResult unitinspectionResult = realm.createObject(UnitinspectionResult.class);
-                unitinspectionResult.setEquipmentID(inspectionResult.getEquipmentID());
+                unitinspectionResult.setEquipmentCode(inspectionResult.getEquipmentCode());
                 unitinspectionResult.setInspectionType(inspectionResult.getInspectionType());
                 unitinspectionResult.setInspectionDate(inspectionResult.getInspectionDate());
                 unitinspectionResult.setUserId(inspectionResult.getUserId());
@@ -1315,7 +1315,7 @@ public class DataManager {
                 unitinspectionResult.setRouteAssetID(inspectionResult.getRouteAssetID());
                 unitinspectionResult.setRouteID(inspectionResult.getRouteID());
                 unitinspectionResult.setNewLocationID(inspectionResult.getNewLocationID());
-                unitinspectionResult.setNewEquipmentID(inspectionResult.getNewEquipmentID());
+                unitinspectionResult.setNewEquipmentCode(inspectionResult.getNewEquipmentCode());
                 unitinspectionResult.setReplaceType(inspectionResult.getReplaceType());
                 unitinspectionResult.setReplaced(inspectionResult.getReplaced());
 

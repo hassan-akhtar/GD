@@ -29,7 +29,8 @@ public class ReplaceAssetActivity extends AppCompatActivity {
     RelativeLayout rlYes, rlNo, rlBottomSheet;
     private String taskType, code;
     public static String replaceType;
-    public static  int newLocID=0, newEquipID=0;
+    public static  int newLocID=0;
+    public static String newEquipID;
     public static AssetReplaced assetReplaced;
 
     @Override

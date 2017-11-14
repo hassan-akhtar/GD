@@ -256,7 +256,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                         for (UnitinspectionResult obj : unitinspectionResults) {
 
-                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentCode()).getCode().toLowerCase()) &&
                                     spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                                 alreadyInspectedLocally = true;
                                 break;
@@ -279,7 +279,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
 
                             UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                            inspectionResult.setEquipmentID(equipmentID);
+                            inspectionResult.setEquipmentCode(equipmentID);
                             DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
                             DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
                             RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
@@ -432,7 +432,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
     void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-        inspectionResult.setEquipmentID(equipmentID);
+        inspectionResult.setEquipmentCode(equipmentID);
         DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
         DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
         RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
@@ -467,7 +467,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
             }
         }
         inspectionResult.setNewLocationID(newLocID);
-        inspectionResult.setNewEquipmentID(newEquipID);
+        inspectionResult.setNewEquipmentCode(newEquipID);
         inspectionResult.setReplaceType(replaceType);
         inspectionResult.setScanned(isScanned);
         inspectionResult.setInspectionStatusCodes(inspectionStatusCodes);
@@ -611,7 +611,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         String message = replace.getMessage();
         String replaceType = replace.getReplaceType();
         int newLocID = replace.getNewLocID();
-        int newEqipID = replace.getNewEqipID();
+        int newEqipID = replace.getNewEqipCode();
 
         if (message.startsWith("rep")) {
             boolean alreadyInspectedLocally = false, alreadyInspectedFromWeb = true;
@@ -620,7 +620,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
             for (UnitinspectionResult obj : unitinspectionResults) {
 
-                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentID()).getCode().toLowerCase()) &&
+                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentCode()).getCode().toLowerCase()) &&
                         spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                     alreadyInspectedLocally = true;
                     break;
