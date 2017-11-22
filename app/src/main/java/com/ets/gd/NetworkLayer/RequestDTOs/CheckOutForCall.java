@@ -2,8 +2,6 @@ package com.ets.gd.NetworkLayer.RequestDTOs;
 
 import java.util.List;
 
-import io.realm.RealmObject;
-
 /**
  * Created by hakhtar on 6/11/2017.
  * General Data
@@ -15,7 +13,7 @@ public class CheckOutForCall  {
     private int UserID;
     private int JobNumberID;
     private String DueDate;
-    private List<String> equipmentIDList;
+    private List<String> EquipmentCodeList;
 
     public CheckOutForCall() {
     }
@@ -52,11 +50,11 @@ public class CheckOutForCall  {
         DueDate = dueDate;
     }
 
-    public List<String> getEquipmentIDList() {
-        return equipmentIDList;
+    public List<String> getEquipmentCodeList() {
+        return EquipmentCodeList;
     }
 
-    public void setEquipmentIDList(List<String> equipmentIDList) {
-        this.equipmentIDList = equipmentIDList;
+    public void setEquipmentCodeList(List<String> equipmentCodeList) {
+        this.EquipmentCodeList = equipmentCodeList;
     }
 }

@@ -341,7 +341,7 @@ public class GSDServiceImpl implements GSDService {
             for (int j = 0; j<checkIn.getCheckInList().get(i).getEquipmentCodes().size(); j++) {
                 EquipmentID.add(checkIn.getCheckInList().get(i).getEquipmentCodes().get(j).getEquipmentCode());
             }
-            checkInForCall.setEquipmentIDList(EquipmentID);
+            checkInForCall.setEquipmentCodeList(EquipmentID);
             lstCheckIn.add(checkInForCall);
         }
 
@@ -380,7 +380,7 @@ public class GSDServiceImpl implements GSDService {
             for (int j = 0; j<checkOut.getCheckOutList().get(i).getEquipmentCodes().size(); j++) {
                 EquipmentID.add(checkOut.getCheckOutList().get(i).getEquipmentCodes().get(j).getEquipmentCode());
             }
-            checkOutForCall.setEquipmentIDList(EquipmentID);
+            checkOutForCall.setEquipmentCodeList(EquipmentID);
             lstCheckOut.add(checkOutForCall);
         }
 
