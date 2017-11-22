@@ -15,11 +15,21 @@ public class Inventory  extends RealmObject{
     private int MaterialID;
     private int Quantity;
     private int LocationID;
+    private String LocationCode;
     private int EquipmentID;
+    private String EquipmentCode;
 
 
     public int getID() {
         return ID;
+    }
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
     }
 
     public void setID(int ID) {
@@ -32,6 +42,14 @@ public class Inventory  extends RealmObject{
 
     public void setMaterialID(int materialID) {
         MaterialID = materialID;
+    }
+
+    public String getEquipmentCode() {
+        return EquipmentCode;
+    }
+
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
     }
 
     public int getQuantity() {

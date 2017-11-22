@@ -736,6 +736,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
                     equipment.setLocationCode(toolhawkEquipment.getETSLocation().getCode());
+                }else {
+                    String locType = toolhawkEquipment.getEquipmentLocationInfo().getLocationType();
+                    if (locType.toLowerCase().startsWith("eq")) {
+                        equipment.setEquipmentCode(toolhawkEquipment.getEquipmentLocationInfo().getEquipmentCode());
+                    } else if (locType.toLowerCase().startsWith("jo")) {
+                        equipment.setJobNumberID(toolhawkEquipment.getEquipmentLocationInfo().getJobNumberID());
+                    }
                 }
                 try {
                     equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
@@ -766,6 +773,13 @@ public class SyncFragment extends Fragment implements MyCallBack {
                 if (null != toolhawkEquipment.getETSLocation()) {
                     equipment.setLocationID(toolhawkEquipment.getETSLocation().getID());
                     equipment.setLocationCode(toolhawkEquipment.getETSLocation().getCode());
+                } else {
+                    String locType = toolhawkEquipment.getEquipmentLocationInfo().getLocationType();
+                    if (locType.toLowerCase().startsWith("eq")) {
+                        equipment.setEquipmentCode(toolhawkEquipment.getEquipmentLocationInfo().getEquipmentCode());
+                    } else if (locType.toLowerCase().startsWith("jo")) {
+                        equipment.setJobNumberID(toolhawkEquipment.getEquipmentLocationInfo().getJobNumberID());
+                    }
                 }
                 try {
                     equipment.setUnitCost(Float.valueOf(toolhawkEquipment.getUnitCost()));
@@ -909,7 +923,6 @@ public class SyncFragment extends Fragment implements MyCallBack {
                                 break;
                             }
                         }
-
                         if (!ifexists) {
                             InspectionDates.add(inspectionDates);
                         }

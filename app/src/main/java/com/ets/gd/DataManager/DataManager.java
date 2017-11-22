@@ -138,9 +138,9 @@ public class DataManager {
     }
 
 
-    public void updateAssetRouteInspectionStatus(int equipID) {
+    public void updateAssetRouteInspectionStatus(String equipID) {
         realm.beginTransaction();
-        FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("ID", equipID).findFirst();
+        FireBugEquipment assett = realm.where(FireBugEquipment.class).equalTo("Code", equipID).findFirst();
         assett.setRouteUnitInspected(true);
         realm.commitTransaction();
     }
@@ -1227,7 +1227,7 @@ public class DataManager {
         return realm.where(Routes.class).equalTo("ID", ID).findFirst();
     }
 
-    public void updateEquipmentLocationInfo(String code, String locationType, String location, int ID) {
+    public void updateEquipmentLocationInfo(String code, String locationType, String location, int ID, String newCode) {
 
         realm.beginTransaction();
         ToolhawkEquipment eq = realm.where(ToolhawkEquipment.class).equalTo("Code", code).findFirst();
@@ -1238,6 +1238,7 @@ public class DataManager {
             if (locationType.toLowerCase().startsWith("eq")) {
                 eq.setETSLocation(null);
                 equipmentLocationInfo.setEquipmentID(ID);
+                equipmentLocationInfo.setEquipmentCode(newCode);
             }
             if (locationType.toLowerCase().startsWith("jo")) {
                 eq.setETSLocation(null);
@@ -1246,6 +1247,7 @@ public class DataManager {
             if (locationType.toLowerCase().startsWith("lo")) {
                eq.setETSLocation(getETSLocationByCode(location));
                 equipmentLocationInfo.setLocationID(ID);
+                equipmentLocationInfo.setLocationCode(newCode);
             }
 
             eq.setEquipmentLocationInfo(equipmentLocationInfo);

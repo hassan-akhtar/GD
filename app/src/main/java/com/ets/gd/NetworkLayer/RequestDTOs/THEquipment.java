@@ -17,6 +17,8 @@ public class THEquipment {
     private int CategoryID;
     private int LocationID;
     private String LocationCode;
+    private String EquipmentCode;
+    private int JobNumberID;
     private int ManufacturerID;
     private int ModelID;
     private float UnitCost;
@@ -50,6 +52,22 @@ public class THEquipment {
     }
 
     public THEquipment() {
+    }
+
+    public String getEquipmentCode() {
+        return EquipmentCode;
+    }
+
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
+    }
+
+    public int getJobNumberID() {
+        return JobNumberID;
+    }
+
+    public void setJobNumberID(int jobNumberID) {
+        JobNumberID = jobNumberID;
     }
 
     public String getLocationCode() {

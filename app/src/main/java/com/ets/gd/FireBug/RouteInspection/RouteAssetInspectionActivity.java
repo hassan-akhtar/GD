@@ -1,5 +1,6 @@
 package com.ets.gd.FireBug.RouteInspection;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -202,6 +203,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         tvCancel.setLayoutParams(lp);
     }
 
+    @SuppressLint("RestrictedApi")
     private void setupStatusCodes() {
 
 
@@ -256,7 +258,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
                         for (UnitinspectionResult obj : unitinspectionResults) {
 
-                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentCode()).getCode().toLowerCase()) &&
+                            if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipment(obj.getEquipmentCode()).getCode().toLowerCase()) &&
                                     spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                                 alreadyInspectedLocally = true;
                                 break;
@@ -279,9 +281,9 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
 
                             UnitinspectionResult inspectionResult = new UnitinspectionResult();
-                            inspectionResult.setEquipmentCode(equipmentID);
+                            inspectionResult.setEquipmentCode(tag);
                             DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
-                            DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+                            DataManager.getInstance().updateAssetRouteInspectionStatus(tag);
                             RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
                             inspectionResult.setReplaced(false);
                             inspectionResult.setRouteID(RouteID);
@@ -430,11 +432,11 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         }
     };
 
-    void saveInspectionAfterReplace(String replaceType, int newLocID, int newEquipID) {
+    void saveInspectionAfterReplace(String replaceType, int newLocID, String newEquipID) {
         UnitinspectionResult inspectionResult = new UnitinspectionResult();
-        inspectionResult.setEquipmentCode(equipmentID);
+        inspectionResult.setEquipmentCode(tag);
         DataManager.getInstance().updateRouteInspRecord(routeAsset.getID());
-        DataManager.getInstance().updateAssetRouteInspectionStatus(equipmentID);
+        DataManager.getInstance().updateAssetRouteInspectionStatus(tag);
         RouteAssetActivity.routeAssetAdapter.notifyDataSetChanged();
         inspectionResult.setReplaced(true);
         inspectionResult.setRouteID(RouteID);
@@ -611,7 +613,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
         String message = replace.getMessage();
         String replaceType = replace.getReplaceType();
         int newLocID = replace.getNewLocID();
-        int newEqipID = replace.getNewEqipCode();
+        String newEqipID = replace.getNewEqipCode();
 
         if (message.startsWith("rep")) {
             boolean alreadyInspectedLocally = false, alreadyInspectedFromWeb = true;
@@ -620,7 +622,7 @@ public class RouteAssetInspectionActivity extends AppCompatActivity implements S
 
             for (UnitinspectionResult obj : unitinspectionResults) {
 
-                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipmentByID(obj.getEquipmentCode()).getCode().toLowerCase()) &&
+                if (tvAssetName.getText().toString().toLowerCase().equals(DataManager.getInstance().getEquipment(obj.getEquipmentCode()).getCode().toLowerCase()) &&
                         spInspType.getItemAtPosition(posInspType).toString().toLowerCase().equals(obj.getInspectionType().toLowerCase())) {
                     alreadyInspectedLocally = true;
                     break;

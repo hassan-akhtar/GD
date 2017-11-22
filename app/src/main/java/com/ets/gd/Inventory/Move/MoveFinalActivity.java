@@ -101,7 +101,7 @@ public class MoveFinalActivity extends AppCompatActivity {
 
         taskName = getIntent().getStringExtra("taskType");
         scanType = getIntent().getStringExtra("scanType");
-        JobNumberID = getIntent().getIntExtra("JobNumberID",0);
+        JobNumberID = getIntent().getIntExtra("JobNumberID", 0);
         count = materialList.size();
         jobNumber = getIntent().getStringExtra("jobNumber");
         if (materialList.get(0).isLoc() && null != DataManager.getInstance().getETSLocationByIDOnly(materialList.get(0).getLocID())) {
@@ -197,7 +197,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                                 moveInventory.setLocationCode(DataManager.getInstance().getETSLocations(tvToLoc.getText().toString()).getCode());
                                 moveInventory.setMoveType("Location");
                             }
-                            moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                            moveInventory.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
 
                             moveInventory.setJobNumberID(JobNumberID);
                             for (int i = 0; i < materialList.size(); i++) {
@@ -207,7 +207,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                                 inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
                                 inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
                                 Materials.add(inventoryMove);
-                                DataManager.getInstance().updateInventoryQuantity(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID(),materialList.get(i).getLocID(),Integer.parseInt(materialList.get(i).getQuantity()));
+                                DataManager.getInstance().updateInventoryQuantity(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID(), materialList.get(i).getLocID(), Integer.parseInt(materialList.get(i).getQuantity()));
                             }
                             moveInventory.setMaterials(Materials);
                             DataManager.getInstance().saveMoveInventoryResult(moveInventory);
@@ -217,7 +217,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                             moveInventory.setIssued(true);
                             if (scanType.toLowerCase().startsWith("con")) {
                                 moveInventory.setEquipmentCode(DataManager.getInstance().getToolhawkEquipment(tvToLoc.getText().toString()).getCode());
-                                moveInventory.setUserID( sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
+                                moveInventory.setUserID(sharedPreferencesManager.getInt(SharedPreferencesManager.LOGGED_IN_USERID));
                                 moveInventory.setIssueType("Equipment");
                             }
                             if (scanType.toLowerCase().startsWith("use")) {
@@ -234,7 +234,7 @@ public class MoveFinalActivity extends AppCompatActivity {
                                 inventoryMove.setMaterialID(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID());
                                 inventoryMove.setQuantity(Integer.parseInt(materialList.get(i).getQuantity()));
                                 Materials.add(inventoryMove);
-                                DataManager.getInstance().updateInventoryQuantity(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID(),materialList.get(i).getLocID(),Integer.parseInt(materialList.get(i).getQuantity()));
+                                DataManager.getInstance().updateInventoryQuantity(DataManager.getInstance().getMaterial(materialList.get(i).getName()).getID(), materialList.get(i).getLocID(), Integer.parseInt(materialList.get(i).getQuantity()));
                             }
                             moveInventory.setMaterials(Materials);
 

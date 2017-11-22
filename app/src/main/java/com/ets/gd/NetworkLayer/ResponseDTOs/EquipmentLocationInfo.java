@@ -14,6 +14,8 @@ public class EquipmentLocationInfo extends RealmObject {
     private int LocationID;
     private int JobNumberID;
     private int EquipmentID;
+    private String EquipmentCode;
+    private String LocationCode;
 
     public String getLocationType() {
         return LocationType;
@@ -41,6 +43,22 @@ public class EquipmentLocationInfo extends RealmObject {
 
     public int getJobNumberID() {
         return JobNumberID;
+    }
+
+    public String getEquipmentCode() {
+        return EquipmentCode;
+    }
+
+    public void setEquipmentCode(String equipmentCode) {
+        EquipmentCode = equipmentCode;
+    }
+
+    public String getLocationCode() {
+        return LocationCode;
+    }
+
+    public void setLocationCode(String locationCode) {
+        LocationCode = locationCode;
     }
 
     public void setJobNumberID(int jobNumberID) {
